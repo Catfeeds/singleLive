@@ -1,0 +1,121 @@
+<div class="layui-body" style="bottom: 0;border-left: solid 2px #1AA094;" id="admin-body">
+    <div class="layui-tab admin-nav-card layui-tab-brief" lay-filter="admin-tab">
+        <ul class="layui-tab-title">
+            <li class="layui-this">
+                <i class="fa fa-dashboard" aria-hidden="true"></i>
+                <cite>订单列表</cite>
+            </li>
+        </ul>
+        <div class="layui-tab-content" style="min-height: 150px; padding: 5px 0 0 0;">
+            <div class="layui-tab-item layui-show">
+                <div class="conter">
+                    <div class="conter_sait">
+                        <form action="">
+                            <div class="wort">
+                                <div class="layui-input-inline">
+                                    <input name="start" autocomplete="off" placeholder="点击选择起始日期" class="layui-input" onclick="layui.laydate({elem: this})" type="text">
+                                </div>
+                            </div>
+                            <div class="wort">
+                                <div class="layui-input-inline">至
+                                </div>
+                            </div>
+                            <div class="wort">
+                                <div class="layui-input-inline">
+                                    <input name="end" autocomplete="off" placeholder="点击选择结束日期" class="layui-input" onclick="layui.laydate({elem: this})" type="text">
+                                </div>
+                            </div>
+                            <div class="wort">
+                                <div class="layui-input-inline">
+                                    <select name='time_sta' class="select_t">
+                                        <option value=''>选择状态</option>
+                                        <option value='1'>正常</option>
+                                        <option value='2'>超时</option>
+                                    </select>
+                                </div>
+                            </div>
+                            <div class="wort" style="width:280px;">
+                                <input name="title" lay-verify="title" autocomplete="off" placeholder="订单编号/客户姓名/客户电话" class="layui-input" type="text">
+                            </div>
+                            <div class="wort">
+                                <button type="submit" class="layui-btn">查找</button>
+                            </div>
+                            <div class="wort">
+                                <a href="__URL__/export?{$info}"><button type="button" class="layui-btn layui-btn-normal">导出</button></a>
+                            </div>
+                        </form>
+                    </div>
+
+                    <div class="botg">
+                        <table class="layui-table">
+                            <thead>
+                            <tr>
+                                <th>日期</th>
+                                <th>订单编号</th>
+                                <th>酒店名称</th>
+                                <th>房间类型</th>
+                                <th>客户姓名</th>
+                                <th>客户电话</th>
+                                <th>入住时间</th>
+                                <th>已入住时间</th>
+                                <th>折算小时数</th>
+                                <th>可用时长</th>
+                                <th>状态</th>
+                                <th>操作</th>
+                            </tr>
+                            </thead>
+                            <tbody>
+                            <volist name="db" id="list">
+                                <tr>
+                                    <td>{$list.createTime|date_out=###}</td>
+                                    <td>{$list.no}</td>
+                                    <td>{$list.hotelName}</td>
+                                    <td>{$list.roomType}</td>
+                                    <td>{$list.realname}</td>
+                                    <td>{$list.mobile}</td>
+                                    <td>{$list.createTime|date_out=###}</td>
+                                    <td>{$list.old}</td>
+                                    <td>{$list.use}</td>
+                                    <td>{$list.have|formatTime=###}</td>
+                                    <td class="cor_3">
+                                        <switch name="list.status">
+                                            <case value="0">预约中</case>
+                                            <case value="1">订单已完成</case>
+                                            <case value="2">入住中</case>
+                                            <case value="8">订单已取消</case>
+                                        </switch>
+                                    </td>
+                                    <td>
+                                        <a href="__URL__/order_list_edit/id/{$list.id}" class="z_coios_4">查看</a>
+                                    </td>
+                                </tr>
+                            </volist>
+                            </tbody>
+                        </table>
+                        <div class="feniou">
+                            {$page}
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+
+<!-- <script>
+    layui.use('layer', function () {
+        var $ = layui.jquery,
+                layer = layui.layer;
+
+        $('#video1').on('click', function () {
+            layer.open({
+                title: 'YouTube',
+                maxmin: true,
+                type: 2,
+                content: 'video.html',
+                area: ['800px', '500px']
+            });
+        });
+
+    });
+</script> -->

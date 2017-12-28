@@ -1,0 +1,10 @@
+
+  <div class="message">
+    <volist name="db" id="data">
+       <div class="mass">
+                <div class="mass_left"><img src="__MOBILE__/img/xx.png"></div>
+                <div class="mass_cont">{$data.title}(<if condition="$data['STA'] eq 1"><span style="color:gray;">已读</span><else /><span style="color:#c4902c;">未读</span></if>)&nbsp;&nbsp;{$data.createTime|date='Y-m-d',###} </div>
+                <div class="mass_right"><a href="__URL__/index_edit/id/{$data.id}">查看</a></div>
+       </div>
+    </volist>
+  </div>

@@ -1,0 +1,82 @@
+
+  
+
+            
+			<div class="layui-body" style="bottom: 0;border-left: solid 2px #1AA094;" id="admin-body">
+				<div class="layui-tab admin-nav-card layui-tab-brief" lay-filter="admin-tab">
+					<ul class="layui-tab-title">
+						<li class="layui-this">
+							<i class="fa fa-dashboard" aria-hidden="true"></i>
+							<cite>提现记录查看</cite>
+						</li>
+					</ul>
+                    
+					<div class="layui-tab-content" style="min-height: 150px; padding: 5px 0 0 0;">
+						<div class="layui-tab-item layui-show">
+							 <div class="conter">
+                                  <div class="conter_sait">
+                                        <form  action="">
+                                             
+                                              <div class="wort">
+                                              <div class="layui-input-inline">
+                                                 <input name="startTime" id="date" autocomplete="off" placeholder="从2017-02-28时间" class="layui-input" value="{:I('startTime')}" onclick="layui.laydate({elem: this})" type="text">
+                                             </div>
+                                             </div>
+                                             <div class="wort">
+                                              <div class="layui-input-inline">至
+                                               </div>
+                                               </div>
+                                               <div class="wort">
+                                            <div class="layui-input-inline">
+                                                 <input name="endTime" id="date" autocomplete="off" placeholder="到2017-02-28时间" class="layui-input"  value="{:I('endTime')}" onclick="layui.laydate({elem: this})" type="text">
+                                             </div>
+                                             </div>
+                                              <div class="wort" style="width:280px;">
+                                                  <input name="title" lay-verify="title" autocomplete="off" placeholder="订单编号 / 姓名" class="layui-input"  value="{:I('title')}"  type="text">
+                                              
+                                              </div>
+                                            <div class="wort">
+                                                 <button class="layui-btn">查找</button>
+                                            </div>
+                                             
+                                             <div class="wort">
+                                                 <button class="layui-btn layui-btn-normal">导出</button>
+                                            </div>
+                                            
+                                        </form>
+                                   </div>
+                                
+                                       
+                                 <div class="botg">
+                                   <table class="layui-table" >
+                                                 <thead>
+                                                      <tr>
+                                                          <th>订单编号</th>
+                                                          <th>入住日期</th>
+                                                          <th>姓名</th>
+                                                           <th>金额</th>
+                                                        </tr> 
+                                                </thead>  
+                                                <tbody>
+                                                  <volist name="data" id="row">
+                                                    <tr>
+                                                       <td>{$row.no}</td>
+                                                       <td>{$row.createTime}</td>
+                                                       <td >{$row.userName}</td>
+                                                       <td class="cor_1 ">{$row.Pamount|sprintf="%.2f",###}</td>
+                                                    </tr>
+                                                    </volist>
+                                                </tbody>
+                                   </table>
+                                   <div class="feniou">
+                                                   <ul>
+                                                     {$page}    
+                                                   </ul>
+                                  </div>
+
+                                </div>
+                             </div>
+						</div>
+					</div>
+				</div>
+			</div>

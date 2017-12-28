@@ -1,0 +1,268 @@
+<!--换房弹出窗 妹子UI-->
+<style>
+    .plus{ background: #ba9d6a;color: #FFF;font-size: 2rem; line-height: 2rem;}
+    .sub{ margin-left: 0rem; color: #FFF; background: #cdcdcd; font-size: 3rem; line-height: 2rem;}
+    .roomtype .radios{width: 20px; height: 15px; border: 1px solid #000;}
+</style>
+<div>
+    <div class="am-popup-inner" style="padding-top: 0;">
+        <div class="am-popup-hd">
+            <h4 class="am-popup-title">换房信息</h4>
+
+        </div>
+        <div class="am-popup-bd ma_bd" style="padding: 0;">
+            <div class="amnt" style=" width: 100%;">
+                <ul>
+                    <li>原来房间</li>
+                    <li>{$order.roomName}</li>
+                    <li>1间</li>
+                    <li id="roomDay">{$order.useable}小时</li>
+                </ul>
+            </div>
+            <div class="bopy">换成</div>
+            <div class="am_tad">
+                <table class="am-table">
+                    <thead>
+                    <tr>
+                        <th>房间类型</th>
+                        <th>数量/间</th>
+                        <th>时长/小时</th>
+                        <th>金额</th>
+                    </tr>
+                    </thead>
+                    <tbody>
+                    <volist name="order['roomlist']" id="roomlist">
+                        <tr class="roomtype" data="{$roomlist.id}">
+                            <td> {$roomlist.roomName}</td>
+                            <td>
+                               1
+                            </td>
+                            <td class="joist">
+                                <!-- <a class="sub">-</a> -->
+                                <span class="num daysnum">24</span>
+                                <!-- <a class="plus">+</a> -->
+                            </td>
+                            <td style="display: none;" class="sign_amount">{$roomlist.amount}</td>
+                            <td style="display: none;" class="amount">{$roomlist.price}</td>
+                            <td class="minimum">{$roomlist.price}</td>
+                        </tr>
+                    </volist>
+                    <tr>
+                        <td>应付金额 ：</td>
+                        <td colspan="3" style="text-align:right; color:#dd2b0e;">￥<span id="all_amount">0</span></td>
+                    </tr>
+                    <tr>
+                        <td>时间折算 ：</td>
+                        <td colspan="3" style="text-align:right; color:#dd2b0e;"><span id="time">0</span>小时</td>
+                    </tr>
+                    <tr>
+                        <td>总时长 ：</td>
+                        <td colspan="3" style="text-align:right; color:#dd2b0e;"><span id="alltimes">0</span>小时</td>
+                    </tr>
+                    <tr>
+                        <td>房间剩余 ：</td>
+                        <td colspan="3" style="text-align:right; color:#dd2b0e;"><span id="timeAmount">{$order.useable}</span>小时</td>
+                    </tr>
+                    </tbody>
+                </table>
+            </div>
+            <div class="am_bot_1">
+                <button type="button" data-am-modal-close class="am-btn am-btn-block am_button_1 submit">替换</button>
+            </div>
+            <form action="__URL__/appOrder" method="post" class="myform">
+
+            </form>
+        </div>
+    </div>
+</div>
+<script type="text/javascript">
+/*
+    现需求：
+    1、应付金额，只显示要换房间的金钱
+    2、原时间换算成多少小时的新房间需要让用户看见
+    3、如果换成新房间时，不足24小时,则必须买，即新房间的总时间+原房间转换成新房间的时间
+    4、核心思路：客户永远剩余的只有时间
+*/
+    $(function(){
+        var price = "{$order.money}";
+        var useable = "{$order.useable}";
+        var orderId = "{$Think.get.orderid}";
+
+
+        $('.roomtype').click(function() {
+
+            $('.roomtype').removeAttr('style', '');
+            $(this).css('background-color', 'darkgray');
+            $(this).css('color', '#fff');
+
+
+            //选中的房间ID
+            var roomsId = $(this).attr('data')
+            //固定换房时间为 1天
+            var d = 1
+            //选中的房间金额
+            var amount = $(this).find('.minimum').text();
+            //计算剩余时长
+            var roomAmount = $(this).find('.amount').text();  //房间24H价格
+            var roomSingle = $(this).find('.sign_amount').text();  //房间每小时单价
+
+            var lastTime = Math.round(price / roomSingle);
+
+            //换的时长 是否大于24 如果不够24 再买一个
+            if(parseInt(lastTime) >= 24){
+                lastAmount = 0
+                allTime = lastTime
+            }else{
+                lastAmount = amount
+                allTime = lastTime + d * 24
+            }
+
+            //页面赋值
+            $('#all_amount').text(lastAmount)
+            $('#time').text(lastTime)
+            $('#alltimes').text(allTime)
+
+            
+            //对需要提交的表单框进行赋值
+            $('.myform').html('');
+            $('.myform').append('<textarea style="display: none;" name="all_amounts">'+ lastAmount +'</textarea>');
+            $('.myform').append('<textarea style="display: none;" name="all_times">'+allTime+'</textarea>');
+            $('.myform').append('<textarea style="display: none;" name="orderId">'+orderId+'</textarea>');
+            $('.myform').append('<input type="hidden" name="roomId" value="'+roomsId+'"><input type="hidden" name="days" value="'+d+'">');
+
+        })
+
+       
+        $('.submit').click(function(){
+
+            layer.open({
+                content: '您确定换房吗？以折算时间为准'
+                ,btn: ['确定', '取消']
+                ,skin: 'footer'
+                ,yes: function(index){
+
+                    if (parseInt($('#alltimes').text()) < 24) {
+                        layer.open({
+                                content: '您的总时长不足24小时,不能进行换房'
+                                ,skin: 'msg'
+                                ,time: 2 //2秒后自动关闭
+                          });
+                    }else if ($('.myform').find('input').length > 0){ 
+                        $('.myform').submit();
+                    }else{
+                          layer.open({
+                                content: '请先选择要换的房间'
+                                ,skin: 'msg'
+                                ,time: 2 //2秒后自动关闭
+                          });
+                    }
+                }
+            });
+        });
+    });
+</script>
+
+<!-- 
+
+ $('.radios').click(function(){
+            var money,time;
+            var days = $(this).parents().siblings('.joist').find('.daysnum').text();
+            var roomAmount = $(this).parents().siblings('.amount').text();  //房间单价
+            var roomSingle = $(this).parents().siblings('.sign_amount').text();  //房间每小时单价
+            var roomPirce = Math.round(1 * parseInt(days) * parseInt(roomAmount));
+            var Times = Math.round(price/roomSingle);//折算时间
+            if(roomPirce>price){
+                money = parseInt(roomPirce);
+                time = parseInt(days)*24;
+                $('#all_amount').text(money);
+                $('#time').text(Times);
+                $('#alltimes').text(time+Times);
+                $('#timeAmount').text(0);
+            }else{
+                $('#all_amount').text(0);
+                $('#time').text(Times);
+                $('#alltimes').text(Times);
+                $('#timeAmount').text(0);
+            }
+        });
+        $('.plus').click(function() {
+            if($(this).parents().siblings().find('.radios').is(':checked')===true){
+                var pp = $(this).parents('.joist').find('.num');
+                var getNum = parseInt(pp.html());
+                if(getNum < 100) {
+                    pp.html(getNum + 1);
+                    jisuan();
+                } else {
+                    layer.open({
+                        content: '不可以大于100'
+                        ,skin: 'msg'
+                        ,time: 2 //2秒后自动关闭
+                    });
+                }
+            }else{
+                layer.open({
+                    content: '请先选择要换的房间类型'
+                    ,skin: 'msg'
+                    ,time: 2 //2秒后自动关闭
+                });
+            }
+        });
+        $('.sub').click(function() {
+            if($(this).parents().siblings().find('.radios').is(':checked')===true){
+                var pp = $(this).parents('.joist').find('.num');
+                var getNum = parseInt(pp.html());
+                if(getNum > 1) {
+                    pp.html(getNum - 1);
+                    jisuan();
+                } else {
+                    layer.open({
+                        content: '不可以小于1'
+                        ,skin: 'msg'
+                        ,time: 2 //2秒后自动关闭
+                    });
+                }
+            }else{
+                layer.open({
+                    content: '请先选择要换的房间类型'
+                    ,skin: 'msg'
+                    ,time: 2 //2秒后自动关闭
+                });
+            }
+        });
+        function jisuan(){
+            var amount=0;
+            var hours =0;
+            var all_amount,time;
+            var sign_amount;
+            $('.roomtype').each(function(){
+                if($(this).find('.radios').is(':checked')===true){
+                    var days       = $(this).find('.daysnum').text(); //入住天数
+                    var roomAmount = $(this).find('.amount').text();  //房间价格
+                    var amountone = Math.round(1 * days * roomAmount);
+                    amount += amountone;
+                    hours += 1*parseInt(days)*24;
+                }
+            });
+            sign_amount = $("input[type='radio']:checked").parents().siblings('.sign_amount').text();//房间单价/小时
+            if(sign_amount){
+                time = Math.round(price/sign_amount);//折算时间
+                if(amount > parseInt(price)){
+                    all_amount = amount;
+                    $('#all_amount').text(all_amount);
+                    $('#time').text(time);
+                    $('#alltimes').text(hours+time);
+                    $('#timeAmount').text(0);
+                }else{
+                    $('#all_amount').text(0);
+                    $('#time').text(time);
+                    $('#alltimes').text(time);
+                    $('#timeAmount').text(0);
+                }
+            }else{
+                $('#all_amount').text(0);
+                $('#time').text(0);
+                $('#alltimes').text(0);
+                $('#timeAmount').text(useable);
+            }
+
+        } -->

@@ -1,0 +1,81 @@
+<div class="layui-body" style="bottom: 0;border-left: solid 2px #1AA094;" id="admin-body">
+    <div class="layui-tab admin-nav-card layui-tab-brief" lay-filter="admin-tab">
+        <ul class="layui-tab-title">
+            <li class="layui-this">
+                <i class="fa fa-dashboard" aria-hidden="true"></i>
+                <cite>房间类型</cite>
+            </li>
+        </ul>
+
+        <div class="layui-tab-content" style="min-height: 150px; padding: 5px 0 0 0;">
+            <div class="layui-tab-item layui-show">
+                <div class="conter">
+                    <div class="conter_sait">
+                        <form action="">
+                            <div class="wort">
+                                <select name="room" id="select" class="select_t">
+                                    <option value="">选择房间类型</option>
+                                    <volist name="room" id="room">
+                                        <option value="{$room.id}">{$room.roomName}</option>
+                                    </volist>
+                                </select>
+                            </div>
+                            <div class="wort" style="width:280px;">
+                                <input name="title" lay-verify="title" autocomplete="off" placeholder="价格/最低入住时长" class="layui-input" type="text">
+
+                            </div>
+
+                            <div class="wort">
+                                <button class="layui-btn">查找</button>
+                            </div>
+
+                            <div class="wort">
+                                <a href="__URL__/export_roomtype?{$info}">
+                                    <button type="button" class="layui-btn layui-btn-normal">导出</button>
+                                </a>
+                            </div>
+                            <div class="wort">
+                                <a href="__URL__/roomtype_add/hid/{$hid}">
+                                    <button type="button" class="layui-btn layui-btn-danger">新增</button>
+                                </a>
+                            </div>
+                        </form>
+                    </div>
+                    <div class="botg">
+                        <table class="layui-table">
+                            <thead>
+                            <tr>
+                                <th>序号</th>
+                                <th>房间图片</th>
+                                <th>房间类型</th>
+                                <th>价格</th>
+                                <th>最低入住时长</th>
+                                <th>操作</th>
+                            </tr>
+                            </thead>
+                            <tbody>
+                            <volist name="db" id="db">
+                                <tr>
+                                    <td>{$i}</td>
+                                    <td><img src="{$db.src}" width="100" height="100"></td>
+                                    <td>{$db.roomName}</td>
+                                    <td>{$db.price}</td>
+                                    <td>{$db.minimum}</td>
+                                    <td>
+                                    <a class="z_coios_4" href="__URL__/roomtype_edit/id/{$db.id}">修改</a>
+                                    <a class="z_coios_3 ajax-get confirm" href="__URL__/roomtype_del/id/{$db.id}" data-msg='您确定删除？'>删除</a>
+                                    </td>
+                                </tr>
+                            </volist>
+                            </tbody>
+                        </table>
+                        <div class="feniou">
+                            {$page}
+                        </div>
+
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>

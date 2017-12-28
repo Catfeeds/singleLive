@@ -1,0 +1,71 @@
+
+<div class="coic" id="view" end-msg='您尚未入住酒店' url="__ACTION__">
+</div>
+
+
+
+<!-- 模板引擎 -->
+<script id="layout" type="text/html">
+<div class="rcit">
+    <div class="clort_1">
+             <div class="omp_top">
+                  <div class="amt_flt">订单编号：{{d.no}}</div>
+                  <div class="amt_rlt"></div>
+
+             </div>
+             <div class="omp_bottom">
+             <div class="amt_flt">酒店房型：{{d.hotelName}}（{{d.roomName}}）</div>
+                   <div class="amt_rlt"> ｘ1</div>
+             </div>
+             <div class="omp_bottom">
+                   <div class="amt_flt">最低入住时长：{{d.min}}</div>
+                  <div class="amt_rlt"></div>
+             </div>
+
+    {{# if(d.status == 8){ }}
+    <div class="omp_bottom">
+                   <div class="amt_flt">取消原因：{{d.msg}}</div>
+                  <div class="amt_rlt"></div>
+             </div>
+    </div>
+    <div class="clorbst">
+          <a class="cor_2" style="color: #888;">订单已取消</a>
+    {{# }else if(d.status == 0){ }}
+    <div class="omp_bottom">
+                   <div class="amt_flt">操作：<a class="ajax-get confirm" style="color: red;" data-msg="是否取消申请？" href="__URL__/backOrder/id/{{d.id}}">点击取消订单</a></div>
+                  <div class="amt_rlt"></div>
+             </div>
+    </div>
+    <div class="clorbst">
+          <a class="cor_2" style="color: #025b23;">申请入住中</a>
+    {{# }else if(d.status == 1){ }}
+    <div class="omp_bottom">
+               <div class="amt_flt">入住时长:{{d.time}}<span style="color:#999;">（注：未达到最低时长按照最低扣时）</span></div>
+              <div class="amt_rlt"></div>
+         </div>
+    </div>
+    <div class="clorbst">
+          <a class="cor_2">订单已完成</a>
+    {{# }else if(d.status == 2){ }}
+     <div class="omp_bottom">
+                   <div class="amt_flt">入住计时：<span tnow="{{d.time}}" class="timeCheck">00:00:00</span></div>
+                  <div class="amt_rlt"></div>
+             </div>
+    </div>
+    <div class="clorbst">
+          <a class="cor_2" style="color: red;">正在入住
+          <a href="__URL__/continue_stay/orderid/{{d.orderId}}"><button  class="layui-btn layui-btn-mini layui-btn-danger">续时</button></a>
+          </a>
+    {{# } }}
+    </div>
+</div>
+</script>
+<script type="text/javascript">
+  $('#view').on('click','.lookback',function(){
+      layer.open({
+        content: $(this).attr('data-msg')
+        ,btn: '我知道了'
+      });
+  });
+</script>
+

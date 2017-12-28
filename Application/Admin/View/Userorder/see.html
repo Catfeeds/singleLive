@@ -1,0 +1,91 @@
+
+            
+			<div class="layui-body" style="bottom: 0;border-left: solid 2px #1AA094;" id="admin-body">
+				<div class="layui-tab admin-nav-card layui-tab-brief" lay-filter="admin-tab">
+					<ul class="layui-tab-title">
+						<li class="layui-this">
+							<i class="fa fa-dashboard" aria-hidden="true"></i>
+							<cite>订单详情</cite>
+						</li>
+					</ul>
+						<div class="layui-tab-item layui-show">
+							 <div class="conter">
+                                  
+                                   <div class="xxkt">
+           		                         <ul>
+                	                       <li class="xxkt_bt">订单详情</li>
+                                         </ul>
+                                    </div>
+ 
+                                  <div class="xxknr">
+           	                            <div>
+                                             <div class="glylb_szmm">
+                                              <span class="glylb_szmm_span">日期：</span>
+                                              <div class="layui-input-block z_min_left_10">
+                                             <input name="date" id="date" autocomplete="off" class="layui-input"  type="text" value="{$db.createTime|date='Y-m-d',###}" readonly="readonly">
+                                              </div>
+                                             </div> 
+                                              
+                                             <div class="glylb_szmm">
+                                              <span class="glylb_szmm_span">订单编号：</span>
+                                              <div class="layui-input-block z_min_left_10">
+                                                   <input class="fn-tinput"  name="confirm_password" value="{$db.no}" readonly="readonly">
+                                              </div>
+                                             </div> 
+                                             <div class="glylb_szmm">
+                                              <span class="glylb_szmm_span">酒店名称：</span>
+                                              <div class="layui-input-block z_min_left_10">
+                                                   <input class="fn-tinput"  name="confirm_password" value="{$db.hotelName}" readonly="readonly">
+                                              </div>
+                                             </div> 
+                                             <div class="glylb_szmm">
+                                              <span class="glylb_szmm_span">房间类型：</span>
+                                              <div class="layui-input-block z_min_left_10">
+                                                   <input class="fn-tinput"  name="confirm_password" value="{$db.roomName}" readonly="readonly">
+                                              </div>
+                                             </div> 
+                                             <div class="glylb_szmm">
+                                              <span class="glylb_szmm_span">客户姓名：</span>
+                                              <div class="layui-input-block z_min_left_10">
+                                                   <input class="fn-tinput"  name="confirm_password" value="{$db.realname}" readonly="readonly">
+                                              </div>
+                                             </div> 
+                                             <div class="glylb_szmm">
+                                              <span class="glylb_szmm_span">客户电话：</span>
+                                              <div class="layui-input-block z_min_left_10">
+                                                   <input class="fn-tinput"  name="confirm_password" value="{$db.mobile}" readonly="readonly">
+                                              </div>
+                                             </div>
+                                             <div class="glylb_szmm">
+                                              <span class="glylb_szmm_span">入住时间：</span>
+                                              <div class="layui-input-block z_min_left_10">
+                                                <input class="fn-tinput"  name="confirm_password" value="{$db.startTime|date_out=###}" readonly="readonly" >
+                                              </div>
+                                             </div>
+                                             <div class="glylb_szmm">
+                                              <span class="glylb_szmm_span">已入住时长：</span>
+                                              <div class="layui-input-block z_min_left_10">
+                                                   <input class="fn-tinput"  name="confirm_password" value="{$db.used}" readonly="readonly">
+                                              </div>
+                                             </div>
+                                             <div class="glylb_szmm">
+                                              <span class="glylb_szmm_span">订单金额：</span>
+                                              <div class="layui-input-block z_min_left_10">
+                                                   <input class="fn-tinput"  name="confirm_password" value="{$db.umoney}" readonly="readonly">
+                                              </div>
+                                             </div>
+                                             <div class="glylb_szmm">
+                                                <span class="glylb_szmm_span">状态：</span>
+                                                <div class="layui-input-block z_min_left_10">
+                                                    <input class="fn-tinput"  name="confirm_password" value="{$db.push}" readonly="readonly">
+                                                </div>
+                                             </div>                          
+                                         </div>                   
+                                   </div>
+                                  <div class="gater">
+                                          <a href="__URL__/index"><input type="button" value="返回" class="glylb_an_fh" /></a>
+                                  </div> 
+                          </div> 
+						</div>
+				</div>
+			</div>

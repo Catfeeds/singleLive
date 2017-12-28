@@ -1,0 +1,33 @@
+ <div class="message">
+<div class="am_collection"> 我的收藏
+</div>
+<div class="am_bgol">
+   <div class="boxt_hend">
+      <ul>
+         <li class="leot_1">酒店头像</li>
+         <li class="leot_2">酒店名称</li>
+         <li class="leot_2">酒店电话</li>
+         <li class="leot_1">收藏</li>
+      </ul>
+   </div>
+   <div class="boxt_cont" id="view" url="__ACTION__">
+   </div>
+</div>
+  </div>
+<script type="text/html" id="layout">
+<div class="am_con">
+     <ul>
+        <li class="leot_1 show" data="{{d.id64}}"><img src="{{d.head}}" class="img_1"></li>
+        <li class="leot_2 show" data="{{d.id64}}">{{d.hotelName}}</li>
+        <li class="leot_2 show" data="{{d.id64}}">{{d.mobile}}</li>
+        <li class="leot_1 show" data="{{d.id64}}" ><a class="am_sm" href="javascript:;">查看</a></li>
+     </ul>
+ </div>
+</script>
+<script type="text/javascript">
+  $('body').on('click','.show',function(){
+    var id = $(this).attr('data');
+    //window.location.href="/index.php/Index/index/hotel/"+id;
+    window.location.href="/index.php/Self/look/hotel/"+id;
+  });
+</script>

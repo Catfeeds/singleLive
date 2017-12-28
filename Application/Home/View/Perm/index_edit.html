@@ -1,0 +1,65 @@
+
+            
+			<div class="layui-body" style="bottom: 0;border-left: solid 2px #1AA094;" id="admin-body">
+				<div class="layui-tab admin-nav-card layui-tab-brief" lay-filter="admin-tab">
+					<ul class="layui-tab-title">
+						<li class="layui-this">
+							<i class="fa fa-dashboard" aria-hidden="true"></i>
+							<cite>修改权限</cite>
+						</li>
+					</ul>
+					<div class="layui-tab-content" style="min-height: 150px; padding: 5px 0 0 0;">
+						<div class="layui-tab-item layui-show">
+							 <div class="conter">
+                                 <div class="bot_lenin">
+                                      <div class="qinht">
+                                           <ul>
+                                                <li>折叠</li>
+                                                <li>选择</li>
+                                                <li>栏目名称</li>
+                                           </ul>
+                                      </div>
+                                     <form action="__URL__/permEditDo" method="post" class="form-perm">
+                                      <div class="foter">
+                                         <volist name="data" id="items"> 
+                                           <div class="bodpe checkmod">
+                                                <div class="bodpe_top hd"> 
+                                                     <ul class="checkbox">
+                                                         <li class="dutot"></li>
+                                                         <li><input <volist name="codes" id="code">
+                                                          <if condition="$code eq $items['perm_id']">checked="checked"</if>
+                                                          </volist>
+                                                         type="checkbox" name="perm_id[{$items.perm_id}]" class="rules_all" ></li>
+                                                         <li>{$items.perm_type}</li>
+                                                     </ul>
+                                                </div>
+                                                <volist name="items.subClass" id="subClass">
+                                                  <div class="bodpe_botm bd">
+                                                      <div class="aoyp rule_check">
+                                                           <ul class="checkbox inline">
+                                                               <li></li>
+                                                               <li><input <volist name="codes" id="code">
+                                                                <if condition="$code eq $subClass['perm_id']">checked="checked"</if>
+                                                                </volist>
+                                                                type="checkbox" name="perm_id[{$items.perm_id}][{$subClass.perm_id}]" class="rules_row"></li>
+                                                               <li>{$subClass.perm_type}</li>
+                                                            </ul>
+                                                       </div>
+                                                  </div>
+                                                 </volist> 
+                                           </div>
+                                         </volist>
+                                      </div>  
+                                       <div class="glylb_an">
+                                                <input type="hidden" name="role_id" value="{$role_id}">
+                                                <input type="submit" value="确认" class="glylb_an_qd ajax-post" target-form="form-perm"/>
+                                                 <input type="button" value="取消" onclick="javascript:history.back(-1);return false" 
+                                                 class="glylb_an_fh" />
+                                       </div> 
+                                   </form>                                               
+                             </div>
+						</div>
+					</div>
+				</div>
+			</div>
+            

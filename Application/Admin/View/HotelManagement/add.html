@@ -1,0 +1,81 @@
+
+<script src="/Public/city/distpicker.data.js"></script>
+<script src="/Public/city/distpicker.js"></script>
+<script src="/Public/city/main.js"></script>
+<div class="layui-body" style="bottom: 0;border-left: solid 2px #1AA094;" id="admin-body">
+  <div class="layui-tab admin-nav-card layui-tab-brief" lay-filter="admin-tab">
+    <ul class="layui-tab-title">
+      <li class="layui-this"> <i class="fa fa-dashboard" aria-hidden="true"></i> <cite>新增酒店</cite> </li>
+    </ul>
+    <div class="layui-tab-item layui-show">
+      <div class="conter">
+        <div class="xxkt">
+          <ul>
+            <li class="xxkt_bt">新增酒店</li>
+          </ul>
+        </div>
+        <form action="__URL__/insert" method="post" class="form-hotelAdd" enctype="multipart/form-data">
+          <div class="xxknr">
+            <div>
+              <div class="glylb_szmm"> <span class="glylb_szmm_span">用户名：</span>
+                <div class="layui-input-block z_min_left_10">
+                  <input class="fn-tinput requ"  name="username" placeholder="请填写用户名" >
+                </div>
+              </div>
+              <div class="glylb_szmm"> <span class="glylb_szmm_span">密码：</span>
+                <div class="layui-input-block z_min_left_10">
+                  <input class="fn-tinput requ" type="password" name="password" placeholder="请出入密码" >
+                </div>
+              </div>
+              <div class="glylb_szmm"> <span class="glylb_szmm_span">确认密码：</span>
+                <div class="layui-input-block z_min_left_10">
+                  <input class="fn-tinput requ" type="password" name="repassword" placeholder="请再次输入密码" >
+                </div>
+              </div>
+              <div class="glylb_szmm"> <span class="glylb_szmm_span">酒店名称：</span>
+                <div class="layui-input-block z_min_left_10">
+                  <input class="fn-tinput requ"  name="hotelName" placeholder="请输入酒店名称" >
+                </div>
+              </div>
+              <div class="glylb_szmm"> <span class="glylb_szmm_span">酒店所在地：</span>
+                <div class="layui-input-block z_min_left_10">
+                <div data-toggle="distpicker">
+                  <select data-province=" " name="province" class="fn-tinput requ" style="width: 120px;"></select>
+                  <select data-city=" " name="city" class="fn-tinput requ" style="width: 120px;"></select>
+                  <select data-district=" " name="area" class="fn-tinput requ" style="width: 120px;"></select>
+                </div>
+                </div>
+              </div>
+              <div class="glylb_szmm"> <span class="glylb_szmm_span">酒店地址：</span>
+                <div class="layui-input-block z_min_left_10">
+                  <input class="fn-tinput requ"  name="address" placeholder="请输入酒店地址" >
+                </div>
+              </div>
+              <div class="glylb_szmm"> <span class="glylb_szmm_span">酒店电话：</span>
+                <div class="layui-input-block z_min_left_10">
+                  <input class="fn-tinput requ"  name="mobile" placeholder="请输入酒店电话" >
+                </div>
+              </div>
+              <div class="glylb_szmm"> <span class="glylb_szmm_span">酒店头像：</span>
+                <div class="layui-input-block z_min_left_10 uploadOne_parent">
+                  <input type="hidden" name="head" value="" class="uploadOne_data">
+                  <input type="file" name="file" class="uploadOne" data-width="100" data-height="100" />
+                  <div id="imgdiv"><img width="100" height="100" src="__PUBLIC__/Admin/images/0.jpg" class="uploadOne_img" /></div>
+                  <font style="display: block;position:absolute;color:#F00;left:105px;">图片大小为100px*100px</font>
+                </div>   
+              </div>
+            </div>
+          </div>
+          <div class="gater">
+          <input type="hidden" name="__GO__" value="__URL__/index"> 
+            <input type="submit" value="确认" class="glylb_an_qd ajax-post" target-form="form-hotelAdd"/>
+            <input type="button" value="取消" class="glylb_an_fh" onclick="javascript:history.back(-1);return false" />
+          </div>
+        </form>
+      </div>
+    </div>
+  </div>
+</div>
+<script type="text/javascript">
+  
+</script>

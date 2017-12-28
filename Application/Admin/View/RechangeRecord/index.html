@@ -1,0 +1,92 @@
+       
+      <div class="layui-body" style="bottom: 0;border-left: solid 2px #1AA094;" id="admin-body">
+        <div class="layui-tab admin-nav-card layui-tab-brief" lay-filter="admin-tab">
+          <ul class="layui-tab-title">
+            <li class="layui-this">
+              <i class="fa fa-dashboard" aria-hidden="true"></i>
+              <cite>充值记录</cite>
+            </li>
+          </ul>
+                    
+          <div class="layui-tab-content" style="min-height: 150px; padding: 5px 0 0 0;">
+            <div class="layui-tab-item layui-show">
+               <div class="conter">
+                                  <div class="conter_sait">
+                                        <form  action="" method="post" class="form-export">
+                                             
+                                              
+                                              <div class="wort">
+                                              <div class="layui-input-inline">
+                                                <input name="startTime" value="{:I('startTime')}" id="date" autocomplete="off" placeholder="从2017-02-28时间" class="layui-input" onclick="layui.laydate({elem: this})" type="text">
+                                             </div>
+                                             </div>
+                                             <div class="wort">
+                                              <div class="layui-input-inline">至
+                                               </div>
+                                               </div>
+                                               <div class="wort">
+                                            <div class="layui-input-inline">
+                                                <input name="endTime" value="{:I('endTime')}" id="date" autocomplete="off" placeholder="到2017-02-28时间" class="layui-input" onclick="layui.laydate({elem: this})" type="text">
+                                             </div>
+                                             </div>
+                                               <div class="wort" style="width:280px;">
+                                                  <input name="title" value="{:I('title')}" lay-verify="title" autocomplete="off" placeholder="会员名称/酒店名称" class="layui-input" type="text">
+                                              </div>
+                                               
+                                          <div class="wort">
+                                                 <button id="select" class="layui-btn">查找</button>
+                                            </div>
+                                             
+                                             <div class="wort">
+                                                 <button id="export" class="layui-btn layui-btn-normal">导出</button>
+                                            </div>
+                                        </form>
+                                   </div>
+
+                                 <div class="botg">
+                                   <table class="layui-table" >
+                                                 <thead>
+                                                      <tr>
+                                                          <th>充值日期</th>
+                                                          <th>会员姓名</th>
+                                                          <th>会员手机</th>
+                                                          <th>酒店名称</th>
+                                                          <th>充值金额</th>
+                                                          
+                                                          
+                                                        </tr> 
+                                                </thead>
+                                                <tbody>
+                                                  <volist name="db" id="data">
+                                                    <tr>
+                                                       <td>{$data.createTime}</td>
+                                                       <td>{$data.realname}</td>
+                                                       <td>{$data.mobile}</td>
+                                                       <td>{$data.hotelName}</td>
+                                                       <td class="cor_1">{$data.amount}</td>   
+                                                   </tr>
+                                                  </volist> 
+                                                </tbody>
+                                   </table>
+                                   <div class="feniou">
+                                                   <ul>
+                                                   {$page}      
+                                                   </ul>
+                                  </div>
+
+                                </div>
+                             </div>
+            </div>
+          </div>
+        </div>
+      </div>
+
+  <script>
+    $('#export').click(function () {
+        $(this).parents('.form-export').attr('action', '__URL__/export');
+    })
+    $('#select').click(function () {
+
+        $(this).parents('.form-export').attr('action', '__URL__/index');
+    })
+</script>

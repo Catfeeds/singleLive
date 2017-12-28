@@ -1,0 +1,67 @@
+                   
+			<div class="layui-body" style="bottom: 0;border-left: solid 2px #1AA094;" id="admin-body">
+				<div class="layui-tab admin-nav-card layui-tab-brief" lay-filter="admin-tab">
+					<ul class="layui-tab-title">
+						<li class="layui-this">
+							<i class="fa fa-dashboard" aria-hidden="true"></i>
+							<cite>权限设置</cite>
+						</li>
+					</ul>
+					<div class="layui-tab-content" style="min-height: 150px; padding: 5px 0 0 0;">
+						<div class="layui-tab-item layui-show">
+							 <div class="conter">
+                                  <div class="conter_sait">
+                                        <form class="layui-form" action="">
+                                              
+                                            
+                                            <div class="wort">
+                                                  <input name="title" lay-verify="title" autocomplete="off" placeholder="请输入名称" class="layui-input" type="text" value="{:I('title')}">
+                                            </div>
+                                            <div class="wort">
+                                                 <button class="layui-btn">查找</button>
+                                            </div>
+                                             <div class="wort">
+                                                 <button type="button" class="layui-btn layui-btn-danger iframe"  data-iframe="__URL__/index_added.html">新增</button>
+                                            </div>
+                                            <!-- <div class="wort">
+                                                 <button class="layui-btn layui-btn-normal">导出</button>
+                                            </div>-->
+                                        </form>
+                                   </div>
+                                 <div class="botg">
+                                   <table class="layui-table" >
+                                                 <thead>
+                                                      <tr>
+                                                          <th>用户组</th>
+                                                          <th>描述</th>
+                                                           <th>授权</th>
+                                                           <th>状态</th>
+                                                          <th style="width:155px;">操作</th>
+                                                        </tr> 
+                                                </thead>
+                                                <tbody>
+                                                <volist name="db" id="SubClass">
+                                                    <tr>
+                                                       <td>{$SubClass.role_type}</td>
+                                                       <td>{$SubClass.role_info}</td>
+                                                       <td><a href="__URL__/index_edit/role_id/{$SubClass.role_id}">点击授权</a></td>
+                                                       <td><if condition="($SubClass.role_sta eq 0)">启用<else />禁用</if></td>
+                                                       <td>
+                                                       <if condition="($SubClass.role_sta eq 0)">
+                                                       <a href="__URL__/RoleSta/role_id/{$SubClass.role_id}/sta/{$SubClass.role_sta}" class="z_coios_1 ajax-get confirm" data-msg="禁用管理组时使用此管理组的管理员也将禁止登录，需重新分配管理组，您确定吗？" > 
+                                                       禁用<else />
+                                                       <a href="__URL__/RoleSta/role_id/{$SubClass.role_id}/sta/{$SubClass.role_sta}" class="z_coios_1 ajax-get confirm" style="border:1px solid #0D0"> 
+                                                       <font style="color:#0D0">启用</font></if></a></a>
+                                                       <a href="__URL__/RoleDel/role_id/{$SubClass.role_id}" class="z_coios_3 ajax-get confirm" data-msg="删除管理组时使用此管理组的管理员将禁止登录，需重新分配管理组，您确定吗？" >删除</a>
+                                                       </td>
+                                                    </tr>
+
+                                                </volist>
+                                                </tbody>
+                                   </table>
+                                </div>
+                             </div>
+						</div>
+					</div>
+				</div>
+			</div>

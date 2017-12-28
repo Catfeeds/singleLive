@@ -1,0 +1,99 @@
+<div class="layui-body" style="bottom: 0;border-left: solid 2px #1AA094;" id="admin-body">
+    <div class="layui-tab admin-nav-card layui-tab-brief" lay-filter="admin-tab">
+        <ul class="layui-tab-title">
+            <li class="layui-this">
+                <i class="fa fa-dashboard" aria-hidden="true"></i>
+                <cite>订单列表</cite>
+            </li>
+        </ul>
+        <style>.cor_7{color:#1E9FFF;}</style>
+        <div class="layui-tab-content" style="min-height: 150px; padding: 5px 0 0 0;">
+            <div class="layui-tab-item layui-show">
+                <div class="conter">
+                    <div class="conter_sait">
+                        <form action="">
+                            <div class="wort">
+                                <div class="layui-input-inline">
+                                    <input name="start" autocomplete="off" placeholder="点击选择起始日期" class="layui-input" onclick="layui.laydate({elem: this})" type="text">
+                                </div>
+                            </div>
+                            <div class="wort">
+                                <div class="layui-input-inline">至
+                                </div>
+                            </div>
+                            <div class="wort">
+                                <div class="layui-input-inline">
+                                    <input name="end" autocomplete="off" placeholder="点击选择结束日期" class="layui-input" onclick="layui.laydate({elem: this})" type="text">
+                                </div>
+                            </div>
+                            <div class="wort">
+                                <div class="layui-input-inline">
+                                    <select name='status' class="select_t">
+                                        <option value=''>选择状态</option>
+                                        <option value='0'>已付款</option>
+                                        <option value='7'>退款申请</option>
+                                        <option value='3'>已退款</option>
+                                        <option value='10'>使用中</option>
+                                        <option value='1'>已全部使用</option>
+                                    </select>
+                                </div>
+                            </div>
+                            <div class="wort" style="width:280px;">
+                                <input name="title" lay-verify="title" autocomplete="off" placeholder="订单编号/客户姓名/客户电话" class="layui-input" type="text">
+                            </div>
+                            <div class="wort">
+                                <button type="submit" class="layui-btn">查找</button>
+                            </div>
+                            <div class="wort">
+                                <a href="__URL__/export?{$info}"><button type="button" class="layui-btn layui-btn-normal">导出</button></a>
+                            </div>
+                        </form>
+                    </div>
+
+                    <div class="botg">
+                        <table class="layui-table">
+                            <thead>
+                            <tr>
+                                <th>日期</th>
+                                <th>订单编号</th>
+                                <th>酒店名称</th>
+                                <th>房间类型</th>
+                                <th>客户姓名</th>
+                                <th>客户电话</th>
+                                <th>订单金额</th>
+                                <th>状态</th>
+                                <th>操作</th>
+                            </tr>
+                            </thead>
+                            <tbody>
+                            <volist name="db" id="list">
+                                <tr>
+                                    <td>{$list.createTime|date_out=###}</td>
+                                    <td>{$list.no}</td>
+                                    <td>{$list.hotelName}</td>
+                                    <td>{$list.roomName}</td>
+                                    <td>{$list.realname}</td>
+                                    <td>{$list.mobile}</td>
+                                    <td>{$list.money}</td>
+                                    <td <if condition="$list.status eq 0">class="cor_1"<elseif condition="$list.status eq 2" />class="cor_2"<elseif condition="$list.status eq 7" />class="cor_7"<else />class="cor_3"</if>>
+                                        {$list.push}
+                                    </td>
+                                    <td>
+                                    <a href="__URL__/see/id/{$list.id}" class="z_coios_4">查看</a>
+                                    <if condition='($list.status eq 7) and ($list.used eq 0)'>
+                                    <a href="__URL__/backMoney/id/{$list.id}/price/{$list.money}" class="z_coios_3 ajax-get confirm" data-msg="您确定给该用户退款{$list.price}?">退款</a>
+                                    </if>
+                                    </td>
+                                </tr>
+                            </volist>
+                            </tbody>
+                        </table>
+                        <div class="feniou">
+                            {$page}
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>

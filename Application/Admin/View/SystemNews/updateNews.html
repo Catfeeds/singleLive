@@ -1,0 +1,65 @@
+
+<script src="/Public/city/distpicker.data.js"></script>
+<script src="/Public/city/distpicker.js"></script>
+<script src="/Public/city/main.js"></script>
+<div class="layui-body" style="bottom: 0;border-left: solid 2px #1AA094;" id="admin-body">
+  <div class="layui-tab admin-nav-card layui-tab-brief" lay-filter="admin-tab">
+    <ul class="layui-tab-title">
+      <li class="layui-this"> <i class="fa fa-dashboard" aria-hidden="true"></i> <cite>新增系统消息</cite> </li>
+    </ul>
+    <div class="layui-tab-item layui-show">
+      <div class="conter">
+        <div class="xxkt">
+          <ul>
+            <li class="xxkt_bt">修改系统消息</li>
+          </ul>
+        </div>
+        <form action="__URL__/updateDo" method="post" class="form-newsInsert">
+          <div class="xxknr">
+            <div>
+              <div class="glylb_szmm"> <span class="glylb_szmm_span">请选择发布范围：</span>
+                <div class="layui-input-block z_min_left_10">
+
+                      <div style=" float:left;line-height: 33px;margin-left: 5px;"><input <if condition="($data.hotel eq 0)">checked</if>                 style="width:15px;height: 15px;  margin-top: 10px;" type="checkbox" name="hotel"  /> <font style="margin-left: 5px;">酒店端</font></div>
+
+
+                      <div style=" float:left;line-height: 33px; margin-left: 20px;"><input <if condition="($data.mobile eq 0)">checked</if>              style="width:15px;height: 15px; margin-top: 10px;" type="checkbox" name="mobile" />  <font style="margin-left: 5px;"> 用户端</font> </div>
+
+                </div>
+              </div>
+              <div class="glylb_szmm"> <span class="glylb_szmm_span">生效日期：</span>
+                <div class="layui-input-block z_min_left_10">
+                  <input name="startTime" id="date" autocomplete="off" value="{$data.startTime}" placeholder="请选择生效日期" class="layui-input" onclick="layui.laydate({elem: this})" value="" type="text">                  
+                </div>
+              </div>
+              <div class="glylb_szmm"> <span class="glylb_szmm_span">截止日期：</span>
+                <div class="layui-input-block z_min_left_10">
+                  <input name="endTime" id="date" autocomplete="off" value="{$data.endTime}" placeholder="请选择截止日期" class="layui-input" onclick="layui.laydate({elem: this})" value="" type="text">   
+                </div>
+              </div>
+              <div class="glylb_szmm"> <span class="glylb_szmm_span">请输入消息标题：</span>
+                <div class="layui-input-block z_min_left_10">
+                  <input class="fn-tinput requ"  name="title" value="{$data.title}" placeholder="请输入消息标题" >
+                </div>
+              </div>
+              <div class="glylb_szmm"> <span class="glylb_szmm_span">请输入消息内容：</span>
+                <div class="layui-input-block z_min_left_10">
+                      <textarea name="body" cols="68" rows="5">{$data.body}</textarea>
+                </div>
+              </div>
+            </div>
+          </div>
+          <div class="gater">
+          <input type="hidden" name="__GO__" value="__URL__/index"> 
+            <input type="hidden" value="{$data.id}" name="id" />
+            <input type="submit" value="确认" class="glylb_an_qd ajax-post" target-form="form-newsInsert"/>
+            <input type="button" value="取消" class="glylb_an_fh" onclick="javascript:history.back(-1);return false" />
+          </div>
+        </form>
+      </div>
+    </div>
+  </div>
+</div>
+<script type="text/javascript">
+  
+</script>

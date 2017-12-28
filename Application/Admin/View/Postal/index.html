@@ -1,0 +1,97 @@
+<div class="layui-body" style="bottom: 0;border-left: solid 2px #1AA094;" id="admin-body">
+        <div class="layui-tab admin-nav-card layui-tab-brief" lay-filter="admin-tab">
+          <ul class="layui-tab-title">
+            <li class="layui-this">
+              <i class="fa fa-dashboard" aria-hidden="true"></i>
+              <cite>提现处理</cite>
+            </li>
+          </ul>
+                    
+          <div class="layui-tab-content" style="min-height: 150px; padding: 5px 0 0 0;">
+            <div class="layui-tab-item layui-show">
+               <div class="conter">
+                                  <div class="conter_sait">
+                                        <form  action="" class="form-hotel">
+                                             
+                                              
+                                              <div class="wort">
+                                              <div class="layui-input-inline">
+                                                <input name="startTime" id="date" autocomplete="off" placeholder="从2017-02-28时间" class="layui-input" onclick="layui.laydate({elem: this})" type="text" value="{:I('startTime')}">
+                                             </div>
+                                             </div>
+                                             <div class="wort">
+                                              <div class="layui-input-inline">至
+                                               </div>
+                                               </div>
+                                               <div class="wort">
+                                            <div class="layui-input-inline">
+                                                <input name="endTime" id="date" autocomplete="off" placeholder="到2017-02-28时间" class="layui-input" onclick="layui.laydate({elem: this})" type="text" value="{:I('endTime')}">
+                                             </div>
+                                             </div>
+                                               <div class="wort" style="width:280px;">
+                                                  <input name="title" lay-verify="title" autocomplete="off" placeholder="酒店名称" class="layui-input" type="text"  value="{:I('title')}">
+                                              
+                                              </div>
+                                               
+                                          <div class="wort">
+                                                 <button type="submit" id="select" class="layui-btn">查找</button>
+                                            </div>
+                                            <!--<div class="wort">
+                                            <button class="layui-btn layui-btn-warm">批量处理</button>
+                                            </div>-->
+                                             
+                                             <div class="wort">
+                                                 <button type="submit" id="export" class="layui-btn layui-btn-normal">导出</button>
+                                            </div>
+                                            
+                                        </form>
+                                   </div>
+                                 <div class="botg">
+                                   <table class="layui-table" >
+                                                 <thead>
+                                                      <tr>
+                                                          <!--<th><input id="checkAll" type="checkbox" /></th>-->
+                                                          <th>酒店名称</th>
+                                                          <th>申请日期</th>
+                                                          <th>提现金额</th>
+                                                          
+                                                          <th>操作</th>
+                                                        </tr> 
+                                                </thead>
+                                                <tbody>
+                                               <volist name="db" id="row">
+                                                    <tr>
+                                                       <!--<td><input name="subBox" type="checkbox" class="bb" /></td>-->
+                                                       <td>{$row.hotelName}</td>
+                                                       <td>{$row.applydate}</td>
+                                                       <td class="cor_1">{$row.monery}</td>
+                                                      
+                                                       <td ><a class="z_coios_1 " href="__URL__/index_edit/id/{$row.id}" >查看明细</a></td>
+                                                       
+                                                    </tr>
+                                                </volist>    
+                                                </tbody>
+                                   </table>
+                                   <div class="feniou">
+                                                   <ul>
+                                                      {$page}     
+                                                   </ul>
+                                  </div>
+
+                                </div>
+                             </div>
+            </div>
+          </div>
+        </div>
+      </div>
+
+
+    <script>
+    $('#export').click(function () {
+        $(this).parents('.form-hotel').attr('action', '__URL__/export');
+    })
+    $('#select').click(function () {
+
+        $(this).parents('.form-hotel').attr('action', '__URL__/index');
+    })
+</script>

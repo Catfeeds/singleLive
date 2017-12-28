@@ -1,0 +1,115 @@
+
+<div class="layui-body" style="bottom: 0;border-left: solid 2px #1AA094;" id="admin-body">
+  <div class="layui-tab admin-nav-card layui-tab-brief" lay-filter="admin-tab">
+    <ul class="layui-tab-title">
+      <li class="layui-this"> <i class="fa fa-dashboard" aria-hidden="true"></i> <cite>订单列表</cite> </li>
+    </ul>
+    <div class="layui-tab-content" style="min-height: 150px; padding: 5px 0 0 0;">
+      <div class="layui-tab-item layui-show">
+        <div class="conter">
+          <div class="conter_sait">
+            <form  action="">
+              <div class="wort">
+                <div class="layui-input-inline">
+                  <input name="start" autocomplete="off" value="{:I('start')}" placeholder="日期查询" class="layui-input" onclick="layui.laydate({elem: this})" type="text">
+                </div>
+              </div>
+              <div class="wort">
+                <div class="layui-input-inline">至 </div>
+              </div>
+              <div class="wort">
+                <div class="layui-input-inline">
+                  <input name="end" autocomplete="off" value="{:I('end')}" placeholder="日期查询" class="layui-input" onclick="layui.laydate({elem: this})" type="text">
+                </div>
+              </div>
+              <div class="wort">
+                <select name="status" value="{:I('status')}" class="select_t">
+                  <option value="">订单状态</option>
+                  <option value="0">申请入住</option>
+                  <option value="2">入住中</option>
+
+                  <option value="8">取消的订单</option>
+                </select>
+              </div>
+              <div class="wort" style="width:280px;">
+                <input name="title" lay-verify="title" value="{:I('title')}" autocomplete="off" placeholder="订单编号/姓名/电话" class="layui-input" type="text">
+              </div>
+              <div class="wort">
+                <button class="layui-btn">查找</button>
+              </div>
+              <div class="wort">
+                <a href="__URL__/export?{$info}" class="layui-btn layui-btn-normal" >导出</a>
+              </div>
+            </form>
+          </div>
+          <div class="botg">
+            <table class="layui-table" >
+              <thead>
+                <tr>
+                  <th>订单编号</th>
+                  <th>姓名</th>
+                  <th>电话</th>
+                  <th>房间类型</th>
+                  <th>最低入住时长</th>
+                  <th>可用时长</th>
+                  <th>订单日期</th>
+                  <th>入住时间</th>
+                  <th>入住时长</th>
+                  <th>折算时间</th>
+                  <th>操作</th>
+                </tr>
+              </thead>
+              <tbody>
+              <volist id="db" name="db">
+                <tr class="bnoku">
+                  <td>{$db.no}</td>
+                  <td>{$db.realname}</td>
+                  <td>{$db.mobile}</td>
+                  <td>{$db.roomType}</td>
+                  <td>{$db.min}小时</td>
+                  <td>{$db.have|formatTime=###}</td>
+                  <td>{$db.createTime|date_out=###}</td>
+                  <td>{$db.startTime|date_out=###,"未计时"}</td>
+                  <td class="showTime" tmin="{$db.min}" tplus="{$db.minute}" tnow="{$db.now}" status="{$db.status}" tmax="{$db.have}">{$db.old}</td>
+                  <td><span class="showHours">{$db.use}</span>小时</td>
+                  <td>
+                  <switch name="db.status">
+                    <case value="0"><!-- 申请中 -->
+
+                      <a class="layui-btn layui-btn-small ajax-get confirm" href="__URL__/startTime/id/{$db.id}/userId/{$db.userId}/orderId/{$db.orderId}" data-msg='最低入住时长{$db.min}小时，不足{$db.minute}分钟按照0小时计算，超过{$db.minute}分钟按照1小时计算，<br>您确定开始计时吗？'>开始计时</a>
+                      <a class="layui-btn layui-btn-small layui-btn-primary ajax-prompt" data-msg="请输入取消原因" href="__URL__/backOrder/id/{$db.id}">取消订单</a>
+                    </case>
+                    <case value="2"><!-- 入住中 -->
+                      <a  class="layui-btn layui-btn-danger layui-btn-small ajax-get confirm" href="__URL__/endTime/id/{$db.id}/userId/{$db.userId}/orderId/{$db.orderId}" data-msg='您确定停止计时吗？'>退房</a>
+                    </case>s
+                    <case value="8">
+                       <a class="layui-btn layui-btn-disabled layui-btn-small ">取消的订单</a>
+                    </case>
+                    <case value="1">
+                       <a class="layui-btn layui-btn-primary layui-btn-small ">完成的订单</a>
+                    </case> 
+                  </switch>
+                  </td>
+                </tr>
+              </volist>
+              </tbody>
+            </table>
+            <div class="feniou">
+               {$page}
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+</div>
+<script type="text/javascript">
+  $(function(){
+    $('.showTime').each(function(){
+      if ($(this).attr('status') == 2) {
+        var self = $(this);
+        timeCheck(self.attr('tnow'),self,self.parents('tr').find('.showHours'));
+      }
+    });
+  });
+</script>

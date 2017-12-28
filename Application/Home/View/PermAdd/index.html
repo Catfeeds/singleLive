@@ -1,0 +1,79 @@
+      
+      <div class="layui-body" style="bottom: 0;border-left: solid 2px #1AA094;" id="admin-body">
+        <div class="layui-tab admin-nav-card layui-tab-brief" lay-filter="admin-tab">
+          <ul class="layui-tab-title">
+            <li class="layui-this">
+              <i class="fa fa-dashboard" aria-hidden="true"></i>
+              <cite>管理员列表</cite>
+            </li>
+          </ul>
+          <div class="layui-tab-content" style="min-height: 150px; padding: 5px 0 0 0;">
+            <div class="layui-tab-item layui-show">
+               <div class="conter">
+                                  <div class="conter_sait">
+                                        <form class="layui-form" action="">
+                                              
+                                            
+                                            <div class="wort">
+                                                  <input name="title" lay-verify="title" value="{:I('title')}" autocomplete="off" placeholder="请输入名称" class="layui-input" type="text">
+                                            </div>
+                                            <div class="wort">
+                                                 <button class="layui-btn">查找</button>
+                                            </div>
+                                             <div class="wort">
+                                                 <button type="button" class="layui-btn layui-btn-danger iframe" data-iframe="__URL__/rootAdd">新增</button>
+                                            </div>
+                                            <!-- <div class="wort">
+                                                 <button class="layui-btn layui-btn-normal">导出</button>
+                                            </div>-->
+                                        </form>
+                                   </div>
+                                 <div class="botg">
+                                   <table class="layui-table" >
+                                                 <thead>
+                                                      <tr>
+                                                          <th>管理员名称</th>
+                                                          <th>登录次数</th>
+                                                           <th>最后登录时间</th>
+                                                           <th>最后登录IP</th>
+                                                          <th >操作</th>
+                                                        </tr> 
+                                                </thead>
+                                                <volist name="db" id="rootRow">
+                                                <tbody>
+                                                    <tr>
+                                                       <td>{$rootRow.nickname}</td>
+                                                       <td>{$rootRow.count}</td>
+                                                       <td>{$rootRow.time}</td>
+                                                       <td>{$rootRow.IP}</td>
+                                                       <td>
+                                                       <if condition="($rootRow.root neq 0)">
+                                                       <if condition="($rootRow.status eq 0)">
+                                                       <a class="z_coios_1 ajax-get confirm" href="__URL__/rootSta/id/{$rootRow.id}/sta/0">
+                                                       禁用<else />
+                                                       <a class="z_coios_1 ajax-get confirm" href="__URL__/rootSta/id/{$rootRow.id}/sta/1" style="border:1px solid #0D0">
+                                                       <font style="color:#0D0">启用</font></if></a>
+                                                       <a class="z_coios_5 iframe" data-iframe="__URL__/rootPerm/id/{$rootRow.id}">授权</a>
+                                                       <a class="z_coios_2 iframe" data-iframe="__URL__/rootUpdate/id/{$rootRow.id}">修改</a>
+                                                       <a class="z_coios_3 ajax-get confirm" href="__URL__/rootDel/id/{$rootRow.id}" >删除</a>
+                                                       </if>
+                                                       </td>
+                                                    </tr>
+                                                </tbody>
+                                              </volist>
+                                   </table>
+                                        <div class="feniou">
+                                         {$page}
+                                       <!--  <ul>
+                                              <li>页码</li>
+                                              <li><input type="text" name="textfield" id="textfield" class="int_2"></li>
+                                              <li><input type="submit" name="button2" id="button2" value="GO" class="anlor"></li>       
+                                       </ul>-->
+                                  </div>
+                                </div>
+                             </div>
+            </div>
+          </div>
+        </div>
+      </div>
+            

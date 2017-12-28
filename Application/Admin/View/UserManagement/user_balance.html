@@ -1,0 +1,67 @@
+{__NOLAYOUT__}
+<!DOCTYPE html>
+
+<html>
+
+	<head>
+		<meta charset="utf-8">
+		<title>酒店二维码管理系统</title>
+		<meta name="renderer" content="webkit">
+		<meta http-equiv="X-UA-Compatible" content="IE=edge,chrome=1">
+		<meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1">
+		<meta name="apple-mobile-web-app-status-bar-style" content="black">
+		<meta name="apple-mobile-web-app-capable" content="yes">
+		<meta name="format-detection" content="telephone=no">
+
+		<link rel="stylesheet" href="__PUBLIC__/Admin/plugins/layui/css/layui.css" media="all" />
+		<link rel="stylesheet" href="__PUBLIC__/Admin/css/global.css" media="all">
+		<link rel="stylesheet" href="__PUBLIC__/Admin/plugins/font-awesome/css/font-awesome.min.css">
+        <link rel="stylesheet" href="__PUBLIC__/Admin/css/css.css" media="all">
+     
+    
+	</head>
+
+	<body>
+     <div class="xz_lkop">查看余额</div>
+		<div class="conter">
+                   <div class="botg">
+                                   <table class="layui-table" >
+                                                 <thead>
+                                                      <tr>
+                                                          <th>名称</th>
+                                                          <th>余额</th>
+                                                          <th>剩余时间</th>
+                                                         
+                                                        </tr> 
+                                                </thead>
+                                                <tbody>
+                                                  <volist name="rows" id="data">
+                                                    <tr>
+                                                       <td>{$data.hotelName}</td>
+                                                       <td>{$data.monery}元</td>
+                                                       <td>{$data.Time}小时</td>      
+                                                    </tr>
+                                                    </volist>
+                                                </tbody>
+                                   </table>
+                                  
+
+                                </div>               
+                       
+        </div>
+            
+            
+            <!-------------------------------------------------------------------------------------------------------------------------------------------------------------------------------->
+		   	
+			
+			
+             <script src="__PUBLIC__/Admin/js/jquery-1.10.1.min.js"></script>
+             <script type="text/javascript" src="__PUBLIC__/Admin/plugins/layui/layui.js"></script>
+             <script type="text/javascript" src="__PUBLIC__/Admin/datas/nav.js"></script>
+			<script src="__PUBLIC__/Admin/js/index.js"></script>   
+			
+            
+		</div>
+	</body>
+
+</html>

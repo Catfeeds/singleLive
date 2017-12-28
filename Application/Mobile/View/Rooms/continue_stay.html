@@ -1,0 +1,161 @@
+<!--换房弹出窗 妹子UI-->
+<style>
+    .plus{ background: #ba9d6a;color: #FFF;font-size: 2rem; line-height: 2rem;}
+    .sub{ margin-left: 0rem; color: #FFF; background: #cdcdcd; font-size: 3rem; line-height: 2rem;}
+</style>
+<div>
+    <div class="am-popup-inner" style="padding-top: 0;">
+        <div class="am-popup-hd">
+            <h4 class="am-popup-title">房间续时</h4>
+        </div>
+        <div class="am-popup-bd ma_bd" style="padding: 0;">
+            <div class="am_tad">
+                <table class="am-table">
+                    <thead>
+                    <tr>
+                        <th>房间类型</th>
+                        <th>数量/间</th>
+                        <th>时长/小时</th>
+                        <th>金额</th>
+                    </tr>
+                    </thead>
+                    <tbody>
+                        <tr class="roomtype" data="{$roomlist.id}">
+                            <td>{$msg.roomName}</td>
+                            <td>
+                                <span class="num roomnum">1</span>
+                            </td>
+                            <td class="joist">
+                                <!-- <a class="sub">-</a> -->
+                                <span class="num daysnum">24</span>
+                                <!-- <a class="plus">+</a> -->
+                            </td>
+                            <td class="price">{$msg.price}</td>
+                        </tr>
+                    <tr>
+                        <td>应付金额 ：</td>
+                        <td colspan="3" style="text-align:right; color:#dd2b0e;">￥<span id="all_amount">0</span></td>
+                    </tr>
+                    <tr>
+                        <td>原时长 ：</td>
+                        <td colspan="3" style="text-align:right; color:#dd2b0e;"><span id="timeAmount">{$msg.useable}</span>小时</td>
+                    </tr>
+                    <tr>
+                        <td>总时长 ：</td>
+                        <td colspan="3" style="text-align:right; color:#dd2b0e;"><span id="time">0</span>小时</td>
+                    </tr>
+                    </tbody>
+                </table>
+            </div>
+            <div class="am_bot_1">
+                <button type="button" data-am-modal-close class="am-btn am-btn-block am_button_1 submit">续时</button>
+                <!--<a href="{:U('Rooms/index')}"><button type="button" data-am-modal-close class="am-btn am-btn-block am_button_1">取消</button></a>-->
+            </div>
+            <form action="__URL__/continue_pay" method="post" class="myform">
+
+            </form>
+        </div>
+    </div>
+</div>
+<script type="text/javascript">
+    $(function(){
+        var useable = "{$msg.useable}";
+        var orderId = "{$Think.get.orderid}";
+        $('.plus').click(function() {
+            var pp = $(this).parents('.joist').find('.num');
+            var getNum = parseInt(pp.html());
+            if(getNum < 100) {
+                pp.html(getNum + 1);
+                jisuan();
+            } else {
+                  layer.open({
+                    content: '不可以大于100'
+                    ,skin: 'msg'
+                    ,time: 2 //2秒后自动关闭
+                  });
+            }
+
+        });
+        $('.sub').click(function() {
+            var pp = $(this).parents('.joist').find('.num');
+            var getNum = parseInt(pp.html());
+            if(getNum > 0) {
+                pp.html(getNum - 1);
+                jisuan();
+            } else {
+                  layer.open({
+                    content: '不可以小于0'
+                    ,skin: 'msg'
+                    ,time: 2 //2秒后自动关闭
+                  });
+            }
+        });
+        function jisuan(){
+            var amount=0;
+            var hours =0;
+            var time = $('.joist .daysnum').text();
+            var price = $('.price').text();
+            amount += 1*time*price;
+            if(time>1 || time==1){
+                hours += time*24+parseInt(useable);
+            }else{
+                hours += time*24
+            }
+            $('#all_amount').text(amount);
+            $('#time').text(hours);
+        }
+
+     $('.roomtype').click(function() {
+
+            $('.roomtype').removeAttr('style', '');
+            $(this).css('background-color', 'darkgray');
+            $(this).css('color', '#fff');
+
+            //选中的房间金额
+            var amount = $(this).find('.price').text();
+            //剩余时长
+            var prevTime = $('#timeAmount').text();
+            //总时长
+            var allTime = parseInt(prevTime) + 24;
+            //赋值到页面
+            $('#all_amount').text(amount);
+            $('#time').text(allTime);
+            
+            //购买时长 赋值为固定的一天
+            var daysnum = 1;
+    
+            //对需要提交的表单框进行赋值
+            $('.myform').html('');
+            $('.myform').append('<textarea style="display: none;" name="all_amounts">'+ amount +'</textarea>');
+            $('.myform').append('<textarea style="display: none;" name="all_times">'+allTime+'</textarea>');
+            $('.myform').append('<textarea style="display: none;" name="daysnum">'+daysnum+'</textarea>');
+            $('.myform').append('<textarea style="display: none;" name="orderId">'+orderId+'</textarea>');
+
+                // var id = $(this).attr('data');
+                // $('.myform').append('<input type="hidden" name="' + id + '[room]" value="' + r + '"><input type="hidden" name="' + id + '[days]" value="' + d + '">');
+        })
+
+        $('.submit').click(function(){
+            layer.open({
+                content: '您确定续时吗？'
+                ,btn: ['确定', '取消']
+                ,skin: 'footer'
+                ,yes: function(index){  
+                    var daysnum = $('.myform').find("[name='daysnum']").val();
+                    if (daysnum>0) {
+                      $('.myform').submit();
+                    }else{
+                      layer.open({
+                            content: '请选择续时时长'
+                            ,skin: 'msg'
+                            ,time: 2 //2秒后自动关闭
+                      });
+                    }
+                }
+            });
+        });
+    });
+</script>
+
+
+

@@ -1,0 +1,108 @@
+<div class="layui-body" style="bottom: 0;border-left: solid 2px #1AA094;" id="admin-body">
+    <div class="layui-tab admin-nav-card layui-tab-brief" lay-filter="admin-tab">
+        <ul class="layui-tab-title">
+            <li class="layui-this">
+                <i class="fa fa-dashboard" aria-hidden="true"></i>
+                <cite>轮播图</cite>
+            </li>
+        </ul>
+        <div class="layui-tab-item layui-show">
+            <form class="myform" action="__URL__/hotel_banner" method="post">
+                <div class="conter">
+                    <div class="xxkt">
+                        <ul>
+                            <li class="xxkt_bt">轮播图</li>
+                        </ul>
+                    </div>
+                    <div class="xxknr">
+                        <div>
+                            <div class="glylb_szmm">
+                                <span class="glylb_szmm_span">轮播图：<span style="color: red;">(尺寸为750x400)</span></span>
+                                <div class="layui-input-block z_min_left_10">
+                                    <div id="zyupload" class="zyupload" style="margin:0 0 20px 0;"></div>
+                                </div>
+                            </div>
+                            <div class="glylb_szmm">
+                                <div class="file_src">
+                                    <volist name="src" id="src">
+                                        <a data-id="{$src.id}" class="_del">
+                                            <span style="margin-left: 30px;">删除</span>
+                                            <img src="{:getSrc($src['id'])}" style="width: 100%;height: 100%;"/>
+                                        </a>
+                                    </volist>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="gater">
+                        <input type="hidden" name="hotel" value="{$hid}"/>
+                        <input type="submit" value="确认" class="glylb_an_qd ajax-post confirm" target-form="myform" data-msg='您确定上传吗？'/>
+                        <a href="__URL__/index"><input type="button" value="返回" onclick="javascript:history.back(-1);return false" class="glylb_an_fh"/></a>
+                    </div>
+                </div>
+            </form>
+        </div>
+    </div>
+</div>
+<style>
+    ._del {
+        float: left;
+        width: 100px;
+        height: 100px;
+        display: block;
+    }
+</style>
+<script type="text/javascript">
+    $(function(){
+        // 初始化插件
+        $("#zyupload").zyUpload({
+            width            :   "750px",                 // 宽度
+            height           :   "400px",                 // 宽度
+            itemWidth        :   "140px",                 // 文件项的宽度
+            itemHeight       :   "115px",                 // 文件项的高度
+            url              :   "{:U('AjaxPost/zyupload')}",                     // 上传文件的路径
+            fileType         :   ["jpg","png","gif"],     // 上传文件的类型
+            fileSize         :   51200000,                // 上传文件的大小
+            multiple         :   true,                    // 是否可以多个文件上传
+            dragDrop         :   true,                    // 是否可以拖动上传文件
+            tailor           :   true,                    // 是否可以裁剪图片
+            del              :   true,                    // 是否可以删除文件
+            finishDel        :   false,           // 是否在上传文件完成后删除预览
+            /* 外部获得的回调接口 */
+            onSelect: function(selectFiles, allFiles){    // 选择文件的回调方法  selectFile:当前选中的文件  allFiles:还没上传的全部文件
+                console.info("当前选择了以下文件：");
+                console.info(selectFiles);
+            },
+            onDelete: function(file, files){              // 删除一个文件的回调方法 file:当前删除的文件files:删除之后的文件
+                console.info("当前删除了此文件：");
+                console.info(file.name);
+            },
+            onSuccess: function(file, response){          // 文件上传成功的回调方法
+                //alert('上传完成的回调为JSON：'+JSON.stringify(file));
+                var json  = JSON.parse(response);
+                $('#zyupload').append("<input type='hidden' name='imgs[]' value=" + json.id + ">");
+            },
+            onFailure: function(file, response){          // 文件上传失败的回调方法
+                console.info("此文件上传失败：");
+                console.info(file.name);
+            },
+            onComplete: function(response){               // 上传完成的回调方法
+                //console.log(JSON.stringify(response)+'上传完成');
+            }
+        });
+        $('._del').on('click',function(){
+            var fileid = $(this).attr('data-id');
+            var url_file = "__URL__/hotel_imgDel";
+            var hotel = $("input[name='hotel']").val();
+            layer.confirm('您确定删除这张图片吗?',function(){
+                $.post(url_file,{hotel:hotel,fileid:fileid},function(item){
+                    if(item.status == 'yes'){
+                        $("a[data-id="+fileid+"]").remove();
+                        layer.msg('删除成功');
+                    }
+                })
+            })
+        })
+    });
+</script>
+

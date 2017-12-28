@@ -1,0 +1,38 @@
+<style>
+.holi{border: 1px solid #b9b0a3; border-radius: 10px; width: 98%; padding: 1rem; height: auto; overflow: hidden; margin: 1rem auto; background: #fff;}
+.henf_list{ width: 100%;  height: auto; overflow: hidden; }
+.henf_list_left{ width: 50%; height: 4rem; float: left; font-size: 1.5rem; line-height: 4rem;}
+.henf_list_right{ width: 50%; height: 4rem; float: right; font-size: 1.5rem; line-height: 4rem;}
+</style>
+
+
+
+<div class="holi">
+    <div class="henf_list">
+        <div class="henf_list_left">
+            订单编号：
+        </div>
+        <div class="henf_list_right">
+            {$Think.get.orderNo}
+        </div>
+    </div>
+    <div class="rcit">
+        <div class="clort">
+            <div class="clort_left">
+            </div>
+            <div class="clort_right">
+                <div class="omp_top">
+                    <div class="am_flt">支付金额：{$Think.get.amount}</div>
+                </div>
+            </div>
+        </div>
+        <div class="engit">
+            <a class="engit_left ajax-get confirm" data-msg='您确定支付吗？' href="__URL__/pay/state/ok/order/{$Think.get.orderNo}/old/{$Think.get.old}/amount/{$Think.get.amount}/newId/{$Think.get.newId}">确认支付</a>
+            <a class="engit_right" href="__URL__/pay/state/no/order/{$Think.get.orderNo}/old/{$Think.get.old}/newId/{$Think.get.newId}">取消</a>
+        </div>
+    </div>
+</div>
+</div>
+</center>
+
+

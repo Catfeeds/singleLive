@@ -1,0 +1,124 @@
+<div data-am-widget="slider" class="am-slider am-slider-a1" data-am-slider='{&quot;directionNav&quot;:false}'>
+    <ul class="am-slides">
+        <volist name="banner" id="banner">
+            <li>
+                <img src="{$banner}">
+            </li>
+        </volist>
+    </ul>
+</div>
+<div class="am_cont_ei ">
+    <ul>
+        <li>
+            <p><a href="/index.php/Self/look/hotel/{$id}"><img src="__MOBILE__/img/tub_03.png"></a></p>
+            <p>{$hotelData.hotelName}</p>
+        </li>
+        <li>
+            <p><a href="tel:{$hotelData.mobile}"><img src="__MOBILE__/img/tub_05.png"></a></p>
+            <p>{$hotelData.mobile}</p>
+        </li>
+        <li>
+            <p><a><img src="__MOBILE__/img/tub_08.png"></a></p>
+            <p>{$hotelData.city} {$hotelData.area}</p>
+        </li>
+    </ul>
+</div>
+<div class="am_tad">
+    <table class="am-table">
+        <thead>
+            <tr>
+                <th>房间类型</th>
+                <th>房间数量/间</th>
+                <th>入住时长/小时</th>
+                <th>金额/元</th>
+            </tr>
+        </thead>
+        <tbody>
+            <if condition="$hotelRooms eq NULL">
+                <tr>
+                    <td colspan="4">此酒店暂时无可用房型</td>
+                </tr>
+                <else />
+                <volist name="hotelRooms" id="hotelRoom">
+                    <tr class="roomtype" data="{$hotelRoom.id}">
+                        <td>{$hotelRoom.roomName}</td>
+                        <td class="joist">
+                            <!-- <a class="jian">-</a> -->
+                            <span class="num roomnum">1</span>
+                            <!-- <a class="jia">+</a> -->
+                        </td>
+                        <td class="joist">
+                            <!-- <a class="jian">-</a> -->
+                            <span class="num daysnum">24</span>
+                            <!-- <a class="jia">+</a> -->
+                        </td>
+                        <td class="amount">{$hotelRoom.price}</td>
+                    </tr>
+                </volist>
+            </if>
+            <tr>
+                <td>应付金额 ：</td>
+                <td colspan="3" style="text-align:right; color:#dd2b0e;">¥ <span id="all_amount">0</span></td>
+            </tr>
+        </tbody>
+    </table>
+    <div class="am_bot_1">
+        <button type="button" class="am-btn am-btn-block am_button_1 submit">确认支付</button>
+    </div>
+</div>
+<form action="__URL__/appOrder" method="post" class="myform">
+</form>
+<script type="text/javascript">
+$(function() {
+    $('.roomtype').click(function() {
+        $('.roomtype').removeAttr('style', '');
+        $(this).css('background-color', 'darkgray');
+        $('.myform').html('');
+        var id = $(this).attr('data');
+        var r = 1,
+            d = 1;
+        if (r > 0 && d > 0) {
+            var id = $(this).attr('data');
+            $('.myform').append('<input type="hidden" name="' + id + '[room]" value="' + r + '"><input type="hidden" name="' + id + '[days]" value="' + d + '">');
+        }  
+        amount = $(this).find('.amount').text();     
+        $('#all_amount').html(amount)
+    })
+    $('.submit').click(function() {
+        // $('.myform').html('');
+        // $('.roomtype').each(function() {
+        //     // var r = $(this).find('.roomnum').text(),
+        //     //     d = $(this).find('.daysnum').text();
+        //     var r = 1,
+        //         d = 1;
+        //     if (r > 0 && d > 0) {
+        //         var id = $(this).attr('data');
+        //         $('.myform').append('<input type="hidden" name="' + id + '[room]" value="' + r + '"><input type="hidden" name="' + id + '[days]" value="' + d + '">');
+        //     }
+        // });
+        if ($('.myform').find('input').length > 0) {
+            var num = '{$orderNum}';
+            if (num > 0) {
+                layer.open({
+                    content: '您在该酒店的房间尚有余额，是否要续房？',
+                    btn: ['续房', '购买'],
+                    yes: function(index) {
+                        window.location.href = "{:U('Rooms/index')}";
+                    },
+                    end: function(index) {
+                      $('.myform').submit();
+                    }
+                });
+            } else {
+                $('.myform').submit();
+            }
+        } else {
+            layer.open({
+                content: '请先选择要购买的房间',
+                skin: 'msg',
+                time: 2 //2秒后自动关闭
+            });
+        }
+    });
+});
+</script>

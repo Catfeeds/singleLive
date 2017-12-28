@@ -1,0 +1,100 @@
+{__NOLAYOUT__}
+<!DOCTYPE html>
+
+<html>
+
+	<head>
+		<meta charset="utf-8">
+		<title>酒店二维码管理系统</title>
+		<meta name="renderer" content="webkit">
+		<meta http-equiv="X-UA-Compatible" content="IE=edge,chrome=1">
+		<meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1">
+		<meta name="apple-mobile-web-app-status-bar-style" content="black">
+		<meta name="apple-mobile-web-app-capable" content="yes">
+		<meta name="format-detection" content="telephone=no">
+
+		<link rel="stylesheet" href="__PUBLIC__/Admin/plugins/layui/css/layui.css" media="all" />
+		<link rel="stylesheet" href="__PUBLIC__/Admin/css/global.css" media="all">
+		<link rel="stylesheet" href="__PUBLIC__/Admin/plugins/font-awesome/css/font-awesome.min.css">
+    <link rel="stylesheet" href="__PUBLIC__/Admin/css/css.css" media="all">
+
+
+	</head>
+
+	<body>
+                           <div class="xz_lkop">消息详情</div>
+		                       <div class="conter">
+                                  <div class="ertob1">
+                                       <div class="lista2">
+                                             <div class="lista_left">标题 ：
+                                             </div>
+                                             <div class="lista_right">
+                                                 {$data.title}
+                                             </div>
+                                       </div>
+
+                                  </div>
+                                  <div class="ertob1">
+                                       <div class="lista2">
+                                             <div class="lista_left">生效时间 ：
+                                             </div>
+                                             <div class="lista_right">
+                                                 {$data.startTime}~{$data.endTime}
+                                             </div>
+                                       </div>
+
+                                  </div>
+                                   <div class="ertob1">
+                                       <div class="lista2">
+                                             <div class="lista_left">内容 ：
+                                             </div>
+                                             <div class="lista_right">
+                                                 {$data.body}
+                                             </div>
+                                       </div>
+
+                                  </div>
+                                  <div class="ertob1">
+                                       <div class="lista2">
+                                             <div class="lista_left">
+                                             </div>
+                                             <div class="lista_right">
+                                                 <a href="{:U('SystemNews/index')}"><input type="button" value="关闭" class="glylb_an_fh cancel" /></a>
+                                             </div>
+                                       </div>
+
+                                 </div>
+                             </div>
+            <!-------------------------------------------------------------------------------------------------------------------------------------------------------------------------------->
+
+
+
+             <script src="__PUBLIC__/Admin/js/jquery-1.10.1.min.js"></script>
+             <script type="text/javascript" src="__PUBLIC__/Admin/layer/layer.js"></script>
+             <script type="text/javascript" src="__PUBLIC__/Admin/layui/layui.js"></script>
+             <script type="text/javascript" src="__PUBLIC__/Admin/common/common.js"></script>
+              <script src="__PUBLIC__/Admin/js/jquery.validate.js"></script>  <!--验证-->
+             <script type="text/javascript" src="__PUBLIC__/Admin/datas/nav.js"></script>
+			<script src="__PUBLIC__/Admin/js/index.js"></script>
+			<script>
+				layui.use('layer', function() {
+					var $ = layui.jquery,
+						layer = layui.layer;
+
+					$('#video1').on('click', function() {
+						layer.open({
+							title: 'YouTube',
+							maxmin: true,
+							type: 2,
+							content: 'video.html',
+							area: ['800px', '500px']
+						});
+					});
+
+				});
+			</script>
+
+		</div>
+	</body>
+
+</html>

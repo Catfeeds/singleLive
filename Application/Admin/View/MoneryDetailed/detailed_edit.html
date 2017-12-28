@@ -1,0 +1,120 @@
+        
+      <div class="layui-body" style="bottom: 0;border-left: solid 2px #1AA094;" id="admin-body">
+        <div class="layui-tab admin-nav-card layui-tab-brief" lay-filter="admin-tab">
+          <ul class="layui-tab-title">
+            <li class="layui-this">
+              <i class="fa fa-dashboard" aria-hidden="true"></i>
+              <cite>财务明细查看</cite>
+            </li>
+          </ul>
+                    
+          <div class="layui-tab-content" style="min-height: 150px; padding: 5px 0 0 0;">
+            <div class="layui-tab-item layui-show">
+               <div class="conter">
+                                  <div class="conter_sait">
+                                        <form  action="">      
+
+                                             <div class="wort" style="width:280px;">
+                                                  <input name="hotelName" lay-verify="title" autocomplete="off" placeholder="酒店名称" class="layui-input" value="{:I('hotelName')}" type="text">
+                                              
+                                              </div>
+
+                                             <div class="wort" style="width:280px;">
+                                                  <input name="realname" lay-verify="title" autocomplete="off" placeholder="会员名称" class="layui-input" value="{:I('realname')}" type="text">
+                                              
+                                              </div> 
+                                               <div class="wort">
+                                                  <select name="select" id="select" class="select_t">
+                                                          <option value="">收支类型</option>
+                                                          <option <if condition="I('select') eq '会员充值'"> selected </if> value="会员充值">会员充值</option>
+                                                          <option <if condition="I('select') eq '退款'"> selected </if> value="退款">退款</option>
+                                                          <option <if condition="I('select') eq '提现'"> selected </if> value="提现">提现</option>
+                                                  </select>
+                                              </div>  
+                                          <div class="wort">
+                                                 <button class="layui-btn">查找</button>
+                                            </div>   
+                                             <div class="wort">
+                                                 <button class="layui-btn layui-btn-normal">导出</button>
+                                            </div>
+                                            
+                                        </form>
+                                   </div>
+                                   <div class="edit_ct ant">
+                                        <ul>
+                                           <li <if condition="(I('select') neq '退款') AND (I('select') neq '提现')"> class="atur" </if>>收入信息</li>
+                                           <li <if condition="(I('select') eq '退款') OR (I('select') eq '提现')"> class="atur" </if>>支出信息</li>
+                                        </ul>
+                                   </div>
+                                    
+                                   <div class="fenop mobr">
+                                     <div class="botg mobt" <if condition="(I('select') neq '退款') AND (I('select') neq '提现')"> style="display:block;" <else /> style="display:none;" </if>>
+                                   <table class="layui-table" >
+                                                 <thead>
+                                                      <tr>
+                                                          <th>日期</th>
+                                                          <th>酒店名称</th>
+                                                          <th>会员名称</th>
+                                                          <th>手机号</th>
+                                                          <th>金额</th>
+                                                          <th>类型</th>
+                                                        </tr> 
+                                                </thead>
+                                                <tbody>
+                                                  <volist name="include" id="data">
+                                                    <tr>
+                                                       <td>{$data.createTime|date='Y-m-d',###}</td>
+                                                       <td>{$data.hotelName}</td>
+                                                       <td>{$data.realname}</td>
+                                                       <td>{$data.mobile}</td>
+                                                       <th class="cor_1">{$data.monery|round}</th>
+                                                       <th>{$data.type}</th>
+                                                    </tr>
+                                                  </volist>     
+                                                </tbody>
+                                   </table>
+                                   <div class="feniou">    
+                                   <ul>
+                                             {$includePage}
+                                             </ul>
+                                  </div>
+
+                                </div>
+                                
+                                     <div class="botg mobt" <if condition="(I('select') eq '退款') OR (I('select') eq '提现')"> style="display:block;" </if>>
+                                   <table class="layui-table" >
+                                                 <thead>
+                                                      <tr>
+                                                          <th>日期</th>
+                                                          <th>酒店名称</th>
+                                                          <th>酒店电话</th>
+                                                          <th>金额</th>
+                                                          <th>类型</th>
+                                                        </tr> 
+                                                </thead>
+                                                <tbody>
+                                                  <volist name="defray" id="data">
+                                                    <tr>
+                                                       <td>{$data.createTime|date='Y-m-d',###}</td>
+                                                       <td>{$data.hotelName}</td>
+                                                       <td>{$data.mobile}</td>  
+                                                       <th class="cor_1">{$data.money|round}</th>
+                                                       <th>{$data.type}</th>
+                                                    </tr>
+                                                  </volist>           
+                                                </tbody>
+                                   </table>
+                                   <div class="feniou">
+                                                   <ul>
+                                                 {$defrayPage}         
+                                                   </ul>
+                                  </div>
+
+                                </div>
+                                   </div>
+                             </div>
+            </div>
+          </div>
+        </div>
+      </div>
+            

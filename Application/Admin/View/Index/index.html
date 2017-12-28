@@ -1,0 +1,72 @@
+
+			<div class="layui-body" style="bottom: 0;border-left: solid 2px #1AA094;" id="admin-body">
+				<div class="layui-tab admin-nav-card layui-tab-brief" lay-filter="admin-tab">
+					
+					<div class="layui-tab-content" style="min-height: 150px; padding: 5px 0 0 0;">
+						<div class="layui-tab-item layui-show">
+							 <div class="conter">
+                                  <div class="xiopr">
+                                       <ul>
+                                          <li><img src="__PUBLIC__/Admin/images/4.png" width="100" height="100"><p>用户总数 ： <b style="color:#F00;">{$Count.userCount}</b></p></li>
+                                          <li><img src="__PUBLIC__/Admin/images/3.png" width="100" height="100"><p>酒店总数 ： <b style="color:#F00;">{$Count.hotelCount}</b></p></li>
+                                          <li><img src="__PUBLIC__/Admin/images/1.png" width="100" height="100"><p>计时未完成 ： <b style="color:#F00;">{$Count.orderHangCount}</b></p></li><!--只统计当天的-->
+                                          <li><img src="__PUBLIC__/Admin/images/2.png" width="100" height="100"><p>计时已完成 ： <b style="color:#F00;">{$Count.orderCompleteCount}</b></p></li><!--只统计当天的-->
+                                       </ul>
+                                  </div>
+                                   
+                                 <div class="botg">
+                                   <table class="layui-table" >
+                                                 <thead>
+                                                      <tr>
+                                                          <th>日期</th>
+                                                          <th>订单编号</th>
+                                                          <th>酒店名称</th>
+                                                          <th>房间类型</th>
+                                                          <th>客户姓名</th>
+                                                          <th>客户电话</th>
+                                                          <th>入住时间</th>
+                                                          <th>已入住时间</th>
+                                                          <th>折算小时数</th>
+                                                          <th>状态</th>
+                                                          <th >操作</th>
+                                                        </tr> 
+                                                </thead>
+                                                <tbody>
+                                                  <volist name="db" id="list">
+                                                  <tr>
+                                                      <td>{$list.createTime|date=("Y-m-d"),###}</td>
+                                                      <td>{$list.no}</td>
+                                                      <td>{$list.hotelName}</td>
+                                                      <td>{$list.roomType}</td>
+                                                      <td>{$list.realname}</td>
+                                                      <td>{$list.mobile}</td>
+                                                      <td>{$list.createTime|date_out=###}</td>
+                                                      <td>{$list.old}</td>
+                                                      <td>{$list.use}</td>
+                                                      <td class="cor_3">
+                                                          <switch name="list.status">
+                                                              <case value="0">预约中</case>
+                                                              <case value="1">订单已完成</case>
+                                                              <case value="2">入住中</case>
+                                                              <case value="8">订单已取消</case>
+                                                          </switch>
+                                                      </td>
+                                                      <td>
+                                                          <a href="__MODULE__/Order/order_list_edit/id/{$list.id}" class="z_coios_4">查看</a>
+                                                      </td>
+                                                  </tr>
+                                              </volist>
+                                                </tbody>
+                                   </table>
+                                   <div class="feniou">
+                                                   <ul>
+                                                   {$page} 
+                                                   </ul>
+                                  </div>
+
+                                </div>
+                             </div>
+						</div>
+					</div>
+				</div>
+			</div>

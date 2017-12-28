@@ -1,0 +1,81 @@
+      
+            
+      <div class="layui-body" style="bottom: 0;border-left: solid 2px #1AA094;" id="admin-body">
+        <div class="layui-tab admin-nav-card layui-tab-brief" lay-filter="admin-tab">
+          <ul class="layui-tab-title">
+            <li class="layui-this">
+              <i class="fa fa-dashboard" aria-hidden="true"></i>
+              <cite>会员充值</cite>
+            </li>
+          </ul>
+          
+            <div class="layui-tab-item layui-show">
+               <div class="conter">
+                            <form action="__URL__/rechargeDo" class="form-post" method="post">        
+                                   <div class="xxkt">
+                                       <ul>
+                                         <li class="xxkt_bt">会员充值</li>
+                                         </ul>
+                                    </div>
+ 
+                                  <div class="xxknr">
+                                        <div>              
+                                             <div class="glylb_szmm">
+                                              <span class="glylb_szmm_span">会员手机号：</span>
+                                              <div class="layui-input-block z_min_left_10">
+                                                   <input class="fn-tinput ajax-phone" name="mobile" value="" placeholder="请输入会员手机号" >
+                                              </div>
+                                             </div> 
+                                             <div class="glylb_szmm">
+                                              <span class="glylb_szmm_span">会员姓名：</span>
+                                              <div class="layui-input-block z_min_left_10">
+                                                   <input class="fn-tinput text" name="realname"  disabled="disabled" value="" placeholder="自动读取" >
+                                                   <input class="text" name="realname" type="hidden" value="" >
+                                              </div>
+                                             </div> 
+                                             <div class="glylb_szmm">
+                                              <span class="glylb_szmm_span">选择酒店：</span>
+                                              <div class="layui-input-block z_min_left_10">
+                                                <select name="hotels" id="select" class="ajax-hotel">
+                                                 <option value="">请选择酒店</option>
+                                                 <volist name="rows" id="row">
+                                                      <option value="{$row.id}">{$row.hotelName}</option>
+                                                 </volist>
+                                                </select>
+                                              </div>
+                                             </div> 
+                                             <div class="glylb_szmm">
+                                              <span class="glylb_szmm_span">选择房间：</span>
+                                              <div class="layui-input-block z_min_left_10">
+                                                <select name="rooms" id="select" class="result ajax-room">
+                                                 <option value="">请选择房间类型</option>
+                                                </select>
+                                              </div>
+                                             </div> 
+                                             <div class="glylb_szmm">
+                                              <span class="glylb_szmm_span">充值时间：</span>
+                                              <div class="layui-input-block z_min_left_10">
+                                                    <input  class="fn-tinput rechargeTime"  name="duration" value="" placeholder="请输入充值时间" > <font style="line-height: 33px;"> (单位:天)</font>
+                                              </div>
+                                             </div> 
+                                             <div class="glylb_szmm">
+                                              <span class="glylb_szmm_span">充值金额：</span>
+                                              <div class="layui-input-block z_min_left_10">
+                                                    <input class="fn-tinput monery"  disabled="disabled" style="color:#F00" name="amount" value="" placeholder="自动换算" >
+                                                    <input type="hidden" value="" name="amount" class="monery">
+                                               </div>
+                                             </div> 
+                                                              
+                                         </div>                   
+                                   </div>
+                                  <div class="gater">
+                                          <input type="submit" value="确认" class="glylb_an_qd ajax-post confirm" target-form="form-post"/>
+                                          <input type="button" value="取消" class="glylb_an_fh"  onclick="javascript:history.back(-1);return false"/>
+                                  </div> 
+                            </form>
+                          </div> 
+            </div>
+        </div>
+      </div>
+
+      <script type="text/javascript" src="__PUBLIC__/Admin/gu/js.js"></script>

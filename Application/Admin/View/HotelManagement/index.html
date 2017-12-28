@@ -1,0 +1,124 @@
+<div class="layui-body" style="bottom: 0;border-left: solid 2px #1AA094;" id="admin-body">
+    <div class="layui-tab admin-nav-card layui-tab-brief" lay-filter="admin-tab">
+        <ul class="layui-tab-title">
+            <li class="layui-this">
+                <i class="fa fa-dashboard" aria-hidden="true"></i>
+                <cite>酒店列表</cite>
+            </li>
+        </ul>
+
+        <div class="layui-tab-content" style="min-height: 150px; padding: 5px 0 0 0;">
+            <div class="layui-tab-item layui-show">
+                <div class="conter">
+                    <div class="conter_sait">
+                        <form action="__URL__/index" method="post" class="form-hotel">
+                            <div class="wort">
+                                <div class="layui-input-inline">
+                                    <input name="startTime" id="date" autocomplete="off" placeholder="从2017-02-28时间" class="layui-input" onclick="layui.laydate({elem: this})"
+                                           value="{:I('startTime')}" type="text">
+                                </div>
+                            </div>
+                            <div class="wort">
+                                <div class="layui-input-inline">至
+                                </div>
+                            </div>
+                            <div class="wort">
+                                <div class="layui-input-inline">
+                                    <input name="endTime" id="date" autocomplete="off" placeholder="到2017-02-28时间" class="layui-input" onclick="layui.laydate({elem: this})"
+                                           value="{:I('endTime')}" type="text">
+                                </div>
+                            </div>
+                            <div class="wort" style="width:280px;">
+                                <input name="title" lay-verify="title" value="{:I('title')}" autocomplete="off" placeholder="酒店名称/手机号" class="layui-input" type="text">
+
+                            </div>
+                            <div class="wort">
+                                <button type="submit" id="select" class="layui-btn">查找</button>
+                            </div>
+
+                            <div class="wort">
+                                <button type="submit" id="export" class="layui-btn layui-btn-normal">导出</button>
+                            </div>
+                            <div class="wort">
+                                <a href="/Admin/HotelManagement/add">
+                                    <button type="button" class="layui-btn layui-btn-danger">新增</button>
+                                </a>
+                            </div>
+                        </form>
+                    </div>
+                    <div class="botg">
+                        <table class="layui-table">
+                            <thead>
+                            <tr>
+                                <th>酒店名称</th>
+                                <th>酒店地址</th>
+                                <th>酒店电话</th>
+                                <th>房间注册时间</th>
+                                <th>操作</th>
+                            </tr>
+                            </thead>
+                            <tbody>
+                            <volist name="db" id="row">
+                                <tr>
+                                    <td>{$row.hotelName}</td>
+                                    <td>{$row.address}</td>
+                                    <td>{$row.mobile}</td>
+                                    <td>{$row.createTime}</td>
+                                    <td>
+                                        <!--<a class="z_coios_2 iframe" data-iframe="__URL__/room_banner">轮播图</a>-->
+                                        <a class="z_coios_2" href="__URL__/hotel_banner/id/{$row.id}">轮播图</a>
+                                        <a class="z_coios_6" href="__URL__/roomtype/id/{$row.id}">房间类型</a>
+                                        <switch name="row.status">
+                                            <case value="0"><a href="__URL__/set_status/set/0/id/{$row.id}" class="z_coios_1 ajax-get confirm" data-msg='您确定禁用？'>禁用</a></case>
+                                            <case value="1"><a href="__URL__/set_status/set/1/id/{$row.id}" class="z_coios_1 ajax-get confirm" data-msg='您确定启用？'>启用</a></case>
+                                        </switch>
+                                        <a class="z_coios_4" href="/Admin/HotelManagement/hotel_list_edit/id/{$row.id}">修改</a>
+                                        <a href="__URL__/hotel_del/id/{$row.id}" class="z_coios_3 ajax-get confirm" data-msg='您确定删除？'>删除</a>
+                                        <a class="z_coios_5 qrcode" data-name="{$row.hotelName}" url="__URL__/getQrcode/id/{$row.id}">下载二维码</a>
+                                    </td>
+                                </tr>
+                            </volist>
+                            </tbody>
+                        </table>
+                        <div class="feniou">
+                            <ul>
+                                {$page}
+                            </ul>
+                        </div>
+
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+<script type="text/javascript">
+    $(function () {
+        var url;
+        var name;
+        $('.qrcode').click(function () {
+            url = $(this).attr('url');
+            name = $(this).attr('data-name');
+            layer.open({
+                type: 1,
+                title: '选择下载尺寸',
+                area: ['420px', '500px'], //宽高
+                content: '<table class="layui-table" lay-skin="line"><tr><td><input type="radio" name="size" value="1"> 40像素 * 40像素</td></tr><tr><td><input type="radio" name="size" value="2"> 80像素 * 80像素</td></tr><tr><td><input type="radio" name="size" value="3"> 120像素 * 120像素</td></tr><tr><td><input type="radio" name="size" value="4"> 160像素 * 160像素</td></tr><tr><td><input type="radio" name="size" value="5"> 200像素 * 200像素</td></tr><tr><td><input type="radio" name="size" value="6"> 240像素 * 240像素</td></tr><tr><td><input type="radio" name="size" value="7"> 280像素 * 280像素</td></tr><tr><td><input type="radio" name="size" value="8"> 320像素 * 320像素</td></tr><tr><td><input type="radio" name="size" value="9"> 360像素 * 360像素</td></tr></table><a style="margin:auto;display:block;width:90%;" id="downloads" href="' + url + 'size/1/name/' + name + '" class="layui-btn" download>下 载</a>'
+            });
+        });
+        $('body').on('click', 'input[type="radio"]', function () {
+            var size = $(this).val();
+            var add = url + '/size/' + size + '/name/' + name;
+            $('#downloads').attr('href', add);
+        });
+    });
+</script>    
+<script>
+    $('#export').click(function () {
+        $(this).parents('.form-hotel').attr('action', '__URL__/export');
+    })
+    $('#select').click(function () {
+
+        $(this).parents('.form-hotel').attr('action', '__URL__/index');
+    })
+</script>

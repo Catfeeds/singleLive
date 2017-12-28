@@ -1,0 +1,45 @@
+<include file="Public:head" />
+<?php 
+$session = session('admin');
+$logo = M('Logo')->where('id=1')->find();
+$admin_id = M('Admin')->where('id='.$session['id'])->find();
+$admin_rule = M('AdminGroup')->where('id='.$admin_id['group_id'])->find();
+?>
+<div id="header">
+  <img src="{$logo.admin_logo}" title="分销商管理系统" style="width:200px;height:70px;">
+</div>
+<include file="Public:up" />
+<include file="Public:left" />
+<div id="content">
+	<div id="content-header">
+	    <div id="breadcrumb"> <a href="http://hjdzx091.new.y4jy.com/a.php?s=/index/welcome.html#" title="首页" class="tip-bottom"><i class="icon-home"></i></a></div>
+	  </div>  <hr>
+  <div class="container-fluid">
+ <div class="row-fluid">
+      <div class="widget-box">
+        <div class="widget-content">
+          <div class="row-fluid">
+            <div class="span3" style="width:100%;">
+              	
+              	<br><br><h1 style="margin-left:40%"><?php echo($error); ?></h1><br>
+              	<h5 style="margin-left:40%"><a id="href" href="<?php echo($jumpUrl); ?>"><span id="wait"><?php echo($waitSecond); ?></span>秒后自动跳转，或点击此链接手动跳转</a></h5><br><br><br>
+            </div>
+          </div>
+        </div>
+</div>
+</div>
+</div>
+</div>
+<script type="text/javascript">
+(function(){
+var wait = document.getElementById('wait'),href = document.getElementById('href').href;
+var interval = setInterval(function(){
+  var time = --wait.innerHTML;
+  if(time <= 0) {
+    location.href = href;
+    clearInterval(interval);
+  };
+}, 1000);
+})();
+</script>
+<include file="Public:foot" />

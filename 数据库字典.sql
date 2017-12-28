@@ -1,0 +1,562 @@
+
+--
+-- 表的结构 `hotels`
+--
+
+CREATE TABLE `ms_hotels` (
+  `id` int(11) NOT NULL AUTO_INCREMENT,
+  `hotelName` varchar(200) COLLATE utf8_bin NOT NULL COMMENT '酒店名称',
+  `province` varchar(50) NOT NULL COMMENT '省',
+  `city` varchar(50) NOT NULL COMMENT '市',
+  `area` varchar(50) NOT NULL COMMENT '区',
+  `mobile` varchar(13) NOT NULL COMMENT '联系方式',
+  `address` text NOT NULL COMMENT '详细地址',
+  `head` int(11) NOT NULL COMMENT 'files::id',
+  `createTime` int(11) NOT NULL COMMENT '新增日期',
+  `updateTime` int(11) NOT NULL COMMENT '更新日期',
+  `status` tinyint(4) NOT NULL DEFAULT '0' COMMENT '0正常 1停用 9删除',
+  PRIMARY KEY (`id`),
+  KEY `status` (`status`)
+) ENGINE=MyISAM DEFAULT CHARSET=utf8 COLLATE=utf8_bin AUTO_INCREMENT=1 ;
+
+
+--
+-- 表的结构 `hotel_banner`
+--
+
+CREATE TABLE `ms_hotel_banner` (
+  `id` int(11) NOT NULL AUTO_INCREMENT,
+  `hotel` int(11) DEFAULT NULL COMMENT '酒店id',
+  `imgs` text COLLATE utf8_bin COMMENT '酒店banner的id',
+  `add_time` int(11) NOT NULL COMMENT '添加时间',
+  `update_time` int(11) NOT NULL COMMENT '修改时间',
+  PRIMARY KEY (`id`)
+) ENGINE=MyISAM DEFAULT CHARSET=utf8 COLLATE=utf8_bin COMMENT='酒店banner表' AUTO_INCREMENT=1 ;
+
+--
+-- 表的结构 `ms_drawback`
+--
+
+CREATE TABLE IF NOT EXISTS `ms_drawback` (
+  `id` int(11) NOT NULL AUTO_INCREMENT,
+  `orderId` int(11) DEFAULT NULL COMMENT '订单id',
+  `createTime` int(11) DEFAULT NULL COMMENT '操作时间',
+  `money` int(10) DEFAULT NULL COMMENT '退款金额',
+  PRIMARY KEY (`id`)
+) ENGINE=MyISAM  DEFAULT CHARSET=utf8 COLLATE=utf8_bin AUTO_INCREMENT=2 ;
+
+
+--
+-- 表的结构 `hotel_rooms`
+--
+CREATE TABLE `ms_hotel_rooms` (
+  `id` int(11) NOT NULL AUTO_INCREMENT,
+  `hotel` int(11) NOT NULL COMMENT 'hotels::id',
+  `room` int(11) NOT NULL COMMENT 'rooms::id',
+  `price` int(11) NOT NULL COMMENT '24小时价格',
+  `amount` float(10,4) NOT NULL COMMENT '房间按小时,由用户输入的24小时价格计算出来',
+  `minimum` int(11) NOT NULL COMMENT '最低入住时长（小时）',
+  `minute` int(11) NOT NULL COMMENT '超过分钟数算1小时',
+  `createTime` int(11) NOT NULL COMMENT '新增日期',
+  `updateTime` int(11) NOT NULL COMMENT '更新日期',
+  `imgs_ids` text  NOT NULL COMMENT '房间图片s',
+  `status` tinyint(4) NOT NULL DEFAULT '0' COMMENT '0正常 1停用 9删除',
+  PRIMARY KEY (`id`),
+  KEY `status` (`status`)
+) ENGINE=MyISAM DEFAULT CHARSET=utf8 COLLATE=utf8_bin AUTO_INCREMENT=1 ;
+-- --------------------------------------------------------
+
+--
+-- 表的结构 `files` 文件保存表
+--
+
+CREATE TABLE `ms_files` (
+  `id` int(11) NOT NULL AUTO_INCREMENT COMMENT '主键',
+  `savepath` text NOT NULL COMMENT '保存路径',
+  `savename` text NOT NULL COMMENT '保存名称',
+  `name` varchar(200) NOT NULL COMMENT '原始名称',
+  `size` varchar(10) NOT NULL COMMENT '文件的大小',
+  `type` varchar(10) NOT NULL COMMENT '文件的MIME类型',
+  `ext` varchar(10) NOT NULL COMMENT '文件的后缀类型',
+  `md5` varchar(32) NOT NULL COMMENT 'md5哈希验证',
+  `sha1` varchar(50) NOT NULL COMMENT 'sha1哈希验证',
+  `status` tinyint(4) NOT NULL DEFAULT '0' COMMENT '0正常 1无用',
+  PRIMARY KEY (`id`),
+  KEY `status` (`status`)
+) ENGINE=MyISAM DEFAULT CHARSET=utf8 COLLATE=utf8_bin AUTO_INCREMENT=1 ;
+
+--
+-- 表的结构 `perm`
+--
+
+CREATE TABLE `ms_perm` (
+  `perm_id` int(11) NOT NULL AUTO_INCREMENT COMMENT '主键',
+  `perm_type` varchar(20) COLLATE utf8_bin NOT NULL COMMENT '权限名称',
+  `perm_url` varchar(30) COLLATE utf8_bin NOT NULL,
+  `status` char(1) NOT NULL COMMENT '权限的分类 0后台权限',
+  `perm_parentid` int(11) NOT NULL COMMENT '父级id',
+  PRIMARY KEY (`perm_id`),
+  KEY `perm_type` (`perm_type`)
+) ENGINE=MyISAM  DEFAULT CHARSET=utf8 COLLATE=utf8_bin AUTO_INCREMENT=31 ;
+
+--
+-- 转存表中的数据 `perm`
+--
+
+INSERT INTO `ms_perm` (`perm_id`, `perm_type`, `perm_url`, `status`, `perm_parentid`) VALUES
+(1, '首页', 'Index', 0, 0),
+(2, '会员管理', '', 0,0),
+(3, '客房管理', '', 0,0),
+(4, '优惠套餐', '', 0,0),
+(5, '订单管理', '', 0,0),
+(6, '财务管理', '', 0,0),
+(7, '内容管理', '', 0,0),
+(8, '管理员管理', '', 0,0),
+(9, '电子券管理', '', 0,0),
+(10, '消息管理', '', 0,0),
+(11, '系统设置', '', 0,0),
+(12, '会员列表', 'MemberList', 0,2),
+(13, '级别管理', 'Grades', 0,2),
+(14, '会员晋级', 'UsersLvup', 0,2),
+(15, '积分统计', 'SorceCount', 0,2),
+(16, '会员俱乐部', 'UserClub', 0,2),
+(17, '客房分类', 'HouseType', 0,3),
+(18, '客房列表', 'HouseList', 0,3),
+(19, '套餐分类', 'Package', 0,4),
+(20, '套餐列表', 'PackageList', 0,4),
+(21, '订单列表', 'OrderList', 0,5),
+(22, '退款订单', 'BackMoneyList', 0,5),
+(23, '客户统计', 'UsersCount', 0,6),
+(24, '订单统计', 'OrderCount', 0,6),
+(25, '财务统计', 'FinanceCount', 0,6),
+(26, '餐饮列表', 'Foods', 0,7),
+(27, '内容列表', 'FinanceCount', 0,7),
+(28, '权限管理', 'Perm', 0,8),
+(29, '管理员', 'PermRoot', 0,8),
+(30, '电子券列表', 'Coupon', 0,9),
+(31, '系统消息', 'SystemNews', 0,10),
+(32, '活动消息', 'ActiveNews', 0,10),
+(33, '网站设置', 'WebSite', 0,11),
+(34, '备份数据库', 'DB', 0,11),
+(35, '还原数据库', 'DBReduction', 0,11),
+(36, '密码修改', 'Pwd', 0,11),
+(37, '参数设置', 'Parameter', 0,11);
+
+
+
+
+
+-- --------------------------------------------------------
+
+--
+-- 表的结构 `perm_role`
+--
+
+CREATE TABLE `ms_perm_role` (
+  `id` int(11) NOT NULL AUTO_INCREMENT COMMENT '主键',
+  `perm_id` int(11) NOT NULL COMMENT '权限id',
+  `role_id` int(11) NOT NULL COMMENT '权限组id',
+  PRIMARY KEY (`id`),
+  KEY `perm_id` (`perm_id`),
+  KEY `role_id` (`role_id`)
+) ENGINE=MyISAM  DEFAULT CHARSET=utf8 COLLATE=utf8_bin AUTO_INCREMENT=1 ;
+
+
+--
+-- 表的结构 `role`
+--
+
+CREATE TABLE `ms_role` (
+  `role_id` int(11) NOT NULL AUTO_INCREMENT COMMENT '主键',
+  `role_type` varchar(20) COLLATE utf8_bin NOT NULL COMMENT '权限组名称',
+  `role_info` varchar(50) COLLATE utf8_bin NOT NULL,
+  `hotel` int(11) NOT NULL COMMENT '0后台管理组 hotel::id酒店管理组',
+  `role_sta` char(1) COLLATE utf8_bin NOT NULL COMMENT '0正常 1禁用 9删除',
+  PRIMARY KEY (`role_id`),
+  KEY `role_sta` (`role_sta`)
+) ENGINE=MyISAM  DEFAULT CHARSET=utf8 COLLATE=utf8_bin AUTO_INCREMENT=2 ;
+
+
+-- --------------------------------------------------------
+
+--
+-- 表的结构 `role_root`
+--
+
+CREATE TABLE `ms_role_root` (
+  `id` int(11) NOT NULL AUTO_INCREMENT COMMENT '主键',
+  `root_id` int(11) NOT NULL COMMENT '人员id',
+  `role_id` int(11) NOT NULL COMMENT '权限组id',
+  PRIMARY KEY (`id`),
+  KEY `root_id` (`root_id`),
+  KEY `role_id` (`role_id`)
+) ENGINE=MyISAM  DEFAULT CHARSET=utf8 COLLATE=utf8_bin AUTO_INCREMENT=2 ;
+
+--
+-- 转存表中的数据 `role_root`
+--
+
+INSERT INTO `ms_role_root` (`id`, `root_id`, `role_id`) VALUES
+(1, 1, 1);
+
+-- --------------------------------------------------------
+
+--
+-- 表的结构 `root`
+--
+
+CREATE TABLE `ms_root` (
+  `id` int(11) NOT NULL AUTO_INCREMENT COMMENT '主键',
+  `name` varchar(20) COLLATE utf8_bin NOT NULL COMMENT '用户名',
+  `infoname` varchar(20) COLLATE utf8_bin NOT NULL COMMENT '管理员名称',
+  `realname` varchar(20) COLLATE utf8_bin NOT NULL COMMENT '真实姓名',
+  `number` varchar(50) COLLATE utf8_bin NOT NULL COMMENT '联系方式',
+  `pwd` char(32) COLLATE utf8_bin NOT NULL COMMENT '登录密码',
+  `status` tinyint(1) COLLATE utf8_bin NOT NULL COMMENT '0正常 1禁用 9删除',
+  `admin` int(11) NOT NULL COMMENT '0超级管理员 root::id子账号',
+  PRIMARY KEY (`id`),
+  KEY `root` (`status`)
+) ENGINE=MyISAM  DEFAULT CHARSET=utf8 COLLATE=utf8_bin AUTO_INCREMENT=2 ;
+
+--
+-- 转存表中的数据 `root`
+--
+
+INSERT INTO `ms_root` (`id`, `name`, `infoname`, `realname`, `number`, `pwd`, `status`, `admin`) VALUES
+(1, 'admin', '总管理员', '卓诚', '12345678910', '21232f297a57a5a743894a0e4a801fc3', '1', 0);
+
+-- --------------------------------------------------------
+
+--
+-- 表的结构 `root_login`
+--
+
+CREATE TABLE `ms_root_login` (
+  `login_id` int(11) NOT NULL AUTO_INCREMENT COMMENT '主键',
+  `root_id` int(11) NOT NULL COMMENT 'root::id',
+  `login_time` varchar(30) COLLATE utf8_bin NOT NULL COMMENT '登录时间',
+  `login_ip` varchar(30) COLLATE utf8_bin NOT NULL COMMENT 'IP',
+  `status` tinyint(4) NOT NULL DEFAULT '0' COMMENT '0后台管理登录记录 1酒店管理登录记录',
+  PRIMARY KEY (`login_id`),
+  KEY `root_id` (`root_id`),
+  KEY `login_time` (`login_time`)
+) ENGINE=MyISAM  DEFAULT CHARSET=utf8 COLLATE=utf8_bin AUTO_INCREMENT=1 ;
+
+--
+--  用户表
+--
+CREATE TABLE `ms_users` (
+  `id` int(11) NOT NULL AUTO_INCREMENT COMMENT '主键 唯一标示',
+  `realname` varchar(50) COLLATE utf8_bin NOT NULL COMMENT '真实姓名',
+  `mobile` varchar(12) COLLATE utf8_bin NOT NULL COMMENT '用户手机号信息',
+  `sex` tinyint(1) NOT NULL COMMENT '性别 1男 2女',
+  `idCard` varchar(18) COLLATE utf8_bin NOT NULL COMMENT '身份号',
+  `Email` varchar(30) COLLATE utf8_bin NOT NULL COMMENT '电子邮箱',
+  `password` varchar(32) COLLATE utf8_bin NOT NULL COMMENT '密码32位',
+  `createTime` int(11) NOT NULL,
+  `updateTime` int(11) NOT NULL,
+  `status` tinyint(1) NOT NULL COMMENT '状态',
+  PRIMARY KEY (`id`)
+) ENGINE=MyISAM DEFAULT CHARSET=utf8 COLLATE=utf8_bin AUTO_INCREMENT=1 ;
+
+
+CREATE TABLE `ms_order_back` (
+  `id` bigint(20) NOT NULL AUTO_INCREMENT,
+  `orderId` int(11) NOT NULL COMMENT 'order_hotel::id',
+  `reason` text NOT NULL COMMENT '原因',
+  PRIMARY KEY (`id`)
+) ENGINE=MyISAM DEFAULT CHARSET=utf8 COLLATE=utf8_bin AUTO_INCREMENT=1 ;
+
+
+-- 系统配置表
+
+CREATE TABLE `ms_config` (
+  `id` int(11) NOT NULL AUTO_INCREMENT COMMENT '主键',
+  `key` varchar(100) COLLATE utf8_bin NOT NULL COMMENT '配置名',
+  `value` longtext COLLATE utf8_bin NOT NULL COMMENT '配置值',
+  `status` tinyint(1) COLLATE utf8_bin NOT NULL COMMENT '状态 0:后台配置 hotel::id:酒店配置',
+  PRIMARY KEY (`id`)
+) ENGINE=MyISAM DEFAULT CHARSET=utf8 COLLATE=utf8_bin AUTO_INCREMENT=1 ;
+
+
+-- 系统消息表
+
+CREATE TABLE `ms_news` (
+  `id` int(11) NOT NULL AUTO_INCREMENT COMMENT '主键',
+  `title` text COLLATE utf8_bin NOT NULL COMMENT '标题',
+  `body` text COLLATE utf8_bin NOT NULL COMMENT '内容',
+  `createTime` int(11) COLLATE utf8_bin NOT NULL COMMENT '发布日期',
+  `startTime` int(11) COLLATE utf8_bin NOT NULL COMMENT '生效日期',
+  `endTime` int(11) COLLATE utf8_bin NOT NULL COMMENT '截止日期',
+  `mobile` tinyint(1) COLLATE utf8_bin NOT NULL COMMENT '用户端 0:发送 1：不发送 2:酒店端点击入住时单个发送',
+  `status` tinyint(1) COLLATE utf8_bin NOT NULL COMMENT '状态 0:等待生效 1:已生效 2:已过期 9:删除',
+  `type` varchar(10) COLLATE utf8_bin NOT NULL COMMENT 'sys-系统消息 act-活动消息',
+  PRIMARY KEY (`id`)
+) ENGINE=MyISAM DEFAULT CHARSET=utf8 COLLATE=utf8_bin AUTO_INCREMENT=1 ;
+
+
+-- 系统消息于用户连接表
+
+CREATE TABLE `ms_news_user` (
+  `id` int(11) NOT NULL AUTO_INCREMENT COMMENT '主键',
+  `news` int(11) NOT NULL  COMMENT 'news::id',
+  `users` int(11) NOT NULL  COMMENT 'users::id',
+  `status` tinyint(1) COLLATE utf8_bin NOT NULL COMMENT '状态 0:未读 1:已读 9:删除',
+  PRIMARY KEY (`id`)
+) ENGINE=MyISAM DEFAULT CHARSET=utf8 COLLATE=utf8_bin AUTO_INCREMENT=1 ;
+
+
+
+--
+-- 表的结构 `ms_order_flow` 订单流水表
+--
+
+CREATE TABLE IF NOT EXISTS `ms_order_flow` (
+  `id` int(11) NOT NULL AUTO_INCREMENT,
+  `orderhotel_id` int(11) NOT NULL COMMENT 'order_hotel的订单id',
+  `hotel` int(11) NOT NULL COMMENT '对应酒店id',
+  `orderhotel_time` int(11) NOT NULL COMMENT 'order_hotel订单的创建时间',
+  `money` float(10,2) NOT NULL COMMENT '交易金额',
+  `orderhotel_used` int(11) NOT NULL COMMENT '在酒店本次所用时间',
+  `hotelName`  varchar(200)  COLLATE utf8_bin NOT NULL COMMENT '酒店名称',
+  `roomName` varchar(30) COLLATE utf8_bin NOT NULL COMMENT '房间类型',
+  `userName` varchar(30) COLLATE utf8_bin NOT NULL COMMENT '用户姓名',
+  `orderNo` varchar(20) COLLATE utf8_bin NOT NULL COMMENT '订单编号',
+  `startTime` int(11) COLLATE utf8_bin NOT NULL COMMENT '开始入住时间',
+  `endTime` int(11) NOT NULL COMMENT '入住结束时间',
+  PRIMARY KEY (`id`)
+) ENGINE=MyISAM DEFAULT CHARSET=utf8 COLLATE=utf8_bin AUTO_INCREMENT=1; 
+
+
+
+-- ---------------------------------------------------------------------------
+--  新表全部加这
+-- ---------------------------------------------------------------------------
+--
+--  客房分类表
+--
+CREATE TABLE IF NOT EXISTS `ms_house_cate` (
+  `id` int(11) NOT NULL AUTO_INCREMENT,
+  `title` varchar(30) COLLATE utf8_bin NOT NULL COMMENT '分类名称',
+  `add_time` int(11) COLLATE utf8_bin NOT NULL COMMENT '插入时间',
+  `update_time` int(11) COLLATE utf8_bin NOT NULL COMMENT '修改时间',
+  `status` tinyint(1) NOT NULL COMMENT '状态 1-正常 2-禁用 3-删除',
+  PRIMARY KEY (`id`)
+)ENGINE=MyISAM DEFAULT CHARSET=utf8 COLLATE=utf8_bin AUTO_INCREMENT=1;
+
+--
+--  客房管理表
+--
+CREATE TABLE IF NOT EXISTS `ms_house` (
+  `id` int(11) NOT NULL AUTO_INCREMENT,
+  `category` int(11) NOT NULL COMMENT '客房分类id',
+  `name` varchar(30) COLLATE utf8_bin NOT NULL COMMENT '客房名称',
+  `equipment` varchar(20) COLLATE utf8_bin NOT NULL COMMENT '房间设备',
+  `money` float(10,2) NOT NULL COMMENT '房间金额',
+  `mark` text COLLATE utf8_bin NOT NULL COMMENT '房间描述',
+  `back` text COLLATE utf8_bin NOT NULL COMMENT '退房须知',
+  `come` text COLLATE utf8_bin NOT NULL COMMENT '入住通知',
+  `change` text COLLATE utf8_bin NOT NULL COMMENT '更改订单',
+  `sorce` int(11) NOT NULL COMMENT '反还积分',
+  `paper` char(1) COLLATE utf8_bin NOT NULL COMMENT '是否可以使用电子卷 y-是 n-否',
+  `imgBanners` varchar(50) COLLATE utf8_bin NOT NULL COMMENT '客房banner',
+  `add_time` int(11) COLLATE utf8_bin NOT NULL COMMENT '插入时间',
+  `update_time` int(11) COLLATE utf8_bin NOT NULL COMMENT '修改时间',
+  `status` tinyint(1) NOT NULL COMMENT '状态字段 1-正常 2-已删除',
+  PRIMARY KEY (`id`)
+) ENGINE=MyISAM DEFAULT CHARSET=utf8 COLLATE=utf8_bin AUTO_INCREMENT=1;
+
+--
+--  餐饮管理表
+--
+CREATE TABLE IF NOT EXISTS `ms_food` (
+  `id` int(11) NOT NULL AUTO_INCREMENT,
+  `name` varchar(30) COLLATE utf8_bin NOT NULL COMMENT '标题',
+  `mark` text COLLATE utf8_bin NOT NULL COMMENT '描述',
+  `breakfast` text COLLATE utf8_bin NOT NULL COMMENT '早餐',
+  `lunch` text COLLATE utf8_bin NOT NULL COMMENT '午餐',
+  `dinner` text COLLATE utf8_bin NOT NULL COMMENT '晚餐',
+  `foodBanners` varchar(50) COLLATE utf8_bin NOT NULL COMMENT '餐饮banner',
+  `add_time` int(11) COLLATE utf8_bin NOT NULL COMMENT '插入时间',
+  `update_time` int(11) COLLATE utf8_bin NOT NULL COMMENT '修改时间',
+  PRIMARY KEY (`id`)
+) ENGINE=MyISAM DEFAULT CHARSET=utf8 COLLATE=utf8_bin AUTO_INCREMENT=1;
+
+--
+--  环境、体验活动管理表
+--
+CREATE TABLE IF NOT EXISTS `ms_environment` (
+  `id` int(11) NOT NULL AUTO_INCREMENT,
+  `name` varchar(30) COLLATE utf8_bin NOT NULL COMMENT '标题',
+  `mark` text COLLATE utf8_bin NOT NULL COMMENT '描述',
+  `imgs` varchar(50) COLLATE utf8_bin NOT NULL COMMENT '环境banner',
+  `add_time` int(11) COLLATE utf8_bin NOT NULL COMMENT '插入时间',
+  `update_time` int(11) COLLATE utf8_bin NOT NULL COMMENT '修改时间',
+  PRIMARY KEY (`id`)
+) ENGINE=MyISAM DEFAULT CHARSET=utf8 COLLATE=utf8_bin AUTO_INCREMENT=1;
+
+--
+--  套餐内容设置表
+--
+CREATE TABLE IF NOT EXISTS `ms_package_set` (
+  `id` int(11) NOT NULL AUTO_INCREMENT,
+  `pid` int(11) NOT NULL COMMENT '关联套餐管理表的id',
+  `title` varchar(30) COLLATE utf8_bin NOT NULL COMMENT '标题',
+  `money` float(10,2) COLLATE utf8_bin NOT NULL COMMENT '单价',
+  `attr` varchar(30) COLLATE utf8_bin NOT NULL COMMENT '规格/数量 这个字段就是让客户自己起名字',
+  PRIMARY KEY (`id`)
+)ENGINE=MyISAM DEFAULT CHARSET=utf8 COLLATE=utf8_bin AUTO_INCREMENT=1;
+
+--
+--  套餐管理表
+--
+CREATE TABLE IF NOT EXISTS `ms_package` (
+  `id` int(11) NOT NULL AUTO_INCREMENT,
+  `title` varchar(30) COLLATE utf8_bin NOT NULL COMMENT '房间名称',
+  `limit` int(4) NOT NULL COMMENT '每人限购份数',
+  `mark` text COLLATE utf8_bin NOT NULL COMMENT '预定须知',
+  `content` text COLLATE utf8_bin NOT NULL COMMENT '套餐详情',
+  `packMoney` float(10,2) COLLATE utf8_bin NOT NULL COMMENT '套餐价',
+  `sorce` int(11) NOT NULL COMMENT '反还积分数',
+  PRIMARY KEY (`id`)
+) ENGINE=MyISAM DEFAULT CHARSET=utf8 COLLATE=utf8_bin AUTO_INCREMENT=1;
+
+
+--
+--  会员俱乐部管理表
+--
+CREATE TABLE IF NOT EXISTS `ms_package` (
+  `id` int(11) NOT NULL AUTO_INCREMENT,
+  `title` varchar(30) COLLATE utf8_bin NOT NULL COMMENT '标题',
+  `content` text COLLATE utf8_bin NOT NULL COMMENT '简介',
+  `imgs` varchar(50) COLLATE utf8_bin NOT NULL COMMENT '俱乐部banner',
+  `add_time` int(11) COLLATE utf8_bin NOT NULL COMMENT '插入时间',
+  `update_time` int(11) COLLATE utf8_bin NOT NULL COMMENT '修改时间',
+  PRIMARY KEY (`id`)
+)ENGINE=MyISAM DEFAULT CHARSET=utf8 COLLATE=utf8_bin AUTO_INCREMENT=1;
+
+--
+--  常见问题管理表
+--
+CREATE TABLE IF NOT EXISTS `ms_problem` (
+  `id` int(11) NOT NULL AUTO_INCREMENT,
+  `title` varchar(100) COLLATE utf8_bin NOT NULL COMMENT '问题名称',
+  `content` text COLLATE utf8_bin NOT NULL COMMENT '问题答案',
+  `add_time` int(11) COLLATE utf8_bin NOT NULL COMMENT '插入时间',
+  `update_time` int(11) COLLATE utf8_bin NOT NULL COMMENT '修改时间',
+   PRIMARY KEY (`id`)
+)ENGINE=MyISAM DEFAULT CHARSET=utf8 COLLATE=utf8_bin AUTO_INCREMENT=1;
+
+--
+--  级别设置表
+--
+CREATE TABLE IF NOT EXISTS `ms_grades` (
+  `id` int(11) NOT NULL AUTO_INCREMENT,
+  `title` varchar(100) COLLATE utf8_bin NOT NULL COMMENT '级别名称',
+  `sorce` varchar(255) COLLATE utf8_bin NOT NULL COMMENT '所需积分',
+  `pic` int(11) NOT NULL COMMENT '图片id',
+  `content` text COLLATE utf8_bin NOT NULL COMMENT '详情介绍',
+  `sort` int(11) NOT NULL COMMENT '排序',
+  PRIMARY KEY (`id`),
+  UNIQUE KEY(`sort`)
+)ENGINE=MyISAM DEFAULT CHARSET=utf8 COLLATE=utf8_bin AUTO_INCREMENT=1;
+
+--
+--  会员升级记录表
+--
+CREATE TABLE IF NOT EXISTS `ms_user_lvup` (
+  `id` int(11) NOT NULL AUTO_INCREMENT,
+  `userID` int(255) NOT NULL COMMENT '会员id',
+  `before` int(255) NOT NULL COMMENT '升级前级别',
+  `after` int(255) NOT NULL COMMENT '升级后级别',
+  `createTime` int(255) NOT NULL COMMENT '升级时间',
+  `achs` int(11) NOT NULL  COMMENT '花费积分',
+  `admin` int(11) NOT NULL DEFAULT '0' COLLATE utf8_bin COMMENT '说明 0:自动升级 admins::id 管理员修改',
+  PRIMARY KEY (`id`)
+) ENGINE=MyISAM DEFAULT CHARSET=utf8 COLLATE=utf8_bin AUTO_INCREMENT=1 ;
+
+
+--
+--  会员积分变更记录表
+--
+CREATE TABLE IF NOT EXISTS `ms_user_sorce` (
+  `id` int(11) NOT NULL AUTO_INCREMENT,
+  `userID` int(11) NOT NULL COMMENT '会员id',
+  `type` char(10) COLLATE utf8_bin NOT NULL COMMENT 'consume-消费返积分 lvup-购买积分卡升级',
+  `sorce` int(11) NOT NULL DEFAULT '0' COMMENT '积分数',
+  `method` char(10) COLLATE utf8_bin NOT NULL COMMENT 'plus-加 sub-减',
+  `createTime` int(11) NOT NULL COMMENT '创建时间',
+  PRIMARY KEY (`id`)
+) ENGINE=InnoDB DEFAULT CHARSET=utf8 COLLATE=utf8_bin AUTO_INCREMENT=1 ;
+
+
+--
+--  订单表
+--
+CREATE TABLE IF NOT EXISTS `ms_order` (
+  `id` int(11) NOT NULL AUTO_INCREMENT,
+  `roomID` int(11) NOT NULL COMMENT '房间id，关联客房id和套餐里的房间id',
+  `orderNo` varchar(16) COLLATE utf8_bin NOT NULL COMMENT '订单编号',
+  `username` varchar(30) COLLATE utf8_bin NOT NULL COMMENT '填写人姓名',
+  `mobile` varchar(11) COLLATE utf8_bin NOT NULL COMMENT '填写人手机号码',
+  `sex` tinyint(1) NOT NULL COMMENT '填写人性别',
+  `email` varchar(30) COLLATE utf8_bin NOT NULL COMMENT '填写人邮箱',
+  `person` int(3) NOT NULL COMMENT '成年人数量',
+  `child` int(3) NOT NULL COMMENT '儿童数量',
+  `price` float(10,2) COLLATE utf8_bin NOT NULL COMMENT '订单金额',
+  `mark` text COLLATE utf8_bin NOT NULL COMMENT '备注信息',
+  `inTime` int(11) NOT NULL COMMENT '入住时间',
+  `outTime` int(11) NOT NULL COMMENT '离开时间',
+  `coupon` int(11) NOT NULL COMMENT '关联优惠券id 若用户成功勾选了,则有,若无,则写入0',
+  `num` int(5) NOT NULL COMMENT '限购数量(仅用于套餐) 非套餐写入0',
+  `status` tinyint(1) NOT NULL COMMENT '付款状态 8-待付款 1-已支付 2-已完成 3-已超时 4-已取消 5-退款申请 6-退款中 7-已退回',
+  PRIMARY KEY (`id`)
+) ENGINE=InnoDB DEFAULT CHARSET=utf8 COLLATE=utf8_bin AUTO_INCREMENT=1 ;
+
+
+--
+--  购买房间时间记录表 (此表就是为了统计每天剩余的房间数量)
+--
+CREATE TABLE IF NOT EXISTS `ms_room_date` (
+  `id` int(11) NOT NULL AUTO_INCREMENT,
+  `createDate` DATE NOT NULL COMMENT '入住时间',
+  `roomID` int(11) NOT NULL COMMENT '房间id',
+  `orderID` int(11) NOT NULL COMMENT '关联订单表id',
+  PRIMARY KEY (`id`)
+) ENGINE=InnoDB DEFAULT CHARSET=utf8 COLLATE=utf8_bin AUTO_INCREMENT=1 ;
+
+--
+--  电子卷管理表
+--
+CREATE TABLE IF NOT EXISTS `ms_coupon` (
+  `id` int(11) NOT NULL AUTO_INCREMENT,
+  `title` varchar(50) COLLATE utf8_bin NOT NULL COMMENT '电子卷名称',
+  `money` float(10,2) COLLATE utf8_bin NOT NULL COMMENT '电子卷金额',
+  `exprie_start` date NOT NULL COMMENT '开始时间',
+  `exprie_end` date NOT NULL COMMENT '截止时间',
+  `num` int(11) NOT NULL COMMENT '电子卷数量',
+  `mark` text COLLATE utf8_bin NOT NULL COMMENT '描述',
+  `status` tinyint(1) NOT NULL COMMENT '1-未发放 2-已发放 3-禁用 4-删除',
+  PRIMARY KEY (`id`)
+) ENGINE=MyISAM DEFAULT CHARSET=utf8 COLLATE=utf8_bin AUTO_INCREMENT=1 ;
+
+
+--
+--  电子卷使用记录表
+--
+CREATE TABLE IF NOT EXISTS `ms_coupon_recond` (
+  `id` int(11) NOT NULL AUTO_INCREMENT,
+  `userID` int(11) NOT NULL COMMENT '用户id',
+  `orderNO` varchar(16) COLLATE utf8_bin NOT NULL COMMENT '订单编号',
+  `roomID` int(11) NOT NULL COMMENT '房间id,关联客房id和套餐里的房间id',
+  `createTime` int(11) NOT NULL COMMENT '创建时间',
+  `cID` int(11) NOT NULL COMMENT '关联ms_coupon的id',
+  PRIMARY KEY (`id`)
+) ENGINE=MyISAM DEFAULT CHARSET=utf8 COLLATE=utf8_bin AUTO_INCREMENT=1 ;
+
+
+
+
+
+
+

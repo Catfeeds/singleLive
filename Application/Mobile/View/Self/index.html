@@ -1,0 +1,75 @@
+
+<div class="am_conent">
+
+   <img src="__MOBILE__/img/gr_02.jpg">
+   <div class="am_img">
+    <if condition="$db.headimgid eq 0">
+      <img src="__MOBILE__/img/tx.png"><!-- 默认头像位置 -->
+    <else />
+      <img src="{$db.headimgid|getSrc=###}">
+    </if>
+   </div>
+   <div class="am_wx">{$db.nickname}</div>
+</div>
+<div class="am_lintg">
+    <ul>
+        <li>真实姓名 ：{$db.realname}</li>
+        <li>手机号码 ：{$db.mobile}</li>
+    </ul>
+</div>
+<div class="am_list">
+    <div class="am_mcont">
+       <a href="{:U('System/index')}">
+         <div class="mcont_left"><img src="__MOBILE__/img/xtxx.png"></div>
+         <div class="mcont_cont">系统消息
+         <if condition="$msg egt 1">
+         <span class="layui-badge">{$msg}</span>
+         </if>
+         </div>
+         <div class="mcont_right"><img src="__MOBILE__/img/jiantou2.png"></div>
+       </a>
+    </div>
+    <div class="am_mcont">
+       <a href="{:U('Order/index')}">
+         <div class="mcont_left"><img src="__MOBILE__/img/wddd.png"></div>
+         <div class="mcont_cont">我的订单</div>
+         <div class="mcont_right"><img src="__MOBILE__/img/jiantou2.png"></div>
+       </a>
+    </div>
+    <div class="am_mcont">
+       <a href="{:U('Rooms/index')}">
+         <div class="mcont_left"><img src="__MOBILE__/img/fjlb.png"></div>
+         <div class="mcont_cont">房间列表</div>
+         <div class="mcont_right"><img src="__MOBILE__/img/jiantou2.png"></div>
+       </a>
+    </div>
+    <div class="am_mcont">
+       <a href="{:U('Self/balance')}">
+         <div class="mcont_left"><img src="__MOBILE__/img/wdye.png"></div>
+         <div class="mcont_cont">我的余额</div>
+         <div class="mcont_right"><img src="__MOBILE__/img/jiantou2.png"></div>
+       </a>
+    </div>
+    <div class="am_mcont">
+       <a href="{:U('BalanceLog/index')}">
+         <div class="mcont_left"><img src="__MOBILE__/img/wdye.png"></div>
+         <div class="mcont_cont">消费清单</div>
+         <div class="mcont_right"><img src="__MOBILE__/img/jiantou2.png"></div>
+       </a>
+    </div>
+    <div class="am_mcont">
+       <a href="{:U('Self/collection')}">
+         <div class="mcont_left"><img src="__MOBILE__/img/wdsc.png"></div>
+         <div class="mcont_cont">我的收藏</div>
+         <div class="mcont_right"><img src="__MOBILE__/img/jiantou2.png"></div>
+       </a>
+    </div>
+</div>
+<script>
+    var count = "{$msg}";
+    if(count>0){
+        $('.mcont_cont span').css('background','#ff3434');
+    }else{
+        $('.mcont_cont span').css('background','#fff');
+    }
+</script>

@@ -1,0 +1,44 @@
+       
+            
+      <div class="layui-body" style="bottom: 0;border-left: solid 2px #1AA094;" id="admin-body">
+        <div class="layui-tab admin-nav-card layui-tab-brief" lay-filter="admin-tab">
+          <ul class="layui-tab-title">
+            <li class="layui-this">
+              <i class="fa fa-dashboard" aria-hidden="true"></i>
+              <cite>提现设置</cite>
+            </li>
+          </ul>
+                    
+          <div class="layui-tab-content" style="min-height: 150px; padding: 5px 0 0 0;">
+            <div class="layui-tab-item layui-show">
+               <div class="conter">
+               <form action="__URL__/setUpDo" method="post" class="form-postal">
+                             <div class="xxkt">
+                                       <ul>
+                                         <li class="xxkt_bt">提现设置</li>
+                                         </ul>
+                                    </div>
+                                 <div class="xxknr">
+                                        <div>                       
+                                             <div class="glylb_szmm">
+                                              <span class="glylb_szmm_span">提现时间为每个月：</span>
+                                              <div class="layui-input-block z_min_left_10">
+                                                  
+                                                   <input class="fn-tinput" value="{$data}" style="width:100px"  name="date" value="" placeholder="30" >
+                                                   
+                                                   <div class="bsoy">日  <font style="color:#F00">  (注：可以设置多个提现日期，请用逗号隔开)</font></div>                                                  
+                                              </div>
+                                             </div> 
+                                                             
+                                         </div>                   
+                                   </div>
+                                   <div class="gater">
+                                          <input type="submit" value="确认" class="glylb_an_qd ajax-post confirm" target-form="form-postal"/>
+                                          <input type="button" value="取消" class="glylb_an_fh" />
+                                  </div> 
+                              </form>
+                             </div>
+            </div>
+          </div>
+        </div>
+      </div>
