@@ -1,5 +1,4 @@
 <!DOCTYPE html>
-
 <html>
 <include file="Public:head"/>
 <body>
@@ -81,7 +80,7 @@
     </div>
     <div class="site-mobile-shade"></div>
     <script>
-        layui.use('layer', function () {
+        /*layui.use('layer', function () {
             var $ = layui.jquery,
                     layer = layui.layer;
 
@@ -94,7 +93,45 @@
                     area: ['800px', '500px']
                 });
             });
+        });*/
+        /*编辑器*/
+        var k = 1;
+        layui.use('layedit', function(){
+            var layedit = layui.layedit;
+            LAY_demo = {
+                option : {
+                    height: 300,
+                    uploadImage : {
+                        url : '/index.php/Admin/AjaxPost/uploadEdit',
+                        type : 'post',
+                    },
+                },
+            };
+            var name = new Array();
+            $('.layui-textarea').each(function (){
+                $(this).attr('id','LAY_demo' + k)
+                name.push(layedit.build('LAY_demo'+ k,LAY_demo.option));
+                k++
+            })
+            $('.ajax-post').mouseover(function(){
+                for (var i = 0; i < name.length; i++) {
+                    layedit.sync(name[i])
+                }
+            })
         });
+        /*文件上传*/
+        layui.use('upload', function(){
+            var upload = layui.upload;
+            upload.render({
+                elem: '.uploadsOne',
+                done: function(res, index, upload){
+                    $('.uploadOne_img').attr('src',res.data.src);
+                    $('.uploadOne_img').css('display','block');
+                    $('.uploadOne_data').val(res.id);
+                }
+            })
+        });
+
         $('.admin-side-toggle').on('click', function () {
             var sideWidth = $('#admin-side').width();
             if (sideWidth === 200) {

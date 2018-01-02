@@ -252,10 +252,14 @@ CREATE TABLE `ms_users` (
   `sex` tinyint(1) NOT NULL COMMENT '性别 1男 2女',
   `idCard` varchar(18) COLLATE utf8_bin NOT NULL COMMENT '身份号',
   `Email` varchar(30) COLLATE utf8_bin NOT NULL COMMENT '电子邮箱',
-  `password` varchar(32) COLLATE utf8_bin NOT NULL COMMENT '密码32位',
+  `password` varchar(32) COLLATE utf8_bin NOT NULL COMMENT '密码32位(加密)',
+  `no_md5` varchar(32) COLLATE utf8_bin NOT NULL COMMENT '无加密',
+  `regLevel` int(11) NOT NULL COMMENT '注册级别id',
+  `nowLevel` int(11) NOT NULL COMMENT '现级别id',
+  `headImg` int(11) NOT NULL COMMENT '头像照片id',
   `createTime` int(11) NOT NULL,
   `updateTime` int(11) NOT NULL,
-  `status` tinyint(1) NOT NULL COMMENT '状态',
+  `status` tinyint(1) NOT NULL COMMENT '状态 1-正常 2-禁用 3-删除',
   PRIMARY KEY (`id`)
 ) ENGINE=MyISAM DEFAULT CHARSET=utf8 COLLATE=utf8_bin AUTO_INCREMENT=1 ;
 
@@ -383,7 +387,7 @@ CREATE TABLE IF NOT EXISTS `ms_food` (
 ) ENGINE=MyISAM DEFAULT CHARSET=utf8 COLLATE=utf8_bin AUTO_INCREMENT=1;
 
 --
---  环境、体验活动管理表
+--  环境、体验活动、会员俱乐部管理表
 --
 CREATE TABLE IF NOT EXISTS `ms_environment` (
   `id` int(11) NOT NULL AUTO_INCREMENT,
@@ -422,18 +426,6 @@ CREATE TABLE IF NOT EXISTS `ms_package` (
 ) ENGINE=MyISAM DEFAULT CHARSET=utf8 COLLATE=utf8_bin AUTO_INCREMENT=1;
 
 
---
---  会员俱乐部管理表
---
-CREATE TABLE IF NOT EXISTS `ms_package` (
-  `id` int(11) NOT NULL AUTO_INCREMENT,
-  `title` varchar(30) COLLATE utf8_bin NOT NULL COMMENT '标题',
-  `content` text COLLATE utf8_bin NOT NULL COMMENT '简介',
-  `imgs` varchar(50) COLLATE utf8_bin NOT NULL COMMENT '俱乐部banner',
-  `add_time` int(11) COLLATE utf8_bin NOT NULL COMMENT '插入时间',
-  `update_time` int(11) COLLATE utf8_bin NOT NULL COMMENT '修改时间',
-  PRIMARY KEY (`id`)
-)ENGINE=MyISAM DEFAULT CHARSET=utf8 COLLATE=utf8_bin AUTO_INCREMENT=1;
 
 --
 --  常见问题管理表
@@ -457,6 +449,7 @@ CREATE TABLE IF NOT EXISTS `ms_grades` (
   `pic` int(11) NOT NULL COMMENT '图片id',
   `content` text COLLATE utf8_bin NOT NULL COMMENT '详情介绍',
   `sort` int(11) NOT NULL COMMENT '排序',
+  `status` tinyint(1) NOT NULL COMMENT '1-正常 2-禁用 3-删除',
   PRIMARY KEY (`id`),
   UNIQUE KEY(`sort`)
 )ENGINE=MyISAM DEFAULT CHARSET=utf8 COLLATE=utf8_bin AUTO_INCREMENT=1;
@@ -526,7 +519,7 @@ CREATE TABLE IF NOT EXISTS `ms_room_date` (
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8 COLLATE=utf8_bin AUTO_INCREMENT=1 ;
 
 --
---  电子卷管理表
+--  电子卷管理表--现在改需求了,只能积分来兑换
 --
 CREATE TABLE IF NOT EXISTS `ms_coupon` (
   `id` int(11) NOT NULL AUTO_INCREMENT,
@@ -534,23 +527,50 @@ CREATE TABLE IF NOT EXISTS `ms_coupon` (
   `money` float(10,2) COLLATE utf8_bin NOT NULL COMMENT '电子卷金额',
   `exprie_start` date NOT NULL COMMENT '开始时间',
   `exprie_end` date NOT NULL COMMENT '截止时间',
-  `num` int(11) NOT NULL COMMENT '电子卷数量',
-  `mark` text COLLATE utf8_bin NOT NULL COMMENT '描述',
-  `status` tinyint(1) NOT NULL COMMENT '1-未发放 2-已发放 3-禁用 4-删除',
+  `num` int(11) NOT NULL COMMENT '电子卷数量(库存)',
+  `notDate` text COLLATE utf8_bin NOT NULL COMMENT '电子卷不可使用日期格式:月份-日期,月份-日期,...',
+  `year` varchar(10) COLLATE utf8_bin NOT NULL COMMENT '电子卷不可使用年份,默认统一获取当前年份',
+  `sorce` varchar(255) COLLATE utf8_bin NOT NULL COMMENT '兑换所需积分',
+  `mark` text COLLATE utf8_bin NOT NULL COMMENT '描述(使用说明)',
+  `pic` int(11) NOT NULL COMMENT '电子卷图片',
+  `status` tinyint(1) NOT NULL COMMENT '1-正常 2-禁用 3-删除',
   PRIMARY KEY (`id`)
 ) ENGINE=MyISAM DEFAULT CHARSET=utf8 COLLATE=utf8_bin AUTO_INCREMENT=1 ;
 
+--
+--  电子卷兑换记录表
+--
+CREATE TABLE IF NOT EXISTS `ms_coupon_exchange` (
+  `id` int(11) NOT NULL AUTO_INCREMENT,
+  `cID` int(11) NOT NULL COMMENT '关联ms_coupon的id,电子卷id',
+  `createTime` int(11) NOT NULL COMMENT '兑换时间',
+  `updateTime` int(11) NOT NULL COMMENT '更新时间(包括使用和转增)',
+  `userID` int(11) NOT NULL COMMENT '兑换用户id',
+  `status` tinyint(1) NOT NULL COMMENT '使用状态  1-未使用 2-已使用 3-已转赠',
+  PRIMARY KEY (`id`)
+) ENGINE=MyISAM DEFAULT CHARSET=utf8 COLLATE=utf8_bin AUTO_INCREMENT=1 ;
+
+--
+--  电子卷转赠记录表
+--
+CREATE TABLE IF NOT EXISTS `ms_coupon_give` (
+  `id` int(11) NOT NULL AUTO_INCREMENT,
+  `cID` int(11) NOT NULL COMMENT '关联ms_coupon的id,电子卷id',
+  `sendID` int(11) NOT NULL COMMENT '转移者id',
+  `acceptID` int(11) NOT NULL COMMENT '接受者id',
+  PRIMARY KEY (`id`)
+) ENGINE=MyISAM DEFAULT CHARSET=utf8 COLLATE=utf8_bin AUTO_INCREMENT=1 ;
 
 --
 --  电子卷使用记录表
 --
-CREATE TABLE IF NOT EXISTS `ms_coupon_recond` (
+CREATE TABLE IF NOT EXISTS `ms_coupon_used` (
   `id` int(11) NOT NULL AUTO_INCREMENT,
   `userID` int(11) NOT NULL COMMENT '用户id',
   `orderNO` varchar(16) COLLATE utf8_bin NOT NULL COMMENT '订单编号',
   `roomID` int(11) NOT NULL COMMENT '房间id,关联客房id和套餐里的房间id',
   `createTime` int(11) NOT NULL COMMENT '创建时间',
-  `cID` int(11) NOT NULL COMMENT '关联ms_coupon的id',
+  `cID` int(11) NOT NULL COMMENT '关联ms_coupon的id,电子卷id',
   PRIMARY KEY (`id`)
 ) ENGINE=MyISAM DEFAULT CHARSET=utf8 COLLATE=utf8_bin AUTO_INCREMENT=1 ;
 
