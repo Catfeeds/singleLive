@@ -1,0 +1,63 @@
+<div class="layui-body" style="bottom: 0;border-left: solid 2px #1AA094;" id="admin-body">
+    <div class="layui-tab admin-nav-card layui-tab-brief" lay-filter="admin-tab">
+        <ul class="layui-tab-title">
+            <li class="layui-this">
+                <i class="fa fa-dashboard" aria-hidden="true"></i>
+                <cite>客房分类</cite>
+            </li>
+        </ul>
+        <div class="layui-tab-content" style="min-height: 150px; padding: 5px 0 0 0;">
+            <div class="layui-tab-item layui-show">
+                <div class="conter">
+                    <div class="conter_sait">
+                        <form action="">
+                            <div class="wort">
+                                <button type="button" class="layui-btn layui-btn-danger iframe"
+                                        data-iframe="__URL__/add">新增
+                                </button>
+                            </div>
+                        </form>
+                    </div>
+                    <div class="botg">
+                        <table class="layui-table">
+                            <thead>
+                            <tr>
+                                <th>序号</th>
+                                <th>房间分类</th>
+                                <th>房间备注</th>
+                                <th>添加时间</th>
+                                <th>操作</th>
+                            </tr>
+                            </thead>
+                            <tbody>
+                            <volist name="db" id="db" key="k">
+                                <tr>
+                                    <td>{:I('p')?(I('p') - 1)*C('PAGE_NUMBER') + $k:$k}</td>
+                                    <td>{$db.title}</td>
+                                    <td>{$db.mark}</td>
+                                    <td>{$db.add_time|date='Y-m-d',###}</td>
+                                    <td>
+                                        <a class="layui-btn layui-btn-mini iframe" data-iframe="__URL__/edit/id/{$db.id}">修改</a>
+                                        <switch name="db.status">
+                                            <case value="1">
+                                                <a href="__URL__/set_status?co=HouseType&id={$db.id}&sta=1&t=HouseCate" class="layui-btn layui-btn-mini ajax-get confirm" style="background-color: red;" data-msg="您确定禁用?" >禁用</a>
+                                            </case>
+                                            <case value="2">
+                                                <a href="__URL__/set_status?co=HouseType&id={$db.id}&sta=2&t=HouseCate" class="layui-btn layui-btn-mini layui-btn-warm ajax-get confirm" data-msg="您确定启用?">启用</a>
+                                            </case>
+                                        </switch>
+                                        <a class="layui-btn layui-btn-danger layui-btn-mini confirm ajax-get" href="__URL__/delete/id/{$db.id}" data-msg='您是否删除？'>删除</a>
+                                    </td>
+                                </tr>
+                            </volist>
+                            </tbody>
+                        </table>
+                        <div class="feniou">
+                            {$page}
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>

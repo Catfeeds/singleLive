@@ -1,0 +1,43 @@
+<!DOCTYPE html>
+<html>
+<include file="Public:head"/>
+<body>
+<div class="xz_lkop">添加类型</div>
+<div class="conter">
+    <form action="__URL__/insert" class="addform">
+        <div class="ertob1">
+            <div class="lista2">
+                <div class="lista_left">类型名称 ：
+                </div>
+                <div class="lista_right">
+                    <input type="text" name="title" class="int_1" placeholder="请输入类型名称">
+                </div>
+            </div>
+        </div>
+        <div class="ertob1">
+            <div class="lista2">
+                <div class="lista_left">备注 ：
+                </div>
+                <div class="lista_right" style="height: auto;">
+                   <textarea style="height: 200px;min-height: 200px;" name="mark" class="int_1" placeholder="请输入备注信息"></textarea>
+                </div>
+            </div>
+        </div>
+        <div class="ertob1">
+            <div class="lista2">
+                <div class="lista_left">
+                </div>
+                <div class="lista_right">
+                    <input type="hidden" name="__GO__" value="__URL__/index">
+                    <input type="submit" value="添加" class="glylb_an_qd parent-ajax-post" target-form="addform"/>
+                    <input type="button" value="取消" class="glylb_an_fh cancel"/>
+                </div>
+            </div>
+
+        </div>
+    </form>
+</div>
+<include file="Public:js"/>
+</div>
+</body>
+</html>

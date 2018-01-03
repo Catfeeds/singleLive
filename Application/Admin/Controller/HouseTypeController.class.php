@@ -2,16 +2,17 @@
 namespace Admin\Controller;
 use Think\Controller;
 use Think\D;
+
 //房间类型模块
-class RoomTypeController extends CommonController {
-	public $model = 'Rooms';
+class HouseTypeController extends CommonController {
+	public $model = 'HouseCate';
 	public $success = ['insert' => '新增类型成功'];
 	public function _map(&$data)
 	{
-		$map['status'] = ['neq',9];
+		$map['status'] = ['neq',3];
 		$data = [
 		'where' => $map,
-		'order' => 'createTime DESC'
+		'order' => 'add_time DESC'
 		];
 	}
 	public function index()
@@ -29,15 +30,8 @@ class RoomTypeController extends CommonController {
 	{
 		C('LAYOUT_ON',false);
 	}
-	/**
-	 * [delete 逻辑删除]暂定
-	 * @Author   尹新斌
-	 * @DateTime 2017-07-11
-	 * @Function []
-	 * @return   [type]     [description]
-	 */
 	public function delete()
 	{
-		parent::delete(['status' => 9]);
+		parent::delete(['status' => 3]);
 	}
 }

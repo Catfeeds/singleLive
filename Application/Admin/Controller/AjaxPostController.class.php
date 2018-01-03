@@ -90,4 +90,22 @@ class AjaxPostController extends CommonController
         }
         $this->ajaxReturn($info);
     }
+    /*
+     *   删除图片---多图上传
+     * */
+    public function imgDel(){
+        $table = I('table');
+        $banner = M("$table");
+        $img = $banner->where("id=".I('id'))->getField('imgs');
+        $arr = explode(',',$img);
+        unset($arr[array_search(I('fileId'),$arr)]);
+        $str = implode(',',$arr);
+        $num = $banner->where("id=".I('id'))->setField('imgs',$str);
+        if($num>0){
+            $info['status'] = 'yes';
+        }else{
+            $info['status'] = 'no';
+        }
+        $this->ajaxReturn($info);
+    }
 }

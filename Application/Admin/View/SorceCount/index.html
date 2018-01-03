@@ -1,0 +1,93 @@
+<div class="layui-body" style="bottom: 0;border-left: solid 2px #1AA094;" id="admin-body">
+    <div class="layui-tab admin-nav-card layui-tab-brief" lay-filter="admin-tab">
+        <ul class="layui-tab-title">
+            <li class="layui-this">
+                <i class="fa fa-dashboard" aria-hidden="true"></i>
+                <cite>积分统计</cite>
+            </li>
+        </ul>
+        <div class="layui-tab-content" style="min-height: 150px; padding: 5px 0 0 0;">
+            <div class="layui-tab-item layui-show">
+                <div class="conter">
+                    <div class="conter_sait">
+                        <form action="" method="post" class="form-user">
+
+                            <div class="wort">
+                                <div class="layui-input-inline">
+                                    <input name="startTime" value="{:I('startTime')}" id="date" autocomplete="off" placeholder="开始时间" class="layui-input test-item" type="text">
+                                </div>
+                            </div>
+                            <div class="wort">
+                                <div class="layui-input-inline">至
+                                </div>
+                            </div>
+                            <div class="wort">
+                                <div class="layui-input-inline">
+                                    <input name="endTime" value="{:I('endTime')}"autocomplete="off" placeholder="结束时间" class="layui-input test-item" type="text">
+                                </div>
+                            </div>
+                            <div class="wort" style="width:280px;">
+                                <input name="title" value="{:I('title')}" lay-verify="title" autocomplete="off" placeholder="姓名/电话/身份证号" class="layui-input" type="text">
+                            </div>
+                            <div class="wort">
+                                <button id="select" class="layui-btn">查找</button>
+                            </div>
+                            <div class="wort">
+                                <button id="export" class="layui-btn layui-btn-normal">导出</button>
+                            </div>
+
+                        </form>
+                    </div>
+
+                    <div class="botg">
+                        <table class="layui-table">
+                            <thead>
+                            <tr>
+                                <th>日期</th>
+                                <th>姓名</th>
+                                <th>变更前</th>
+                                <th>变更</th>
+                                <th>变更后</th>
+                                <th>状态</th>
+                                <th>类型(消费返积分、升级)</th>
+                            </tr>
+                            </thead>
+                            <tbody>
+
+                                <tr>
+                                    <td>2017-06-03</td>
+                                    <td>李四</td>
+                                    <td>500</td>
+                                    <td>300</td>
+                                    <td>800</td>
+                                    <td>上升</td>
+                                    <td>消费返积分</td>
+                                </tr>
+
+                            </tbody>
+                        </table>
+                        <div class="feniou">
+                            <ul>
+                                {$page}
+                            </ul>
+                        </div>
+
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+<script>
+    //日期插件
+    layui.use('laydate', function() {
+        var laydate = layui.laydate;
+        //同时绑定多个
+        lay('.test-item').each(function () {
+            laydate.render({
+                elem: this
+                , trigger: 'click'
+            });
+        });
+    })
+</script>

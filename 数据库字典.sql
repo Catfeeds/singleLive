@@ -342,6 +342,7 @@ CREATE TABLE IF NOT EXISTS `ms_order_flow` (
 CREATE TABLE IF NOT EXISTS `ms_house_cate` (
   `id` int(11) NOT NULL AUTO_INCREMENT,
   `title` varchar(30) COLLATE utf8_bin NOT NULL COMMENT '分类名称',
+  `mark` text COLLATE utf8_bin NOT NULL COMMENT '备注信息',
   `add_time` int(11) COLLATE utf8_bin NOT NULL COMMENT '插入时间',
   `update_time` int(11) COLLATE utf8_bin NOT NULL COMMENT '修改时间',
   `status` tinyint(1) NOT NULL COMMENT '状态 1-正常 2-禁用 3-删除',
@@ -355,18 +356,18 @@ CREATE TABLE IF NOT EXISTS `ms_house` (
   `id` int(11) NOT NULL AUTO_INCREMENT,
   `category` int(11) NOT NULL COMMENT '客房分类id',
   `name` varchar(30) COLLATE utf8_bin NOT NULL COMMENT '客房名称',
-  `equipment` varchar(20) COLLATE utf8_bin NOT NULL COMMENT '房间设备',
+  `equipment` text COLLATE utf8_bin NOT NULL COMMENT '房间设备',
   `money` float(10,2) NOT NULL COMMENT '房间金额',
   `mark` text COLLATE utf8_bin NOT NULL COMMENT '房间描述',
-  `back` text COLLATE utf8_bin NOT NULL COMMENT '退房须知',
+  `back` text COLLATE utf8_bin NOT NULL COMMENT '订房须知',
   `come` text COLLATE utf8_bin NOT NULL COMMENT '入住通知',
   `change` text COLLATE utf8_bin NOT NULL COMMENT '更改订单',
   `sorce` int(11) NOT NULL COMMENT '反还积分',
   `paper` char(1) COLLATE utf8_bin NOT NULL COMMENT '是否可以使用电子卷 y-是 n-否',
-  `imgBanners` varchar(50) COLLATE utf8_bin NOT NULL COMMENT '客房banner',
+  `imgs` varchar(50) COLLATE utf8_bin NOT NULL COMMENT '客房banner',
   `add_time` int(11) COLLATE utf8_bin NOT NULL COMMENT '插入时间',
   `update_time` int(11) COLLATE utf8_bin NOT NULL COMMENT '修改时间',
-  `status` tinyint(1) NOT NULL COMMENT '状态字段 1-正常 2-已删除',
+  `status` tinyint(1) NOT NULL COMMENT '状态字段 1-正常 2-已禁用 3-已删除',
   PRIMARY KEY (`id`)
 ) ENGINE=MyISAM DEFAULT CHARSET=utf8 COLLATE=utf8_bin AUTO_INCREMENT=1;
 

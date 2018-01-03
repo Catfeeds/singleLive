@@ -55,4 +55,30 @@ class CommonController extends Controller {
             }
         }
     }
+    /*
+     *  公共方法---禁用 启用
+     *  $table-表明
+     *  $pk 主键
+     *  $set 状态
+     *  $controller 跳转控制器名称
+     * */
+    public function set_status(){
+        $controller = I('co');
+        $table = I('t');
+        $pk = I('id');
+        $set = I('sta');
+        switch($set){
+            case '1':
+                $status = '2';
+                $success = '禁用成功';
+                break;
+            case '2':
+                $status = '1';
+                $success = '启用成功';
+                break;
+        }
+        M("$table")->where("id=".$pk)->setField('status',$status);
+        $this->success($success,U("$controller/index"));
+    }
+    
 }

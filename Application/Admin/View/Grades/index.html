@@ -1,0 +1,68 @@
+<div class="layui-body" style="bottom: 0;border-left: solid 2px #1AA094;" id="admin-body">
+    <div class="layui-tab admin-nav-card layui-tab-brief" lay-filter="admin-tab">
+        <ul class="layui-tab-title">
+            <li class="layui-this">
+                <i class="fa fa-dashboard" aria-hidden="true"></i>
+                <cite>级别管理</cite>
+            </li>
+        </ul>
+
+        <div class="layui-tab-content" style="min-height: 150px; padding: 5px 0 0 0;">
+            <div class="layui-tab-item layui-show">
+                <div class="conter">
+                    <div class="conter_sait">
+                        <form action="__URL__/index" method="post" class="form-hotel">
+                            <div class="wort" style="width:280px;">
+                                <input name="title" lay-verify="title" value="{:I('title')}" autocomplete="off" placeholder="请输入名称" class="layui-input" type="text">
+                            </div>
+                            <div class="wort">
+                                <button type="submit" id="select" class="layui-btn">查找</button>
+                            </div>
+                            <div class="wort">
+                                <a href="__URL__/add">
+                                    <button type="button" class="layui-btn layui-btn-danger">新增</button>
+                                </a>
+                            </div>
+                        </form>
+                    </div>
+                    <div class="botg">
+                        <table class="layui-table">
+                            <thead>
+                            <tr>
+                                <th>级别名称</th>
+                                <th>所需积分</th>
+                                <th>图片</th>
+                                <th>状态</th>
+                                <th>操作</th>
+                            </tr>
+                            </thead>
+                            <tbody>
+                            <volist name="db" id="row">
+                                <tr>
+                                    <td>{$row.title}</td>
+                                    <td>{$row.sorce}</td>
+                                    <td><img style="width: 100px;height: 100px;" src="{:getSrc($row['pic'])}" /></td>
+                                    <td>{$row['status'] == '1' ? '正常' : '禁用'}</td>
+                                    <td>
+                                        <switch name="row.status">
+                                            <case value="1"><a href="__URL__/set_status?co=Grades&id={$row.id}&t=Grades&sta=1" class="z_coios_1 ajax-get confirm" data-msg='您确定禁用？'>禁用</a></case>
+                                            <case value="2"><a href="__URL__/set_status?co=Grades&id={$row.id}&t=Grades&sta=2" class="z_coios_2 ajax-get confirm" data-msg='您确定启用？'>启用</a></case>
+                                        </switch>
+                                        <a class="z_coios_4" href="__URL__/edit/id/{$row.id}">修改</a>
+                                        <a href="__URL__/del/id/{$row.id}" class="z_coios_3 ajax-get confirm" data-msg='您确定删除？'>删除</a>
+                                    </td>
+                                </tr>
+                            </volist>
+                            </tbody>
+                        </table>
+                        <div class="feniou">
+                            <ul>
+                                {$page}
+                            </ul>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
