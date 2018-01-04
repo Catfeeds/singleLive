@@ -9,8 +9,7 @@ class PackageSetModel extends Model {
 	    ['attr','check_attr','规格/数量必须为正整数',0,'callback'],
 	];
 	function check_attr($data){
-		dump(preg_match("/^[+]{0,1}(\d+)$|^[+]{0,1}(\d+\.\d+)$/",$data));die;
-		if(preg_match("/^[+]{0,1}(\d+)$|^[+]{0,1}(\d+\.\d+)$/",$data) ==1){
+		if(preg_match("/^[+]{0,1}(\d+)$/",$data) ==1){
 			return true;
 		}else{
 			return false;

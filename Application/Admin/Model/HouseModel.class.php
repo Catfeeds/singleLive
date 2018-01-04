@@ -19,7 +19,7 @@ class HouseModel extends Model {
 		['update_time','time',self::MODEL_BOTH,'function'],
 	];
 	function check_sorce($data){
-		if(preg_match("/^[+]{0,1}(\d+)$|^[+]{0,1}(\d+\.\d+)$/",$data) ==1){
+		if(preg_match("/^[+]{0,1}(\d+)$/",$data) ==1){
 			return true;
 		}else{
 			return false;
