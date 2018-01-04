@@ -1,0 +1,115 @@
+<div class="layui-body" style="bottom: 0;border-left: solid 2px #1AA094;" id="admin-body">
+    <div class="layui-tab admin-nav-card layui-tab-brief" lay-filter="admin-tab">
+        <ul class="layui-tab-title">
+            <li class="layui-this"><i class="fa fa-dashboard" aria-hidden="true"></i> <cite>会员俱乐部修改</cite></li>
+        </ul>
+        <style>
+            ._del {
+                float: left;
+                width: 100px;
+                height: 100px;
+                display: block;
+                margin-left: 15px;
+            }
+        </style>
+        <div class="layui-tab-item layui-show">
+            <div class="conter">
+                <div class="xxkt">
+                    <ul>
+                        <li class="xxkt_bt">会员俱乐部修改</li>
+                    </ul>
+                </div>
+                <form action="__URL__/updateCheck" method="post" class="form-hotelAdd" enctype="multipart/form-data">
+                    <div class="xxknr">
+                        <div>
+                            <div class="glylb_szmm"><span class="glylb_szmm_span">选择分类：</span>
+                                <div class="layui-input-block z_min_left_10">
+                                    <select name="type" sel_val="{$db.type}">
+                                        <option value="f">餐饮</option>
+                                        <option value="e">环境</option>
+                                        <option value="a">体验活动</option>
+                                    </select>
+                                </div>
+                            </div>
+                            <div class="glylb_szmm"><span class="glylb_szmm_span">标题：</span>
+                                <div class="layui-input-block z_min_left_10">
+                                    <input class="fn-tinput requ" name="name" value="{$db.name}" placeholder="请填写级别名称">
+                                </div>
+                            </div>
+                            <div class="glylb_szmm">
+                                <span class="glylb_szmm_span">轮播图：</span>
+                                <div class="layui-input-block z_min_left_10">
+                                    <div id="zyupload" class="zyupload" style="margin:0 0 20px 0;"></div>
+                                </div>
+                            </div>
+                            <div class="glylb_szmm">
+                                <div class="file_src">
+                                    <volist name="src" id="src">
+                                        <a data-id="{$src}" class="_del">
+                                            <span style="margin-left: 30px;">删除</span>
+                                            <img src="{:getSrc($src)}" style="width: 100%;height: 100%;"/>
+                                        </a>
+                                    </volist>
+                                </div>
+                            </div>
+                            <div class="glylb_szmm"><span class="glylb_szmm_span">详情介绍：</span>
+                                <div class="layui-input-block z_min_left_10">
+                                    <textarea class="layui-textarea" name="mark">{$db.mark}</textarea>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="gater">
+                        <input type="hidden" name="__GO__" value="__URL__/index">
+                        <input type="hidden" name="id" value="{$db.id}">
+                        <input type="submit" value="确认" class="glylb_an_qd ajax-post" target-form="form-hotelAdd"/>
+                        <a href="__URL__/index"><button type="button" class="glylb_an_fh">返回</button></a>
+                    </div>
+                </form>
+            </div>
+        </div>
+    </div>
+</div>
+<script type="text/javascript">
+    $(function () {
+        // 初始化插件
+        $("#zyupload").zyUpload({
+            width: "750px",                 // 宽度
+            height: "400px",                 // 宽度
+            itemWidth: "140px",                 // 文件项的宽度
+            itemHeight: "115px",                 // 文件项的高度
+            url: "{:U('AjaxPost/zyupload')}",                     // 上传文件的路径
+            fileType: ["jpg", "png", "gif", "jpeg"],     // 上传文件的类型
+            fileSize: 51200000,                // 上传文件的大小
+            multiple: true,                    // 是否可以多个文件上传
+            dragDrop: true,                    // 是否可以拖动上传文件
+            tailor: true,                    // 是否可以裁剪图片
+            del: true,                    // 是否可以删除文件
+            finishDel: false,           // 是否在上传文件完成后删除预览
+            onSuccess: function (file, response) {          // 文件上传成功的回调方法
+                //alert('上传完成的回调为JSON：'+JSON.stringify(file));
+                var json = JSON.parse(response);
+                $('#zyupload').append("<input type='hidden' name='imgs[]' value=" + json.id + ">");
+            }
+        });
+        $('._del').on('click', function () {
+            var fileId = $(this).attr('data-id');
+            var url_file = "{:U('AjaxPost/imgDel')}";
+            var id = $("input[name='id']").val();
+            var table = 'Environment';
+            layer.confirm('您确定删除这张图片吗?', function () {
+                $.post(url_file, {id: id, fileId: fileId,table:table}, function (item) {
+                    if (item.status == 'yes') {
+                        $("a[data-id=" + fileId + "]").remove();
+                        layer.msg('删除成功');
+                    }
+                })
+            })
+        })
+        $('select').each(function(){
+            var sel_val = $(this).attr('sel_val');
+            $(this).val('f');
+            console.log($(this).val(sel_val));
+        })
+    });
+</script>

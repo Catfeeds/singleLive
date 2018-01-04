@@ -132,7 +132,24 @@ class PackageListController extends CommonController {
     }
     //套餐内容列表-修改
     public function contentEdit(){
-
+        $id = I('id');
+        $db = D::find('PackageSet',$id);
+        $set = D('PackageSet');
+        if(IS_POST){
+            if($data = $set->create()){
+                $set->save($data);
+                $this->success('修改成功',U('PackageList/content?pid='.$data['pid']));
+            }else{
+                $this->error($set->getError());
+            }
+        }
+        $this->assign('db',$db);
         $this->display();
+    }
+    //套餐内容列表-删除
+    public function contentDel(){
+        $id = I('id');
+        M('PackageSet')->where("id=".$id)->delete();
+        $this->success('删除成功');
     }
 }

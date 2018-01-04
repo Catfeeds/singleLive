@@ -5,15 +5,16 @@ use Think\Faster;
 use Think\D;
 
 /*
- *  会员俱乐部
+ *  内容管理列表
  * */
-class UserClubController extends CommonController
+class ContentManageController extends CommonController
 {
     public $model = 'Environment';
     public function _map(&$data)
     {
+        $map['type'] = ['in',"f,e,a"];
         $data = [
-            'where' => "`type`='m'",
+            'where' => $map,
             'order' => 'add_time desc'
         ];
     }
@@ -22,6 +23,17 @@ class UserClubController extends CommonController
         foreach ($db['db'] as $key=>$val){
             $db['db'][$key]['imgs'] = explode(',',$db['db'][$key]['imgs']);
             $db['db'][$key]['imgShow'] = getSrc($db['db'][$key]['imgs'][0]);
+            switch($db['db'][$key]['type']){
+                case 'f':
+                    $db['db'][$key]['typeName'] = '餐饮';
+                    break;
+                case 'e':
+                    $db['db'][$key]['typeName'] = '环境';
+                    break;
+                case 'a':
+                    $db['db'][$key]['typeName'] = '体验活动';
+                    break;
+            }
         }
         //dump($db);die;
         $this->assign('db',$db['db']);

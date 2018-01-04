@@ -97,7 +97,7 @@ CREATE TABLE `ms_perm` (
   `perm_parentid` int(11) NOT NULL COMMENT '父级id',
   PRIMARY KEY (`perm_id`),
   KEY `perm_type` (`perm_type`)
-) ENGINE=MyISAM  DEFAULT CHARSET=utf8 COLLATE=utf8_bin AUTO_INCREMENT=31 ;
+) ENGINE=MyISAM  DEFAULT CHARSET=utf8 COLLATE=utf8_bin AUTO_INCREMENT=39 ;
 
 --
 -- 转存表中的数据 `perm`
@@ -129,18 +129,19 @@ INSERT INTO `ms_perm` (`perm_id`, `perm_type`, `perm_url`, `status`, `perm_paren
 (23, '客户统计', 'UsersCount', 0,6),
 (24, '订单统计', 'OrderCount', 0,6),
 (25, '财务统计', 'FinanceCount', 0,6),
-(26, '餐饮列表', 'Foods', 0,7),
-(27, '内容列表', 'FinanceCount', 0,7),
-(28, '权限管理', 'Perm', 0,8),
-(29, '管理员', 'PermRoot', 0,8),
-(30, '电子券列表', 'Coupon', 0,9),
-(31, '系统消息', 'SystemNews', 0,10),
-(32, '活动消息', 'ActiveNews', 0,10),
-(33, '网站设置', 'WebSite', 0,11),
-(34, '备份数据库', 'DB', 0,11),
-(35, '还原数据库', 'DBReduction', 0,11),
-(36, '密码修改', 'Pwd', 0,11),
-(37, '参数设置', 'Parameter', 0,11);
+(26, '内容管理列表', 'ContentManage', 0,7),
+(27, '权限管理', 'Perm', 0,8),
+(28, '管理员', 'PermRoot', 0,8),
+(29, '电子券列表', 'Coupon', 0,9),
+(30, '电子券转赠记录', 'CouponGive', 0,9),
+(31, '电子券使用记录', 'CouponUsed', 0,9),
+(32, '系统消息', 'SystemNews', 0,10),
+(33, '活动消息', 'ActiveNews', 0,10),
+(34, '网站设置', 'WebSite', 0,11),
+(35, '备份数据库', 'DB', 0,11),
+(36, '还原数据库', 'DBReduction', 0,11),
+(37, '密码修改', 'Pwd', 0,11),
+(38, '参数设置', 'Parameter', 0,11);
 
 
 
@@ -373,31 +374,16 @@ CREATE TABLE IF NOT EXISTS `ms_house` (
 ) ENGINE=MyISAM DEFAULT CHARSET=utf8 COLLATE=utf8_bin AUTO_INCREMENT=1;
 
 --
---  餐饮管理表
---
-CREATE TABLE IF NOT EXISTS `ms_food` (
-  `id` int(11) NOT NULL AUTO_INCREMENT,
-  `name` varchar(30) COLLATE utf8_bin NOT NULL COMMENT '标题',
-  `mark` text COLLATE utf8_bin NOT NULL COMMENT '描述',
-  `breakfast` text COLLATE utf8_bin NOT NULL COMMENT '早餐',
-  `lunch` text COLLATE utf8_bin NOT NULL COMMENT '午餐',
-  `dinner` text COLLATE utf8_bin NOT NULL COMMENT '晚餐',
-  `foodBanners` varchar(50) COLLATE utf8_bin NOT NULL COMMENT '餐饮banner',
-  `add_time` int(11) COLLATE utf8_bin NOT NULL COMMENT '插入时间',
-  `update_time` int(11) COLLATE utf8_bin NOT NULL COMMENT '修改时间',
-  PRIMARY KEY (`id`)
-) ENGINE=MyISAM DEFAULT CHARSET=utf8 COLLATE=utf8_bin AUTO_INCREMENT=1;
-
---
---  环境、体验活动、会员俱乐部管理表
+--  餐饮、环境、体验活动、会员俱乐部管理表(内容管理表)
 --
 CREATE TABLE IF NOT EXISTS `ms_environment` (
   `id` int(11) NOT NULL AUTO_INCREMENT,
   `name` varchar(30) COLLATE utf8_bin NOT NULL COMMENT '标题',
   `mark` text COLLATE utf8_bin NOT NULL COMMENT '描述',
-  `imgs` varchar(50) COLLATE utf8_bin NOT NULL COMMENT '环境banner',
+  `imgs` varchar(50) COLLATE utf8_bin NOT NULL COMMENT 'banner',
   `add_time` int(11) COLLATE utf8_bin NOT NULL COMMENT '插入时间',
   `update_time` int(11) COLLATE utf8_bin NOT NULL COMMENT '修改时间',
+  `type` char(1) COLLATE utf8_bin NOT NULL COMMENT 'f-餐饮 e-环境 a-体验活动 m-会员俱乐部',
   PRIMARY KEY (`id`)
 ) ENGINE=MyISAM DEFAULT CHARSET=utf8 COLLATE=utf8_bin AUTO_INCREMENT=1;
 

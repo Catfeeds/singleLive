@@ -13,6 +13,15 @@
                 <form action="__URL__/addCheck" method="post" class="form-hotelAdd" enctype="multipart/form-data">
                     <div class="xxknr">
                         <div>
+                            <div class="glylb_szmm"><span class="glylb_szmm_span">选择分类：</span>
+                                <div class="layui-input-block z_min_left_10">
+                                    <select name="type">
+                                        <option value="f">餐饮</option>
+                                        <option value="e">环境</option>
+                                        <option value="a">体验活动</option>
+                                    </select>
+                                </div>
+                            </div>
                             <div class="glylb_szmm"><span class="glylb_szmm_span">标题：</span>
                                 <div class="layui-input-block z_min_left_10">
                                     <input class="fn-tinput requ" name="name" placeholder="请填写级别名称">
@@ -33,10 +42,8 @@
                     </div>
                     <div class="gater">
                         <input type="hidden" name="__GO__" value="__URL__/index">
-                        <input type="hidden" name="type" value="m">
                         <input type="submit" value="确认" class="glylb_an_qd ajax-post" target-form="form-hotelAdd"/>
-                        <input type="button" value="取消" class="glylb_an_fh"
-                               onclick="javascript:history.back(-1);return false"/>
+                        <a href="__URL__/index"><button type="button" class="glylb_an_fh">返回</button></a>
                     </div>
                 </form>
             </div>
