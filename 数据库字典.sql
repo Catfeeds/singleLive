@@ -337,7 +337,7 @@ CREATE TABLE IF NOT EXISTS `ms_order_flow` (
 --  新表全部加这
 -- ---------------------------------------------------------------------------
 --
---  客房分类表
+--  客房、套餐分类表
 --
 CREATE TABLE IF NOT EXISTS `ms_house_cate` (
   `id` int(11) NOT NULL AUTO_INCREMENT,
@@ -346,6 +346,7 @@ CREATE TABLE IF NOT EXISTS `ms_house_cate` (
   `add_time` int(11) COLLATE utf8_bin NOT NULL COMMENT '插入时间',
   `update_time` int(11) COLLATE utf8_bin NOT NULL COMMENT '修改时间',
   `status` tinyint(1) NOT NULL COMMENT '状态 1-正常 2-禁用 3-删除',
+  `type` char(1) COLLATE utf8_bin NOT NULL COMMENT 'h-客房 t-套餐',
   PRIMARY KEY (`id`)
 )ENGINE=MyISAM DEFAULT CHARSET=utf8 COLLATE=utf8_bin AUTO_INCREMENT=1;
 
@@ -417,12 +418,17 @@ CREATE TABLE IF NOT EXISTS `ms_package_set` (
 --
 CREATE TABLE IF NOT EXISTS `ms_package` (
   `id` int(11) NOT NULL AUTO_INCREMENT,
+  `category` int(11) NOT NULL COMMENT '套餐分类id',
   `title` varchar(30) COLLATE utf8_bin NOT NULL COMMENT '房间名称',
   `limit` int(4) NOT NULL COMMENT '每人限购份数',
   `mark` text COLLATE utf8_bin NOT NULL COMMENT '预定须知',
   `content` text COLLATE utf8_bin NOT NULL COMMENT '套餐详情',
   `packMoney` float(10,2) COLLATE utf8_bin NOT NULL COMMENT '套餐价',
   `sorce` int(11) NOT NULL COMMENT '反还积分数',
+  `pic` int(11) NOT NULL COMMENT '封面图片',
+  `add_time` int(11) NOT NULL COMMENT '添加时间',
+  `update_time` int(11) NOT NULL COMMENT '修改时间',
+  `status` tinyint(1) NOT NULL COMMENT '1-正常 2-禁用 3-删除',
   PRIMARY KEY (`id`)
 ) ENGINE=MyISAM DEFAULT CHARSET=utf8 COLLATE=utf8_bin AUTO_INCREMENT=1;
 

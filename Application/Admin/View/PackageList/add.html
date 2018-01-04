@@ -1,0 +1,89 @@
+<div class="layui-body" style="bottom: 0;border-left: solid 2px #1AA094;" id="admin-body">
+    <div class="layui-tab admin-nav-card layui-tab-brief" lay-filter="admin-tab">
+        <ul class="layui-tab-title">
+            <li class="layui-this"><i class="fa fa-dashboard" aria-hidden="true"></i> <cite>新增套餐</cite></li>
+        </ul>
+        <div class="layui-tab-item layui-show">
+            <div class="conter">
+                <div class="xxkt">
+                    <ul>
+                        <li class="xxkt_bt">新增套餐</li>
+                    </ul>
+                </div>
+                <form action="__URL__/add" method="post" class="form-hotelAdd">
+                    <div class="xxknr">
+                        <div>
+                            <div class="glylb_szmm"><span class="glylb_szmm_span">选择套餐类型：</span>
+                                <div class="layui-input-block z_min_left_10">
+                                    <select class="fn-tinput requ" name="category">
+                                        <option value="">--选择套餐类型--</option>
+                                        <volist name="cate" id="cates">
+                                            <option value="{$cates.id}">{$cates.title}</option>
+                                        </volist>
+                                    </select>
+                                </div>
+                            </div>
+                            <div class="glylb_szmm"><span class="glylb_szmm_span">封面图片：</span>
+                                <div class="layui-input-block z_min_left_10">
+                                    <img id="LAY_demo_upload" style="display: none;" width="100px" height="100px" src="">
+                                    <button name="file" style="margin-top:7px;" class="layui-btn test" type="button" lay-data="{url: '/index.php/Admin/AjaxPost/uploadOne', accept: 'images'}" >
+                                        <i class="layui-icon">&#xe67c;</i>上传封面图片
+                                    </button>
+                                    <input name="pic" id="logo" type="hidden" value="">
+                                </div>
+                            </div>
+                            <div class="glylb_szmm"><span class="glylb_szmm_span">套餐名称：</span>
+                                <div class="layui-input-block z_min_left_10">
+                                    <input class="fn-tinput requ" name="title" placeholder="请填写客房名称">
+                                </div>
+                            </div>
+                            <div class="glylb_szmm"><span class="glylb_szmm_span">每人限购份数：</span>
+                                <div class="layui-input-block z_min_left_10">
+                                    <input class="fn-tinput requ" name="limit" placeholder="请填写每人限购份数">
+                                </div>
+                            </div>
+                            <div class="glylb_szmm"><span class="glylb_szmm_span">套餐金额：</span>
+                                <div class="layui-input-block z_min_left_10">
+                                    <input class="fn-tinput requ" type="text" name="packMoney" placeholder="请输入房间金额">
+                                </div>
+                            </div>
+                            <div class="glylb_szmm"><span class="glylb_szmm_span">反还积分：</span>
+                                <div class="layui-input-block z_min_left_10">
+                                    <input class="fn-tinput requ" type="text" name="sorce" placeholder="请输入反还积分">
+                                </div>
+                            </div>
+                            <div class="glylb_szmm"><span class="glylb_szmm_span">套餐详情：</span>
+                                <div class="layui-input-block z_min_left_10">
+                                    <textarea class="layui-textarea" name="content"></textarea>
+                                </div>
+                            </div>
+                            <div class="glylb_szmm"><span class="glylb_szmm_span">预定须知：</span>
+                                <div class="layui-input-block z_min_left_10">
+                                    <textarea class="layui-textarea" name="mark"></textarea>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="gater">
+                        <input type="hidden" name="__GO__" value="__URL__/index">
+                        <input type="submit" value="确认" class="glylb_an_qd ajax-post" target-form="form-hotelAdd"/>
+                        <a href="__URL__/index"><button class="glylb_an_fh" type="button">返回</button></a>
+                    </div>
+                </form>
+            </div>
+        </div>
+    </div>
+</div>
+<script>
+    layui.use('upload', function(){
+        var upload = layui.upload;
+        upload.render({
+            elem: '.test',
+            done: function(res){
+                $('#LAY_demo_upload').attr('src',res.data.src);
+                $('#LAY_demo_upload').css('display','block');
+                $('#logo').val(res.id);
+            }
+        })
+    })
+</script>

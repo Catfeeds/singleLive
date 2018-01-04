@@ -499,7 +499,7 @@ body .sancu .layui-layer-btn1:hover {
 	border: 1px solid #A0A0A0;
 }
 .xxkt_bt {
-	width: 100px !important;
+	width: 100px;
 }
 .fxsg2_topr {
 	padding: 30px 0 10px 0;

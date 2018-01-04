@@ -3,14 +3,14 @@ namespace Admin\Controller;
 use Think\Controller;
 use Think\D;
 
-//房间类型模块
-class HouseTypeController extends CommonController {
+//套餐分类模块
+class PackageController extends CommonController {
 	public $model = 'HouseCate';
 	public $success = ['insert' => '新增类型成功'];
 	public function _map(&$data)
 	{
 		$map['status'] = ['neq',3];
-		$map['type'] = 'h';
+		$map['type'] = 't';
 		$data = [
 		'where' => $map,
 		'order' => 'add_time DESC'

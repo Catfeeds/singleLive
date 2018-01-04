@@ -1,0 +1,42 @@
+<div class="layui-body" style="bottom: 0;border-left: solid 2px #1AA094;" id="admin-body">
+    <div class="layui-tab admin-nav-card layui-tab-brief" lay-filter="admin-tab">
+        <ul class="layui-tab-title">
+            <li class="layui-this"><i class="fa fa-dashboard" aria-hidden="true"></i> <cite>套餐内容列表-新增</cite></li>
+        </ul>
+        <div class="layui-tab-item layui-show">
+            <div class="conter">
+                <div class="xxkt">
+                    <ul>
+                        <li class="xxkt_bt" style="width: 200px;!important;">套餐内容列表-新增</li>
+                    </ul>
+                </div>
+                <form action="__URL__/contentAdd" method="post" class="form-hotelAdd">
+                    <div class="xxknr">
+                        <div>
+                            <div class="glylb_szmm"><span class="glylb_szmm_span">套餐内容名称：</span>
+                                <div class="layui-input-block z_min_left_10">
+                                    <input class="fn-tinput requ" name="title" placeholder="请填写套餐内容名称">
+                                </div>
+                            </div>
+                            <div class="glylb_szmm"><span class="glylb_szmm_span">套餐内容单价：</span>
+                                <div class="layui-input-block z_min_left_10">
+                                    <input class="fn-tinput requ" name="money" placeholder="请填写套餐内容单价">
+                                </div>
+                            </div>
+                            <div class="glylb_szmm"><span class="glylb_szmm_span">规格/数量：</span>
+                                <div class="layui-input-block z_min_left_10">
+                                    <input class="fn-tinput requ" type="text" name="attr" placeholder="请输入规格/数量">
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="gater">
+                        <input type="hidden" name="pid" value="{$pid}">
+                        <input type="submit" value="确认" class="glylb_an_qd ajax-post" target-form="form-hotelAdd"/>
+                        <a href="__URL__/content?pid={$pid}"><button class="glylb_an_fh" type="button">返回</button></a>
+                    </div>
+                </form>
+            </div>
+        </div>
+    </div>
+</div>

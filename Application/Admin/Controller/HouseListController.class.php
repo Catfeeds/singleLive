@@ -8,6 +8,7 @@ class HouseListController extends CommonController {
     public function _map(&$data)
     {
         $map["H.status"] = ['neq','3'];
+        $map["C.type"] = 'h';
         if(I('startTime') || I('endTime')){
             $map["H.add_time"] = get_selectTime(I('startTime'),I('endTime'));
         }
@@ -26,7 +27,7 @@ class HouseListController extends CommonController {
     public function index()
     {
         $houseCate = D::get('houseCate',[
-            'where' => "`status`=1"
+            'where' => "`status`=1 AND `type`='h'"
         ]);
         $this->assign('cate',$houseCate);
         parent::index(function($data){
@@ -38,7 +39,7 @@ class HouseListController extends CommonController {
     public function add()
     {
         $houseCate = D::get('houseCate',[
-            'where' => "`status`=1"
+            'where' => "`status`=1 AND `type`='h'"
         ]);
         if(IS_POST){
             $house = D('House');
@@ -62,7 +63,7 @@ class HouseListController extends CommonController {
     public function edit(){
         $db = D::find('House',I('id'));
         $houseCate = D::get('houseCate',[
-            'where' => "`status`=1"
+            'where' => "`status`=1 AND `type`='h'"
         ]);
         if(IS_POST){
             $house = D('House');

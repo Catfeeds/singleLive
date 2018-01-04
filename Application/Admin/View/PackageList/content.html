@@ -1,0 +1,63 @@
+<div class="layui-body" style="bottom: 0;border-left: solid 2px #1AA094;" id="admin-body">
+    <div class="layui-tab admin-nav-card layui-tab-brief" lay-filter="admin-tab">
+        <ul class="layui-tab-title">
+            <li class="layui-this">
+                <i class="fa fa-dashboard" aria-hidden="true"></i>
+                <cite>套餐内容列表</cite>
+            </li>
+        </ul>
+        <div class="layui-tab-content" style="min-height: 150px; padding: 5px 0 0 0;">
+            <div class="layui-tab-item layui-show">
+                <div class="conter">
+                    <div class="conter_sait">
+                        <form action="__URL__/index" method="post" class="form-hotel">
+                            <div class="wort" style="width:280px;">
+                                <input name="title" lay-verify="title" value="{:I('title')}" autocomplete="off" placeholder="套餐名称" class="layui-input" type="text">
+                            </div>
+                            <div class="wort">
+                                <button type="submit" id="select" class="layui-btn">查找</button>
+                            </div>
+                            <div class="wort">
+                                <a href="__URL__/contentAdd?pid={$pid}">
+                                    <button type="button" class="layui-btn layui-btn-danger">新增</button>
+                                </a>
+                            </div>
+                        </form>
+                    </div>
+                    <div class="botg">
+                        <table class="layui-table">
+                            <thead>
+                            <tr>
+                                <th>套餐内容名称</th>
+                                <th>单价</th>
+                                <th>规格/数量</th>
+                                <th>小计(由单价和规格/数量自动计算)</th>
+                                <th>操作</th>
+                            </tr>
+                            </thead>
+                            <tbody>
+                            <volist name="list" id="row">
+                                <tr>
+                                    <td>{$row.title}</td>
+                                    <td>{$row.money}</td>
+                                    <td>{$row.attr}</td>
+                                    <td>{$row.total}</td>
+                                    <td>
+                                        <a class="z_coios_4" href="__URL__/contentEdit/id/{$row.id}">修改</a>
+                                        <a href="__URL__/contentDel/id/{$row.id}" class="z_coios_3 ajax-get confirm" data-msg='您确定删除？'>删除</a>
+                                    </td>
+                                </tr>
+                            </volist>
+                            </tbody>
+                        </table>
+                        <div class="feniou">
+                            <ul>
+                                {$page}
+                            </ul>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
