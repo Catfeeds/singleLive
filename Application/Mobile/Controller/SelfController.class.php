@@ -3,6 +3,7 @@ namespace Mobile\Controller;
 use Think\Controller;
 use Think\D;
 class SelfController extends CommonController{
+	public static $login = true;
 	/**
 	 * [index 我的]
 	 * @Author   ヽ(•ω•。)ノ   Mr.Solo
@@ -121,6 +122,28 @@ class SelfController extends CommonController{
 	 * @return   [type]     [description]
 	 */
 	public function problem()
+	{
+		$this->display();
+	}
+	/**
+	 * [club 会员俱乐部]
+	 * @Author   ヽ(•ω•。)ノ   Mr.Solo
+	 * @DateTime 2018-01-05
+	 * @Function []
+	 * @return   [type]     [description]
+	 */
+	public function club()
+	{
+		$this->display();
+	}
+	/**
+	 * [club 会员俱乐部]
+	 * @Author   ヽ(•ω•。)ノ   Mr.Solo
+	 * @DateTime 2018-01-05
+	 * @Function []
+	 * @return   [type]     [description]
+	 */
+	public function clubEdit()
 	{
 		$this->display();
 	}

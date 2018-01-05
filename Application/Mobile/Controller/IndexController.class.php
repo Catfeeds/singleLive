@@ -84,15 +84,5 @@ class IndexController extends CommonController{
 	{
 		$this->display();
 	}
-	/**
-	 * [club 会员俱乐部]
-	 * @Author   ヽ(•ω•。)ノ   Mr.Solo
-	 * @DateTime 2018-01-05
-	 * @Function []
-	 * @return   [type]     [description]
-	 */
-	public function club()
-	{
-		$this->display();
-	}
+
 }

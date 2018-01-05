@@ -3,6 +3,7 @@ namespace Mobile\Controller;
 use Think\Controller;
 use Think\D;
 class OrdersController extends CommonController{
+	public static $login = true;
 	/**
 	 * [index 订单]
 	 * @Author   ヽ(•ω•。)ノ   Mr.Solo

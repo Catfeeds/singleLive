@@ -36,4 +36,44 @@ class LoginController extends CommonController{
 	{
 		$this->display();
 	}
+	/**
+	 * [login 登录操作]
+	 * @Author   ヽ(•ω•。)ノ   Mr.Solo
+	 * @DateTime 2018-01-05
+	 * @Function []
+	 * @return   [type]     [description]
+	 */
+	public function login()
+	{
+		if ( I('mobile') && I('password') ) {
+			$map = [
+				'mobile' => I('mobile')
+			];
+			$user = D::find('Users',$map);
+			if ($user) {
+				if ( md5(I('password')) === $user['password'] ) {
+					session('user',$user['id']);
+					$this->success('登录成功，正在跳转...',S('url'));
+				}else{
+					$this->error('密码错误');
+				}
+			}else{
+				$this->error('手机号未注册');
+			}
+		}else{
+			$this->error('请填写手机号和登录密码');
+		}
+	}
+	/**
+	 * [logout 用户退出操作]
+	 * @Author   ヽ(•ω•。)ノ   Mr.Solo
+	 * @DateTime 2018-01-05
+	 * @Function []
+	 * @return   [type]     [description]
+	 */
+	public function logout()
+	{
+		session('user',null);
+		$this->success('正在退出...',U('Index/index'));
+	}
 }

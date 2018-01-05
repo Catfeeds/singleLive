@@ -26,17 +26,20 @@
 <body style="background: #FFFFFF;">
     <img src="__MOBILE__/img/dl01@2x.png" width="100%">
     <div class="app_Login">
+        <form action="__URL__/login" class="login">
         <div class="Login_fr_1">
-            <input type="text" placeholder="请输入手机号" />
+            <input type="text" name="mobile" placeholder="请输入手机号" />
         </div>
         <div class="Login_fr_2">
-            <input type="text" placeholder="请输入密码" />
+            <input type="password" name="password" placeholder="请输入密码" />
         </div>
-        <input type="button" value="登录" class="Login_but" />
+        <input type="submit" value="登录" class="Login_but ajax-post" target-form="login" />
+         </form>
         <div class="Login_fz">
             <a href="__URL__/password.html" class="left">忘记密码</a>
             <a href="__URL__/register.html" class="right">立即注册</a>
         </div>
+
     </div>
 </body>
 <script src="__MOBILE__/js/jquery-1.10.1.min.js"></script>
@@ -44,5 +47,5 @@
 <script src="__MOBILE__/js/layui/layui.js"></script>
 <script src="__MOBILE__/js/layer_mobile/layer.js"></script>
 <script src="__MOBILE__/js/js.js"></script>
-
+<script src="__MOBILE__/js/yin_common.js"></script>
 </html>
