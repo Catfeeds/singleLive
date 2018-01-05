@@ -3,14 +3,14 @@
         <ul class="layui-tab-title">
             <li class="layui-this">
                 <i class="fa fa-dashboard" aria-hidden="true"></i>
-                <cite>订单列表</cite>
+                <cite>退款列表</cite>
             </li>
         </ul>
         <div class="layui-tab-content" style="min-height: 150px; padding: 5px 0 0 0;">
             <div class="layui-tab-item layui-show">
                 <div class="conter">
                     <div class="conter_sait">
-                        <form action="">
+                        <form action="__URL__/index" method="get">
                             <div class="wort">
                                 <div class="layui-input-inline">
                                     <input name="start" autocomplete="off" placeholder="点击选择起始日期" class="layui-input" onclick="layui.laydate({elem: this})" type="text">
@@ -27,10 +27,11 @@
                             </div>
                             <div class="wort">
                                 <div class="layui-input-inline">
-                                    <select name='time_sta' class="select_t">
+                                    <select name='status' class="select_t">
                                         <option value=''>选择状态</option>
-                                        <option value='1'>正常</option>
-                                        <option value='2'>超时</option>
+                                        <option value='5'>退款待审核</option>
+                                        <option value='6'>已退款</option>
+                                        <option value='7'>已驳回</option>
                                     </select>
                                 </div>
                             </div>
@@ -45,21 +46,21 @@
                             </div>
                         </form>
                     </div>
-
                     <div class="botg">
                         <table class="layui-table">
                             <thead>
                             <tr>
                                 <th>日期</th>
                                 <th>订单编号</th>
-                                <th>酒店名称</th>
-                                <th>房间类型</th>
+                                <th>房间名称</th>
                                 <th>客户姓名</th>
                                 <th>客户电话</th>
-                                <th>入住时间</th>
-                                <th>已入住时间</th>
-                                <th>折算小时数</th>
-                                <th>可用时长</th>
+                                <th>成人(个数)</th>
+                                <th>儿童(个数)</th>
+                                <th>入住日期</th>
+                                <th>离开日期</th>
+                                <th>订单类型</th>
+                                <th>订单金额</th>
                                 <th>状态</th>
                                 <th>操作</th>
                             </tr>
@@ -68,25 +69,30 @@
                             <volist name="db" id="list">
                                 <tr>
                                     <td>{$list.createTime|date_out=###}</td>
-                                    <td>{$list.no}</td>
-                                    <td>{$list.hotelName}</td>
-                                    <td>{$list.roomType}</td>
-                                    <td>{$list.realname}</td>
+                                    <td>{$list.orderNo}</td>
+                                    <td>{$list.house}</td>
+                                    <td>{$list.username}</td>
                                     <td>{$list.mobile}</td>
-                                    <td>{$list.createTime|date_out=###}</td>
-                                    <td>{$list.old}</td>
-                                    <td>{$list.use}</td>
-                                    <td>{$list.have|formatTime=###}</td>
-                                    <td class="cor_3">
-                                        <switch name="list.status">
-                                            <case value="0">预约中</case>
-                                            <case value="1">订单已完成</case>
-                                            <case value="2">入住中</case>
-                                            <case value="8">订单已取消</case>
-                                        </switch>
-                                    </td>
+                                    <td>{$list.person}</td>
+                                    <td>{$list.child}</td>
+                                    <td>{$list.inTime}</td>
+                                    <td>{$list.outTime}</td>
+                                    <td>{$list.type}</td>
+                                    <td>{$list.price}</td>
+                                    <td>{$list.status}</td>
                                     <td>
-                                        <a href="__URL__/order_list_edit/id/{$list.id}" class="z_coios_4">查看</a>
+                                        <switch name="list.status">
+                                            <case value="5">
+                                                <a href="__URL__/pass/id/{$list.id}" data-msg="您确定给该用户退款？确定后该订单将成为已退款状态！">确认退款</a>
+                                                <a href="__URL__/down/id/{$list.id}" data-msg="您确定要驳回改退款申请？确定后该订单将成为已驳回状态！">驳回</a>
+                                            </case>
+                                            <case value="6">
+                                                <a href="javascript:;">已退款</a>
+                                            </case>
+                                            <case value="7">
+                                                <a href="javascript:;">已驳回</a>
+                                            </case>
+                                        </switch>
                                     </td>
                                 </tr>
                             </volist>
@@ -101,21 +107,3 @@
         </div>
     </div>
 </div>
-
-<!-- <script>
-    layui.use('layer', function () {
-        var $ = layui.jquery,
-                layer = layui.layer;
-
-        $('#video1').on('click', function () {
-            layer.open({
-                title: 'YouTube',
-                maxmin: true,
-                type: 2,
-                content: 'video.html',
-                area: ['800px', '500px']
-            });
-        });
-
-    });
-</script> -->

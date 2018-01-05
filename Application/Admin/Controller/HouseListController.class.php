@@ -68,6 +68,7 @@ class HouseListController extends CommonController {
         if(IS_POST){
             $house = D('House');
             if($data = $house->create()){
+                $imgs = D::field('House.imgs',$data['id']);
                 $arr = [
                     'category' => $data['category'],
                     'name' => $data['name'],
@@ -79,6 +80,8 @@ class HouseListController extends CommonController {
                     'change' => $data['change'],
                     'sorce' => $data['sorce'],
                     'paper' => $data['paper'],
+                    'total_num' => $data['total_num'],
+                    'imgs' => $imgs,
                     'status' => 1,
                     'add_time' => time(),
                     'update_time' => time()
@@ -95,14 +98,14 @@ class HouseListController extends CommonController {
         $this->display();
     }
     /*
-        酒店列表删除
+        房间列表删除
      */
     public function house_del(){
         M($this->model)->where("id=".I('id'))->setField('status',3);
         $this->success('删除成功');
     }
     /*
-     *  酒店轮播图
+     *  房间轮播图
      * */
     public function banner(){
         $id = I('id');

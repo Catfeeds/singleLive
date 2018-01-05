@@ -78,12 +78,17 @@ class PackageListController extends CommonController {
                     'content' => $data['content'],
                     'sorce' => $data['sorce'],
                     'pic' => $data['pic'],
+                    'paper' => $data['paper'],
+                    'total_num' => $data['total_num'],
                     'status' => 1,
                     'add_time' => time(),
                     'update_time' => time()
                 ];
-                $house->add($arr);
+                $newId = $house->add($arr);
+                //修改之前 套餐状态
                 D::set('Package.status',$data['id'],'3');
+                //修改套餐内容的pid--因为修改即新增,pid会对应不了
+                M('PackageSet')->where("pid=".$data['id'])->setField('pid',$newId);
                 $this->success('修改成功',U('PackageList/index'));
             }else{
                 $this->error($house->getError());

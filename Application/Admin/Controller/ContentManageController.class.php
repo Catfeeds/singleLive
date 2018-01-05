@@ -19,6 +19,7 @@ class ContentManageController extends CommonController
         ];
     }
     public function index(){
+        //header('Content-type:text/html;charset=UTF-8');
         $db = parent::index(false);
         foreach ($db['db'] as $key=>$val){
             $db['db'][$key]['imgs'] = explode(',',$db['db'][$key]['imgs']);
@@ -35,7 +36,6 @@ class ContentManageController extends CommonController
                     break;
             }
         }
-        //dump($db);die;
         $this->assign('db',$db['db']);
         $this->assign('page',$db['page']);
         $this->display();
@@ -49,7 +49,7 @@ class ContentManageController extends CommonController
             $data['imgs'] = implode(',',$data['imgs']);
             if($data['imgs']){
                 M('Environment')->add($data);
-                $this->success('添加成功',U('UserClub/index'));
+                $this->success('添加成功',U('ContentManage/index'));
             }else{
                 $this->error('请上传图片');
             }
@@ -80,7 +80,6 @@ class ContentManageController extends CommonController
     public function updateCheck(){
         $obj = D('Environment');
         if($data = $obj->create()){
-            //判断是否已经存在该酒店的id  存在-修改 不存在-新增
             $is_banner = $obj->where("id=".$data['id'])->find();
             if($is_banner && $data['imgs']!=null){
                 $str = implode(',',$data['imgs']);
@@ -90,7 +89,7 @@ class ContentManageController extends CommonController
                 $data['imgs'] = implode(',',$data['imgs']);
                 $obj->where("id=".$data['id'])->save($data);
             }
-            $this->success('修改成功',U('UserClub/index'));
+            $this->success('修改成功',U('ContentManage/index'));
         }else{
             $this->error($obj->getError());
         }

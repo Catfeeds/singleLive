@@ -3,10 +3,9 @@
         <ul class="layui-tab-title">
             <li class="layui-this">
                 <i class="fa fa-dashboard" aria-hidden="true"></i>
-                <cite>会员俱乐部</cite>
+                <cite>内容管理列表</cite>
             </li>
         </ul>
-
         <div class="layui-tab-content" style="min-height: 150px; padding: 5px 0 0 0;">
             <div class="layui-tab-item layui-show">
                 <div class="conter">
@@ -39,7 +38,7 @@
                             <tbody>
                             <volist name="db" id="row">
                                 <tr>
-                                    <td>{$row.name}</td>
+                                    <td>{$row.typeName}</td>
                                     <td>{$row.name}</td>
                                     <td><img style="width: 100px;height: 100px;" src="{$row['imgShow']}" /></td>
                                     <td>{$row.add_time|date='Y-m-d',###}</td>

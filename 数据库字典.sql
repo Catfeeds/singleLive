@@ -1,37 +1,16 @@
 
 --
--- 表的结构 `hotels`
+-- Banner管理表 针对手机端端6大模块
 --
 
-CREATE TABLE `ms_hotels` (
+CREATE TABLE `ms_banner` (
   `id` int(11) NOT NULL AUTO_INCREMENT,
-  `hotelName` varchar(200) COLLATE utf8_bin NOT NULL COMMENT '酒店名称',
-  `province` varchar(50) NOT NULL COMMENT '省',
-  `city` varchar(50) NOT NULL COMMENT '市',
-  `area` varchar(50) NOT NULL COMMENT '区',
-  `mobile` varchar(13) NOT NULL COMMENT '联系方式',
-  `address` text NOT NULL COMMENT '详细地址',
-  `head` int(11) NOT NULL COMMENT 'files::id',
-  `createTime` int(11) NOT NULL COMMENT '新增日期',
-  `updateTime` int(11) NOT NULL COMMENT '更新日期',
-  `status` tinyint(4) NOT NULL DEFAULT '0' COMMENT '0正常 1停用 9删除',
-  PRIMARY KEY (`id`),
-  KEY `status` (`status`)
-) ENGINE=MyISAM DEFAULT CHARSET=utf8 COLLATE=utf8_bin AUTO_INCREMENT=1 ;
-
-
---
--- 表的结构 `hotel_banner`
---
-
-CREATE TABLE `ms_hotel_banner` (
-  `id` int(11) NOT NULL AUTO_INCREMENT,
-  `hotel` int(11) DEFAULT NULL COMMENT '酒店id',
-  `imgs` text COLLATE utf8_bin COMMENT '酒店banner的id',
+  `type` char(1) COLLATE utf8_bin NOT NULL COMMENT '模块类型 h-客房 f-餐饮 e-环境 a-体验活动 m-会员俱乐部 t-套餐',
+  `imgs` text COLLATE utf8_bin COMMENT '关联files表id',
   `add_time` int(11) NOT NULL COMMENT '添加时间',
   `update_time` int(11) NOT NULL COMMENT '修改时间',
   PRIMARY KEY (`id`)
-) ENGINE=MyISAM DEFAULT CHARSET=utf8 COLLATE=utf8_bin COMMENT='酒店banner表' AUTO_INCREMENT=1 ;
+) ENGINE=MyISAM DEFAULT CHARSET=utf8 COLLATE=utf8_bin COMMENT='banner表' AUTO_INCREMENT=1 ;
 
 --
 -- 表的结构 `ms_drawback`
@@ -46,24 +25,6 @@ CREATE TABLE IF NOT EXISTS `ms_drawback` (
 ) ENGINE=MyISAM  DEFAULT CHARSET=utf8 COLLATE=utf8_bin AUTO_INCREMENT=2 ;
 
 
---
--- 表的结构 `hotel_rooms`
---
-CREATE TABLE `ms_hotel_rooms` (
-  `id` int(11) NOT NULL AUTO_INCREMENT,
-  `hotel` int(11) NOT NULL COMMENT 'hotels::id',
-  `room` int(11) NOT NULL COMMENT 'rooms::id',
-  `price` int(11) NOT NULL COMMENT '24小时价格',
-  `amount` float(10,4) NOT NULL COMMENT '房间按小时,由用户输入的24小时价格计算出来',
-  `minimum` int(11) NOT NULL COMMENT '最低入住时长（小时）',
-  `minute` int(11) NOT NULL COMMENT '超过分钟数算1小时',
-  `createTime` int(11) NOT NULL COMMENT '新增日期',
-  `updateTime` int(11) NOT NULL COMMENT '更新日期',
-  `imgs_ids` text  NOT NULL COMMENT '房间图片s',
-  `status` tinyint(4) NOT NULL DEFAULT '0' COMMENT '0正常 1停用 9删除',
-  PRIMARY KEY (`id`),
-  KEY `status` (`status`)
-) ENGINE=MyISAM DEFAULT CHARSET=utf8 COLLATE=utf8_bin AUTO_INCREMENT=1 ;
 -- --------------------------------------------------------
 
 --
@@ -171,7 +132,7 @@ CREATE TABLE `ms_role` (
   `role_id` int(11) NOT NULL AUTO_INCREMENT COMMENT '主键',
   `role_type` varchar(20) COLLATE utf8_bin NOT NULL COMMENT '权限组名称',
   `role_info` varchar(50) COLLATE utf8_bin NOT NULL,
-  `hotel` int(11) NOT NULL COMMENT '0后台管理组 hotel::id酒店管理组',
+  `hotel` int(11) NOT NULL COMMENT '0后台管理组',
   `role_sta` char(1) COLLATE utf8_bin NOT NULL COMMENT '0正常 1禁用 9删除',
   PRIMARY KEY (`role_id`),
   KEY `role_sta` (`role_sta`)
@@ -261,16 +222,10 @@ CREATE TABLE `ms_users` (
   `createTime` int(11) NOT NULL,
   `updateTime` int(11) NOT NULL,
   `status` tinyint(1) NOT NULL COMMENT '状态 1-正常 2-禁用 3-删除',
+  `cardType` varchar(30) COLLATE utf8_bin NOT NULL COMMENT '证件类型 直接存文字'
   PRIMARY KEY (`id`)
 ) ENGINE=MyISAM DEFAULT CHARSET=utf8 COLLATE=utf8_bin AUTO_INCREMENT=1 ;
 
-
-CREATE TABLE `ms_order_back` (
-  `id` bigint(20) NOT NULL AUTO_INCREMENT,
-  `orderId` int(11) NOT NULL COMMENT 'order_hotel::id',
-  `reason` text NOT NULL COMMENT '原因',
-  PRIMARY KEY (`id`)
-) ENGINE=MyISAM DEFAULT CHARSET=utf8 COLLATE=utf8_bin AUTO_INCREMENT=1 ;
 
 
 -- 系统配置表
@@ -370,6 +325,7 @@ CREATE TABLE IF NOT EXISTS `ms_house` (
   `add_time` int(11) COLLATE utf8_bin NOT NULL COMMENT '插入时间',
   `update_time` int(11) COLLATE utf8_bin NOT NULL COMMENT '修改时间',
   `status` tinyint(1) NOT NULL COMMENT '状态字段 1-正常 2-已禁用 3-已删除',
+  `total_num` int(11) NOT NULL COMMENT '房间总数',
   PRIMARY KEY (`id`)
 ) ENGINE=MyISAM DEFAULT CHARSET=utf8 COLLATE=utf8_bin AUTO_INCREMENT=1;
 
@@ -415,6 +371,8 @@ CREATE TABLE IF NOT EXISTS `ms_package` (
   `add_time` int(11) NOT NULL COMMENT '添加时间',
   `update_time` int(11) NOT NULL COMMENT '修改时间',
   `status` tinyint(1) NOT NULL COMMENT '1-正常 2-禁用 3-删除',
+  `total_num` int(11) NOT NULL COMMENT '套餐总数(实际就是房间总数)',
+  `paper` char(1) COLLATE utf8_bin NOT NULL COMMENT '是否可以使用电子卷 y-是 n-否',
   PRIMARY KEY (`id`)
 ) ENGINE=MyISAM DEFAULT CHARSET=utf8 COLLATE=utf8_bin AUTO_INCREMENT=1;
 
@@ -468,7 +426,7 @@ CREATE TABLE IF NOT EXISTS `ms_user_lvup` (
 CREATE TABLE IF NOT EXISTS `ms_user_sorce` (
   `id` int(11) NOT NULL AUTO_INCREMENT,
   `userID` int(11) NOT NULL COMMENT '会员id',
-  `type` char(10) COLLATE utf8_bin NOT NULL COMMENT 'consume-消费返积分 lvup-购买积分卡升级',
+  `type` char(10) COLLATE utf8_bin NOT NULL COMMENT 'consume-消费返积分 exchange-兑换电子卷 lvup-购买积分卡升级',
   `sorce` int(11) NOT NULL DEFAULT '0' COMMENT '积分数',
   `method` char(10) COLLATE utf8_bin NOT NULL COMMENT 'plus-加 sub-减',
   `createTime` int(11) NOT NULL COMMENT '创建时间',
@@ -481,6 +439,7 @@ CREATE TABLE IF NOT EXISTS `ms_user_sorce` (
 --
 CREATE TABLE IF NOT EXISTS `ms_order` (
   `id` int(11) NOT NULL AUTO_INCREMENT,
+  `userID` int(11) NOT NULL COMMENT '用户id',
   `roomID` int(11) NOT NULL COMMENT '房间id，关联客房id和套餐里的房间id',
   `orderNo` varchar(16) COLLATE utf8_bin NOT NULL COMMENT '订单编号',
   `username` varchar(30) COLLATE utf8_bin NOT NULL COMMENT '填写人姓名',
@@ -494,8 +453,11 @@ CREATE TABLE IF NOT EXISTS `ms_order` (
   `inTime` int(11) NOT NULL COMMENT '入住时间',
   `outTime` int(11) NOT NULL COMMENT '离开时间',
   `coupon` int(11) NOT NULL COMMENT '关联优惠券id 若用户成功勾选了,则有,若无,则写入0',
-  `num` int(5) NOT NULL COMMENT '限购数量(仅用于套餐) 非套餐写入0',
-  `status` tinyint(1) NOT NULL COMMENT '付款状态 8-待付款 1-已支付 2-已完成 3-已超时 4-已取消 5-退款申请 6-退款中 7-已退回',
+  `num` int(5) NOT NULL COMMENT '购买数量(仅用于套餐) 非套餐(客房)默认写入1',
+  `status` tinyint(1) NOT NULL COMMENT '付款状态 8-待付款 9-已入住 1-已支付 2-已完成 3-已超时(设置时间内未完成支付) 4-已取消 5-退款审核中(用户),由此状态总后台显示确认退款和驳回 6-已退款 7-已驳回',
+  `createTime` int(11) NOT NULL COMMENT '订单生成时间',
+  `updateTime` int(11) NOT NULL COMMENT '订单更新时间',
+  `type` char(1) COLLATE utf8_bin NOT NULL COMMENT 'k-客房 t-套餐',
   PRIMARY KEY (`id`)
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8 COLLATE=utf8_bin AUTO_INCREMENT=1 ;
 
