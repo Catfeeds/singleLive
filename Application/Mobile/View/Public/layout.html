@@ -1,14 +1,61 @@
-<!doctype html>
-<html class="no-js">
+<!DOCTYPE html>
+<html>
+
 <head>
-	<include file="Public:head" />
-	<include file="Public:js" />
+    <meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
+    <meta content="initial-scale=1.0,user-scalable=no,maximum-scale=1,width=device-width" name="viewport" />
+    <meta content="initial-scale=1.0,user-scalable=no,maximum-scale=1" media="(device-height: 568px)" name="viewport">
+    <meta content="yes" name="apple-mobile-web-app-capable" />
+    <meta content="black" name="apple-mobile-web-app-status-bar-style" />
+    <meta content="telephone=no" name="format-detection" />
+    <title></title>
 </head>
-<body style="curosr: pointer;">
-	<include file="Public:header" />
-	<center>
-	 {__CONTENT__}
-	</center>
-	<include file="Public:footer" />
+<link rel="stylesheet" href="__MOBILE__/js/layui/css/layui.css">
+<link rel="stylesheet" href="__MOBILE__/css/css.css">
+<link rel="stylesheet" type="text/css" href="__MOBILE__/time/css/index.css" />
+<link rel="stylesheet" type="text/css" href="__MOBILE__/time/css/LCalendar.css" />
+<script src="__MOBILE__/js/jquery-1.10.1.min.js"></script>
+<script src='__MOBILE__/js/hhSwipe.js' type="text/javascript"></script>
+<script src="__MOBILE__/js/layui/layui.js"></script>
+<script src="__MOBILE__/js/layer_mobile/layer.js"></script>
+<script src="__MOBILE__/js/js.js"></script>
+<script>
+(function(global) {
+    function remChange() {
+        document.documentElement.style.fontSize = 20 * document.documentElement.clientWidth / 1024 + 'px';
+    }
+    remChange();
+    global.addEventListener('resize', remChange, false);
+})(window);
+</script>
+
+<body>
+    {__CONTENT__}
+    <div class="forder">
+        <ul>
+            <li><a class="ror_1 acver" href="{:U('Index/index')}">首页</a></li>
+            <li><a class="ror_2" href="{:U('Rooms/index')}">客房</a></li>
+            <li><a class="ror_3" href="{:U('Orders/index')}">订单</a></li>
+            <li><a class="ror_4" href="{:U('Self/index')}">我的</a></li>
+        </ul>
+    </div>
 </body>
+<script>
+//轮播图
+if ($('#position').length > 0) {
+    var bullets = document.getElementById('position').getElementsByTagName('li');
+    var banner = Swipe(document.getElementById('mySwipe'), {
+        auto: 4000,
+        continuous: true,
+        disableScroll: false,
+        callback: function(pos) {
+            var i = bullets.length;
+            while (i--) {
+                bullets[i].className = ' ';
+            }
+            bullets[pos].className = 'cur';
+        }
+    })
+}
+</script>
 </html>

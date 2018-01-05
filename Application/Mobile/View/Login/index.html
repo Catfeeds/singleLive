@@ -1,104 +1,48 @@
+{__NOLAYOUT__}
+<!DOCTYPE html>
+<html>
 
-<div class="logo">
-   <img src="__MOBILE__/img/sjyz.png">
-</div>
-<form action="__URL__/binding" method="post" class="myForm">
-<div class="login">
-   <div class="am_login">
-      <span class="am_left">手 机 号 :</span>
-      <input type="text" class="am_int" name="mobile" id="mobile" placeholder="请输入手机号">
-   </div>
-   <div class="am_login">
-      <span class="am_left">真实姓名 :</span>
-      <input type="text" class="am_int" name="realname" placeholder="请输入真实姓名">
-   </div>
-   <div class="am_login">
-      <span class="am_left">验 证 码 :</span>
-      <input type="text" class="am_int" name="validate" placeholder="请输入验证码">
-      <button type="button" class="am_button_2 validate">发送验证码</button>
-   </div>
-</div>
-<div class="am_ator">
-提示：请输入真实的手机号及姓名，以便我们更好的为您服务。
-</div>
-<div style="width: 90%; height: auto; overflow: hidden;">
-     <span class="am_left" style=" width: inherit; line-height: inherit; height: inherit;">
-            <input type="checkbox" id="agree" />
-            <span style="font-size: 2.0rem;">我已阅读并同意<a href="javascript::" style="color: #f00" class="agree">《用户使用协议》</a></span>
-         </span>
- </div>
-<div class="am_bot_3">
-<input type="hidden" name="id" value="{$id}">
-<button type="submit" disabled class="am-btn am-btn-block am_button_3 ajax-post" target-form="myForm">提交</button>
-</div>
-</form>
-
-
-<script type="text/javascript">
-   $(function(){
-      $('.agree').click(function(){
-
-            var pageii = layer.open({
-              type: 1
-              ,content: '{$com.UserAgree}'
-              ,anim: 'up'
-              ,btn: '我知道了'
-              ,style: 'position:fixed; left:0; top:0; width:100%; height:100%; overflow: auto; border: none; -webkit-animation-duration: .5s; animation-duration: .5s;'
-            });  
-      })
-      $('#agree').change(function (){
-         if($(this).attr('checked') == 'checked'){
-            $('.ajax-post').attr('disabled', false)
-         }else{
-            $('.ajax-post').attr('disabled', 'disabled')
-         }
-      })
-      $('.validate').click(function(){
-         var self = $(this);
-         $.get('__URL__/message/mobile/'+$('#mobile').val(),function(data){
-            if (data == 'mobileError') {
-               layer.open({
-                  title: [
-                  '错误',
-                  'background-color: #FF4351; color:#fff;'
-                  ]
-                  ,content: '请输入正确的手机号'
-                  ,time:2
-               });
-            }else if (data == 'true') {
-               layer.open({
-                  content: '验证短信已发送至您的手机上'
-                  ,skin: 'msg'
-                  ,time: 2 //2秒后自动关闭
-               });
-               $('#mobile').prop('readonly',true);
-               self.html('<span id="time">30</span>秒再次发送');
-               self.prop('disabled',true);
-               checkTime();
-            }else {
-               layer.open({
-                  title: [
-                  '错误',
-                  'background-color: #FF4351; color:#fff;'
-                  ]
-                  ,content: '不明错误'
-                  ,time:2
-               });
-            }
-         });
-      });
-      function checkTime(){
-         var time = $('#time').text();
-         if (time > 0) {
-            $('#time').text( time - 1 );
-            setTimeout(function(){
-               checkTime();
-            },1000);
-         }else{
-            $('.validate').prop('disabled',false);
-            $('.validate').html('发送验证码');
-         }
-      }
-   });
+<head>
+    <meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
+    <meta content="initial-scale=1.0,user-scalable=no,maximum-scale=1,width=device-width" name="viewport" />
+    <meta content="initial-scale=1.0,user-scalable=no,maximum-scale=1" media="(device-height: 568px)" name="viewport">
+    <meta content="yes" name="apple-mobile-web-app-capable" />
+    <meta content="black" name="apple-mobile-web-app-status-bar-style" />
+    <meta content="telephone=no" name="format-detection" />
+    <title>登录</title>
+</head>
+<link rel="stylesheet" href="__MOBILE__/js/layui/css/layui.css">
+<link rel="stylesheet" href="__MOBILE__/css/css.css">
+<script>
+(function(global) {
+    function remChange() {
+        document.documentElement.style.fontSize = 20 * document.documentElement.clientWidth / 1024 + 'px';
+    }
+    remChange();
+    global.addEventListener('resize', remChange, false);
+})(window);
 </script>
 
+<body style="background: #FFFFFF;">
+    <img src="__MOBILE__/img/dl01@2x.png" width="100%">
+    <div class="app_Login">
+        <div class="Login_fr_1">
+            <input type="text" placeholder="请输入手机号" />
+        </div>
+        <div class="Login_fr_2">
+            <input type="text" placeholder="请输入密码" />
+        </div>
+        <input type="button" value="登录" class="Login_but" />
+        <div class="Login_fz">
+            <a href="__URL__/password.html" class="left">忘记密码</a>
+            <a href="__URL__/register.html" class="right">立即注册</a>
+        </div>
+    </div>
+</body>
+<script src="__MOBILE__/js/jquery-1.10.1.min.js"></script>
+<script src='__MOBILE__/js/hhSwipe.js' type="text/javascript"></script>
+<script src="__MOBILE__/js/layui/layui.js"></script>
+<script src="__MOBILE__/js/layer_mobile/layer.js"></script>
+<script src="__MOBILE__/js/js.js"></script>
+
+</html>

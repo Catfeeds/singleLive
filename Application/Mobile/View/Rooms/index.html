@@ -1,179 +1,41 @@
-<style>
-.holi{border: 1px solid #b9b0a3; border-radius: 10px; width: 98%; padding: 1rem; height: auto; overflow: hidden; margin: 1rem auto; background: #fff;}
-.henf_list{ width: 100%;  height: auto; overflow: hidden; }
-.henf_list_left{ width: 50%; height: 4rem; float: left; font-size: 1.5rem; line-height: 4rem;}
-.henf_list_right{ width: 50%; height: 4rem; float: right; font-size: 1.5rem; line-height: 4rem;}
-.engit_center{width: 25%;background: #0E9AD2;  height: 5rem;float: left; line-height: 5rem;  color: #FFF;  display: block;  border: none;}
-.engit_left{width:25%}
-.engit_right{width:25%;background: #FFB800;}
-.over{width:25%;background: #3f3f3f;}
-</style>
-<div class="coic" id="view" end-msg='您尚未购买房间' url="__ACTION__">
+<div class="app_center">
+    <div class="addWrap">
+        <div class="swipe" id="mySwipe">
+            <div class="swipe-wrap">
+                <div><a href="javascript:;"><img class="img-responsive" src="__MOBILE__/img/kf01@2x.png"/></a></div>
+                <div><a href="javascript:;"><img class="img-responsive" src="__MOBILE__/img/kf01@2x.png" /></a></div>
+                <div><a href="javascript:;"><img class="img-responsive" src="__MOBILE__/img/kf01@2x.png"/></a></div>
+                <div><a href="javascript:;"><img class="img-responsive" src="__MOBILE__/img/kf01@2x.png" /></a></div>
+            </div>
+        </div>
+        <ul id="position">
+            <li class="cur"></li>
+            <li></li>
+            <li></li>
+            <li></li>
+        </ul>
+    </div>
+    <div class="app_lint">
+        <div class="app_Guest">
+            <ul>
+                <li class="avcet">全部</li>
+                <li>2人</li>
+                <li>3人</li>
+                <li>4人</li>
+                <li>别墅</li>
+            </ul>
+        </div>
+        <div class="app_Guest_cont flow-default" id="LAY_demo1">
+            <a href="__URL__/edit" class="Guest">
+                <div class="Guest_left">
+                    <img src="__MOBILE__/img/kf09@2x.png">
+                </div>
+                <div class="Guest_right">
+                    <span><img src="__MOBILE__/img/my05@2x.png"></span>
+                    <h3>仙都啦城堡</h3>
+                    <p>简介：尊贵城堡树屋尊贵城堡树屋尊贵城堡树屋尊贵城堡树屋尊贵城堡树屋尊 贵城堡树屋尊 贵城堡树屋尊 </p>
+                </div>
+            </a>
+        </div>
+    </div>
 </div>
-</center>
-
-
-<script type="text/html" id="layout">
-    <div class="holi">
-        <div class="henf_list">
-            <div class="henf_list_left">
-                订单编号：{{d.no}}
-            </div>
-            <div class="henf_list_right">
-                {{d.createTime}}
-            </div>
-
-        </div>
-        {{# layui.each(d.roomLists, function(index, item){ }}
-        <div class="rcit">
-            <div class="clort">
-                <div class="clort_left"><img src="{{item.img}}">
-                </div>
-                <div class="clort_right">
-                    <div class="omp_top">
-                        <div class="am_flt">酒店名称：{{item.hotelName}}</div>
-                        <div class="am_rlt">房间类型：{{item.roomName}}</div>
-                    </div>
-                    <div class="omp_bottom">
-                        <div class="am_flt">房间数量：1间</div>
-                        <div class="am_rlt">剩余时长：{{item.have}}</div>
-                    </div>
-                </div>
-            </div>
-            <div class="engit">
-            {{#  if(item.status == '0'){ }}
-                <a class="engit_left ajax-get confirm" data-msg="该房间的最低入住时长为{{item.minimum}}小时，请您与酒店前台确认房间后再点击确定" href="__URL__/check/id/{{item.id}}">入住
-                </a>
-                <a class="engit_center" href="__URL__/continue_stay/orderid/{{item.id}}">续时</a>
-                {{#  if(item.checkIn == '1'){ }}
-                    <a class="engit_right over">不可退款</a>
-                {{#  } else { }}
-                    <a class="engit_right over ajax-get confirm" data-msg="您确定退款?退款需要管理员的审核,如有疑问请拨打电话到{$AdminMobile}" href="__URL__/back_money/orderid/{{item.id}}">退款</a>
-                {{#  } }}
-                </a>
-                <a class="engit_right" href="__URL__/change/orderid/{{item.id}}/hotelRoom/{{item.room}}">换房</a>
-                </a>
-            {{# }else{ }} 
-                    <span class="engit_right over" style="width: 100%">正在退款中...</span>
-            {{# } }}    
-            </div>
-        </div>
-        {{# }); }}
-    </div>
-</script>
-
-<!--换房弹出窗 妹子UI-->
-<!--<div class="am-popup" id="my-popup">
-    <div class="am-popup-inner">
-        <div class="am-popup-hd">
-            <h4 class="am-popup-title">换房信息</h4>
-            <span data-am-modal-close class="am-close">&times;</span>
-        </div>
-        <div class="am-popup-bd ma_bd">
-            <div class="amnt">
-                <ul>
-                    <li>原来房间</li>
-                    <li>标准间</li>
-                    <li>1间</li>
-                    <li>24小时</li>
-                </ul>
-            </div>
-            <div class="bopy">换成</div>
-            <div class="am_tad">
-                <table class="am-table">
-                    <thead>
-                    <tr>
-                        <th>房间类型</th>
-                        <th>房间数量</th>
-                        <th>入住时长</th>
-                        <th>小时</th>
-                    </tr>
-                    </thead>
-                    <tbody>
-                    <tr>
-                        <td>双人间</td>
-                        <td class="joist">
-                            <a class="jian">-</a>
-                            <span class="num">0</span>
-                            <a class="jia">+</a>
-                        </td>
-                        <td class="joist">
-                            <a class="jian">-</a>
-                            <span class="num">1</span>
-                            <a class="jia">+</a>
-                        </td>
-                        <td>24</td>
-                    </tr>
-                    <tr>
-                        <td>双人间</td>
-                        <td class="joist">
-                            <a class="jian">-</a>
-                            <span class="num">0</span>
-                            <a class="jia">+</a>
-                        </td>
-                        <td class="joist">
-                            <a class="jian">-</a>
-                            <span class="num">1</span>
-                            <a class="jia">+</a>
-                        </td>
-                        <td>24</td>
-                    </tr>
-                    <tr>
-                        <td>双人间</td>
-                        <td class="joist">
-                            <a class="jian">-</a>
-                            <span class="num">0</span>
-                            <a class="jia">+</a>
-                        </td>
-                        <td class="joist">
-                            <a class="jian">-</a>
-                            <span class="num">1</span>
-                            <a class="jia">+</a>
-                        </td>
-                        <td>24</td>
-                    </tr>
-                    <tr>
-                        <td>双人间</td>
-                        <td class="joist">
-                            <a class="jian">-</a>
-                            <span class="num">0</span>
-                            <a class="jia">+</a>
-                        </td>
-                        <td class="joist">
-                            <a class="jian">-</a>
-                            <span class="num">1</span>
-                            <a class="jia">+</a>
-                        </td>
-                        <td>24</td>
-                    </tr>
-                    <tr>
-                        <td>双人间</td>
-                        <td class="joist">
-                            <a class="jian">-</a>
-                            <span class="num">0</span>
-                            <a class="jia">+</a>
-                        </td>
-                        <td class="joist">
-                            <a class="jian">-</a>
-                            <span class="num">1</span>
-                            <a class="jia">+</a>
-                        </td>
-                        <td>24</td>
-                    </tr>
-                    <tr>
-                        <td>应付金额 ：</td>
-                        <td colspan="3" style="text-align:right; color:#dd2b0e;">0元</td>
-                    </tr>
-                    <tr>
-                        <td>时间折算 ：</td>
-                        <td colspan="3" style="text-align:right; color:#dd2b0e;">0小时</td>
-                    </tr>
-                    </tbody>
-                </table>
-            </div>
-            <div class="am_bot_1">
-                <button type="button" data-am-modal-close class="am-btn am-btn-block am_button_1">替换</button>
-            </div>
-        </div>
-    </div>
-</div>-->
