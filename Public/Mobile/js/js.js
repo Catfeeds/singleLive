@@ -1,161 +1,181 @@
-(function(global){
-
-		function remChange(){
-
-			var aa = document.documentElement.clientWidth || document.body.clientWidth
-
-			document.documentElement.style.fontSize=20*document.documentElement.clientWidth/1024+'px';
-
-		}
-
-		remChange();
-
-		global.addEventListener('resize',remChange,false);
-
-	})(window);
-
+// JavaScript Document
 $(function(){
+$('.forder li a').click(function(){	
+	$(this).addClass('acver').parents('li').siblings().find('a').removeClass('acver')	
+})
+$('.app_Guest li').click(function(){
+	$(this).addClass('avcet').siblings().removeClass('avcet')	
+})
+//商品加减
 
-//底部js
-	$('footer li a').click(function(){
-
-		$('footer li a').removeClass('foter_tp')
-
-		$(this).addClass('foter_tp')
-
-	})
-
-// 加减
-
-$('.jia').click(function() {
-	var pp = $(this).parents('.joist').find('.num');
+$('.appjia').click(function() {
+	var pp = $('.appcont');
 	var getNum = parseInt(pp.html());
-	if(getNum < 100) {
+	if(getNum < 1000000) {
 		pp.html(getNum + 1)
-		compute();
 	} else {
-      layer.open({
-          content: '不可以大于100'
-          ,skin: 'msg'
-          ,time: 2 //2秒后自动关闭
-        });
-		// alert("不可以大于100");
+		layer.open({		
+		  className:'sese',			
+          content: '不能大于99'		  
+          ,skin: 'msg'		  
+         ,time: 2 //2秒后自动关闭		 
+      });
 	}
 })
-
-$('.jian').click(function() {
-
-	var pp = $(this).parents('.joist').find('.num');
+$('.appjian').click(function() {
+	var pp = $('.appcont');
 	var getNum = parseInt(pp.html());
 	if(getNum > 0) {
 		pp.html(getNum - 1)
-		compute();
 	} else {
-      layer.open({
-          content: '不可以小于0'
-          ,skin: 'msg'
-          ,time: 2 //2秒后自动关闭
-        });		
-		// alert("不可以小于0");
+		layer.open({		
+		  className:'sese',		
+          content: '不能小于0'	  
+          ,skin: 'msg'	  
+         ,time: 2 //2秒后自动关闭	 
+      });
 	}
+})	
+//通用提示框
+$(".spoert").click(function(){
+	var msg = $(this).attr("msg-tite")
+	layer.open({	
+	className:'smtn',
+    content: msg
+    ,btn: ['确认', '取消']
+    ,skin: 'footer'
+    ,yes: function(index){	
+      layer.open({content: '提交成功'}) 
+    }
+  });		
+})	
+
+$('.fr_l1').click(function(){	
+	
+	if($(this).hasClass('fr_img')){	
+		$(this).find('input').prop('checked',false)	
+		$(this).removeClass('fr_img')
+	}else{
+		$('.fr_l1').removeClass('fr_img').find('input').prop('checked',false)	
+		$(this).find('input').prop('checked',true)
+		$(this).addClass('fr_img')	
+	}	
+})
+
+$('.fr_radio').click(function(){	
+	$('.fr_radio').removeClass('radiodsi')
+	if($(this).hasClass('fr_img')){	
+		$(this).find('input').prop('checked',false)	
+		$(this).removeClass('radiodsi')
+	}else{
+		$(this).find('input').prop('checked',true)
+		$(this).addClass('radiodsi')	
+	}	
+})
+
+$('.biem_cont').click(function(){
+	$(this).addClass('biatacve').siblings().removeClass('biatacve')
+	
 })
 
 
 
-function compute(){
-  var amount = 0;
-  $('.roomtype').each(function(){
-    var a = $(this).find('.roomnum').text();
-    var b = $(this).find('.daysnum').text();
-    var c = $(this).find('.amount').text();
-    amount = amount + a*b*c;
-  });
-  $('#all_amount').text(amount);
-}
-
-
-
-//公用提示弹窗
-
-
-function Prompt_nei() {
-
+$('.str3').click(function(){
+	
 	layer.open({
+	 className:'attui',
+     style: 'border:none; background-color:#78BA32; color:#fff;',
+	 
+     content:'剩余房间 ：2056 / 2057 / '
+	 
+     })
+	
+	})
 
-    content: '提交成功'
-
-    ,skin: 'msg'
-
-    ,time: 2 //2秒后自动关闭
-
-  });
-
-}
-
-
-$('.Prompt').click(function() {
-   var msg = $(this).attr('data-msg');
-
-	layer.open({
-
-    title: [
-
-      '提示信息',
-
-      'background-color:#ffffff; color:#736767;text-align: left;background-image:url(img/xiaolian.png); background-repeat:no-repeat; background-position:1rem center; background-size:2.5rem;text-indent:8%;margin:0;height: 40px;line-height: 40px;'
-
-  ]
-
-  ,className: 'bcmt'
-
-  ,anim: 'up'
-
-  ,content: msg
-
-  ,btn: ['确认', '取消']
-
-  ,yes: function(index){
-
-        layer.close(index)
-
-		Prompt_nei()
-
-  }
-});
 
 })
 
 
 
 
-//收藏——查看
-
-var Zwid = $('.am_tou ul')
-
-var Fwid =$('.am_tou li').width()
-
-var FwidLen =$('.am_tou li').length
-
-Zwid.width(parseInt(Fwid*FwidLen))
 
 
-var Zim = $('.imt_img ul')
 
-var Fim =$('.imt_img li').width()
 
-var FimdLen =$('.imt_img li').length
 
-Zim.width(parseInt(Fim*FimdLen+20+"px"))
 
-	$('.am_tou li').click(function() {
 
-		$(this).addClass('goot').siblings().removeClass('goot');
 
-		$('.am_zui>.am_htc:eq(' + $(this).index() + ')').show().siblings().hide();
 
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+//分类选择	
+
+	
+
+	
+$('.xopert li').click(function() {
+	
+		$(this).addClass('mill').siblings().removeClass('mill');
+		
+		$('.tipon>.coper:eq(' + $(this).index() + ')').show().siblings().hide();
+		
+	})
+	
+	
+//价格排序
+
+
+	
+
+
+
+
+
+$('.sutor').click(function(){
+	
+	layer.open({
+		
+    content: '<div class="binpoy1"><div class="binpoy_right"><input type="text" name="textfield" id="textfield" placeholder="请输入二级密码"/></div></div>'
+	
+    ,btn: ['取消', '确认']
+	
+    ,skin: 'footer'
+	
+    ,yes: function(index){
+		
+      layer.open({content: '取消成功'})
+    }
+	 ,no: function(index){
+		
+      layer.open({content: '提交成功'})
+    }
+  });
+
+	
+	
 	})
 
-//收藏——查看
 
 
 
@@ -170,4 +190,5 @@ Zim.width(parseInt(Fim*FimdLen+20+"px"))
 
 
 
-	})
+
+

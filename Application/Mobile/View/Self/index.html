@@ -1,75 +1,72 @@
-
-<div class="am_conent">
-
-   <img src="__MOBILE__/img/gr_02.jpg">
-   <div class="am_img">
-    <if condition="$db.headimgid eq 0">
-      <img src="__MOBILE__/img/tx.png"><!-- 默认头像位置 -->
-    <else />
-      <img src="{$db.headimgid|getSrc=###}">
-    </if>
-   </div>
-   <div class="am_wx">{$db.nickname}</div>
+<div class="app_center">
+    <div class="app_Personal">
+        <div class="Personal">
+            <div class="app_name">
+                <img src="__MOBILE__/img/my02@2x.png" />
+                <input type="file" />
+            </div>
+            <div class="app_name_1">
+                丫头
+            </div>
+            <div class="app_name_1">
+                会员等级：<a>V1</a>
+            </div>
+        </div>
+    </div>
+    <div class="pers_cont">
+        <a href="__URL__/information" class="biten">
+            <div class="biten_img"><img src="__MOBILE__/img/my06@2x.png"></div>
+            <span>基本信息</span>
+            <b><img src="__MOBILE__/img/my05@2x.png"></b>
+        </a>
+        <a href="__URL__/balance" class="biten">
+            <div class="biten_img"><img src="__MOBILE__/img/my07@2x.png"></div>
+            <span>账户余额</span>
+            <b><img src="__MOBILE__/img/my05@2x.png"></b>
+        </a>
+        <a href="{:U('Orders/index')}" class="biten">
+            <div class="biten_img"><img src="__MOBILE__/img/my09@2x.png"></div>
+            <span>我的订单</span>
+            <b><img src="__MOBILE__/img/my05@2x.png"></b>
+        </a>
+        <a href="__URL__/coupon" class="biten">
+            <div class="biten_img"><img src="__MOBILE__/img/my10@2x.png"></div>
+            <span>电子卷</span>
+            <b><img src="__MOBILE__/img/my05@2x.png"></b>
+        </a>
+        <a href="__URL__/upgrade" class="biten">
+            <div class="biten_img"><img src="__MOBILE__/img/my11@2x.png"></div>
+            <span>积分升级</span>
+            <b><img src="__MOBILE__/img/my05@2x.png"></b>
+        </a>
+        <a href="__URL__/message" class="biten">
+            <div class="biten_img"><img src="__MOBILE__/img/xx01@2x.png">
+                <div class="biten_span">99</div>
+            </div>
+            <span>系统消息</span>
+            <b><img src="__MOBILE__/img/my05@2x.png"></b>
+        </a>
+        <a href="__URL__/activity" class="biten">
+            <div class="biten_img"><img src="__MOBILE__/img/xx02@2x.png">
+                <div class="biten_span">99</div>
+            </div>
+            <span>活动消息</span>
+            <b><img src="__MOBILE__/img/my05@2x.png"></b>
+        </a>
+    </div>
+    <div class="pers_cont1">
+        <a href="__URL__/password" class="biten">
+            <div class="biten_img"><img src="__MOBILE__/img/mm@2x.png"></div>
+            <span>修改密码</span>
+            <b><img src="__MOBILE__/img/my05@2x.png"></b>
+        </a>
+        <a href="__URL__/problem" class="biten">
+            <div class="biten_img"><img src="__MOBILE__/img/my12@2x.png"></div>
+            <span>常见问题</span>
+            <b><img src="__MOBILE__/img/my05@2x.png"></b>
+        </a>
+    </div>
+    <div class="dist_but3 ">
+        <a href="{:U('Login/logout')}" class="ajax-get confirm" msg-tite="您是否退出登录？”">退出登录</a>
+    </div>
 </div>
-<div class="am_lintg">
-    <ul>
-        <li>真实姓名 ：{$db.realname}</li>
-        <li>手机号码 ：{$db.mobile}</li>
-    </ul>
-</div>
-<div class="am_list">
-    <div class="am_mcont">
-       <a href="{:U('System/index')}">
-         <div class="mcont_left"><img src="__MOBILE__/img/xtxx.png"></div>
-         <div class="mcont_cont">系统消息
-         <if condition="$msg egt 1">
-         <span class="layui-badge">{$msg}</span>
-         </if>
-         </div>
-         <div class="mcont_right"><img src="__MOBILE__/img/jiantou2.png"></div>
-       </a>
-    </div>
-    <div class="am_mcont">
-       <a href="{:U('Order/index')}">
-         <div class="mcont_left"><img src="__MOBILE__/img/wddd.png"></div>
-         <div class="mcont_cont">我的订单</div>
-         <div class="mcont_right"><img src="__MOBILE__/img/jiantou2.png"></div>
-       </a>
-    </div>
-    <div class="am_mcont">
-       <a href="{:U('Rooms/index')}">
-         <div class="mcont_left"><img src="__MOBILE__/img/fjlb.png"></div>
-         <div class="mcont_cont">房间列表</div>
-         <div class="mcont_right"><img src="__MOBILE__/img/jiantou2.png"></div>
-       </a>
-    </div>
-    <div class="am_mcont">
-       <a href="{:U('Self/balance')}">
-         <div class="mcont_left"><img src="__MOBILE__/img/wdye.png"></div>
-         <div class="mcont_cont">我的余额</div>
-         <div class="mcont_right"><img src="__MOBILE__/img/jiantou2.png"></div>
-       </a>
-    </div>
-    <div class="am_mcont">
-       <a href="{:U('BalanceLog/index')}">
-         <div class="mcont_left"><img src="__MOBILE__/img/wdye.png"></div>
-         <div class="mcont_cont">消费清单</div>
-         <div class="mcont_right"><img src="__MOBILE__/img/jiantou2.png"></div>
-       </a>
-    </div>
-    <div class="am_mcont">
-       <a href="{:U('Self/collection')}">
-         <div class="mcont_left"><img src="__MOBILE__/img/wdsc.png"></div>
-         <div class="mcont_cont">我的收藏</div>
-         <div class="mcont_right"><img src="__MOBILE__/img/jiantou2.png"></div>
-       </a>
-    </div>
-</div>
-<script>
-    var count = "{$msg}";
-    if(count>0){
-        $('.mcont_cont span').css('background','#ff3434');
-    }else{
-        $('.mcont_cont span').css('background','#fff');
-    }
-</script>

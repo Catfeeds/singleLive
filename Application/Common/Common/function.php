@@ -1,16 +1,5 @@
 <?php
 use Think\D;
-/**
- * 字符串截取，支持中文和其他编码
- * @static
- * @access public
- * @param string $str 需要转换的字符串
- * @param string $length 截取长度
- * @param string $start 开始位置
- * @param string $charset 编码格式
- * @param string $suffix 截断显示字符
- * @return string
- */
 function msubstr($str, $length, $start=0, $charset="utf-8", $suffix=true) {
     if(function_exists("mb_substr"))
         $slice = mb_substr($str, $start, $length, $charset);
