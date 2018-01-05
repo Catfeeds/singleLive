@@ -3,6 +3,8 @@ namespace Mobile\Controller;
 use Think\Controller;
 use Think\D;
 class LoginController extends CommonController{
+	public $model = "Users";
+	public $success = ['insert' => '注册成功，正在跳转...'];
 	/**
 	 * [index 登录页]
 	 * @Author   ヽ(•ω•。)ノ   Mr.Solo
@@ -34,7 +36,25 @@ class LoginController extends CommonController{
 	 */
 	public function register()
 	{
+		// sendSMS(18622977554,1234);
 		$this->display();
+	}
+	/**
+	 * [verification 发送验证码]
+	 * @Author   ヽ(•ω•。)ノ   Mr.Solo
+	 * @DateTime 2018-01-05
+	 * @Function []
+	 * @param    [type]     $mobile [手机号码]
+	 * @return   [type]             [description]
+	 */
+	public function verification($mobile)
+	{
+		$code = rand(1000,9999);
+		S('code',[
+			'mobile' => $mobile,
+			'code' =>$code,
+		]);
+		$this->ajaxReturn(sendSMS($mobile,$code));
 	}
 	/**
 	 * [login 登录操作]
@@ -75,5 +95,18 @@ class LoginController extends CommonController{
 	{
 		session('user',null);
 		$this->success('正在退出...',U('Index/index'));
+	}
+	/**
+	 * [insert 用户注册]
+	 * @Author   ヽ(•ω•。)ノ   Mr.Solo
+	 * @DateTime 2018-01-05
+	 * @Function []
+	 * @return   [type]     [description]
+	 */
+	public function insert()
+	{
+		parent::insert(function($id){
+			session('user',$id);
+		});
 	}
 }
