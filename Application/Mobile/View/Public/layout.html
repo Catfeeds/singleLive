@@ -33,10 +33,10 @@
     {__CONTENT__}
     <div class="forder">
         <ul>
-            <li><a class="ror_1 acver" href="{:U('Index/index')}">首页</a></li>
-            <li><a class="ror_2" href="{:U('Rooms/index')}">客房</a></li>
-            <li><a class="ror_3" href="{:U('Orders/index')}">订单</a></li>
-            <li><a class="ror_4" href="{:U('Self/index')}">我的</a></li>
+            <li><a class="ror_1 <if condition=" CONTROLLER_NAME eq 'Index' "> acver</if>" href="{:U('Index/index')}">首页</a></li>
+            <li><a class="ror_2 <if condition=" CONTROLLER_NAME eq 'Rooms' "> acver</if>" href="{:U('Rooms/index')}">客房</a></li>
+            <li><a class="ror_3 <if condition=" CONTROLLER_NAME eq 'Orders' "> acver</if>" href="{:U('Orders/index')}">订单</a></li>
+            <li><a class="ror_4 <if condition=" CONTROLLER_NAME eq 'Self' "> acver</if>" href="{:U('Self/index')}">我的</a></li>
         </ul>
     </div>
 </body>
@@ -58,4 +58,5 @@ if ($('#position').length > 0) {
     })
 }
 </script>
+
 </html>
