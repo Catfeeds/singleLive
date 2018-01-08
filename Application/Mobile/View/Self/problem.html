@@ -3,38 +3,15 @@
         常见问题
     </div>
     <div class="problem">
-        <div class="biem_cont biatacve">
+        <volist name="db" id="db" key="k">
+             <div class="biem_cont  {:($k == 1)?'biatacve':''}">
             <div class="biem_tite">
-                <span>花季时间预告</span>
+                <span>{$db.title}</span>
             </div>
             <div class="biem_ecor">
-                薰衣草园介绍？
-                <br /> 1.景区薰衣草种在山谷里，主要品种是英国狭叶薰衣草，这种薰衣草原产地英国，在法国普罗旺斯广泛种植，可以用来提炼最顶级的薰衣草精油。
-                <br /> 2.景区目前一共有20亩地左右，每年六月初开始开花，一直持续到七月中下旬，花期约一个半月，与普罗旺斯的花期完全同步。
-                <br /> 3.六月中下旬是薰衣草花开最漂亮的时候。
+                {:html_entity_decode($db['content'])}
             </div>
         </div>
-        <div class="biem_cont">
-            <div class="biem_tite">
-                <span>客户须知</span>
-            </div>
-            <div class="biem_ecor">
-                薰衣草园介绍？
-                <br /> 1.景区薰衣草种在山谷里，主要品种是英国狭叶薰衣草，这种薰衣草原产地英国，在法国普罗旺斯广泛种植，可以用来提炼最顶级的薰衣草精油。
-                <br /> 2.景区目前一共有20亩地左右，每年六月初开始开花，一直持续到七月中下旬，花期约一个半月，与普罗旺斯的花期完全同步。
-                <br /> 3.六月中下旬是薰衣草花开最漂亮的时候。
-            </div>
-        </div>
-        <div class="biem_cont">
-            <div class="biem_tite">
-                <span>团队客户</span>
-            </div>
-            <div class="biem_ecor">
-                薰衣草园介绍？
-                <br /> 1.景区薰衣草种在山谷里，主要品种是英国狭叶薰衣草，这种薰衣草原产地英国，在法国普罗旺斯广泛种植，可以用来提炼最顶级的薰衣草精油。
-                <br /> 2.景区目前一共有20亩地左右，每年六月初开始开花，一直持续到七月中下旬，花期约一个半月，与普罗旺斯的花期完全同步。
-                <br /> 3.六月中下旬是薰衣草花开最漂亮的时候。
-            </div>
-        </div>
+        </volist>
     </div>
 </div>

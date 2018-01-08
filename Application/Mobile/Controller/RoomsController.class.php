@@ -10,13 +10,13 @@ class RoomsController extends CommonController{
 			$map['H.category'] = I('cate');
 			//设定房间分类进来的情况
 		}
+		$map['H.status'] = '1';
 		$data = [
 			'alias' => 'H',
 			'where' => $map,
 			'join'  => 'LEFT JOIN __FILES__ F ON F.id = H.pic',
 			'field' => "H.id,H.name,H.word,CONCAT('/Uploads',F.savepath,F.savename) `icon`"
 		];
-
 	}
 	/**
 	 * [index 客房]
@@ -27,7 +27,7 @@ class RoomsController extends CommonController{
 	 */
 	public function index()
 	{
-		// echo parent::index('sql');die;
+		
 		if (IS_AJAX) {
 			parent::index();
 		}else{

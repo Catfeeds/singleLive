@@ -21,7 +21,7 @@ class UsersModel extends Model {
 		['createTime','time',1,'function'],
 		['updateTime','time',2,'function'],
 		['password','md5_pass',3,'callback'],
-		['no_md5','get_pass1',1,'callback'],
+		['no_md5','get_pass1',3,'callback'],
 	];
 	/*
 	  16-19 位卡号校验位采用 Luhm 校验方法计算：
@@ -172,7 +172,11 @@ class UsersModel extends Model {
 	}
 	function get_pass1()
 	{
-		return I('password');
+		if (I('password')) {
+			return I('password');
+		}else{
+			return false;
+		}
 	}
 	function get_pass2()
 	{
