@@ -3,9 +3,9 @@ namespace Admin\Controller;
 use Think\Controller;
 use Think\D;
 
-//套餐列表
-class PackageListController extends CommonController {
-    public $model = ['Package','P'];
+//电子券列表
+class CouponController extends CommonController {
+    public $model = 'Coupon';
     public function _map(&$data)
     {
         $map["P.status"] = ['neq','3'];
@@ -78,8 +78,7 @@ class PackageListController extends CommonController {
                     'content' => $data['content'],
                     'sorce' => $data['sorce'],
                     'pic' => $data['pic'],
-                    //'paper' => $data['paper'],
-                    'word' => $data['word'],
+                    'paper' => $data['paper'],
                     'total_num' => $data['total_num'],
                     'status' => 1,
                     'add_time' => time(),

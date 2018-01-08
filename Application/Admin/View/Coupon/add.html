@@ -13,29 +13,11 @@
                 <form action="__URL__/add" method="post" class="form-hotelAdd">
                     <div class="xxknr">
                         <div>
-                            <div class="glylb_szmm"><span class="glylb_szmm_span">选择套餐类型：</span>
+                            <div class="glylb_szmm"><span class="glylb_szmm_span">电子券名称：</span>
                                 <div class="layui-input-block z_min_left_10">
-                                    <select class="fn-tinput requ" name="category">
-                                        <option value="">--选择套餐类型--</option>
-                                        <volist name="cate" id="cates">
-                                            <option value="{$cates.id}">{$cates.title}</option>
-                                        </volist>
-                                    </select>
+                                    <input class="fn-tinput requ" name="title" placeholder="请填写电子券名称">
                                 </div>
                             </div>
-                            <div class="glylb_szmm"><span class="glylb_szmm_span">房间总数：</span>
-                                <div class="layui-input-block z_min_left_10">
-                                    <input class="fn-tinput requ" name="total_num" placeholder="请填写房间总数">
-                                </div>
-                            </div>
-                            <!--<div class="glylb_szmm"><span class="glylb_szmm_span">是否可以使用电子卷：</span>
-                                <div class="layui-input-block z_min_left_10">
-                                    <select class="fn-tinput requ" name="paper">
-                                        <option value="y">可用</option>
-                                        <option value="n">不可用</option>
-                                    </select>
-                                </div>
-                            </div>-->
                             <div class="glylb_szmm"><span class="glylb_szmm_span">封面图片：</span>
                                 <div class="layui-input-block z_min_left_10">
                                     <img id="LAY_demo_upload" style="display: none;" width="100px" height="100px" src="">
@@ -45,37 +27,44 @@
                                     <input name="pic" id="logo" type="hidden" value="">
                                 </div>
                             </div>
-                            <div class="glylb_szmm"><span class="glylb_szmm_span">简介：</span>
+                            <div class="glylb_szmm"><span class="glylb_szmm_span">电子券金额：</span>
                                 <div class="layui-input-block z_min_left_10">
-                                    <textarea style="width:359px;height: 200px;min-height:200px;" name="word"></textarea>
+                                    <input class="fn-tinput requ" name="money" placeholder="请填写电子券金额">
                                 </div>
                             </div>
-                            <div class="glylb_szmm"><span class="glylb_szmm_span">套餐名称：</span>
+                            <div class="glylb_szmm"><span class="glylb_szmm_span">电子券开始日期：</span>
                                 <div class="layui-input-block z_min_left_10">
-                                    <input class="fn-tinput requ" name="title" placeholder="请填写客房名称">
+                                    <input name="exprie_start" autocomplete="off" placeholder="选择开始时间" class="layui-input test-item" type="text">
                                 </div>
                             </div>
-                            <div class="glylb_szmm"><span class="glylb_szmm_span">每人限购份数：</span>
+                            <div class="glylb_szmm"><span class="glylb_szmm_span">电子券截止日期：</span>
                                 <div class="layui-input-block z_min_left_10">
-                                    <input class="fn-tinput requ" name="limit" placeholder="请填写每人限购份数">
+                                    <input name="exprie_end" autocomplete="off" placeholder="选择截止日期" class="layui-input test-item" type="text">
                                 </div>
                             </div>
-                            <div class="glylb_szmm"><span class="glylb_szmm_span">套餐金额：</span>
+                            <div class="glylb_szmm"><span class="glylb_szmm_span">电子券库存：</span>
                                 <div class="layui-input-block z_min_left_10">
-                                    <input class="fn-tinput requ" type="text" name="packMoney" placeholder="请输入房间金额">
+                                    <input class="fn-tinput requ" name="num" placeholder="请填写电子券库存">
                                 </div>
                             </div>
-                            <div class="glylb_szmm"><span class="glylb_szmm_span">反还积分：</span>
+                            <div class="glylb_szmm"><span class="glylb_szmm_span">电子券不可使用日期：</span>
                                 <div class="layui-input-block z_min_left_10">
-                                    <input class="fn-tinput requ" type="text" name="sorce" placeholder="请输入反还积分">
+                                    <textarea style="width: 359px;height: 200px;min-height: 200px;" name="notDate"></textarea>
+                                    <span style="color: red;">设置日期规则:月份-日期(如5-1),多个日期用回车进行分隔,系统会自动设置当前年份</span>
                                 </div>
                             </div>
-                            <div class="glylb_szmm"><span class="glylb_szmm_span">套餐详情：</span>
+                            <div class="glylb_szmm "><span class="glylb_szmm_span">可以使用电子券的客房分类：</span>
                                 <div class="layui-input-block z_min_left_10">
-                                    <textarea class="layui-textarea" name="content"></textarea>
+                                    <input type="checkbox" name="hcate" value="">
+                                    <span style="color: red;">说明:想要某些房间可以使用电子券,只需勾选它的客房分类即可,在客房添加时选择该分类,系统会自动是</span>
                                 </div>
                             </div>
-                            <div class="glylb_szmm"><span class="glylb_szmm_span">预定须知：</span>
+                            <div class="glylb_szmm"><span class="glylb_szmm_span">兑换所需积分：</span>
+                                <div class="layui-input-block z_min_left_10">
+                                    <input class="fn-tinput requ" name="sorce" placeholder="请填写兑换所需积分">
+                                </div>
+                            </div>
+                            <div class="glylb_szmm"><span class="glylb_szmm_span">使用说明：</span>
                                 <div class="layui-input-block z_min_left_10">
                                     <textarea class="layui-textarea" name="mark"></textarea>
                                 </div>
@@ -103,5 +92,14 @@
                 $('#logo').val(res.id);
             }
         })
+    })
+    layui.use('laydate', function() {
+        var laydate = layui.laydate;
+        lay('.test-item').each(function(){
+            laydate.render({
+                elem: this
+                ,trigger: 'click'
+            });
+        });
     })
 </script>

@@ -22,6 +22,15 @@
                                     </select>
                                 </div>
                             </div>
+                            <div class="glylb_szmm"><span class="glylb_szmm_span">封面图片：</span>
+                                <div class="layui-input-block z_min_left_10">
+                                    <img id="LAY_demo_upload" style="display: none;" width="100px" height="100px" src="">
+                                    <button name="file" style="margin-top:7px;" class="layui-btn test" type="button" lay-data="{url: '/index.php/Admin/AjaxPost/uploadOne', accept: 'images'}" >
+                                        <i class="layui-icon">&#xe67c;</i>上传封面图片
+                                    </button>
+                                    <input name="pic" id="logo" type="hidden" value="">
+                                </div>
+                            </div>
                             <div class="glylb_szmm"><span class="glylb_szmm_span">标题：</span>
                                 <div class="layui-input-block z_min_left_10">
                                     <input class="fn-tinput requ" name="name" placeholder="请填写级别名称">
@@ -72,5 +81,16 @@
                 $('#zyupload').append("<input type='hidden' name='imgs[]' value=" + json.id + ">");
             }
         });
+        layui.use('upload', function(){
+            var upload = layui.upload;
+            upload.render({
+                elem: '.test',
+                done: function(res){
+                    $('#LAY_demo_upload').attr('src',res.data.src);
+                    $('#LAY_demo_upload').css('display','block');
+                    $('#logo').val(res.id);
+                }
+            })
+        })
     });
 </script>

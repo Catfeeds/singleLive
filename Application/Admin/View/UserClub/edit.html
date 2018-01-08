@@ -27,6 +27,20 @@
                                     <input class="fn-tinput requ" name="name" value="{$db.name}" placeholder="请填写级别名称">
                                 </div>
                             </div>
+                            <div class="glylb_szmm"><span class="glylb_szmm_span">封面图片：</span>
+                                <div class="layui-input-block z_min_left_10">
+                                    <img id="LAY_demo_upload" width="100px" height="100px" src="{:getSrc($db['pic'])}">
+                                    <button name="file" style="margin-top:7px;" class="layui-btn test" type="button" lay-data="{url: '/index.php/Admin/AjaxPost/uploadOne', accept: 'images'}" >
+                                        <i class="layui-icon">&#xe67c;</i>上传封面图片
+                                    </button>
+                                    <input name="pic" id="logo" type="hidden" value="{$db.pic}">
+                                </div>
+                            </div>
+                            <div class="glylb_szmm"><span class="glylb_szmm_span">简介：</span>
+                                <div class="layui-input-block z_min_left_10">
+                                    <textarea style="width:359px;height: 200px;min-height:200px;" name="word">{$db.word}</textarea>
+                                </div>
+                            </div>
                             <div class="glylb_szmm">
                                 <span class="glylb_szmm_span">轮播图：</span>
                                 <div class="layui-input-block z_min_left_10">
@@ -96,6 +110,17 @@
                         layer.msg('删除成功');
                     }
                 })
+            })
+        });
+        layui.use('upload', function(){
+            var upload = layui.upload;
+            upload.render({
+                elem: '.test',
+                done: function(res){
+                    $('#LAY_demo_upload').attr('src',res.data.src);
+                    $('#LAY_demo_upload').css('display','block');
+                    $('#logo').val(res.id);
+                }
             })
         })
     });

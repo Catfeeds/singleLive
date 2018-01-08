@@ -10,6 +10,7 @@ class HouseModel extends Model {
 	    ['money','require','请设置客房金额'],
 	    ['sorce','require','请设置反还积分'],
 	    ['sorce','check_sorce','反还积分必须为正整数',0,'callback'],
+		['word','require','请填写简介'],
 	    ['equipment','require','请输入房间设备'],
 	    ['mark','require','请输入房间描述'],
 	    ['back','require','请输入订房须知'],

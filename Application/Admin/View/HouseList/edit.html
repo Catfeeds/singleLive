@@ -23,6 +23,15 @@
                                     </select>
                                 </div>
                             </div>
+                            <div class="glylb_szmm"><span class="glylb_szmm_span">封面图片：</span>
+                                <div class="layui-input-block z_min_left_10">
+                                    <img id="LAY_demo_upload" style="display: none;" width="100px" height="100px" src="{:getSrc($db['pic'])}">
+                                    <button name="file" style="margin-top:7px;" class="layui-btn test" type="button" lay-data="{url: '/index.php/Admin/AjaxPost/uploadOne', accept: 'images'}" >
+                                        <i class="layui-icon">&#xe67c;</i>上传封面图片
+                                    </button>
+                                    <input name="pic" id="logo" type="hidden" value="{$db.pic}">
+                                </div>
+                            </div>
                             <div class="glylb_szmm"><span class="glylb_szmm_span">房间总数：</span>
                                 <div class="layui-input-block z_min_left_10">
                                     <input class="fn-tinput requ" type="text" name="total_num" placeholder="请输入房间总数" value="{$db.total_num}">
@@ -43,12 +52,17 @@
                                     <input class="fn-tinput requ" type="text" name="sorce" placeholder="请输入反还积分" value="{$db.sorce}">
                                 </div>
                             </div>
-                            <div class="glylb_szmm"><span class="glylb_szmm_span">是否可以使用电子卷：</span>
+                           <!-- <div class="glylb_szmm"><span class="glylb_szmm_span">是否可以使用电子卷：</span>
                                 <div class="layui-input-block z_min_left_10">
                                     <select class="fn-tinput requ" name="paper" sel_val="{$db.paper}">
                                         <option value="y">可用</option>
                                         <option value="n">不可用</option>
                                     </select>
+                                </div>
+                            </div>-->
+                            <div class="glylb_szmm"><span class="glylb_szmm_span">房间简介：</span>
+                                <div class="layui-input-block z_min_left_10">
+                                    <textarea style="width:359px;height: 200px;min-height:200px;" name="word">{$db.word}</textarea>
                                 </div>
                             </div>
                             <div class="glylb_szmm"><span class="glylb_szmm_span">房间设备：</span>
@@ -93,5 +107,16 @@
     $('select').each(function(){
         var sel_val = $(this).attr('sel_val');
         $(this).val(sel_val);
+    })
+    layui.use('upload', function(){
+        var upload = layui.upload;
+        upload.render({
+            elem: '.test',
+            done: function(res){
+                $('#LAY_demo_upload').attr('src',res.data.src);
+                $('#LAY_demo_upload').css('display','block');
+                $('#logo').val(res.id);
+            }
+        })
     })
 </script>

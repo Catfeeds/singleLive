@@ -1,0 +1,110 @@
+<div class="layui-body" style="bottom: 0;border-left: solid 2px #1AA094;" id="admin-body">
+    <div class="layui-tab admin-nav-card layui-tab-brief" lay-filter="admin-tab">
+        <ul class="layui-tab-title">
+            <li class="layui-this">
+                <i class="fa fa-dashboard" aria-hidden="true"></i>
+                <cite>套餐列表</cite>
+            </li>
+        </ul>
+        <div class="layui-tab-content" style="min-height: 150px; padding: 5px 0 0 0;">
+            <div class="layui-tab-item layui-show">
+                <div class="conter">
+                    <div class="conter_sait">
+                        <form action="__URL__/index" method="post" class="form-hotel">
+                            <div class="wort">
+                                <div class="layui-input-inline">
+                                    <input name="startTime" autocomplete="off" placeholder="选择开始时间" class="layui-input test-item" value="{:I('startTime')}" type="text">
+                                </div>
+                            </div>
+                            <div class="wort">
+                                <div class="layui-input-inline">至
+                                </div>
+                            </div>
+                            <div class="wort">
+                                <div class="layui-input-inline">
+                                    <input name="endTime" autocomplete="off" placeholder="选择结束时间" class="layui-input test-item" value="{:I('endTime')}" type="text">
+                                </div>
+                            </div>
+                            <div class="wort" style="width:280px;">
+                                <input name="title" lay-verify="title" value="{:I('title')}" autocomplete="off" placeholder="套餐名称" class="layui-input" type="text">
+                            </div>
+                            <div class="wort">
+                                <div class="layui-input-inline">
+                                    <select style="width: 200px;height: 38px;" name="category">
+                                        <option value="">--请选择套餐分类--</option>
+                                        <volist name="cate" id="cates">
+                                            <option value="{$cates.id}">{$cates.title}</option>
+                                        </volist>
+                                    </select>
+                                </div>
+                            </div>
+                            <div class="wort">
+                                <button type="submit" id="select" class="layui-btn">查找</button>
+                            </div>
+                            <div class="wort">
+                                <a href="__URL__/add">
+                                    <button type="button" class="layui-btn layui-btn-danger">新增</button>
+                                </a>
+                            </div>
+                        </form>
+                    </div>
+                    <div class="botg">
+                        <table class="layui-table">
+                            <thead>
+                            <tr>
+                                <th>封面图片</th>
+                                <th>套餐分类</th>
+                                <th>套餐名称</th>
+                                <th>套餐金额</th>
+                                <th>反还积分</th>
+                                <th>添加时间</th>
+                                <th>操作</th>
+                            </tr>
+                            </thead>
+                            <tbody>
+                            <volist name="db" id="row">
+                                <tr>
+                                    <td><img style="width: 100px;height: 100px;" src="{:getSrc($row['pic'])}" /></td>
+                                    <td>{$row.cateName}</td>
+                                    <td>{$row.title}</td>
+                                    <td>{$row.packMoney}</td>
+                                    <td>{$row.sorce}</td>
+                                    <td>{$row.add_time}</td>
+                                    <td>
+                                        <a class="z_coios_2" href="__URL__/content/pid/{$row.id}">套餐内容</a>
+                                        <switch name="row.status">
+                                            <case value="1">
+                                                <a href="__URL__/set_status?co=PackageList&id={$row.id}&t=Package&sta=1" class="z_coios_1 ajax-get confirm" data-msg='您确定禁用？'>禁用</a></case>
+                                            <case value="2">
+                                                <a href="__URL__/set_status?co=PackageList&id={$row.id}&t=Package&sta=2" class="z_coios_2 ajax-get confirm" data-msg='您确定启用？'>启用</a>
+                                            </case>
+                                        </switch>
+                                        <a class="z_coios_4" href="__URL__/edit/id/{$row.id}">修改</a>
+                                        <a href="__URL__/package_del/id/{$row.id}" class="z_coios_3 ajax-get confirm" data-msg='您确定删除？'>删除</a>
+                                    </td>
+                                </tr>
+                            </volist>
+                            </tbody>
+                        </table>
+                        <div class="feniou">
+                            <ul>
+                                {$page}
+                            </ul>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+<script>
+    layui.use('laydate', function() {
+        var laydate = layui.laydate;
+        lay('.test-item').each(function(){
+            laydate.render({
+                elem: this
+                ,trigger: 'click'
+            });
+        });
+    })
+</script>
