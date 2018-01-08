@@ -327,6 +327,7 @@ CREATE TABLE IF NOT EXISTS `ms_house` (
   `update_time` int(11) COLLATE utf8_bin NOT NULL COMMENT '修改时间',
   `status` tinyint(1) NOT NULL COMMENT '状态字段 1-正常 2-已禁用 3-已删除',
   `total_num` int(11) NOT NULL COMMENT '房间总数',
+  `word` text COLLATE utf8_bin NOT NULL COMMENT '房间简介',
   PRIMARY KEY (`id`)
 ) ENGINE=MyISAM DEFAULT CHARSET=utf8 COLLATE=utf8_bin AUTO_INCREMENT=1;
 
@@ -341,6 +342,7 @@ CREATE TABLE IF NOT EXISTS `ms_environment` (
   `add_time` int(11) COLLATE utf8_bin NOT NULL COMMENT '插入时间',
   `update_time` int(11) COLLATE utf8_bin NOT NULL COMMENT '修改时间',
   `type` char(1) COLLATE utf8_bin NOT NULL COMMENT 'f-餐饮 e-环境 a-体验活动 m-会员俱乐部',
+  `word` text COLLATE utf8_bin NOT NULL COMMENT '简介',
   PRIMARY KEY (`id`)
 ) ENGINE=MyISAM DEFAULT CHARSET=utf8 COLLATE=utf8_bin AUTO_INCREMENT=1;
 
@@ -374,6 +376,7 @@ CREATE TABLE IF NOT EXISTS `ms_package` (
   `status` tinyint(1) NOT NULL COMMENT '1-正常 2-禁用 3-删除',
   `total_num` int(11) NOT NULL COMMENT '套餐总数(实际就是房间总数)',
   `paper` char(1) COLLATE utf8_bin NOT NULL COMMENT '是否可以使用电子卷 y-是 n-否',
+  `word` text COLLATE utf8_bin NOT NULL COMMENT '简介',
   PRIMARY KEY (`id`)
 ) ENGINE=MyISAM DEFAULT CHARSET=utf8 COLLATE=utf8_bin AUTO_INCREMENT=1;
 
