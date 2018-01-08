@@ -4,75 +4,22 @@
         <b>1000</b>
     </div>
     <div class="integral">
-        <div class="integral_cont">
-            <div class="integral_left">
-                <img src="__MOBILE__/img/jf01@2x.png">
-            </div>
-            <div class="integral_right">
-                <div class="integral_right_f">
-                    <span>会员晋级</span>
-                    <b>500积分</b>
+        <volist name="db" id="db">
+            <div class="integral_cont">
+                <div class="integral_left">
+                    <img src="{$db.icon}">
                 </div>
-                <div class="integral_right_r">
-                    <a class="diopr spoert" msg-tite="您是否购买？">购买</a>
-                </div>
-            </div>
-        </div>
-        <div class="integral_cont">
-            <div class="integral_left">
-                <img src="__MOBILE__/img/jf01@2x.png">
-            </div>
-            <div class="integral_right">
-                <div class="integral_right_f">
-                    <span>会员晋级</span>
-                    <b>500积分</b>
-                </div>
-                <div class="integral_right_r">
-                    <a class="diopr spoert" msg-tite="您是否购买？">购买</a>
+                <div class="integral_right">
+                    <div class="integral_right_f">
+                        <span>{$db.title}</span>
+                        <b>{$db.sorce}积分</b>
+                    </div>
+                    <div class="integral_right_r">
+                        <a class="diopr spoert" msg-tite="您是否购买？">购买</a>
+                    </div>
                 </div>
             </div>
-        </div>
-        <div class="integral_cont">
-            <div class="integral_left">
-                <img src="__MOBILE__/img/jf01@2x.png">
-            </div>
-            <div class="integral_right">
-                <div class="integral_right_f">
-                    <span>会员晋级</span>
-                    <b>500积分</b>
-                </div>
-                <div class="integral_right_r">
-                    <a class="diopr spoert" msg-tite="您是否购买？">购买</a>
-                </div>
-            </div>
-        </div>
-        <div class="integral_cont">
-            <div class="integral_left">
-                <img src="__MOBILE__/img/jf01@2x.png">
-            </div>
-            <div class="integral_right">
-                <div class="integral_right_f">
-                    <span>会员晋级</span>
-                    <b>500积分</b>
-                </div>
-                <div class="integral_right_r">
-                    <a class="diopr spoert" msg-tite="您是否购买？">购买</a>
-                </div>
-            </div>
-        </div>
-        <div class="integral_cont">
-            <div class="integral_left">
-                <img src="__MOBILE__/img/jf01@2x.png">
-            </div>
-            <div class="integral_right">
-                <div class="integral_right_f">
-                    <span>会员晋级</span>
-                    <b>500积分</b>
-                </div>
-                <div class="integral_right_r">
-                    <a class="diopr spoert" msg-tite="您是否购买？">购买</a>
-                </div>
-            </div>
-        </div>
+        </volist>
+       
     </div>
 </div>

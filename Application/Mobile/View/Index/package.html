@@ -18,25 +18,37 @@
     <div class="app_lint">
         <div class="app_Guest">
             <ul>
-                <li class="avcet">全部</li>
-                <li>分类1</li>
-                <li>分类2</li>
-                <li>分类3</li>
-                <li>分类4</li>
+                <li class="avcet" url="__URL__/package">全部</li>
+                <volist name="cates" id="cate">
+                    <li url="__URL__/package/cate/{$cate.id}">{$cate.title}</li>
+                </volist>
             </ul>
         </div>
-        <div class="app_Guest_cont flow-default" id="LAY_demo1">
-            <a href="__URL__/packageEdit" class="Guest">
-                <div class="Guest_left">
-                    <img src="__MOBILE__/img/hj02@2x.png">
-                </div>
-                <div class="Guest_right1">
-                    <span><img src="__MOBILE__/img/my05@2x.png"></span>
-                    <h3>在树屋中共度浪漫纪念日</h3>
-                    <b>简介：尊贵城堡树屋尊贵城堡树屋尊贵城堡树屋尊贵城堡树屋尊贵城堡树屋尊 贵城堡树屋尊 贵城堡树屋尊  </b>
-                    <h2>￥699.00</h3>
-	     	  </div>
-	     </a>
+        <div class="app_Guest_cont flow-default" id="view">
+        </div>
     </div>
-</div>	
 </div>
+</div>
+<script type="text/html" id="layout">
+    <a href="__URL__/packageEdit/id/{{d.id}}" class="Guest">
+        <div class="Guest_left">
+            <img src="{{d.icon}}">
+        </div>
+        <div class="Guest_right">
+            <span><img src="__MOBILE__/img/my05@2x.png"></span>
+            <h3>{{d.name}}</h3>
+            <p>简介：{{d.word}}</p>
+        </div>
+    </a>
+</script>
+<script type="text/javascript">
+yin.lists({
+    url: $('.avcet').attr('url')
+});
+$('.app_Guest').on('touchend', 'li', function() {
+    $('#view').html('');
+    yin.lists({
+        url: $(this).attr('url')
+    });
+});
+</script>

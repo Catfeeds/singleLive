@@ -3,6 +3,39 @@ namespace Mobile\Controller;
 use Think\Controller;
 use Think\D;
 class IndexController extends CommonController{
+	public $model = 'Environment';
+	public function _map(&$data)
+	{
+		switch (ACTION_NAME) {
+			case 'package':
+				if (I('cate')) {
+					$map['H.category'] = I('cate');
+					//设定房间分类进来的情况
+				}
+				$map['H.status'] = '1';
+				$data = [
+					'alias' => 'H',
+					'table' => '__PACKAGE__',
+					'where' => $map,
+					'join'  => 'LEFT JOIN __FILES__ F ON F.id = H.pic',
+					'field' => "H.id,H.title name,H.word,CONCAT('/Uploads',F.savepath,F.savename) `icon`"
+				];
+				break;
+			default:
+				if (I('type')) {
+					$map['H.type'] = I('type');
+					//设定房间分类进来的情况
+				}
+				$data = [
+					'alias' => 'H',
+					'where' => $map,
+					'join'  => 'LEFT JOIN __FILES__ F ON F.id = H.pic',
+					'field' => "H.id,H.name,H.word,CONCAT('/Uploads',F.savepath,F.savename) `icon`"
+				];
+				break;
+		}
+
+	}
 	/**
 	 * [index 首页]
 	 * @Author   ヽ(•ω•。)ノ   Mr.Solo
@@ -23,7 +56,11 @@ class IndexController extends CommonController{
 	 */
 	public function restaurant()
 	{
-		$this->display();
+		if (IS_AJAX) {
+			parent::index();
+		}else{
+			$this->display();
+		}
 	}
 	/**
 	 * [restaurant 餐饮详情]
@@ -45,7 +82,11 @@ class IndexController extends CommonController{
 	 */
 	public function environment()
 	{
-		$this->display();
+		if (IS_AJAX) {
+			parent::index();
+		}else{
+			$this->display();
+		}
 	}
 	/**
 	 * [environmentEdit 环境详情]
@@ -54,8 +95,13 @@ class IndexController extends CommonController{
 	 * @Function []
 	 * @return   [type]     [description]
 	 */
-	public function environmentEdit()
+	public function environmentEdit($id)
 	{
+		$house = D::find('Environment',$id);
+		$bannerMap['id'] = ['in',array_filter(explode(',', $house['imgs']))]; //banner ids
+		$Banners = D::get('Files',$bannerMap); //获取banner
+		$this->assign('banners',$Banners);
+		$this->assign('db',$house);
 		$this->display();
 	}
 	/**
@@ -67,7 +113,11 @@ class IndexController extends CommonController{
 	 */
 	public function campaign()
 	{
-		$this->display();
+		if (IS_AJAX) {
+			parent::index();
+		}else{
+			$this->display();
+		}
 	}
 	public function campaignEdit()
 	{
@@ -82,6 +132,34 @@ class IndexController extends CommonController{
 	 */
 	public function package()
 	{
+		if (IS_AJAX) {
+			parent::index();
+		}else{
+			//获取分类信息
+			$cates = D::get('HouseCate',[
+				'status' => '1',
+				'type' => 't',
+			]);
+			$this->assign('cates',$cates);
+			$this->display();
+		}
+	}
+	/**
+	 * [packageEdit 套餐详情页]
+	 * @Author   ヽ(•ω•。)ノ   Mr.Solo
+	 * @DateTime 2018-01-08
+	 * @Function []
+	 * @return   [type]     [description]
+	 */
+	public function packageEdit($id)
+	{
+		$db = D::find('Package',$id);
+		$db['set'] = array_map(function($data){
+			$data['amount'] = sprintf('%.2f', $data['attr'] * $data['money']);
+			return $data;
+		},  D::get('PackageSet',['pid' => $id]));
+		// dump($db['set']);die;
+		$this->assign('db',$db);
 		$this->display();
 	}
 
