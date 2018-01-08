@@ -58,7 +58,7 @@ CREATE TABLE `ms_perm` (
   `perm_parentid` int(11) NOT NULL COMMENT '父级id',
   PRIMARY KEY (`perm_id`),
   KEY `perm_type` (`perm_type`)
-) ENGINE=MyISAM  DEFAULT CHARSET=utf8 COLLATE=utf8_bin AUTO_INCREMENT=39 ;
+) ENGINE=MyISAM  DEFAULT CHARSET=utf8 COLLATE=utf8_bin AUTO_INCREMENT=40 ;
 
 --
 -- 转存表中的数据 `perm`
@@ -102,7 +102,8 @@ INSERT INTO `ms_perm` (`perm_id`, `perm_type`, `perm_url`, `status`, `perm_paren
 (35, '备份数据库', 'DB', 0,11),
 (36, '还原数据库', 'DBReduction', 0,11),
 (37, '密码修改', 'Pwd', 0,11),
-(38, '参数设置', 'Parameter', 0,11);
+(38, '参数设置', 'Parameter', 0,11),
+(39, '常见问题列表', 'Problem', 0,7);
 
 
 
@@ -487,6 +488,8 @@ CREATE TABLE IF NOT EXISTS `ms_coupon` (
   `year` varchar(10) COLLATE utf8_bin NOT NULL COMMENT '电子卷不可使用年份,默认统一获取当前年份',
   `sorce` varchar(255) COLLATE utf8_bin NOT NULL COMMENT '兑换所需积分',
   `mark` text COLLATE utf8_bin NOT NULL COMMENT '描述(使用说明)',
+  `hcate` varchar(50) COLLATE utf8_bin NOT NULL COMMENT '可以使用电子卷的客房分类id',
+  `tcate` varchar(50) COLLATE utf8_bin NOT NULL COMMENT '可以使用电子卷的套餐分类id',
   `pic` int(11) NOT NULL COMMENT '电子卷图片',
   `status` tinyint(1) NOT NULL COMMENT '1-正常 2-禁用 3-删除',
   PRIMARY KEY (`id`)
