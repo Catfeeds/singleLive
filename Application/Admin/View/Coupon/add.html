@@ -1,16 +1,19 @@
 <div class="layui-body" style="bottom: 0;border-left: solid 2px #1AA094;" id="admin-body">
     <div class="layui-tab admin-nav-card layui-tab-brief" lay-filter="admin-tab">
         <ul class="layui-tab-title">
-            <li class="layui-this"><i class="fa fa-dashboard" aria-hidden="true"></i> <cite>新增套餐</cite></li>
+            <li class="layui-this"><i class="fa fa-dashboard" aria-hidden="true"></i> <cite>新增电子券</cite></li>
         </ul>
+        <style>
+            .house .houseCate{width: 100px;float: left;}
+        </style>
         <div class="layui-tab-item layui-show">
             <div class="conter">
                 <div class="xxkt">
                     <ul>
-                        <li class="xxkt_bt">新增套餐</li>
+                        <li class="xxkt_bt">新增电子券</li>
                     </ul>
                 </div>
-                <form action="__URL__/add" method="post" class="form-hotelAdd">
+                <form action="__URL__/insert" method="post" class="form-hotelAdd">
                     <div class="xxknr">
                         <div>
                             <div class="glylb_szmm"><span class="glylb_szmm_span">电子券名称：</span>
@@ -49,14 +52,28 @@
                             </div>
                             <div class="glylb_szmm"><span class="glylb_szmm_span">电子券不可使用日期：</span>
                                 <div class="layui-input-block z_min_left_10">
-                                    <textarea style="width: 359px;height: 200px;min-height: 200px;" name="notDate"></textarea>
+                                    <textarea style="width: 359px;max-width:359px;height: 200px;min-height: 200px;" name="notDate"></textarea>
                                     <span style="color: red;">设置日期规则:月份-日期(如5-1),多个日期用回车进行分隔,系统会自动设置当前年份</span>
                                 </div>
                             </div>
-                            <div class="glylb_szmm "><span class="glylb_szmm_span">可以使用电子券的客房分类：</span>
+                            <div class="glylb_szmm house"><span class="glylb_szmm_span">可以使用电子券的客房分类：</span>
                                 <div class="layui-input-block z_min_left_10">
-                                    <input type="checkbox" name="hcate" value="">
-                                    <span style="color: red;">说明:想要某些房间可以使用电子券,只需勾选它的客房分类即可,在客房添加时选择该分类,系统会自动是</span>
+                                    <volist name="house" id="house">
+                                        <div class="houseCate">
+                                            <input style="width:auto;" type="checkbox" name="hcate[]" value="{$house.id}"><span>{$house.title}</span>
+                                        </div>
+                                    </volist>
+                                    <span style="color: red;">说明:想要某些房间可以使用电子券,只需勾选它的客房分类即可,在客房添加时选择该分类,系统会自动识别</span>
+                                </div>
+                            </div>
+                            <div class="glylb_szmm house"><span class="glylb_szmm_span">可以使用电子券的套餐分类：</span>
+                                <div class="layui-input-block z_min_left_10">
+                                    <volist name="package" id="package">
+                                        <div class="houseCate">
+                                            <input style="width:auto;" type="checkbox" name="tcate[]" value="{$package.id}"><span>{$package.title}</span>
+                                        </div>
+                                    </volist>
+                                    <span style="color: red;">说明:想要某些套餐可以使用电子券,只需勾选它的套餐分类即可,在套餐添加时选择该分类,系统会自动识别</span>
                                 </div>
                             </div>
                             <div class="glylb_szmm"><span class="glylb_szmm_span">兑换所需积分：</span>

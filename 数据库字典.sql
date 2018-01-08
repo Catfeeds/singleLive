@@ -463,6 +463,7 @@ CREATE TABLE IF NOT EXISTS `ms_order` (
   `status` tinyint(1) NOT NULL COMMENT '付款状态 8-待付款 9-已入住 1-已支付 2-已完成 3-已超时(设置时间内未完成支付) 4-已取消 5-退款审核中(用户),由此状态总后台显示确认退款和驳回 6-已退款 7-已驳回',
   `createTime` int(11) NOT NULL COMMENT '订单生成时间',
   `updateTime` int(11) NOT NULL COMMENT '订单更新时间',
+  `date` DATE NOT NULL COMMENT '下单时间(标准日期格式)',
   `type` char(1) COLLATE utf8_bin NOT NULL COMMENT 'k-客房 t-套餐',
   PRIMARY KEY (`id`)
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8 COLLATE=utf8_bin AUTO_INCREMENT=1 ;
@@ -475,7 +476,7 @@ CREATE TABLE IF NOT EXISTS `ms_room_date` (
   `id` int(11) NOT NULL AUTO_INCREMENT,
   `createDate` DATE NOT NULL COMMENT '入住时间',
   `roomID` int(11) NOT NULL COMMENT '房间id',
-  `orderID` int(11) NOT NULL COMMENT '关联订单表id',
+  `order` int(11) NOT NULL COMMENT '订单数量(只要有已经支付的订单就加1,退款则减1)',
   PRIMARY KEY (`id`)
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8 COLLATE=utf8_bin AUTO_INCREMENT=1 ;
 
@@ -497,6 +498,8 @@ CREATE TABLE IF NOT EXISTS `ms_coupon` (
   `tcate` varchar(50) COLLATE utf8_bin NOT NULL COMMENT '可以使用电子卷的套餐分类id',
   `pic` int(11) NOT NULL COMMENT '电子卷图片',
   `status` tinyint(1) NOT NULL COMMENT '1-正常 2-禁用 3-删除',
+  `add_time` int(11) NOT NULL COMMENT '添加时间',
+  `update_time` int(11) NOT NULL COMMENT '修改时间',
   PRIMARY KEY (`id`)
 ) ENGINE=MyISAM DEFAULT CHARSET=utf8 COLLATE=utf8_bin AUTO_INCREMENT=1 ;
 
