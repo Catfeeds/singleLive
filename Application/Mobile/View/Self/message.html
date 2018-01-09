@@ -1,14 +1,23 @@
+<style type="text/css">
+.bbbb {
+    overflow: hidden;
+    text-overflow: ellipsis;
+    display: -webkit-box;
+    -webkit-box-orient: vertical;
+    -webkit-line-clamp: 2;
+}
+</style>
 <div class="app_center">
-    <div class="app_dister">
-        <div class="app_system">
-            <a href="__URL__/messageEdit">双12大优惠双12大优惠双12大优惠</a>
-            <p>12月12日双12搞活动，活动内容2月12日双12搞活动，活动内容2月活动内容2月12日双12搞活动，活动内容...</p>
-            <span class="right">2017-11-20</span>
-        </div>
-        <div class="app_system">
-            <a href="__URL__/messageEdit">双12大优惠双12大优惠双12大优惠</a>
-            <p>12月12日双12搞活动，活动内容2月12日双12搞活动，活动内容2月活动内容2月12日双12搞活动，活动内容...</p>
-            <span class="right">2017-11-20</span>
-        </div>
+    <div class="app_dister" id="view" url="__URL__/message">
     </div>
 </div>
+<script type="text/html" id="layout">
+    <div class="app_system">
+        <a href="__URL__/messageEdit/id/{{d.id}}">{{d.title}}</a>
+        <p class="bbbb">{{d.body}}</p>
+        <span class="right">{{d.createTime}}</span>
+    </div>
+</script>
+<script type="text/javascript">
+yin.lists();
+</script>
