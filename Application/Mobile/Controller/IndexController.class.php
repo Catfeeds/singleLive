@@ -9,6 +9,7 @@ class IndexController extends CommonController{
 		switch (ACTION_NAME) {
 			case 'index':
 				$map['H.status'] = '1';
+				$map['H.push'] = '1';
 				$sql = [
 					D::get('Package',[
 						'alias' => 'H',
@@ -67,6 +68,7 @@ class IndexController extends CommonController{
 	 */
 	public function index()
 	{
+		// echo parent::index('sql');die;
 		if (IS_AJAX) {
 			parent::index(function($data){
 				switch ($data['type']) {
