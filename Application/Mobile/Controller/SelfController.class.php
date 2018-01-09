@@ -207,7 +207,7 @@ class SelfController extends CommonController{
 		$look = D::find('NewsUser',['userId' => session('user')]);  // 查询该用户的阅读情况
 		if ($look) {
 			//如果该用户有数据
-			$looks = explode(',', $look[$field]);
+			$looks = $look[$field]?explode(',', $look[$field]):[];
 		}else{
 			//如果没有数据 先新增数据
 			$look['id'] = D::add('NewsUser',[
