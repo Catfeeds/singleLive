@@ -7,6 +7,28 @@ class IndexController extends CommonController{
 	public function _map(&$data)
 	{
 		switch (ACTION_NAME) {
+			case 'index':
+				$map['H.status'] = '1';
+				$sql = [
+					D::get('Package',[
+						'alias' => 'H',
+						'where' => $map,
+						'field' => "H.id,'p' as type,H.title name,H.word,H.pic,H.add_time createTime"
+					],false),
+					D::get('House',[
+						'alias' => 'H',
+						'where' => $map,
+						'field' => "H.id,'h' as type,H.name,H.word,H.pic,H.add_time createTime"
+					],false),
+				];
+				$data = [
+					'alias' => 'D',
+					'table' => '('.implode(' UNION ALL ', $sql).') ',
+					'join'  => 'LEFT JOIN __FILES__ F ON F.id = D.pic',
+					'field' => "D.*,CONCAT('/Uploads',F.savepath,F.savename) `icon`",
+					'order' => 'D.createTime DESC'
+				];
+				break;
 			case 'package':
 				if (I('cate')) {
 					$map['H.category'] = I('cate');
@@ -45,7 +67,21 @@ class IndexController extends CommonController{
 	 */
 	public function index()
 	{
-		$this->display();
+		if (IS_AJAX) {
+			parent::index(function($data){
+				switch ($data['type']) {
+					case 'h':
+						$data['url'] = U('Rooms/Edit',['id' => $data['id']]);
+						break;
+					case 'p':
+						$data['url'] = U('Index/packageEdit',['id' => $data['id']]);
+						break;
+				}
+				return $data;
+			});
+		}else{
+			$this->display();
+		}
 	}
 	/**
 	 * [restaurant 餐饮]
