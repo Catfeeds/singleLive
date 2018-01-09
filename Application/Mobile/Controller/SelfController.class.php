@@ -7,8 +7,22 @@ class SelfController extends CommonController{
 	public function _map(&$data)
 	{
 		switch (ACTION_NAME) {
-			case 'value':
-				# code...
+			case 'message':
+			case 'activity':
+				$map['N.status']     = '1';
+				$map['N.createTime'] = ['gt',D::field('Users.createTime',session('user'))];
+				$map['N.users']      = ['in',[session('user'),'0']];
+				if (ACTION_NAME  == 'message') {
+					$map['N.type']       = 'sys';
+				}else{
+					$map['N.type']       = 'act';
+				}
+				$data = [
+					'alias' => 'N',
+					'table' => '__NEWS__',
+					'where' => $map,
+					'order' => 'N.createTime DESC'
+				];
 				break;
 			case 'club':
 				$map['H.type'] = 'm';
@@ -31,6 +45,31 @@ class SelfController extends CommonController{
 	 */
 	public function index()
 	{
+		$look = D::find('NewsUser',['userId' => session('user')]);
+		$time = D::field('Users.createTime',session('user'));
+		/* 未读的系统消息 */
+		$newLooks = $look['newsIds']?explode(',', $look['newsIds']):[0];
+		$newsMap = [
+			'status'     => '1',
+			'createTime' => ['gt',$time],
+			'users'      => ['in',[session('user'),'0']],
+			'type'       => 'sys',
+			'id'         => ['notin',$newLooks],
+		];
+		$count['sys'] = D::count('News',$newsMap);
+		/* 未读的系统消息 */
+		/* 未读的活动消息 */
+		$activityLooks = $look['activitysIds']?explode(',', $look['activitysIds']):[0];
+		$activitysMap = [
+			'status'     => '1',
+			'createTime' => ['gt',$time],
+			'users'      => ['in',[session('user'),'0']],
+			'type'       => 'act',
+			'id'         => ['notin',$activityLooks],
+		];
+		$count['act'] = D::count('News',$activitysMap);
+		/* 未读的活动消息 */
+		$this->assign('count',$count);
 		$this->display();
 	}
 	/**
@@ -69,6 +108,42 @@ class SelfController extends CommonController{
 		$this->display();
 	}
 	/**
+	 * [couponExchange description]
+	 * @Author   ヽ(•ω•。)ノ   Mr.Solo
+	 * @DateTime 2018-01-09
+	 * @Function []
+	 * @return   [type]     [description]
+	 */
+	public function couponExchange()
+	{
+		$db = D::get('Coupon',[
+			'alias' => 'G',
+			'where' => ['G.status' => '1'],
+			'order' => 'G.exprie_end ASC',
+			'join'  => 'LEFT JOIN __FILES__ F ON F.id = G.pic',
+			'field' => "G.id,G.title,G.sorce,CONCAT('/Uploads',F.savepath,F.savename) `icon`"
+		]);
+		$this->assign('db',$db);
+		$this->display();
+	}
+	/**
+	 * [couponEdit 积分兑换详情查看页面]
+	 * @Author   ヽ(•ω•。)ノ   Mr.Solo
+	 * @DateTime 2018-01-09
+	 * @Function []
+	 * @param    [type]     $id     [description]
+	 * @return   [type]             [description]
+	 */
+	public function couponEdit($id)
+	{
+		$db = D::find('Coupon',$id);
+		$db['houseCate'] = D::get('HouseCate',['id' => ['in',$db['hcate']]]);
+		$db['packageCate'] = D::get('HouseCate',['id' => ['in',$db['tcate']]]);
+		// dump($db);die;
+		$this->assign('db',$db);
+		$this->display();
+	}
+	/**
 	 * [upgrade 积分升级]
 	 * @Author   ヽ(•ω•。)ノ   Mr.Solo
 	 * @DateTime 2018-01-05
@@ -96,7 +171,19 @@ class SelfController extends CommonController{
 	 */
 	public function message()
 	{
-		$this->display();
+		if (IS_AJAX) {
+			$look = D::find('NewsUser',['userId' => session('user')]);
+			$looks = $look['newsIds']?explode(',', $look['newsIds']):[];
+			parent::index(function($data)use($looks){
+				if (!in_array($data['id'], $looks)) {
+					$data['look'] = 'false';
+				}
+				$data['createTime'] = date('Y-m-d',$data['createTime']);
+				return $data;
+			});
+		}else{
+			$this->display();
+		}
 	}
 	/**
 	 * [messageEdit 系统消息-详情]
@@ -105,8 +192,39 @@ class SelfController extends CommonController{
 	 * @Function []
 	 * @return   [type]     [description]
 	 */
-	public function messageEdit()
+	public function messageEdit($id)
 	{
+		/*首先查询到该消息的ID*/
+		$data = D::find('News',$id);
+		switch ($data['type']) {
+			case 'sys':
+				$field = 'newsIds';
+				break;
+			case 'act':
+				$field = 'activitysIds';
+				break;
+		}
+		$look = D::find('NewsUser',['userId' => session('user')]);  // 查询该用户的阅读情况
+		if ($look) {
+			//如果该用户有数据
+			$looks = explode(',', $look[$field]);
+		}else{
+			//如果没有数据 先新增数据
+			$look['id'] = D::add('NewsUser',[
+				'userId'       => session('user'),
+				'newsIds'      => '',
+				'activitysIds' => '',
+			]);
+			$looks = [];
+		}
+		if (!in_array($id, $looks)) {
+			//如果不存在数组中 则更新数据信息
+			$looks[] = $id;
+			D::save('NewsUser',$look['id'],[
+				$field => implode(',', $looks)
+			]);
+		}
+		$this->assign('db',$data);
 		$this->display();
 	}
 	/**
@@ -118,7 +236,19 @@ class SelfController extends CommonController{
 	 */
 	public function activity()
 	{
-		$this->display();
+		if (IS_AJAX) {
+			$look = D::find('NewsUser',['userId' => session('user')]);
+			$looks = $look['activitysIds']?explode(',', $look['activitysIds']):[];
+			parent::index(function($data)use($looks){
+				if (!in_array($data['id'], $looks)) {
+					$data['look'] = 'false';
+				}
+				$data['createTime'] = date('Y-m-d',$data['createTime']);
+				return $data;
+			});
+		}else{
+			$this->display();
+		}
 	}
 	/**
 	 * [activityEdit 活动消息-详情]

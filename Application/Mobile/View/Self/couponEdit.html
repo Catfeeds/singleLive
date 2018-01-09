@@ -1,0 +1,115 @@
+<div class="app_center" style="margin-bottom: 0px;">
+    <div class="app_dist">
+        <div class="app_dist_tite">
+            <div class="app_dist_tite_img">
+                <img src="__MOBILE__/img/kf06@2x.png">
+            </div>
+            <div class="app_dist_tite_colo">
+                使用时间
+            </div>
+        </div>
+        <div class="app_dist_cont">
+            {$db.exprie_start} ~ {$db.exprie_end}
+        </div>
+    </div>
+    <div class="app_dist">
+        <div class="app_dist_tite">
+            <div class="app_dist_tite_img">
+                <img src="__MOBILE__/img/kf06@2x.png">
+            </div>
+            <div class="app_dist_tite_colo">
+                剩余数量
+            </div>
+        </div>
+        <div class="app_dist_cont">
+            {$db.num}
+        </div>
+    </div>
+    <div class="app_dist">
+        <div class="app_dist_tite">
+            <div class="app_dist_tite_img">
+                <img src="__MOBILE__/img/kf02@2x.png">
+            </div>
+            <div class="app_dist_tite_colo">
+                可使用的客房分类
+            </div>
+        </div>
+        <div class="app_dist_cont">
+            <volist name="db.houseCate" id="hcate">
+                <div style="width: auto;height: 4rem;line-height: 4rem;background-color: #ff9900;float: left;padding: 0 1rem 0 1rem;margin: 10px;color: #ffffff;border-radius: 5px;">{$hcate.title}</div>
+            </volist>
+        </div>
+    </div>
+    <div class="app_dist">
+        <div class="app_dist_tite">
+            <div class="app_dist_tite_img">
+                <img src="__MOBILE__/img/kf02@2x.png">
+            </div>
+            <div class="app_dist_tite_colo">
+                可使用的套餐分类
+            </div>
+        </div>
+        <div class="app_dist_cont">
+            <volist name="db.packageCate" id="pcate">
+                <div style="width: auto;height: 4rem;line-height: 4rem;background-color: #ff9900;float: left;padding: 0 1rem 0 1rem;margin: 10px;color: #ffffff;border-radius: 5px;">{$pcate.title}</div>
+            </volist>
+        </div>
+    </div>
+    <div class="app_dist">
+        <div class="app_dist_tite">
+            <div class="app_dist_tite_img">
+                <img src="__MOBILE__/img/kf03@2x.png">
+            </div>
+            <div class="app_dist_tite_colo">
+                兑换所需积分
+            </div>
+        </div>
+        <div class="app_dist_cont">
+            <p><b>{$db.sorce}</b>积分</p>
+        </div>
+    </div>
+    <div class="app_dist">
+        <div class="app_dist_tite">
+            <div class="app_dist_tite_img">
+                <img src="__MOBILE__/img/kf07@2x.png">
+            </div>
+            <div class="app_dist_tite_colo">
+                不可使用日期
+            </div>
+        </div>
+        <div class="app_dist_cont">
+            {$db.notDate}
+        </div>
+    </div>
+    <div class="app_dist">
+        <div class="app_dist_tite">
+            <div class="app_dist_tite_img">
+                <img src="__MOBILE__/img/kf07@2x.png">
+            </div>
+            <div class="app_dist_tite_colo">
+                使用说明
+            </div>
+        </div>
+        <div class="app_dist_cont">
+            {:html_entity_decode($db['mark'])}
+        </div>
+    </div>
+    <!--     <div class="app_dist">
+        <div class="app_dist_tite">
+            <div class="app_dist_tite_img">
+                <img src="__MOBILE__/img/kf08@2x.png">
+            </div>
+            <div class="app_dist_tite_colo">
+                更改订单
+            </div>
+        </div>
+        <div class="app_dist_cont">
+            {:html_entity_decode($db['change'])}
+        </div>
+    </div> -->
+</div>
+<div class="dist_but1 " style="bottom: 60px;position: relative;">
+    <a href="{:U('Orders/prepareOrder')}">立即兑换</a>
+</div>
+
+</html>

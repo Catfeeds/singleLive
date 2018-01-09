@@ -13,7 +13,7 @@
 </div>
 <script type="text/html" id="layout">
     <div class="app_system">
-        <a href="__URL__/messageEdit/id/{{d.id}}">{{d.title}}</a>
+        <a href="__URL__/messageEdit/id/{{d.id}}">{{# if(d.look == 'false'){ }}<span style="margin-bottom: 1.5rem;" class="layui-badge-dot"></span>{{# } }}{{d.title}}</a>
         <p class="bbbb">{{d.body}}</p>
         <span class="right">{{d.createTime}}</span>
     </div>

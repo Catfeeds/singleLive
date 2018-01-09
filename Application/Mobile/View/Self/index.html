@@ -31,7 +31,12 @@
         </a>
         <a href="__URL__/coupon" class="biten">
             <div class="biten_img"><img src="__MOBILE__/img/my10@2x.png"></div>
-            <span>电子卷</span>
+            <span>我的电子卷</span>
+            <b><img src="__MOBILE__/img/my05@2x.png"></b>
+        </a>
+        <a href="__URL__/couponExchange" class="biten">
+            <div class="biten_img"><img src="__MOBILE__/img/my10@2x.png"></div>
+            <span>电子卷兑换</span>
             <b><img src="__MOBILE__/img/my05@2x.png"></b>
         </a>
         <a href="__URL__/upgrade" class="biten">
@@ -41,14 +46,14 @@
         </a>
         <a href="__URL__/message" class="biten">
             <div class="biten_img"><img src="__MOBILE__/img/xx01@2x.png">
-                <div class="biten_span">99</div>
+                <if condition="$count.sys gt 0"><div class="biten_span">{$count.sys}</div></if>
             </div>
             <span>系统消息</span>
             <b><img src="__MOBILE__/img/my05@2x.png"></b>
         </a>
         <a href="__URL__/activity" class="biten">
             <div class="biten_img"><img src="__MOBILE__/img/xx02@2x.png">
-                <div class="biten_span">99</div>
+                <if condition="$count.act gt 0"><div class="biten_span">{$count.sys}</div></if>
             </div>
             <span>活动消息</span>
             <b><img src="__MOBILE__/img/my05@2x.png"></b>
