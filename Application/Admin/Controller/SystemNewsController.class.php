@@ -27,8 +27,8 @@ class SystemNewsController extends CommonController {
 		$news = D('News');
 		if(IS_POST){
 			if($data = $news->create()){
-				$id = $news->add($data);
-				if($data['obj'] == 'single'){
+				$news->add($data);
+				/*if($data['obj'] == 'single'){
 					$uid = D::field('Users.id',['where'=>['mobile'=>$data['mobile']]]);
 					$arr = [
 						'news' => $id,
@@ -45,7 +45,7 @@ class SystemNewsController extends CommonController {
 						$arr[$key]['status'] = '0';
 					}
 					M('NewsUser')->addAll($arr);
-				}
+				}*/
 				$this->success('发送成功',U('SystemNews/index'));
 			}else{
 				$this->error($news->getError());

@@ -27,25 +27,7 @@ class ActiveNewsController extends CommonController {
 		$news = D('News');
 		if(IS_POST){
 			if($data = $news->create()){
-				$id = $news->add($data);
-				if($data['obj'] == 'single'){
-					$uid = D::field('Users.id',['where'=>['mobile'=>$data['mobile']]]);
-					$arr = [
-						'news' => $id,
-						'users' => $uid,
-						'status' => '0'
-					];
-					M('NewsUser')->add($arr);
-				}else{
-					$users = D::lists('Users','id',['where'=>['status'=>1]]);
-					$arr = [];
-					foreach ($users as $key => $val){
-						$arr[$key]['news'] = $id;
-						$arr[$key]['users'] = $val;
-						$arr[$key]['status'] = '0';
-					}
-					M('NewsUser')->addAll($arr);
-				}
+				$news->add($data);
 				$this->success('发送成功',U('ActiveNews/index'));
 			}else{
 				$this->error($news->getError());

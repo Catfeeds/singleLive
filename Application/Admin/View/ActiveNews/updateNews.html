@@ -18,7 +18,7 @@
                                     <input type="text" name="obj" value="{$db.obj}" disabled="disabled" />
                                 </div>
                             </div>
-                            <div class="glylb_szmm mobile">
+                            <div class="glylb_szmm mobile" style="display: none;">
                                 <span class="glylb_szmm_span">请输入要发送客户的电话号码：</span>
                                 <div class="layui-input-block z_min_left_10">
                                     <input disabled="disabled" value="{$db.mobile}" class="fn-tinput requ" name="mobile"
@@ -49,4 +49,12 @@
         </div>
     </div>
 </div>
+<script>
+    var obj = "{$db.obj}";
+    if(obj == 'single'){
+        $('.mobile').css('display','block');
+    }else{
+        $('.mobile').css('display','none');
+    }
+</script>
 

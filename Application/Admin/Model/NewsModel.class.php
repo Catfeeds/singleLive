@@ -11,6 +11,7 @@ class NewsModel extends Model {
 	];
 	protected $_auto = [
 		['status',1],
+		['users','set_users',self::MODEL_INSERT,'callback'],
 		['createTime','time',self::MODEL_INSERT,'function'],
 		['updateTime','time',self::MODEL_BOTH,'function'],
 	];
@@ -21,5 +22,17 @@ class NewsModel extends Model {
 		}else{
 			return false;
 		}
+	}
+	//群发 指定用户
+	function set_users(){
+		$obj = I('obj');
+		$mobile = I('mobile');
+		if($obj == 'single'){
+			$uid = D::field('Users.id',['where'=>['mobile'=>$mobile]]);
+			return $uid;
+		}else{
+			return 0;
+		}
+
 	}
 }

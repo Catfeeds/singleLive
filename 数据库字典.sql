@@ -252,6 +252,7 @@ CREATE TABLE `ms_news` (
   `mobile` varchar(11) COLLATE utf8_bin NOT NULL DEFAULT '0' COMMENT '用户手机号(选择单个用户时),默认是0',
   `status` tinyint(1) COLLATE utf8_bin NOT NULL COMMENT '状态 1:正常 2:已禁用 9:删除',
   `type` varchar(10) COLLATE utf8_bin NOT NULL COMMENT 'sys-系统消息 act-活动消息',
+  `users` int(11) NOT NULL COMMENT '0-群发消息 其他数字-指定用户的id',
   PRIMARY KEY (`id`)
 ) ENGINE=MyISAM DEFAULT CHARSET=utf8 COLLATE=utf8_bin AUTO_INCREMENT=1 ;
 
