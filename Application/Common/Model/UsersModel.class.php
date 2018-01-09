@@ -18,6 +18,7 @@ class UsersModel extends Model {
 		['repassword','password','登录密码两次输入不一致',0,'confirm'],
 	];
 	protected $_auto = [
+		['status',1],
 		['createTime','time',1,'function'],
 		['updateTime','time',2,'function'],
 		['password','md5_pass',3,'callback'],

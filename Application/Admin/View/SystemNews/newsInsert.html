@@ -1,64 +1,74 @@
-
-<script src="/Public/city/distpicker.data.js"></script>
-<script src="/Public/city/distpicker.js"></script>
-<script src="/Public/city/main.js"></script>
 <div class="layui-body" style="bottom: 0;border-left: solid 2px #1AA094;" id="admin-body">
-  <div class="layui-tab admin-nav-card layui-tab-brief" lay-filter="admin-tab">
-    <ul class="layui-tab-title">
-      <li class="layui-this"> <i class="fa fa-dashboard" aria-hidden="true"></i> <cite>新增系统消息</cite> </li>
-    </ul>
-    <div class="layui-tab-item layui-show">
-      <div class="conter">
-        <div class="xxkt">
-          <ul>
-            <li class="xxkt_bt">新增系统消息</li>
-          </ul>
-        </div>
-        <form action="__URL__/insertDo" method="post" class="form-newsInsert">
-          <div class="xxknr">
-            <div>
-              <div class="glylb_szmm"> <span class="glylb_szmm_span">请选择发布范围：</span>
-                <div class="layui-input-block z_min_left_10">
-
-                      <div style=" float:left;line-height: 33px;margin-left: 5px;"><input style="width:15px;height: 15px;  margin-top: 10px;" type="checkbox" name="hotel"  /> <font style="margin-left: 5px;">酒店端</font></div>
-
-
-                      <div style=" float:left;line-height: 33px; margin-left: 20px;"><input style="width:15px;height: 15px; margin-top: 10px;" type="checkbox" name="mobile" />  <font style="margin-left: 5px;"> 用户端</font> </div>
-
+    <div class="layui-tab admin-nav-card layui-tab-brief" lay-filter="admin-tab">
+        <ul class="layui-tab-title">
+            <li class="layui-this"><i class="fa fa-dashboard" aria-hidden="true"></i> <cite>新增系统消息</cite></li>
+        </ul>
+        <div class="layui-tab-item layui-show">
+            <div class="conter">
+                <div class="xxkt">
+                    <ul>
+                        <li class="xxkt_bt">新增系统消息</li>
+                    </ul>
                 </div>
-              </div>
-              <div class="glylb_szmm"> <span class="glylb_szmm_span">生效日期：</span>
-                <div class="layui-input-block z_min_left_10">
-                  <input name="startTime" id="date" autocomplete="off" value="{$date}" placeholder="请选择生效日期" class="layui-input" onclick="layui.laydate({elem: this})" value="" type="text">                  
-                </div>
-              </div>
-              <div class="glylb_szmm"> <span class="glylb_szmm_span">截止日期：</span>
-                <div class="layui-input-block z_min_left_10">
-                  <input name="endTime" id="date" autocomplete="off" placeholder="请选择截止日期" class="layui-input" onclick="layui.laydate({elem: this})" value="" type="text">   
-                </div>
-              </div>
-              <div class="glylb_szmm"> <span class="glylb_szmm_span">请输入消息标题：</span>
-                <div class="layui-input-block z_min_left_10">
-                  <input class="fn-tinput requ"  name="title" placeholder="请输入消息标题" >
-                </div>
-              </div>
-              <div class="glylb_szmm"> <span class="glylb_szmm_span">请输入消息内容：</span>
-                <div class="layui-input-block z_min_left_10">
-                      <textarea name="body" cols="68" rows="5"></textarea>
-                </div>
-              </div>
+                <form action="__URL__/newsInsert" method="post" class="form-newsInsert">
+                    <div class="xxknr">
+                        <div>
+                            <div class="glylb_szmm"><span class="glylb_szmm_span">请选择发布范围：</span>
+                                <div class="layui-input-block z_min_left_10">
+                                    <select name="obj" class="obj">
+                                        <option value="">---请选择发布范围---</option>
+                                        <option value="all">发送给全部用户</option>
+                                        <option value="single">发送给指定用户</option>
+                                    </select>
+                                </div>
+                            </div>
+                            <div class="glylb_szmm mobile" style="display:none;">
+                                <span class="glylb_szmm_span">请输入要发送客户的电话号码：</span>
+                                <div class="layui-input-block z_min_left_10">
+                                    <input disabled="disabled" class="fn-tinput requ" name="mobile" placeholder="请输入要发送客户的电话号码">
+                                </div>
+                            </div>
+                            <div class="glylb_szmm"><span class="glylb_szmm_span">请输入消息标题：</span>
+                                <div class="layui-input-block z_min_left_10">
+                                    <input class="fn-tinput requ" name="title" placeholder="请输入消息标题">
+                                </div>
+                            </div>
+                            <div class="glylb_szmm"><span class="glylb_szmm_span">请输入消息内容：</span>
+                                <div class="layui-input-block z_min_left_10">
+                                    <textarea name="body" cols="68" rows="5"></textarea>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="gater">
+                        <input type="hidden" name="__GO__" value="__URL__/index">
+                        <input type="hidden" name="type" value="sys">
+                        <input type="submit" value="确认" class="glylb_an_qd ajax-post" target-form="form-newsInsert"/>
+                        <a href="__URL__/index"><input type="button" value="返回" class="glylb_an_fh" /></a>
+                    </div>
+                </form>
             </div>
-          </div>
-          <div class="gater">
-          <input type="hidden" name="__GO__" value="__URL__/index"> 
-            <input type="submit" value="确认" class="glylb_an_qd ajax-post" target-form="form-newsInsert"/>
-            <input type="button" value="取消" class="glylb_an_fh" onclick="javascript:history.back(-1);return false" />
-          </div>
-        </form>
-      </div>
+        </div>
     </div>
-  </div>
 </div>
 <script type="text/javascript">
-  
+    $(".obj").change(function(){
+        var self= $(this);
+        if(self.val() == 'single'){
+            $('.mobile').css('display','block');
+            $('.mobile input').attr('disabled',false);
+        }else{
+            $('.mobile').css('display','none');
+            $('.mobile input').attr('disabled',true);
+        }
+    });
+    layui.use('laydate', function() {
+        var laydate = layui.laydate;
+        lay('.test-item').each(function(){
+            laydate.render({
+                elem: this
+                ,trigger: 'click'
+            });
+        });
+    })
 </script>

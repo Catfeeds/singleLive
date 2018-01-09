@@ -3,12 +3,12 @@ namespace Admin\Controller;
 use Think\Controller;
 use Think\D;
 //系统消息
-class SystemNewsController extends CommonController {
+class ActiveNewsController extends CommonController {
 	public $model = 'News';
 	public function _map(&$data)
 	{
 		$map["status"] = array('neq','3');
-		$map['type'] = "sys";
+		$map['type'] = "act";
         if(I('startTime') || I('endTime')){
             $map['createTime'] = get_selectTime(I('startTime'),I('endTime'));
         }
@@ -46,7 +46,7 @@ class SystemNewsController extends CommonController {
 					}
 					M('NewsUser')->addAll($arr);
 				}
-				$this->success('发送成功',U('SystemNews/index'));
+				$this->success('发送成功',U('ActiveNews/index'));
 			}else{
 				$this->error($news->getError());
 			}
@@ -62,7 +62,7 @@ class SystemNewsController extends CommonController {
 		if(IS_POST){
 			if($data = $news->create()){
 				$news->where("id=".$data['id'])->save($data);
-				$this->success('修改成功',U('SystemNews/index'));
+				$this->success('修改成功',U('ActiveNews/index'));
 			}else{
 				$this->error($news->getError());
 			}
@@ -85,7 +85,7 @@ class SystemNewsController extends CommonController {
 			'status' => 3
 		];
 		if(D::save('News',I('id'),$Ary)){
-			$this->success('删除成功！',U('SystemNews/index'));
+			$this->success('删除成功！',U('ActiveNews/index'));
 		}else{
 			$this->error('删除失败');
 		}

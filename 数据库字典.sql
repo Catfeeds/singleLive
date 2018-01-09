@@ -247,10 +247,10 @@ CREATE TABLE `ms_news` (
   `title` text COLLATE utf8_bin NOT NULL COMMENT '标题',
   `body` text COLLATE utf8_bin NOT NULL COMMENT '内容',
   `createTime` int(11) COLLATE utf8_bin NOT NULL COMMENT '发布日期',
-  `startTime` int(11) COLLATE utf8_bin NOT NULL COMMENT '生效日期',
-  `endTime` int(11) COLLATE utf8_bin NOT NULL COMMENT '截止日期',
-  `mobile` tinyint(1) COLLATE utf8_bin NOT NULL COMMENT '用户端 0:发送 1：不发送 2:酒店端点击入住时单个发送',
-  `status` tinyint(1) COLLATE utf8_bin NOT NULL COMMENT '状态 0:等待生效 1:已生效 2:已过期 9:删除',
+  `updateTime` int(11) NOT NULL COMMENT '更新时间',
+  `obj` char(10) COLLATE utf8_bin NOT NULL COMMENT 'all-全部用户 single-单个用户',
+  `mobile` varchar(11) COLLATE utf8_bin NOT NULL DEFAULT '0' COMMENT '用户手机号(选择单个用户时),默认是0',
+  `status` tinyint(1) COLLATE utf8_bin NOT NULL COMMENT '状态 1:正常 2:已禁用 9:删除',
   `type` varchar(10) COLLATE utf8_bin NOT NULL COMMENT 'sys-系统消息 act-活动消息',
   PRIMARY KEY (`id`)
 ) ENGINE=MyISAM DEFAULT CHARSET=utf8 COLLATE=utf8_bin AUTO_INCREMENT=1 ;
@@ -329,6 +329,7 @@ CREATE TABLE IF NOT EXISTS `ms_house` (
   `total_num` int(11) NOT NULL COMMENT '房间总数',
   `word` text COLLATE utf8_bin NOT NULL COMMENT '房间简介',
   `pic` int(11) NOT NULL COMMENT '封面图',
+  `push` tinyint(1) NOT NULL DEFAULT '2' COMMENT '是否设置为首页推荐: 1-推荐 2-不推荐',
   PRIMARY KEY (`id`)
 ) ENGINE=MyISAM DEFAULT CHARSET=utf8 COLLATE=utf8_bin AUTO_INCREMENT=1;
 
@@ -379,6 +380,7 @@ CREATE TABLE IF NOT EXISTS `ms_package` (
   `total_num` int(11) NOT NULL COMMENT '套餐总数(实际就是房间总数)',
   `paper` char(1) COLLATE utf8_bin NOT NULL COMMENT '是否可以使用电子卷 y-是 n-否',
   `word` text COLLATE utf8_bin NOT NULL COMMENT '简介',
+  `push` tinyint(1) NOT NULL DEFAULT '2' COMMENT '是否设置为首页推荐: 1-推荐 2-不推荐',
   PRIMARY KEY (`id`)
 ) ENGINE=MyISAM DEFAULT CHARSET=utf8 COLLATE=utf8_bin AUTO_INCREMENT=1;
 
