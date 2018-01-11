@@ -1,4 +1,5 @@
 <?php
+use Think\D;
 /**
  * [sendSMS description]
  * @Author   ヽ(•ω•。)ノ   Mr.Solo
@@ -32,4 +33,14 @@ function sendSMS($mobile,$code)
 		];
 	}
 
+}
+function getBanner($type)
+{
+	$banner = D::get('Banner',[
+		'alias' => 'B',
+		'where' => ['B.type' => $type],
+		'join'  => 'LEFT JOIN __FILES__ F ON F.id = B.imgs',
+		'field' => "B.*,CONCAT('/Uploads',F.savepath,F.savename) `icon`",
+	]);
+	return $banner;
 }

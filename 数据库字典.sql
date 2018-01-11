@@ -266,7 +266,7 @@ CREATE TABLE `ms_news_user` (
 
 CREATE TABLE `ms_banner` (
   `id` int(11) NOT NULL AUTO_INCREMENT,
-  `type` char(1) COLLATE utf8_bin NOT NULL COMMENT '模块类型 h-客房 f-餐饮 e-环境 a-体验活动 m-会员俱乐部 t-套餐',
+  `type` char(1) COLLATE utf8_bin NOT NULL COMMENT '模块类型 h-客房 f-餐饮 e-环境 a-体验活动 m-会员俱乐部 t-套餐 b-主页',
   `imgs` text COLLATE utf8_bin COMMENT '关联files表id',
   `add_time` int(11) NOT NULL COMMENT '添加时间',
   `update_time` int(11) NOT NULL COMMENT '修改时间',

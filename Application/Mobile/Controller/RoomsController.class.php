@@ -37,6 +37,7 @@ class RoomsController extends CommonController{
 				'type' => 'h',
 			]);
 			$this->assign('cates',$cates);
+			$this->assign('banners',getBanner('h'));
 			$this->display();
 		}
 	}
