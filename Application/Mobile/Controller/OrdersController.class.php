@@ -68,4 +68,58 @@ class OrdersController extends CommonController{
 	{
 		$this->display();
 	}
+	/**
+	 * [getStrtotime 获取时间日期格式信息]
+	 * @Author   ヽ(•ω•。)ノ   Mr.Solo
+	 * @DateTime 2018-01-11
+	 * @Function []
+	 * @param    [type]     $time   [选中日期（时间戳）]
+	 * @return   [type]             [description]
+	 */
+	public function getStrtotime($date)
+	{
+		$dates = [
+			[
+				'date' => strtotime($date.'-3 days'),
+			],
+			[
+				'date' => strtotime($date.'-2 days'),
+			],
+			[
+				'date' => strtotime($date.'-1 days'),
+			],
+			[
+				'date' => strtotime($date),
+			],
+			[
+				'date' => strtotime($date.'+1 days'),
+			],
+			[
+				'date' => strtotime($date.'+2 days'),
+			],
+			[
+				'date' => strtotime($date.'+3 days'),
+			],
+		];
+		$week = [
+			1 => '一',
+			2 => '二',
+			3 => '三',
+			4 => '四',
+			5 => '五',
+			6 => '六',
+			7 => '日',
+		];
+		$data = array_map(function($data)use($week){
+			$date = $data['date'];
+			$data = [
+				'month' => date('m月',$date),
+				'day'   => date('d',$date),
+				'week'  => $week[date('N',$date)],
+				'full'  => 'false', //客满情况 满员写true[string]
+			];
+			return $data;
+		}, $dates);
+		$this->ajaxReturn($data);
+	}
 }
