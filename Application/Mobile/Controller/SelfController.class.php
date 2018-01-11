@@ -316,6 +316,7 @@ class SelfController extends CommonController{
 		if (IS_AJAX) {
 			parent::index();
 		}else{
+			$this->assign('banners',getBanner('m'));
 			$this->display();
 		}
 	}

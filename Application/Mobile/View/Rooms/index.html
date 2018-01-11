@@ -2,17 +2,15 @@
     <div class="addWrap">
         <div class="swipe" id="mySwipe">
             <div class="swipe-wrap">
-                <div><a href="javascript:;"><img class="img-responsive" src="__MOBILE__/img/kf01@2x.png"/></a></div>
-                <div><a href="javascript:;"><img class="img-responsive" src="__MOBILE__/img/kf01@2x.png" /></a></div>
-                <div><a href="javascript:;"><img class="img-responsive" src="__MOBILE__/img/kf01@2x.png"/></a></div>
-                <div><a href="javascript:;"><img class="img-responsive" src="__MOBILE__/img/kf01@2x.png" /></a></div>
+                <volist name="banners" id="banner">
+                    <div><a href="javascript:;"><img class="img-responsive" src="{$banner.icon}"/></a></div>
+                </volist>
             </div>
         </div>
         <ul id="position">
-            <li class="cur"></li>
-            <li></li>
-            <li></li>
-            <li></li>
+            <volist name="banners" id="banner" key="k">
+                {:($k == 1)?'<li class="cur"></li>':'<li></li>'}
+            </volist>
         </ul>
     </div>
     <div class="app_lint">

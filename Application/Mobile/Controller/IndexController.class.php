@@ -68,7 +68,6 @@ class IndexController extends CommonController{
 	 */
 	public function index()
 	{
-		// echo parent::index('sql');die;
 		if (IS_AJAX) {
 			parent::index(function($data){
 				switch ($data['type']) {
@@ -82,6 +81,7 @@ class IndexController extends CommonController{
 				return $data;
 			});
 		}else{
+			$this->assign('banners',getBanner('b'));
 			$this->display();
 		}
 	}
@@ -97,6 +97,7 @@ class IndexController extends CommonController{
 		if (IS_AJAX) {
 			parent::index();
 		}else{
+			$this->assign('banners',getBanner('f'));
 			$this->display();
 		}
 	}
@@ -123,6 +124,7 @@ class IndexController extends CommonController{
 		if (IS_AJAX) {
 			parent::index();
 		}else{
+			$this->assign('banners',getBanner('e'));
 			$this->display();
 		}
 	}
@@ -154,6 +156,7 @@ class IndexController extends CommonController{
 		if (IS_AJAX) {
 			parent::index();
 		}else{
+			$this->assign('banners',getBanner('a'));
 			$this->display();
 		}
 	}
@@ -179,6 +182,7 @@ class IndexController extends CommonController{
 				'type' => 't',
 			]);
 			$this->assign('cates',$cates);
+			$this->assign('banners',getBanner('t'));
 			$this->display();
 		}
 	}
