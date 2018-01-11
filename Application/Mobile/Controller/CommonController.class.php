@@ -16,7 +16,11 @@ class CommonController extends Controller{
 			}
 		}else{
 			//不需要登录
+
 		}
+        //加载网站设置
+        $webConfig = D('Config')->get_config();
+        $this->assign('web',$webConfig);
 	}
     public function __call($function_name,$argments)
     {

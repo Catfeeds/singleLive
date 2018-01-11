@@ -75,24 +75,15 @@ $('.fr_radio').click(function(){
 
 $('.biem_cont').click(function(){
 	$(this).addClass('biatacve').siblings().removeClass('biatacve')
-	
 })
 
-
-
 $('.str3').click(function(){
-	
 	layer.open({
 	 className:'attui',
      style: 'border:none; background-color:#78BA32; color:#fff;',
-	 
-     content:'剩余房间 ：2056 / 2057 / '
-	 
+     content:'剩余房间 ：20'
      })
-	
-	})
-
-
+})
 })
 
 

@@ -487,16 +487,19 @@ CREATE TABLE IF NOT EXISTS `ms_coupon` (
 ) ENGINE=MyISAM DEFAULT CHARSET=utf8 COLLATE=utf8_bin AUTO_INCREMENT=1 ;
 
 --
---  电子卷兑换记录表
+--  电子卷拥有记录表(不论是：正常兑换、还是通过别人转赠获得都插入此表)
 --
 CREATE TABLE IF NOT EXISTS `ms_coupon_exchange` (
   `id` int(11) NOT NULL AUTO_INCREMENT,
   `cID` int(11) NOT NULL COMMENT '关联ms_coupon的id,电子卷id',
-  `createTime` int(11) NOT NULL COMMENT '兑换时间',
+  `createTime` int(11) NOT NULL COMMENT '创建时间',
   `updateTime` int(11) NOT NULL COMMENT '更新时间(包括使用和转增)',
-  `userID` int(11) NOT NULL COMMENT '兑换用户id',
+  `userID` int(11) NOT NULL COMMENT '用户id',
   `status` tinyint(1) NOT NULL COMMENT '使用状态  1-未使用 2-已使用 3-已转赠',
-  PRIMARY KEY (`id`)
+  `card` varchar(13) COLLATE utf8_bin NOT NULL COMMENT '优惠券券号,兑换成功时生成,此字段唯一,转赠后也不能改变',
+  `type` char(10) COLLATE utf8_bin NOT NULL COMMENT 'exchange-积分兑换获得,accept-表示从其他用户处接收获得',
+  PRIMARY KEY (`id`),
+  UNIQUE KEY `card` (`card`)
 ) ENGINE=MyISAM DEFAULT CHARSET=utf8 COLLATE=utf8_bin AUTO_INCREMENT=1 ;
 
 --
