@@ -50,6 +50,8 @@
                                 <th>电子邮箱</th>
                                 <th>余额</th>
                                 <th>积分</th>
+                                <th>会员初始级别</th>
+                                <th>会员现级别</th>
                                 <th>登陆密码</th>
                                 <th>注册时间</th>
                                 <th>操作</th>
@@ -65,14 +67,16 @@
                                     <td>{$data.Email}</td>
                                     <td>{$data.money}</td>
                                     <td>{$data.sorce}</td>
+                                    <td>无级别</td>
+                                    <td>{$data.nowLevel}</td>
                                     <td>{$data.no_md5}</td>
-                                    <td>{$data.createTime|date='Y-m-d',###}</td>
+                                    <td>{$data.createTime}</td>
                                     <td>
                                         <switch name="data.status">
                                             <case value="1"><a href="__URL__/set_status/set/1/id/{$row.id}" class="z_coios_1 ajax-get confirm" data-msg='您确定禁用？禁用后用户将无法登陆'>禁用</a></case>
                                             <case value="2"><a href="__URL__/set_status/set/2/id/{$row.id}" class="z_coios_2 ajax-get confirm" data-msg='您确定启用？'>启用</a></case>
                                         </switch>
-                                        <a class="z_coios_4" href="__URL__/edit/id/{$data.id}">修改</a>
+                                        <a class="z_coios_4" href="__URL__/edit/id/{$data.id}">重置密码</a>
                                         <a class="z_coios_3 confirm ajax-get" href="__URL__/delUser/id/{$data.id}">删除</a>
                                     </td>
                                 </tr>

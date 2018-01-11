@@ -1,66 +1,43 @@
 <div class="layui-body" style="bottom: 0;border-left: solid 2px #1AA094;" id="admin-body">
-        <div class="layui-tab admin-nav-card layui-tab-brief" lay-filter="admin-tab">
-          <ul class="layui-tab-title">
+    <div class="layui-tab admin-nav-card layui-tab-brief" lay-filter="admin-tab">
+        <ul class="layui-tab-title">
             <li class="layui-this">
-              <i class="fa fa-dashboard" aria-hidden="true"></i>
-              <cite>用户资料修改</cite>
+                <i class="fa fa-dashboard" aria-hidden="true"></i>
+                <cite>重置密码</cite>
             </li>
-          </ul>
-          
-            <div class="layui-tab-item layui-show">
-          <form action="__URL__/updateDo" method="post" class="form-user">   
-               <div class="conter">        
-                                   <div class="xxkt">
-                                       <ul>
-                                         <li class="xxkt_bt">用户资料修改</li>
-                                         </ul>
-                                    </div>
- 
-                                  <div class="xxknr">
-                                        <div>                            
-                                             <div class="glylb_szmm">
-                                              <span class="glylb_szmm_span">微信昵称：</span>
-                                              <div class="layui-input-block z_min_left_10">
-                                                   <input class="fn-tinput"  name="nickname" value="{$row.nickname}" placeholder="A125893" >
-                                              </div>
-                                             </div> 
-                                             <div class="glylb_szmm">
-                                              <span class="glylb_szmm_span">真实姓名：</span>
-                                              <div class="layui-input-block z_min_left_10">
-                                                   <input class="fn-tinput"  name="realname" value="{$row.realname}" placeholder="大宝" >
-                                              </div>
-                                             </div> 
-                                             <div class="glylb_szmm">
-                                              <span class="glylb_szmm_span">手机号：</span>
-                                              <div class="layui-input-block z_min_left_10">
-                                                   <input class="fn-tinput"  name="mobile" value="{$row.mobile}" placeholder="12966854256" >
-                                              </div>
-                                             </div> 
-                                             <div class="glylb_szmm">
-                                              <span class="glylb_szmm_span">注册时间：</span>
-                                              <div class="layui-input-block z_min_left_10">
-                                                    <input name="createTime" id="date" autocomplete="off" placeholder="2017-02-28" class="layui-input" onclick="layui.laydate({elem: this})" value="{$row.createTime}" type="text">
-                                              </div>
-                                             </div> 
-
-                                            <div class="glylb_szmm"> <span class="glylb_szmm_span">用户头像：</span>
-                                              <div class="layui-input-block z_min_left_10 uploadOne_parent">
-                                              <input type="hidden" name="head" value="" class="uploadOne_data">
-                                                <input type="file" name="file"   class="uploadOne" data-width="100" data-height="100" />
-                                                <div id="imgdiv"><img width="100" height="100" src="{$row.headUrl}" class="uploadOne_img" /></div>
-                                              </div>
-                                            </div>   
-
-                                         </div>                   
-                                   </div>
-                                  <div class="gater">
-                                          <input type="hidden" value="{$row.id}" name="id">
-                                          <input type="hidden" value="{$row.headimgid}" name="headimgid">
-                                          <input type="submit" value="确认" class="glylb_an_qd ajax-post confirm" target-form="form-user" />
-                                          <input type="button" value="取消" onclick="javascript:history.back(-1);return false"  class="glylb_an_fh" />
-                                  </div> 
-                          </div> 
-                  </form>
-            </div>
+        </ul>
+        <div class="layui-tab-item layui-show">
+            <form action="__URL__/setPassword" method="post" class="form-user">
+                <div class="conter">
+                    <div class="xxkt">
+                        <ul>
+                            <li class="xxkt_bt">重置密码</li>
+                        </ul>
+                    </div>
+                    <div class="xxknr">
+                        <div>
+                            <div class="glylb_szmm">
+                                <span class="glylb_szmm_span">请输入密码：</span>
+                                <div class="layui-input-block z_min_left_10">
+                                    <input name="password" autocomplete="off" class="layui-input" type="text">
+                                </div>
+                            </div>
+                            <div class="glylb_szmm">
+                                <span class="glylb_szmm_span">确认密码：</span>
+                                <div class="layui-input-block z_min_left_10">
+                                    <input name="pwd" autocomplete="off" class="layui-input" type="text">
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="gater">
+                        <input type="hidden" value="{$row.id}" name="id">
+                        <input type="submit" value="确认" class="glylb_an_qd ajax-post confirm" target-form="form-user"/>
+                        <input type="button" value="返回" onclick="javascript:history.back(-1);return false"
+                               class="glylb_an_fh"/>
+                    </div>
+                </div>
+            </form>
         </div>
-      </div>
+    </div>
+</div>

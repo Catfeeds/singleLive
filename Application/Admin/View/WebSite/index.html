@@ -1,0 +1,44 @@
+<div class="layui-body" style="bottom: 0;border-left: solid 2px #1AA094;" id="admin-body">
+    <div class="layui-tab admin-nav-card layui-tab-brief" lay-filter="admin-tab">
+        <ul class="layui-tab-title">
+            <li class="layui-this">
+                <i class="fa fa-dashboard" aria-hidden="true"></i>
+                <cite>系统设置</cite>
+            </li>
+        </ul>
+        <div class="layui-tab-content" style="min-height: 150px; padding: 5px 0 0 0;">
+            <div class="layui-tab-item layui-show">
+                <form action="__URL__/set_config" method="post" class="bl-form bl-formhor" id="jsForm">
+                    <div class="conter">
+                        <div class="xxkt">
+                            <ul>
+                                <li class="xxkt_bt">系统设置</li>
+                            </ul>
+                        </div>
+                        <div class="xxknr">
+                            <div>
+                                <div class="glylb_szmm">
+                                    <span class="glylb_szmm_span">网站名称：</span>
+                                    <div class="layui-input-block z_min_left_10">
+                                        <input class="fn-tinput" name="config[webName]" type="text" value="{$config.webName}" placeholder="请输入网站名称">
+                                    </div>
+                                </div>
+                                <div class="glylb_szmm">
+                                    <span class="glylb_szmm_span">订单超时时间设置：</span>
+                                    <div class="layui-input-block z_min_left_10">
+                                        <input class="fn-tinput" name="config[overTime]" type="number" value="{$config.overTime}" placeholder="请输入订单超时时间">
+                                        <span style="color: red;">以小时为单位,在设置时间后,下单后未支付,该订单将成为已超时订单</span>
+                                    </div>
+                                </div>
+                                <div class="glylb_an" style="margin-left:20%;">
+                                    <input type="submit" value="确认" class="glylb_an_qd ajax-post" target-form="bl-form"/>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </form>
+            </div>
+        </div>
+    </div>
+</div>
+

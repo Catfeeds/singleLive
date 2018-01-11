@@ -1,18 +1,5 @@
 
 --
--- Banner管理表 针对手机端端6大模块
---
-
-CREATE TABLE `ms_banner` (
-  `id` int(11) NOT NULL AUTO_INCREMENT,
-  `type` char(1) COLLATE utf8_bin NOT NULL COMMENT '模块类型 h-客房 f-餐饮 e-环境 a-体验活动 m-会员俱乐部 t-套餐',
-  `imgs` text COLLATE utf8_bin COMMENT '关联files表id',
-  `add_time` int(11) NOT NULL COMMENT '添加时间',
-  `update_time` int(11) NOT NULL COMMENT '修改时间',
-  PRIMARY KEY (`id`)
-) ENGINE=MyISAM DEFAULT CHARSET=utf8 COLLATE=utf8_bin COMMENT='banner表' AUTO_INCREMENT=1 ;
-
---
 -- 表的结构 `ms_drawback`
 --
 
@@ -58,7 +45,7 @@ CREATE TABLE `ms_perm` (
   `perm_parentid` int(11) NOT NULL COMMENT '父级id',
   PRIMARY KEY (`perm_id`),
   KEY `perm_type` (`perm_type`)
-) ENGINE=MyISAM  DEFAULT CHARSET=utf8 COLLATE=utf8_bin AUTO_INCREMENT=40 ;
+) ENGINE=MyISAM  DEFAULT CHARSET=utf8 COLLATE=utf8_bin AUTO_INCREMENT=42 ;
 
 --
 -- 转存表中的数据 `perm`
@@ -102,10 +89,10 @@ INSERT INTO `ms_perm` (`perm_id`, `perm_type`, `perm_url`, `status`, `perm_paren
 (35, '备份数据库', 'DB', 0,11),
 (36, '还原数据库', 'DBReduction', 0,11),
 (37, '密码修改', 'Pwd', 0,11),
-(38, '参数设置', 'Parameter', 0,11),
-(39, '常见问题列表', 'Problem', 0,7);
-
-
+-- (38, '参数设置', 'Parameter', 0,11),
+(39, '常见问题列表', 'Problem', 0,7),
+(40, 'Banner管理', 'Banner', 0,7),
+(41, '充值管理', 'Recharge', 0,2);
 
 
 
@@ -269,31 +256,24 @@ CREATE TABLE `ms_news_user` (
 
 
 
---
--- 表的结构 `ms_order_flow` 订单流水表
---
-
-CREATE TABLE IF NOT EXISTS `ms_order_flow` (
-  `id` int(11) NOT NULL AUTO_INCREMENT,
-  `orderhotel_id` int(11) NOT NULL COMMENT 'order_hotel的订单id',
-  `hotel` int(11) NOT NULL COMMENT '对应酒店id',
-  `orderhotel_time` int(11) NOT NULL COMMENT 'order_hotel订单的创建时间',
-  `money` float(10,2) NOT NULL COMMENT '交易金额',
-  `orderhotel_used` int(11) NOT NULL COMMENT '在酒店本次所用时间',
-  `hotelName`  varchar(200)  COLLATE utf8_bin NOT NULL COMMENT '酒店名称',
-  `roomName` varchar(30) COLLATE utf8_bin NOT NULL COMMENT '房间类型',
-  `userName` varchar(30) COLLATE utf8_bin NOT NULL COMMENT '用户姓名',
-  `orderNo` varchar(20) COLLATE utf8_bin NOT NULL COMMENT '订单编号',
-  `startTime` int(11) COLLATE utf8_bin NOT NULL COMMENT '开始入住时间',
-  `endTime` int(11) NOT NULL COMMENT '入住结束时间',
-  PRIMARY KEY (`id`)
-) ENGINE=MyISAM DEFAULT CHARSET=utf8 COLLATE=utf8_bin AUTO_INCREMENT=1; 
-
-
-
 -- ---------------------------------------------------------------------------
 --  新表全部加这
 -- ---------------------------------------------------------------------------
+
+--
+-- Banner管理表 针对手机端端6大模块
+--
+
+CREATE TABLE `ms_banner` (
+  `id` int(11) NOT NULL AUTO_INCREMENT,
+  `type` char(1) COLLATE utf8_bin NOT NULL COMMENT '模块类型 h-客房 f-餐饮 e-环境 a-体验活动 m-会员俱乐部 t-套餐',
+  `imgs` text COLLATE utf8_bin COMMENT '关联files表id',
+  `add_time` int(11) NOT NULL COMMENT '添加时间',
+  `update_time` int(11) NOT NULL COMMENT '修改时间',
+  PRIMARY KEY (`id`)
+) ENGINE=MyISAM DEFAULT CHARSET=utf8 COLLATE=utf8_bin COMMENT='banner表' AUTO_INCREMENT=1 ;
+
+
 --
 --  客房、套餐分类表
 --
@@ -527,6 +507,7 @@ CREATE TABLE IF NOT EXISTS `ms_coupon_give` (
   `cID` int(11) NOT NULL COMMENT '关联ms_coupon的id,电子卷id',
   `sendID` int(11) NOT NULL COMMENT '转移者id',
   `acceptID` int(11) NOT NULL COMMENT '接受者id',
+  `sendTime` int(11) NOT NULL COMMENT '转增时间',
   PRIMARY KEY (`id`)
 ) ENGINE=MyISAM DEFAULT CHARSET=utf8 COLLATE=utf8_bin AUTO_INCREMENT=1 ;
 
@@ -540,8 +521,50 @@ CREATE TABLE IF NOT EXISTS `ms_coupon_used` (
   `roomID` int(11) NOT NULL COMMENT '房间id,关联客房id和套餐里的房间id',
   `createTime` int(11) NOT NULL COMMENT '创建时间',
   `cID` int(11) NOT NULL COMMENT '关联ms_coupon的id,电子卷id',
+  `type` char(1) COLLATE utf8_bin NOT NULL COMMENT 'k-客房 t-套餐',
   PRIMARY KEY (`id`)
 ) ENGINE=MyISAM DEFAULT CHARSET=utf8 COLLATE=utf8_bin AUTO_INCREMENT=1 ;
+
+--
+--  充值管理表
+--
+CREATE TABLE IF NOT EXISTS `ms_recharge` (
+  `id` int(11) NOT NULL AUTO_INCREMENT,
+  `money` float(10,2) COLLATE utf8_bin NOT NULL COMMENT '充值金额',
+  `createTime` int(11) NOT NULL COMMENT '创建时间',
+  `updateTime` int(11) NOT NULL COMMENT '修改时间',
+  PRIMARY KEY (`id`)
+) ENGINE=MyISAM DEFAULT CHARSET=utf8 COLLATE=utf8_bin AUTO_INCREMENT=1 ;
+
+--
+--  充值管理表
+--
+CREATE TABLE IF NOT EXISTS `ms_recharge` (
+  `id` int(11) NOT NULL AUTO_INCREMENT,
+  `money` float(10,2) COLLATE utf8_bin NOT NULL COMMENT '充值金额',
+  `createTime` int(11) NOT NULL COMMENT '创建时间',
+  `updateTime` int(11) NOT NULL COMMENT '修改时间',
+  `status` tinyint(1) NOT NULL COMMENT '1-正常 2-禁用 3-删除 备用字段(添加时全部设置为1)',
+  PRIMARY KEY (`id`)
+) ENGINE=MyISAM DEFAULT CHARSET=utf8 COLLATE=utf8_bin AUTO_INCREMENT=1 ;
+
+--
+--  余额记录表
+--
+CREATE TABLE IF NOT EXISTS `ms_balance` (
+  `id` int(11) NOT NULL AUTO_INCREMENT,
+  `userID` int(11) NOT NULL COMMENT '消费用户id',
+  `money` float(10,2) COLLATE utf8_bin NOT NULL COMMENT '消费金额',
+  `method` char(10) COLLATE utf8_bin NOT NULL COMMENT 'plus-充值 sub-用余额消费',
+  `createTime` int(11) NOT NULL COMMENT '创建时间',
+  PRIMARY KEY (`id`)
+) ENGINE=MyISAM DEFAULT CHARSET=utf8 COLLATE=utf8_bin AUTO_INCREMENT=1 ;
+
+
+
+
+
+
 
 
 

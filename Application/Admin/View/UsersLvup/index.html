@@ -47,20 +47,19 @@
                                 <th>姓名</th>
                                 <th>电话</th>
                                 <th>初始级别</th>
-                                <th>上一级别</th>
-                                <th>当前级别</th>
+                                <th>升级前级别</th>
+                                <th>升级后级别</th>
                             </tr>
                             </thead>
                             <tbody>
                             <volist name="db" id="data">
                                 <tr>
-                                    <td>{$data.createTime|date='Y-m-d',###}</td>
+                                    <td>{$data.createTime}</td>
                                     <td>{$data.realname}</td>
                                     <td>{$data.mobile}</td>
-                                    <td></td>
-                                    <td></td>
-                                    <td></td>
-                                    <td></td>
+                                    <td>无级别</td>
+                                    <td>{$data.beforeName}</td>
+                                    <td>{$data.afterName}</td>
                                 </tr>
                             </volist>
                             </tbody>
@@ -70,7 +69,6 @@
                                 {$page}
                             </ul>
                         </div>
-
                     </div>
                 </div>
             </div>

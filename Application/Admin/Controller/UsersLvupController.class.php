@@ -5,67 +5,41 @@ use Think\D;
 
 //会员升级记录
 class UsersLvupController extends CommonController {
-	public $model = 'UserLvup';
+	public $model = ['UserLvup','P'];
     public function _map(&$data)
     {
         if(I('startTime') || I('endTime')){
             $map["createTime"] = get_selectTime(I('startTime'),I('endTime'));
         }
         if(I('title')){
-            $map['CONCAT(realname,mobile,idCard)'] = array('like','%'.I('title').'%');
+            $map['CONCAT(realname,mobile)'] = array('like','%'.I('title').'%');
         }
 
         $data =[
+            'field' => 'P.*,U.realname,U.mobile,GA.title beforeName,GB.title afterName',
             'where' => $map,
-            'order' => 'createTime'
+            'join'  => [
+                'LEFT JOIN __USERS__ U ON U.id = P.userID',
+                'LEFT JOIN __GRADES__ GA ON GA.id = P.before',
+                'LEFT JOIN __GRADES__ GB ON GB.id = P.after'
+            ],
+            'order' => 'createTime desc'
         ];
     }
     public function index()
     {
-        $db = parent::index(function($data){
+        parent::index(function($data){
         	$data['createTime'] = date('Y-m-d',$data['createTime']);
+            if($data['beforeName'] == ''){
+                $data['beforeName'] = '无级别';
+            }
         	return $data;
         });
         
     }
 
-    //修改用户列表
-    public function edit()
-    {
- 		$row = D::find('users',I('id'));
-        $this->assign('row',$row);
-        $this->display();
-    }
-
-    //启用或禁用用户
-    public function set_status(){
-        switch(I('set')){
-            case '1':
-                $set = 2;
-                $option = '禁用成功';
-                break;
-            case '2':
-                $set = 1;
-                $option = '启用成功';
-                break;
-        }
-        D::set('Users.status',I('id'),$set);
-        $this->success($option);
-    }
-
-    //删除用户
-    public function delUser()
-    {
-    	$Ary['status'] = 9;
-    	if(D::save('users',I('id'),$Ary)){
-    		$this->success('删除成功！',U('MemberList/index'));
-    	}else{
-    		$this->error('删除失败，请重试！');
-    	}
-    }
-
     //导出用户列表
-    public function export()
+    /*public function export()
     {
     	$db = parent::index(true);
     	foreach ($db as $key => $data) {
@@ -87,8 +61,7 @@ class UsersLvupController extends CommonController {
     	$excelName = '用户信息列表';
     	export_Excel($excelName,$dbName,$db);
     }
-
-
+    */
 }
 
 

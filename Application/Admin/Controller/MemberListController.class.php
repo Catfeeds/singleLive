@@ -15,7 +15,6 @@ class MemberListController extends CommonController {
             $map['CONCAT(realname,mobile,idCard)'] = array('like','%'.I('title').'%');
         }
         $map["status"] = array('neq',9);
-
         $data =[
             'where' => $map,
             'order' => 'createTime'
@@ -24,9 +23,13 @@ class MemberListController extends CommonController {
     }
     public function index()
     {
-        $db = parent::index(function($data){
+         parent::index(function($data){
         	$data['createTime'] = date('Y-m-d',$data['createTime']);
-        	$data['status'] = $data['status'] == 0 ?  '禁用' : '启用';
+            if($data['nowLevel'] == '0'){
+                $data['nowLevel'] = '无级别';
+            }else{
+                $data['nowLevel'] = D::field('Grades.title',$data['nowLevel']);
+            }
         	return $data;
         });
         
@@ -39,27 +42,25 @@ class MemberListController extends CommonController {
         $this->assign('row',$row);
         $this->display();
     }
-
-    //启用或禁用用户
-    public function set_status(){
-        switch(I('set')){
-            case '1':
-                $set = 2;
-                $option = '禁用成功';
-                break;
-            case '2':
-                $set = 1;
-                $option = '启用成功';
-                break;
+    //重置密码
+    public function setPassword(){
+        $post = I('post.');
+        if(empty($post['password'])){
+            $this->success('密码不能为空');
         }
-        D::set('Users.status',I('id'),$set);
-        $this->success($option);
+        if(empty($post['pwd'])){
+            $this->success('确认密码不能为空');
+        }
+        if($post['pwd']!=$post['password']){
+            $this->success('确认密码不一致');
+        }
+        
     }
 
     //删除用户
     public function delUser()
     {
-    	$Ary['status'] = 9;
+    	$Ary['status'] = 3;
     	if(D::save('users',I('id'),$Ary)){
     		$this->success('删除成功！',U('MemberList/index'));
     	}else{

@@ -18,8 +18,8 @@
 
                 <li class="layui-nav-item">
                     <a href="javascript:;" class="admin-header-user">
-                        <img src="{$Think.session.config.headUrl}"/>
-                        <span>{$Think.session.root_user.name}</span>
+                       <!-- <img src="{$Think.session.config.headUrl}"/>-->
+                        <span>欢迎您：{$Think.session.root_user.name}</span>
                     </a>
                     <dl class="layui-nav-child">
                         <present name="Think.session.root_Pwd">
@@ -65,9 +65,7 @@
             </ul>
         </div>
     </div>
-
     {__CONTENT__}
-
     <div class="layui-footer footer footer-demo" id="admin-footer">
         <div class="layui-main">
             <p>2016 &copy;
@@ -80,20 +78,6 @@
     </div>
     <div class="site-mobile-shade"></div>
     <script>
-        /*layui.use('layer', function () {
-            var $ = layui.jquery,
-                    layer = layui.layer;
-
-            $('#video1').on('click', function () {
-                layer.open({
-                    title: 'YouTube',
-                    maxmin: true,
-                    type: 2,
-                    content: 'video.html',
-                    area: ['800px', '500px']
-                });
-            });
-        });*/
         /*编辑器*/
         var k = 1;
         layui.use('layedit', function(){

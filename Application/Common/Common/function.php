@@ -470,3 +470,19 @@ function getTimeFormat($time)
 function random_num(){
     return str_pad(mt_rand(0, 999999999), 9, "0", STR_PAD_BOTH);
 }
+
+//返回type类型
+function getTypes($type){
+    switch($type){
+        case 'consume':
+            $word = '消费返积分';
+            break;
+        case 'exchange':
+            $word = '兑换电子券';
+            break;
+        case 'lvup':
+            $word = '购买积分卡升级';
+            break;
+    }
+    return $word;
+}

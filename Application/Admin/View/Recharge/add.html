@@ -1,0 +1,33 @@
+<div class="layui-body" style="bottom: 0;border-left: solid 2px #1AA094;" id="admin-body">
+    <div class="layui-tab admin-nav-card layui-tab-brief" lay-filter="admin-tab">
+        <ul class="layui-tab-title">
+            <li class="layui-this"><i class="fa fa-dashboard" aria-hidden="true"></i> <cite>充值管理-新增</cite></li>
+        </ul>
+        <div class="layui-tab-item layui-show">
+            <div class="conter">
+                <div class="xxkt">
+                    <ul>
+                        <li class="xxkt_bt">充值管理-新增</li>
+                    </ul>
+                </div>
+                <form action="__URL__/insert" method="post" class="form-hotelAdd" enctype="multipart/form-data">
+                    <div class="xxknr">
+                        <div>
+                            <div class="glylb_szmm"><span class="glylb_szmm_span">请输入充值金额：</span>
+                                <div class="layui-input-block z_min_left_10">
+                                    <input class="fn-tinput requ" name="money" placeholder="请输入充值金额">
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="gater">
+                        <input type="hidden" name="__GO__" value="__URL__/index">
+                        <input type="submit" value="确认" class="glylb_an_qd ajax-post" target-form="form-hotelAdd"/>
+                        <a href=""><input type="button" value="取消" class="glylb_an_fh" /></a>
+                    </div>
+                </form>
+            </div>
+        </div>
+    </div>
+</div>
+
