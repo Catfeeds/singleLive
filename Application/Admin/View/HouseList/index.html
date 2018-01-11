@@ -56,7 +56,6 @@
                                 <th>客房名称</th>
                                 <th>客房金额</th>
                                 <th>反还积分</th>
-                                <th>是否可以使用电子卷</th>
                                 <th>添加时间</th>
                                 <th>操作</th>
                             </tr>
@@ -68,7 +67,6 @@
                                     <td>{$row.name}</td>
                                     <td>{$row.money}</td>
                                     <td>{$row.sorce}</td>
-                                    <td>{:$row['paper'] == 'y' ? '可用' : '不可用'}</td>
                                     <td>{$row.add_time}</td>
                                     <td>
                                         <a class="z_coios_2" href="__URL__/banner/id/{$row.id}">轮播图</a>

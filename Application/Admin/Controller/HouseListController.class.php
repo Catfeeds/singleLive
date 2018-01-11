@@ -83,6 +83,7 @@ class HouseListController extends CommonController {
                     'total_num' => $data['total_num'],
                     'pic' => $data['pic'],
                     'word' => $data['word'],
+                    'push' => $data['push'],
                     'imgs' => $imgs,
                     'status' => 1,
                     'add_time' => time(),

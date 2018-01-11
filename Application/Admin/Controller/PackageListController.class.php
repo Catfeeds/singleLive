@@ -81,6 +81,7 @@ class PackageListController extends CommonController {
                     //'paper' => $data['paper'],
                     'word' => $data['word'],
                     'total_num' => $data['total_num'],
+                    'push' => $data['push'],
                     'status' => 1,
                     'add_time' => time(),
                     'update_time' => time()
