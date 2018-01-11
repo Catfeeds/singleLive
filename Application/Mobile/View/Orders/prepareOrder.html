@@ -39,7 +39,7 @@
             <ul>
                 <li> < 周 </li>
                 <li> < 天 </li>
-                <span id="Time">{$nowDate}</span>
+                <span id="Time">{$myDate['mix']}</span>
                 <li> 天 ></li>
                 <li> 周 ></li>
             </ul>
@@ -214,15 +214,15 @@
         laydate.render({
             elem: '#Time'
             ,type: 'date'
-            ,min: "{$nowDate}"
-            ,max: "2099-12-31"
+            ,min: "{$myDate['mix']}"
+            ,max: "{$myDate['max']}"
         });
         lay('.test-item').each(function(){
             laydate.render({
                 elem: this
                 ,trigger: 'click'
-                ,min: "{$nowDate}"
-                ,max: "2099-12-31"
+                ,min: "{$myDate['mix']}"
+                ,max: "{$myDate['max']}"
             });
         });
     });

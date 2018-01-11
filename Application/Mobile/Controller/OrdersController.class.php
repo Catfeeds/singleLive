@@ -27,26 +27,33 @@ class OrdersController extends CommonController{
 	{
 		$houseID = I('id');
 		$userID = session('user');
-		//查询当前用户可以使用的电子券
+		//查询当前用户已拥有的电子券
 		$map = [
-			'status' => 1,
-			'userID' => $userID
+			"E.status" => 1,
+			"E.userID" => $userID
 		];
 		$coupon = D::get(['CouponExchange','E'],[
 			'where' => $map,
 			'join'	=> 'LEFT JOIN __COUPON__ C ON C.id = E.cID',
 			'field'	=> 'E.*,C.money,C.exprie_start,C.exprie_end,hcate'
 		]);
-
-		//$have = D::lists('Coupon','id,hcate',$map);
 		//查询当前房间信息
 		$house = D::find('House',$houseID);
+		array_map(function($data)use($house){
+			
+		},$coupon);
+		//$have = D::lists('Coupon','id,hcate',$map);
 
 
-		//获取当前日期
-		$nowDate = date('Y-m-d');
+		//设置可预订房间的最小与最大日期
+		$mixDate = date('Y-m-d');
+		$maxDate = date('Y-m-d',strtotime("$mixDate +6 month"));
+		$myDate = [
+			'mix' => $mixDate,
+			'max' => $maxDate,
+		];
 		$this->assign('house',$house);
-		$this->assign('nowDate',$nowDate);
+		$this->assign('myDate',$myDate);
 		$this->assign('coupon',$coupon);
 		$this->display();
 	}
