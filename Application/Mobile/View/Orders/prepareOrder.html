@@ -194,9 +194,12 @@ layui.use(['laytpl', 'laydate'], function() {
         now = date;
         $('#Time').text(date);
         $.post('__URL__/getStrtotime', { date: date }, function(res) {
-            laytpl($('#layout').html()).render(res, function(string) {
+            laytpl($('#layout').html()).render(res.db, function(string) {
                 $('#view').html(string);
             });
+            //优惠券信息写全修改下方代码
+            // laytpl($('#coupon').html()).render(res.coupon, function(string) {
+            // });
         });
     }
 
@@ -242,10 +245,8 @@ layui.use(['laytpl', 'laydate'], function() {
         </li>
         {{# }); }}
 </script>
-<script type="text/javascript">
-layui.use('laydate', function() {
-
-});
+<script type="text/html" id="coupon">
+//优惠券信息位置
 </script>
 
 </html>

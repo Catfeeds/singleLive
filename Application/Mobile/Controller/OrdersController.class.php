@@ -27,24 +27,20 @@ class OrdersController extends CommonController{
 	{
 		$houseID = I('id');
 		$userID = session('user');
-		//查询当前用户已拥有的电子券
+		//查询当前用户可以使用的电子券
 		$map = [
-			"E.status" => 1,
-			"E.userID" => $userID
+			'status' => 1,
+			'userID' => $userID
 		];
 		$coupon = D::get(['CouponExchange','E'],[
 			'where' => $map,
 			'join'	=> 'LEFT JOIN __COUPON__ C ON C.id = E.cID',
 			'field'	=> 'E.*,C.money,C.exprie_start,C.exprie_end,hcate'
 		]);
+
+		//$have = D::lists('Coupon','id,hcate',$map);
 		//查询当前房间信息
 		$house = D::find('House',$houseID);
-		array_map(function($data)use($house){
-			
-		},$coupon);
-		//$have = D::lists('Coupon','id,hcate',$map);
-
-
 		//设置可预订房间的最小与最大日期
 		$mixDate = date('Y-m-d');
 		$maxDate = date('Y-m-d',strtotime("$mixDate +6 month"));
@@ -52,8 +48,13 @@ class OrdersController extends CommonController{
 			'mix' => $mixDate,
 			'max' => $maxDate,
 		];
-		$this->assign('house',$house);
 		$this->assign('myDate',$myDate);
+
+
+		//获取当前日期
+		$nowDate = date('Y-m-d');
+		$this->assign('house',$house);
+		$this->assign('nowDate',$nowDate);
 		$this->assign('coupon',$coupon);
 		$this->display();
 	}
@@ -78,6 +79,7 @@ class OrdersController extends CommonController{
 	 */
 	public function getStrtotime($date)
 	{
+		// dump($date);
 		$dates = [
 			[
 				'date' => strtotime($date.'-3 days'),
@@ -110,7 +112,7 @@ class OrdersController extends CommonController{
 			6 => '六',
 			7 => '日',
 		];
-		$data = array_map(function($data)use($week){
+		$data['db'] = array_map(function($data)use($week){
 			$date = $data['date'];
 			$data = [
 				'month' => date('m月',$date),
@@ -120,6 +122,7 @@ class OrdersController extends CommonController{
 			];
 			return $data;
 		}, $dates);
+		$data['coupon'] = [];//优惠券信息
 		$this->ajaxReturn($data);
 	}
 }
