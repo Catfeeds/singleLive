@@ -103,7 +103,7 @@
                         登录密码 ：
                     </div>
                     <div class="fr_input_right">
-                        <input name="password" type="text" placeholder="请输入登录密码" class="inp_1" />
+                        <input name="password" type="password" placeholder="请输入登录密码" class="inp_1" />
                     </div>
                 </div>
                 <div class="fr_input">
@@ -111,7 +111,7 @@
                         确认密码 ：
                     </div>
                     <div class="fr_input_right">
-                        <input name="repassword" type="text" placeholder="请输入确认密码" class="inp_1" />
+                        <input name="repassword" type="password" placeholder="请输入确认密码" class="inp_1" />
                     </div>
                 </div>
             </div>
@@ -170,7 +170,7 @@ $('.verification-button').click(function() {
                         if (s == 0) {
                             clearInterval(a);
                             t.removeClass('layui-btn-disabled');
-                            t.text('点击获取验证码');
+                            t.text('发送验证码');
                         } else {
                             t.text(s + '秒后再次发送');
                         }
