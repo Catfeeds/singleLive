@@ -50,8 +50,10 @@ class OrdersController extends CommonController{
 			'mix' => $mixDate,
 			'max' => $maxDate,
 		];
+
 		$this->assign('house',$house);
 		$this->assign('myDate',$myDate);
+
 		$this->assign('coupon',$coupon);
 		$this->display();
 	}
