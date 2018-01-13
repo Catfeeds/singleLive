@@ -1,0 +1,142 @@
+<div class="app_center">
+    <style>
+        .dist_but2 input {
+            width: 60%;
+            height: 5rem;
+            line-height: 5rem;
+            display: block;
+            margin: 0 auto;
+            background: #ff9900;
+            text-align: center;
+            color: #FFF9EC;
+            font-size: 2rem;
+            border-radius: 50px;
+        }
+        .pay {
+            width: 3rem;
+            height: 6rem;
+            float: left;
+            background-image: url("/Public/Mobile/img/zc05@2x.png");
+            background-position: center center;
+            background-repeat: no-repeat;
+            background-size: 2rem 2rem;
+        }
+        .pay input {
+            opacity: 0;
+        }
+        .dist_but3{height:18rem;}
+        .dist_but3 input{
+            width: 45%;
+            height: 5rem;
+            line-height: 5rem;
+            display: block;
+            background: #ff9900;
+            text-align: center;
+            color: #FFF9EC;
+            font-size: 2rem;
+            border-radius: 50px;
+            float: left;
+        }
+    </style>
+    <form class="orderForm" action="__URL__/paySuccess" method="post">
+        <div class="web_form">
+            <div class="app_dist_tite">
+                <div class="app_dist_tite_img">
+                    <img src="__MOBILE__/img/kf06@2x.png">
+                </div>
+                <div class="app_dist_tite_colo">
+                    选择支付方式
+                </div>
+            </div>
+            <div class="app_dist">
+                <div class="fr_input">
+                    <div class="web_icom">
+                        <div class="web_icom_left">
+                            <div class="pay">
+                                <input type="checkbox" name="payType" value="1" />
+                            </div>
+                            <div class="fr_l2">
+                                余额      <span style="color: red;" id="balance">{$money}</span>元
+                            </div>
+                        </div>
+                    </div>
+                    <div class="web_icom">
+                        <div class="web_icom_left">
+                            <div class="pay">
+                                <input type="checkbox" name="payType" value="2" />
+                            </div>
+                            <div class="fr_l2">
+                                微信支付
+                            </div>
+                        </div>
+                    </div>
+                    <div class="web_icom">
+                        <div class="web_icom_left">
+                            <div class="pay">
+                                <input type="checkbox" name="payType" value="3" />
+                            </div>
+                            <div class="fr_l2">
+                                余额+微信支付
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+            <div class="web_flocg">
+                <div class="web_flocg_left">
+                    应付金额
+                </div>
+                <div class="web_flocg_right">
+                    ￥<a id="money">{$db.price}</a>
+                </div>
+            </div>
+            <div class="web_flocg">
+                <div class="web_flocg_left">
+                    实际支付金额
+                </div>
+                <div class="web_flocg_right">
+                    ￥<a id="allMoney"></a>
+                </div>
+
+            </div>
+        </div>
+        <div class="dist_but3">
+            <input type="hidden" name="orderNo" value="{$db.orderNo}">
+            <input type="hidden" name="myMoney" value="{$money}">
+            <input type="hidden" name="price" value="{$db.price}">
+            <input type="hidden" name="allMoney" value="">
+            <input type="button" style="background-color: red;" class="spoert out" value="取消" />
+            <input type="submit" class="spoert ajax-post confirm" data-msg="您确认支付?" target-form="orderForm" value="确认支付" />
+        </div>
+    </form>
+</div>
+<script>
+    $(function(){
+        $(document).on('click', '.pay', function () {
+            var price = "{$db['price']}";
+            var balance = "{$money}";
+            var type = $(this).find('input').val();
+            var allMoney;
+            if ($(this).hasClass('fr_img')) {
+                $(this).find('input').prop('checked', false);
+                $(this).removeClass('fr_img');
+            } else {
+                $('.pay').removeClass('fr_img').find('input').prop('checked', false);
+                $(this).find('input').prop('checked', true);
+                $(this).addClass('fr_img');
+                if(type == 1 || type ==3){
+                    if(parseInt(balance)>=parseInt(price)){
+                        allMoney = parseInt(price);
+                    }else{
+                        allMoney = parseInt(price)-parseInt(balance)
+                    }
+                }else{
+                    allMoney = parseInt(price)
+                }
+                $('#allMoney').text(allMoney);
+                $("input[name='allMoney']").val(allMoney);
+            }
+        });
+    });
+</script>
+</html>

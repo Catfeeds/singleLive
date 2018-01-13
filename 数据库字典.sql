@@ -1,19 +1,3 @@
-
---
--- 表的结构 `ms_drawback`
---
-
-CREATE TABLE IF NOT EXISTS `ms_drawback` (
-  `id` int(11) NOT NULL AUTO_INCREMENT,
-  `orderId` int(11) DEFAULT NULL COMMENT '订单id',
-  `createTime` int(11) DEFAULT NULL COMMENT '操作时间',
-  `money` int(10) DEFAULT NULL COMMENT '退款金额',
-  PRIMARY KEY (`id`)
-) ENGINE=MyISAM  DEFAULT CHARSET=utf8 COLLATE=utf8_bin AUTO_INCREMENT=2 ;
-
-
--- --------------------------------------------------------
-
 --
 -- 表的结构 `files` 文件保存表
 --
@@ -433,14 +417,14 @@ CREATE TABLE IF NOT EXISTS `ms_order` (
   `orderNo` varchar(16) COLLATE utf8_bin NOT NULL COMMENT '订单编号',
   `username` varchar(30) COLLATE utf8_bin NOT NULL COMMENT '填写人姓名',
   `mobile` varchar(11) COLLATE utf8_bin NOT NULL COMMENT '填写人手机号码',
-  `sex` tinyint(1) NOT NULL COMMENT '填写人性别',
+  `sex` tinyint(1) NOT NULL COMMENT '填写人性别 1-先生 2-女士',
   `email` varchar(30) COLLATE utf8_bin NOT NULL COMMENT '填写人邮箱',
   `person` int(3) NOT NULL COMMENT '成年人数量',
   `child` int(3) NOT NULL COMMENT '儿童数量',
   `price` float(10,2) COLLATE utf8_bin NOT NULL COMMENT '订单金额',
   `mark` text COLLATE utf8_bin NOT NULL COMMENT '备注信息',
-  `inTime` int(11) NOT NULL COMMENT '入住时间',
-  `outTime` int(11) NOT NULL COMMENT '离开时间',
+  `inTime` DATE NOT NULL COMMENT '入住时间',
+  `outTime` DATE NOT NULL COMMENT '离开时间',
   `coupon` int(11) NOT NULL COMMENT '关联优惠券id 若用户成功勾选了,则有,若无,则写入0',
   `num` int(5) NOT NULL COMMENT '购买数量(仅用于套餐) 非套餐(客房)默认写入1',
   `status` tinyint(1) NOT NULL COMMENT '付款状态 8-待付款 9-已入住 1-已支付 2-已完成 3-已超时(设置时间内未完成支付) 4-已取消 5-退款审核中(用户),由此状态总后台显示确认退款和驳回 6-已退款 7-已驳回',
@@ -459,7 +443,8 @@ CREATE TABLE IF NOT EXISTS `ms_room_date` (
   `id` int(11) NOT NULL AUTO_INCREMENT,
   `createDate` DATE NOT NULL COMMENT '入住时间',
   `roomID` int(11) NOT NULL COMMENT '房间id',
-  `order` int(11) NOT NULL COMMENT '订单数量(只要有已经支付的订单就加1,退款则减1)',
+  `order_num` int(11) NOT NULL COMMENT '订单数量(只要有已经支付的订单就加1,退款则减1)',
+  `type` char(1) COLLATE utf8_bin NOT NULL COMMENT 'h-客房 t-套餐',
   PRIMARY KEY (`id`)
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8 COLLATE=utf8_bin AUTO_INCREMENT=1 ;
 
@@ -536,17 +521,6 @@ CREATE TABLE IF NOT EXISTS `ms_recharge` (
   `money` float(10,2) COLLATE utf8_bin NOT NULL COMMENT '充值金额',
   `createTime` int(11) NOT NULL COMMENT '创建时间',
   `updateTime` int(11) NOT NULL COMMENT '修改时间',
-  PRIMARY KEY (`id`)
-) ENGINE=MyISAM DEFAULT CHARSET=utf8 COLLATE=utf8_bin AUTO_INCREMENT=1 ;
-
---
---  充值管理表
---
-CREATE TABLE IF NOT EXISTS `ms_recharge` (
-  `id` int(11) NOT NULL AUTO_INCREMENT,
-  `money` float(10,2) COLLATE utf8_bin NOT NULL COMMENT '充值金额',
-  `createTime` int(11) NOT NULL COMMENT '创建时间',
-  `updateTime` int(11) NOT NULL COMMENT '修改时间',
   `status` tinyint(1) NOT NULL COMMENT '1-正常 2-禁用 3-删除 备用字段(添加时全部设置为1)',
   PRIMARY KEY (`id`)
 ) ENGINE=MyISAM DEFAULT CHARSET=utf8 COLLATE=utf8_bin AUTO_INCREMENT=1 ;
@@ -558,11 +532,38 @@ CREATE TABLE IF NOT EXISTS `ms_balance` (
   `id` int(11) NOT NULL AUTO_INCREMENT,
   `userID` int(11) NOT NULL COMMENT '消费用户id',
   `money` float(10,2) COLLATE utf8_bin NOT NULL COMMENT '消费金额',
+  `orderNo` varchar(16) COLLATE utf8_bin NOT NULL COMMENT '订单编号',
   `method` char(10) COLLATE utf8_bin NOT NULL COMMENT 'plus-充值 sub-用余额消费',
   `createTime` int(11) NOT NULL COMMENT '创建时间',
+  `status` tinyint(1) NOT NULL COMMENT '1-已支付 2-待付款',
   PRIMARY KEY (`id`)
 ) ENGINE=MyISAM DEFAULT CHARSET=utf8 COLLATE=utf8_bin AUTO_INCREMENT=1 ;
 
+
+--
+--  财务流水表--退款 支付成功 充值都要入此表(方便财务统计)
+--
+CREATE TABLE IF NOT EXISTS `ms_finance` (
+  `id` int(11) NOT NULL AUTO_INCREMENT,
+  `userID` int(11) NOT NULL COMMENT '用户id',
+  `orderNO` varchar(16) COLLATE utf8_bin NOT NULL COMMENT '订单编号',
+  `money` float(10,2) COLLATE utf8_bin NOT NULL COMMENT '金额',
+  `type`  char(10) COLLATE utf8_bin NOT NULL COMMENT 'pay-下单(order表) back-退款(order表) recharge-充值(balance表)',
+  `createDate` DATE NOT NULL COMMENT '创建时间 标准日期格式',
+  PRIMARY KEY (`id`)
+) ENGINE=MyISAM DEFAULT CHARSET=utf8 COLLATE=utf8_bin AUTO_INCREMENT=1 ;
+
+--
+-- `ms_drawback` 退款记录表
+--
+
+CREATE TABLE IF NOT EXISTS `ms_drawback` (
+  `id` int(11) NOT NULL AUTO_INCREMENT,
+  `orderId` int(11) DEFAULT NULL COMMENT '订单id',
+  `createTime` int(11) DEFAULT NULL COMMENT '操作时间',
+  `money` int(10) DEFAULT NULL COMMENT '退款金额',
+  PRIMARY KEY (`id`)
+) ENGINE=MyISAM  DEFAULT CHARSET=utf8 COLLATE=utf8_bin AUTO_INCREMENT=2 ;
 
 
 

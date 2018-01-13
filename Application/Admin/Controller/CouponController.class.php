@@ -28,6 +28,9 @@ class CouponController extends CommonController {
         $house = D::get('houseCate',[
             'where' => "`status`=1 AND `type`='h'"
         ]);
+        //最小日期
+        $mixDate = date('Y-m-d');
+        $this->assign('min',$mixDate);
         $this->assign('house',$house);
         $this->assign('package',$package);
         $this->display();

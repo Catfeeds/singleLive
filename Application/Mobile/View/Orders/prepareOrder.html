@@ -1,170 +1,178 @@
 <div class="app_center">
-    <div class="web_form">
-        <div class="app_dist_tite">
-            <div class="app_dist_tite_img">
-                <img src="__MOBILE__/img/kf06@2x.png">
+    <style>
+        .dist_but2 input {
+            width: 60%;
+            height: 5rem;
+            line-height: 5rem;
+            display: block;
+            margin: 0 auto;
+            background: #ff9900;
+            text-align: center;
+            color: #FFF9EC;
+            font-size: 2rem;
+            border-radius: 50px;
+        }
+    </style>
+    <form class="orderForm" action="__URL__/OrderCheck" method="post">
+        <div class="web_form">
+            <div class="app_dist_tite">
+                <div class="app_dist_tite_img">
+                    <img src="__MOBILE__/img/kf06@2x.png">
+                </div>
+                <div class="app_dist_tite_colo">
+                    预定信息
+                </div>
             </div>
-            <div class="app_dist_tite_colo">
-                预定信息
+            <div class="web_flocg">
+                <div class="web_flocg_left">
+                    {$house.name}
+                </div>
+                <div class="web_flocg_right">
+                    <a>￥{$house.money}</a>
+                </div>
+            </div>
+            <div class="select_start_date">
+                <div class="start_date_left">
+                    开始时间
+                </div>
+                <div class="start_date_right">
+                    <input type="text" name="inTime" class="test-item" placeholder="选择开始日期" readonly="readonly" />
+                </div>
+            </div>
+            <div class="select_start_date">
+                <div class="start_date_left">
+                    结束时间
+                </div>
+                <div class="start_date_right">
+                    <input type="text" name="outTime" class="test-item" placeholder="选择结束日期" readonly="readonly" />
+                </div>
             </div>
         </div>
-        <div class="web_flocg">
-            <div class="web_flocg_left">
-                {$house.name}
+        <div class="app_litnes">
+            <div class="litnes">
+                <ul>
+                    <li class="timeCheck" days="minusWeek">
+                        < 周 </li>
+                            <li class="timeCheck" days="minusDay">
+                                < 天 </li>
+                                    <span id="Time">{$myDate['min']}</span>
+                                    <li class="timeCheck" days="plusDay"> 天 ></li>
+                                    <li class="timeCheck" days="plusWeek"> 周 ></li>
+                </ul>
             </div>
-            <div class="web_flocg_right">
-                <a>￥{$house.money}</a>
-            </div>
-        </div>
-        <div class="select_start_date">
-            <div class="start_date_left">
-                开始时间
-            </div>
-            <div class="start_date_right">
-                <input type="text" name="inTime" class="test-item" placeholder="选择开始日期" readonly="readonly" />
-            </div>
-        </div>
-        <div class="select_start_date">
-            <div class="start_date_left">
-                结束时间
-            </div>
-            <div class="start_date_right">
-                <input type="text" name="outTime" class="test-item" placeholder="选择结束日期" readonly="readonly" />
-            </div>
-        </div>
-    </div>
-    <div class="app_litnes">
-        <div class="litnes">
-            <ul>
-                <li class="timeCheck" days="minusWeek">
-                    < 周 </li>
-                        <li class="timeCheck" days="minusDay">
-                            < 天 </li>
-                                <span id="Time">{$myDate['mix']}</span>
-                                <li class="timeCheck" days="plusDay"> 天 ></li>
-                                <li class="timeCheck" days="plusWeek"> 周 ></li>
-            </ul>
-        </div>
-        <div class="yiniter">
-            <div class="timet_smt">
-                <div class="timet_smt_left">
-                    <div class="dinoter">
-                        日期
+            <div class="yiniter">
+                <div class="timet_smt">
+                    <div class="timet_smt_left">
+                        <div class="dinoter">
+                            日期
+                        </div>
+                        <div class="dinoter">
+                            房间数
+                        </div>
                     </div>
-                    <div class="dinoter">
-                        房间数
+                    <div class="timet_smt_right" id="view"></div>
+                </div>
+            </div>
+        </div>
+        <div class="app_dist">
+            <div class="app_dist_tite">
+                <div class="app_dist_tite_img">
+                    <img src="__MOBILE__/img/yd02@2x.png">
+                </div>
+                <div class="app_dist_tite_colo">
+                    使用电子卷
+                </div>
+            </div>
+            <div id="showCoupon"></div>
+        </div>
+        <div class="app_dist">
+            <div class="app_dist_tite">
+                <div class="app_dist_tite_img">
+                    <img src="__MOBILE__/img/yd03@2x.png">
+                </div>
+                <div class="app_dist_tite_colo">
+                    填写信息
+                </div>
+            </div>
+            <div class="fr_input">
+                <div class="fr_input_left">
+                    手机号码 ：
+                </div>
+                <div class="fr_input_right">
+                    <input type="text" name="mobile" placeholder="请输入电话号码" class="inp_1" />
+                </div>
+            </div>
+            <div class="fr_input">
+                <div class="fr_input_left">
+                    称&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;谓：
+                </div>
+                <div class="fr_input_right">
+                    <div class="fr_radio">
+                        <input name="sex" type="radio" value="1" checked />先生
+                    </div>
+                    <div class="fr_radio">
+                        <input name="sex" type="radio" value="2" />女士
                     </div>
                 </div>
-                <div class="timet_smt_right" id="view"></div>
             </div>
-        </div>
-    </div>
-    <div class="app_dist">
-        <div class="app_dist_tite">
-            <div class="app_dist_tite_img">
-                <img src="__MOBILE__/img/yd02@2x.png">
-            </div>
-            <div class="app_dist_tite_colo">
-                使用电子卷
-            </div>
-        </div>
-        <div class="web_icom">
-            <div class="web_icom_left">
-                <div class="fr_l1 ">
-                    <input type="checkbox" />
+            <div class="fr_input">
+                <div class="fr_input_left">
+                    姓&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;名 ：
                 </div>
-                <div class="fr_l2">
-                    1362526358
+                <div class="fr_input_right">
+                    <input type="text" placeholder="请输入姓名" class="inp_1" name="username" />
                 </div>
             </div>
-            <div class="web_icom_cont">
-                100元
-            </div>
-            <div class="web_icom_right">
-                未使用
-            </div>
-        </div>
-    </div>
-    <div class="app_dist">
-        <div class="app_dist_tite">
-            <div class="app_dist_tite_img">
-                <img src="__MOBILE__/img/yd03@2x.png">
-            </div>
-            <div class="app_dist_tite_colo">
-                填写信息
-            </div>
-        </div>
-        <div class="fr_input">
-            <div class="fr_input_left">
-                手机号码 ：
-            </div>
-            <div class="fr_input_right">
-                <input type="text" placeholder="请输入电话号码" class="inp_1" />
-            </div>
-        </div>
-        <div class="fr_input">
-            <div class="fr_input_left">
-                称&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;谓：
-            </div>
-            <div class="fr_input_right">
-                <div class="fr_radio">
-                    <input type="radio" name="radio" />先生
+            <div class="fr_input">
+                <div class="fr_input_left">
+                    电子邮箱 ：
                 </div>
-                <div class="fr_radio">
-                    <input type="radio" name="radio" />女士
+                <div class="fr_input_right">
+                    <input type="text" placeholder="请输入电子邮箱" name="email" class="inp_1" />
+                </div>
+            </div>
+            <div class="fr_input">
+                <div class="fr_input_left">
+                    成&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;人 ：
+                </div>
+                <div class="fr_input_right">
+                    <select class="fr_select" name="person">
+                        <option value="1">1</option>
+                        <option value="2">2</option>
+                        <option value="3">3</option>
+                        <option value="4">4</option>
+                    </select>
+                </div>
+            </div>
+            <div class="fr_input">
+                <div class="fr_input_left">
+                    儿&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;童 ：
+                </div>
+                <div class="fr_input_right">
+                    <select class="fr_select" name="child">
+                        <option value="1">1</option>
+                        <option value="2">2</option>
+                        <option value="3">3</option>
+                        <option value="4">4</option>
+                    </select>
+                </div>
+            </div>
+            <div class="fr_input">
+                <div class="fr_input_left">
+                    备&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;注 ：
+                </div>
+                <div class="fr_input_right">
+                    <textarea name="mark"></textarea>
                 </div>
             </div>
         </div>
-        <div class="fr_input">
-            <div class="fr_input_left">
-                姓&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;名 ：
-            </div>
-            <div class="fr_input_right">
-                <input type="text" placeholder="请输入姓名" class="inp_1" />
-            </div>
+        <div class="dist_but2 ">
+            <input type="hidden" name="type" value="k" />
+            <input type="hidden" name="roomID" value="{$house.id}" />
+            <input type="submit" class="spoert ajax-post confirm" data-msg="您确定填写的订单无误？" target-form="orderForm" value="提交信息" />
+            <!--<a class="spoert" msg-tite="您是否提交信息？”">提交信息</a>-->
         </div>
-        <div class="fr_input">
-            <div class="fr_input_left">
-                电子邮箱 ：
-            </div>
-            <div class="fr_input_right">
-                <input type="text" placeholder="请输入电子邮箱" class="inp_1" />
-            </div>
-        </div>
-        <div class="fr_input">
-            <div class="fr_input_left">
-                成&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;人 ：
-            </div>
-            <div class="fr_input_right">
-                <select class="fr_select">
-                    <option>1</option>
-                    <option>2</option>
-                </select>
-            </div>
-        </div>
-        <div class="fr_input">
-            <div class="fr_input_left">
-                儿&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;童 ：
-            </div>
-            <div class="fr_input_right">
-                <select class="fr_select">
-                    <option>1</option>
-                    <option>2</option>
-                </select>
-            </div>
-        </div>
-        <div class="fr_input">
-            <div class="fr_input_left">
-                备&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;注 ：
-            </div>
-            <div class="fr_input_right">
-                <textarea></textarea>
-            </div>
-        </div>
-    </div>
-    <div class="dist_but2 ">
-        <a class="spoert" msg-tite="您是否提交信息？”">提交信息</a>
-    </div>
+    </form>
 </div>
 <script type="text/javascript">
 layui.use(['laytpl', 'laydate'], function() {
@@ -173,7 +181,7 @@ layui.use(['laytpl', 'laydate'], function() {
     laydate.render({
         elem: '#Time',
         type: 'date',
-        min: "{$myDate['mix']}",
+        min: "{$myDate['min']}",
         max: "{$myDate['max']}",
         done: function(value, date, endDate) {
             getDates(value);
@@ -183,26 +191,30 @@ layui.use(['laytpl', 'laydate'], function() {
         laydate.render({
             elem: this,
             trigger: 'click',
-            min: "{$myDate['mix']}",
-            max: "{$myDate['max']}",
+            min: "{$myDate['min']}",
+            max: "{$myDate['end']}"
         });
     });
     var now = $('#Time').text();
     getDates(now);
-
     function getDates(date) {
         now = date;
         $('#Time').text(date);
-        $.post('__URL__/getStrtotime', { date: date }, function(res) {
+        var houseID = "{$house.id}";
+        /*$.ajaxSetup({
+            'async':false
+        });*/
+        $.post('__URL__/getStrtotime', { date: date,houseID: houseID}, function(res) {
+            //日期信息
             laytpl($('#layout').html()).render(res.db, function(string) {
                 $('#view').html(string);
             });
-            //优惠券信息写全修改下方代码
-            // laytpl($('#coupon').html()).render(res.coupon, function(string) {
-            // });
+            //优惠券信息
+             laytpl($('#coupon').html()).render(res.coupon, function(string) {
+                 $('#showCoupon').html(string);
+             });
         });
     }
-
     function fmtDate(obj) {
         var date = new Date(obj);
         var y = 1900 + date.getYear();
@@ -210,6 +222,7 @@ layui.use(['laytpl', 'laydate'], function() {
         var d = "0" + date.getDate();
         return y + "-" + m.substring(m.length - 2, m.length) + "-" + d.substring(d.length - 2, d.length);
     }
+    //js中的标准日期格式必须是2017/01/03的这种形式 Date.parse()是 Date 对象的静态方法。
     $('.timeCheck').click(function() {
         var type = $(this).attr('days');
         var date = new Date(Date.parse(now.replace(/-/g, "/")));
@@ -223,8 +236,26 @@ layui.use(['laytpl', 'laydate'], function() {
         } else if (type == 'plusDay') {
             date = date + 86400000;
         }
-        date = fmtDate(date);
-        getDates(date);
+        var nowDate ="{$myDate['min']}";
+        var Dates = new Date(Date.parse(nowDate.replace(/-/g, "/")));
+        if(date>=Dates.getTime()){
+            date = fmtDate(date);
+            getDates(date);
+        }else{
+            layer.open({
+                content: '选择时间不可小于当前时间'
+                ,skin: 'msg'
+                ,time: 2 //2秒后自动关闭
+            });
+        }
+    });
+    $(document).on('click','.str3',function(){
+        var num = $(this).attr('num');
+        layer.open({
+            className:'attui',
+            style: 'border:none; background-color:#78BA32; color:#fff;',
+            content:'剩余房间 ：'+num
+        })
     });
 });
 </script>
@@ -238,16 +269,42 @@ layui.use(['laytpl', 'laydate'], function() {
             <p>{{item.day}}</p>
             <p>{{item.month}}</p>
             {{# if(item.full === 'false'){ }}
-            <p class="str3"><a>查房</a></p>
+            <p class="str3" num="{{item.num}}"><a>查房</a></p>
+            {{# }else if(item.full === 'no'){ }}
+            <p class="str2" style="background-color: red;color: #000;">查房</p>
             {{# }else{ }}
             <p class="str2">满房</p>
             {{# } }}
         </li>
         {{# }); }}
 </script>
-
+<!--优惠券信息位置-->
 <script type="text/html" id="coupon">
-//优惠券信息位置
+    {{# layui.each(d, function(index, item){ }}
+    <div class="web_icom">
+        <div class="web_icom_left">
+            <div class="fr_l1 ">
+                {{# if(item.allow == 'yes') { }}
+                    <input type="checkbox" name="coupon" value="{{item.cID}}" />
+                {{# }else{ }}
+                    <input disabled="disabled" type="checkbox" />
+                {{# } }}
+            </div>
+            <div class="fr_l2">
+                {{item.card}}
+            </div>
+        </div>
+        <div class="web_icom_cont">
+            ￥{{item.money}}元
+        </div>
+        <div class="web_icom_right">
+            {{# if(item.allow == 'yes') { }}
+                可使用
+            {{# }else{ }}
+                不可用
+            {{# } }}
+        </div>
+    </div>
+    {{#  }); }}
 </script>
-
 </html>

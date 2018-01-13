@@ -467,9 +467,9 @@ function getTimeFormat($time)
 }
     
 /*生成7位随机数*/
-function random_num(){
+/*function random_num(){
     return str_pad(mt_rand(0, 999999999), 9, "0", STR_PAD_BOTH);
-}
+}*/
 
 //返回type类型
 function getTypes($type){
@@ -486,3 +486,32 @@ function getTypes($type){
     }
     return $word;
 }
+/*
+ *  封装  生成随机数函数
+ *      $bit    获得几个的随机数
+ * */
+function get_random_number($bit){
+    $arr=array();
+    while(count($arr)<$bit)
+    {
+        //rand-随机产生一个0-9之间的数字
+        $arr[]=rand(0,9);
+        //去除数组元素中相同的值
+        $arr=array_unique($arr);
+    }
+    //随机排列数组元素
+    shuffle($arr);
+    $str = '';
+    foreach($arr as $val){
+        $str .=$val;
+    }
+    return $str;
+}
+/*
+* 	设置订单生成规则	字母 + 10位时间戳  + 5位随机数    共16位
+* 	首字母大写  区分套餐（T）还是客房(K)订单  充值(C)
+* */
+function set_orderNo($type){
+    return strtoupper($type).time().get_random_number(5);
+}
+

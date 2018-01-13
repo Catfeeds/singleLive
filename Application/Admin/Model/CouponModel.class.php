@@ -13,13 +13,14 @@ class CouponModel extends Model {
 		['exprie_end','check_exprie_end','结束日期必须大于开始日期',0,'callback'],
 		['num','require','请设置电子券库存数量'],
 		['notDate','require','请设置电子券不可使用日期'],
+		['notDate','check_notDate','日期格式设置出现错误,月份在(1-12)之间,日期在(1-31)之间',0,'callback'],
 	    ['sorce','require','请设置兑换所需积分'],
 	    ['sorce','check_sorce','兑换所需积分必须为正整数',0,'callback'],
 	];
 	protected $_auto = [
 		['status',1],
 		['year','set_year',self::MODEL_INSERT,'callback'],
-		['notDate','set_notDate',self::MODEL_BOTH,'callback'],
+		['notDate','format_date',self::MODEL_BOTH,'callback'],
 		['hcate','set_hcate',self::MODEL_BOTH,'callback'],
 		['tcate','set_tcate',self::MODEL_BOTH,'callback'],
 		['add_time','time',self::MODEL_INSERT,'function'],
@@ -74,15 +75,34 @@ class CouponModel extends Model {
 		$tcate = I('tcate');
 		return implode(',',$tcate);
 	}
-	//设置不可使用优惠券的时间
-	function set_notDate(){
-		$date = I('notDate');
-		$arr = explode("\r\n",$date);
-		foreach($arr as $k=>$v){
-			if($arr[$k] == ''){
-				unset($arr[$k]);
+	//检查设置的日期格式
+	function check_notDate($data){
+		$data = $this->format_date($data);
+		$arr = explode("\r\n",$data);
+		foreach($arr as $row){
+			if(!strtotime($row)){
+				return false;
 			}
 		}
-		return implode("\r\n",$arr);
+		return true;
+	}
+	//设置日期格式
+	public function format_date($data){
+		$date_ary = explode("\r\n",$data);
+		$date_data = [];
+		foreach($date_ary as $key => &$data){
+			if(!empty($data)){
+				$arr = explode('-',$data);
+				$date = [];
+				foreach($arr as $k=> &$v){
+					if(is_numeric($v) && !empty($v) ){
+						$date[] = sprintf("%02d", $v);//格式化字符串
+					}
+				}
+				count($date) > 1 && count($date) < 3 ? array_unshift($date, date('Y',time())) : '';
+				count($date) > 1 ? $date_data[] = implode('-', $date) : '';
+			}
+		}
+		return implode("\r\n", $date_data);
 	}
 }

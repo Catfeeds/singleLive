@@ -18,67 +18,67 @@
                         <div>
                             <div class="glylb_szmm"><span class="glylb_szmm_span">电子券名称：</span>
                                 <div class="layui-input-block z_min_left_10">
-                                    <input class="fn-tinput requ" name="title" placeholder="请填写电子券名称" value="{$db.title}">
+                                    <input disabled="disabled" class="fn-tinput requ" name="title" placeholder="请填写电子券名称" value="{$db.title}">
                                 </div>
                             </div>
                             <div class="glylb_szmm"><span class="glylb_szmm_span">封面图片：</span>
                                 <div class="layui-input-block z_min_left_10">
                                     <img id="LAY_demo_upload" width="100px" height="100px" src="{:getSrc($db['pic'])}">
-                                    <button name="file" style="margin-top:7px;" class="layui-btn test" type="button" lay-data="{url: '/index.php/Admin/AjaxPost/uploadOne', accept: 'images'}" >
+                                    <!--<button name="file" style="margin-top:7px;" class="layui-btn test" type="button" lay-data="{url: '/index.php/Admin/AjaxPost/uploadOne', accept: 'images'}" >
                                         <i class="layui-icon">&#xe67c;</i>上传封面图片
-                                    </button>
+                                    </button>-->
                                     <input name="pic" id="logo" type="hidden" value="{$db.pic}">
                                 </div>
                             </div>
                             <div class="glylb_szmm"><span class="glylb_szmm_span">电子券金额：</span>
                                 <div class="layui-input-block z_min_left_10">
-                                    <input class="fn-tinput requ" name="money" placeholder="请填写电子券金额" value="{$db.money}">
+                                    <input disabled="disabled" class="fn-tinput requ" name="money" placeholder="请填写电子券金额" value="{$db.money}">
                                 </div>
                             </div>
                             <div class="glylb_szmm"><span class="glylb_szmm_span">电子券开始日期：</span>
                                 <div class="layui-input-block z_min_left_10">
-                                    <input name="exprie_start" autocomplete="off" placeholder="选择开始时间" class="layui-input test-item" type="text" value="{$db.exprie_start}">
+                                    <input disabled="disabled" name="exprie_start" autocomplete="off" placeholder="选择开始时间" class="layui-input test-item" type="text" value="{$db.exprie_start}">
                                 </div>
                             </div>
                             <div class="glylb_szmm"><span class="glylb_szmm_span">电子券截止日期：</span>
                                 <div class="layui-input-block z_min_left_10">
-                                    <input name="exprie_end" autocomplete="off" placeholder="选择截止日期" class="layui-input test-item" type="text" value="{$db.exprie_end}">
+                                    <input disabled="disabled" name="exprie_end" autocomplete="off" placeholder="选择截止日期" class="layui-input test-item" type="text" value="{$db.exprie_end}">
                                 </div>
                             </div>
                             <div class="glylb_szmm"><span class="glylb_szmm_span">电子券库存：</span>
                                 <div class="layui-input-block z_min_left_10">
-                                    <input class="fn-tinput requ" name="num" placeholder="请填写电子券库存" value="{$db.num}">
+                                    <input disabled="disabled" class="fn-tinput requ" name="num" placeholder="请填写电子券库存" value="{$db.num}">
                                 </div>
                             </div>
                             <div class="glylb_szmm"><span class="glylb_szmm_span">电子券不可使用日期：</span>
                                 <div class="layui-input-block z_min_left_10">
                                     <textarea style="width: 359px;max-width:359px;height: 200px;min-height: 200px;" name="notDate">{$db.notDate}</textarea>
-                                    <span style="color: red;">设置日期规则:月份-日期(如5-1),多个日期用回车进行分隔,系统会自动设置当前年份</span>
+                                    <span style="color: red;font-size: 18px;">规则:若只填写月份-日期(如5-1),系统会自动设置为当前年份,若想设置特定年份如2018-1-31,多个日期用回车进行分隔</span>
                                 </div>
                             </div>
                             <div class="glylb_szmm house"><span class="glylb_szmm_span">可以使用电子券的客房分类：</span>
                                 <div class="layui-input-block z_min_left_10">
                                     <volist name="house" id="house">
                                         <div class="houseCate">
-                                            <input style="width:auto;" <?php if(in_array($house['id'],$db['hcate'])){?> <?php echo 'checked=checked';}?> type="checkbox" name="hcate[]" value="{$house.id}"><span>{$house.title}</span>
+                                            <input disabled="disabled" style="width:auto;" <?php if(in_array($house['id'],$db['hcate'])){?> <?php echo 'checked=checked';}?> type="checkbox" name="hcate[]" value="{$house.id}"><span>{$house.title}</span>
                                         </div>
                                     </volist>
-                                    <span style="color: red;">说明:想要某些房间可以使用电子券,只需勾选它的客房分类即可,在客房添加时选择该分类,系统会自动识别</span>
+                                    <span style="color: red;font-size: 18px;">说明:想要某些房间可以使用电子券,只需勾选它的客房分类即可,在客房添加时选择该分类,系统会自动识别</span>
                                 </div>
                             </div>
                             <div class="glylb_szmm house"><span class="glylb_szmm_span">可以使用电子券的套餐分类：</span>
                                 <div class="layui-input-block z_min_left_10">
                                     <volist name="package" id="package">
                                         <div class="houseCate">
-                                            <input style="width:auto;" <?php if(in_array($package['id'],$db['tcate'])){?> <?php echo 'checked=checked';}?> type="checkbox" name="tcate[]" value="{$package.id}"><span>{$package.title}</span>
+                                            <input disabled="disabled" style="width:auto;" <?php if(in_array($package['id'],$db['tcate'])){?> <?php echo 'checked=checked';}?> type="checkbox" name="tcate[]" value="{$package.id}"><span>{$package.title}</span>
                                         </div>
                                     </volist>
-                                    <span style="color: red;">说明:想要某些套餐可以使用电子券,只需勾选它的套餐分类即可,在套餐添加时选择该分类,系统会自动识别</span>
+                                    <span style="color: red;font-size: 18px;">说明:想要某些套餐可以使用电子券,只需勾选它的套餐分类即可,在套餐添加时选择该分类,系统会自动识别</span>
                                 </div>
                             </div>
                             <div class="glylb_szmm"><span class="glylb_szmm_span">兑换所需积分：</span>
                                 <div class="layui-input-block z_min_left_10">
-                                    <input class="fn-tinput requ" name="sorce" placeholder="请填写兑换所需积分" value="{$db.sorce}">
+                                    <input disabled="disabled" class="fn-tinput requ" name="sorce" placeholder="请填写兑换所需积分" value="{$db.sorce}">
                                 </div>
                             </div>
                             <div class="glylb_szmm"><span class="glylb_szmm_span">使用说明：</span>
@@ -91,7 +91,7 @@
                     <div class="gater">
                         <input type="hidden" name="__GO__" value="__URL__/index">
                         <input type="hidden" name="id" value="{$db.id}">
-                        <input type="submit" value="确认" class="glylb_an_qd ajax-post" target-form="form-hotelAdd"/>
+                        <!--<input type="submit" value="确认" class="glylb_an_qd ajax-post" target-form="form-hotelAdd"/>-->
                         <a href="__URL__/index"><button class="glylb_an_fh" type="button">返回</button></a>
                     </div>
                 </form>
