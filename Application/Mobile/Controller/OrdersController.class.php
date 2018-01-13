@@ -28,19 +28,28 @@ class OrdersController extends CommonController{
 		$houseID = I('id');
 		//查询当前房间信息
 		$house = D::find('House',$houseID);
-		//设置可预订房间的最小与最大日期 及查看时间的最小最大日期
-		$minDate = date('Y-m-d');// 查看最小
-		$maxDate = date('Y-m-d',strtotime("$minDate +6 month"));// 查看最大
-		$start = date('Y-m-d',strtotime("$minDate +1 days"));
-		$end = date('Y-m-d',strtotime("$start +6 month"));
+		$userID = session('user');
+		/*//查询当前用户已拥有的电子券
+		$map = [
+			"E.status" => 1,
+			"E.userID" => $userID
+		];
+		$coupon = D::get(['CouponExchange','E'],[
+			'where' => $map,
+			'join'	=> 'LEFT JOIN __COUPON__ C ON C.id = E.cID',
+			'field'	=> 'E.*,C.money,C.exprie_start,C.exprie_end,hcate'
+		]);*/
+
+		//设置可预订房间的最小与最大日期
+		$minDate = date('Y-m-d');
+		$maxDate = date('Y-m-d',strtotime("$minDate +6 month"));
 		$myDate = [
 			'min' => $minDate,
 			'max' => $maxDate,
-			'start' => $start,
-			'end' => $end
 		];
-		$this->assign('myDate',$myDate);
 		$this->assign('house',$house);
+		$this->assign('myDate',$myDate);
+		//$this->assign('coupon',$coupon);
 		$this->display();
 	}
 	/**
@@ -154,6 +163,7 @@ class OrdersController extends CommonController{
 			}
 			return $data;
 		},$coupon);//优惠券信息
+
 		$this->ajaxReturn($data);
 	}
 	//订单处理
