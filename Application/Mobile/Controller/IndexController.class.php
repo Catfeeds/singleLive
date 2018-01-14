@@ -200,9 +200,63 @@ class IndexController extends CommonController{
 			$data['amount'] = sprintf('%.2f', $data['attr'] * $data['money']);
 			return $data;
 		},  D::get('PackageSet',['pid' => $id]));
-		// dump($db['set']);die;
+		$minDate = date('Y-m-d');
+		$maxDate = date('Y-m-d',strtotime("$minDate +6 month"));
+		$myDate = [
+			'min' => $minDate,
+			'max' => $maxDate,
+		];
+		$this->assign('myDate',$myDate);
 		$this->assign('db',$db);
 		$this->display();
+	}
+	//查找当天房间剩余余量
+	public function search_num(){
+		$post = I('post.');
+		$post['type'] = 't';
+		$msg = D::find('RoomDate',['where'=>$post,'field'=>'order_num']);
+		$package = D::find('Package',[
+			'where'=>"id=".$post['roomID'],
+			'field'=>'total_num'
+		]);
+		if(!$msg['order_num']){
+			$num = '当前剩余房间数:'.$package['total_num'];
+		}elseif($msg['order_num'] == $package['total_num']){
+			$num = '当前选择日期已经满房';
+		}else{
+			$num = '当前剩余房间数:'.$msg['order_num'];
+		}
+		$this->ajaxReturn($num);
+	}
+	//缓存 套餐信息
+	public function jumps(){
+		S('info',null);
+		$post  = I('post.');
+		$msg['status'] = 'yes';
+		if(!$post['createDate']){
+			$msg['msg'] = '请选择日期';
+			$msg['status'] = 'no';
+		}
+		$map = [
+			'roomID' => $post['$post'],
+			'createDate' => $post['createDate'],
+			'type'	=> 't'
+		];
+		$room = D::find('RoomDate',['where'=>$map,'field'=>'order_num']);
+		$package = D::find('Package',[
+			'where'=>"id=".$post['roomID'],
+			'field'=>'total_num'
+		]);
+		if($room['order_num'] == $package['total_num']){
+			$msg['msg'] = '您选择的日期已经满房,不可预定';
+			$msg['status'] = 'no';
+		}
+		if($msg['status'] == 'yes'){
+			S('info',$post);
+			$msg['msg'] = '正在跳转到填写订单页面...';
+			$msg['status'] = 'yes';
+		}
+		$this->ajaxReturn($msg);
 	}
 
 }

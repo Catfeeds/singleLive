@@ -10,13 +10,14 @@ $(function () {
 
     $('.appjia').click(function () {
         var pp = $('.appcont');
+        var limit = $(this).attr('limit');
         var getNum = parseInt(pp.html());
-        if (getNum < 1000000) {
+        if (getNum < parseInt(limit)) {
             pp.html(getNum + 1)
         } else {
             layer.open({
                 className: 'sese',
-                content: '不能大于99'
+                content: '不能超过限购份数'
                 , skin: 'msg'
                 , time: 2 //2秒后自动关闭
             });
@@ -25,12 +26,12 @@ $(function () {
     $('.appjian').click(function () {
         var pp = $('.appcont');
         var getNum = parseInt(pp.html());
-        if (getNum > 0) {
+        if (getNum > 1) {
             pp.html(getNum - 1)
         } else {
             layer.open({
                 className: 'sese',
-                content: '不能小于0'
+                content: '不能小于1'
                 , skin: 'msg'
                 , time: 2 //2秒后自动关闭
             });
@@ -82,13 +83,13 @@ $(function () {
         $(this).addClass('biatacve').siblings().removeClass('biatacve')
     });
 
-    $(document).on('.str3', 'click', function () {
+    /*$(document).on('.str3', 'click', function () {
         layer.open({
             className: 'attui',
             style: 'border:none; background-color:#78BA32; color:#fff;',
             content: '剩余房间 ：20'
         })
-    });
+    });*/
 
 
 //分类选择

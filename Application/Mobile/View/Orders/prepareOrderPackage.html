@@ -1,158 +1,176 @@
 <div class="app_center">
-    <div class="web_form">
-        <div class="app_dist_tite">
-            <div class="app_dist_tite_img">
-                <img src="__MOBILE__/img/kf06@2x.png">
-            </div>
-            <div class="app_dist_tite_colo">
-                预定须知
-            </div>
-        </div>
-        <div class="web_flocg">
-            <div class="web_flocg_left">
-                在树屋中共度浪漫纪念日
-            </div>
-            <div class="web_flocg_right">
-                <a>￥2588</a>
-            </div>
-        </div>
-        <div class="web_flocg">
-            <div class="web_flocg_left">
-                入住日期
-            </div>
-            <div class="web_flocg_right">
-                2017年11月08日
-            </div>
-        </div>
-        <div class="web_flocg">
-            <div class="web_flocg_left">
-                数量
-            </div>
-            <div class="web_flocg_right">
-                1人
-            </div>
-        </div>
-    </div>
-    <div class="app_dist">
-        <div class="app_dist_tite">
-            <div class="app_dist_tite_img">
-                <img src="__MOBILE__/img/yd02@2x.png">
-            </div>
-            <div class="app_dist_tite_colo">
-                使用电子卷
-            </div>
-        </div>
-        <div class="web_icom">
-            <div class="web_icom_left">
-                <div class="fr_l1 ">
-                    <input type="checkbox" />
+    <style>
+        .dist_but2 input {
+            width: 60%;
+            height: 5rem;
+            line-height: 5rem;
+            display: block;
+            margin: 0 auto;
+            background: #ff9900;
+            text-align: center;
+            color: #FFF9EC;
+            font-size: 2rem;
+            border-radius: 50px;
+        }
+    </style>
+    <form class="orderForm" action="__URL__/OrderCheck" method="post">
+        <div class="web_form">
+            <div class="app_dist_tite">
+                <div class="app_dist_tite_img">
+                    <img src="__MOBILE__/img/kf06@2x.png">
                 </div>
-                <div class="fr_l2">
-                    1362526358
+                <div class="app_dist_tite_colo">
+                    预定须知
                 </div>
             </div>
-            <div class="web_icom_cont">
-                100元
-            </div>
-            <div class="web_icom_right">
-                未使用
-            </div>
-        </div>
-        <div class="web_icom">
-            <div class="web_icom_left">
-                <div class="fr_l1 ">
-                    <input type="checkbox" />
+            <div class="web_flocg">
+                <div class="web_flocg_left">
+                    {$db.title}
                 </div>
-                <div class="fr_l2">
-                    1362526358
+                <div class="web_flocg_right">
+                    <a>￥{$db.packMoney}</a>
                 </div>
             </div>
-            <div class="web_icom_cont">
-                100元
-            </div>
-            <div class="web_icom_right">
-                未使用
-            </div>
-        </div>
-    </div>
-    <div class="app_dist">
-        <div class="app_dist_tite">
-            <div class="app_dist_tite_img">
-                <img src="__MOBILE__/img/yd03@2x.png">
-            </div>
-            <div class="app_dist_tite_colo">
-                填写信息
-            </div>
-        </div>
-        <div class="fr_input">
-            <div class="fr_input_left">
-                手机号码 ：
-            </div>
-            <div class="fr_input_right">
-                <input type="text" placeholder="请输入电话号码" class="inp_1" />
-            </div>
-        </div>
-        <div class="fr_input">
-            <div class="fr_input_left">
-                称&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;谓：
-            </div>
-            <div class="fr_input_right">
-                <div class="fr_radio">
-                    <input type="radio" name="radio" />先生
+            <div class="web_flocg">
+                <div class="web_flocg_left">
+                    入住日期
                 </div>
-                <div class="fr_radio">
-                    <input type="radio" name="radio" />女士
+                <div class="web_flocg_right">
+                    2017年11月08日
+                    <input type="hidden" name="inTime" value="{$db.inTime}" />
+                </div>
+            </div>
+            <div class="web_flocg">
+                <div class="web_flocg_left">
+                    数量
+                </div>
+                <div class="web_flocg_right">
+                    1人<input type="hidden" name="num" value="{$db.num}" />
                 </div>
             </div>
         </div>
-        <div class="fr_input">
-            <div class="fr_input_left">
-                姓&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;名 ：
+        <div class="app_dist">
+            <div class="app_dist_tite">
+                <div class="app_dist_tite_img">
+                    <img src="__MOBILE__/img/yd02@2x.png">
+                </div>
+                <div class="app_dist_tite_colo">
+                    使用电子卷
+                </div>
             </div>
-            <div class="fr_input_right">
-                <input type="text" placeholder="请输入姓名" class="inp_1" />
+            <volist name="coupon" id="coupons">
+                <div class="web_icom">
+                    <div class="web_icom_left">
+                        <div class="fr_l1 ">
+                            <if condition="$coupons['allow'] eq 'yes'">
+                                <input name="coupon" type="checkbox" value="{$coupons.cID}" />
+                                <else />
+                                <input disabled="disabled" type="checkbox"  />
+                            </if>
+                        </div>
+                        <div class="fr_l2">
+                            {$coupons.card}
+                        </div>
+                    </div>
+                    <div class="web_icom_cont">
+                        {$coupons.money}元
+                    </div>
+                    <div class="web_icom_right">
+                        <if condition="$coupons['allow'] eq 'yes'">
+                            可使用
+                            <else />
+                            不可使用
+                        </if>
+                    </div>
+                </div>
+            </volist>
+        </div>
+        <div class="app_dist">
+            <div class="app_dist_tite">
+                <div class="app_dist_tite_img">
+                    <img src="__MOBILE__/img/yd03@2x.png">
+                </div>
+                <div class="app_dist_tite_colo">
+                    填写信息
+                </div>
+            </div>
+            <div class="fr_input">
+                <div class="fr_input_left">
+                    手机号码 ：
+                </div>
+                <div class="fr_input_right">
+                    <input type="text" name="mobile" placeholder="请输入电话号码" class="inp_1" />
+                </div>
+            </div>
+            <div class="fr_input">
+                <div class="fr_input_left">
+                    称&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;谓：
+                </div>
+                <div class="fr_input_right">
+                    <div class="fr_radio">
+                        <input name="sex" type="radio" value="1" checked />先生
+                    </div>
+                    <div class="fr_radio">
+                        <input name="sex" type="radio" value="2" />女士
+                    </div>
+                </div>
+            </div>
+            <div class="fr_input">
+                <div class="fr_input_left">
+                    姓&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;名 ：
+                </div>
+                <div class="fr_input_right">
+                    <input type="text" placeholder="请输入姓名" class="inp_1" name="username" />
+                </div>
+            </div>
+            <div class="fr_input">
+                <div class="fr_input_left">
+                    电子邮箱 ：
+                </div>
+                <div class="fr_input_right">
+                    <input type="text" placeholder="请输入电子邮箱" name="email" class="inp_1" />
+                </div>
+            </div>
+            <div class="fr_input">
+                <div class="fr_input_left">
+                    成&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;人 ：
+                </div>
+                <div class="fr_input_right">
+                    <select class="fr_select" name="person">
+                        <option value="1">1</option>
+                        <option value="2">2</option>
+                        <option value="3">3</option>
+                        <option value="4">4</option>
+                    </select>
+                </div>
+            </div>
+            <div class="fr_input">
+                <div class="fr_input_left">
+                    儿&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;童 ：
+                </div>
+                <div class="fr_input_right">
+                    <select class="fr_select" name="child">
+                        <option value="1">1</option>
+                        <option value="2">2</option>
+                        <option value="3">3</option>
+                        <option value="4">4</option>
+                    </select>
+                </div>
+            </div>
+            <div class="fr_input">
+                <div class="fr_input_left">
+                    备&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;注 ：
+                </div>
+                <div class="fr_input_right">
+                    <textarea name="mark"></textarea>
+                </div>
             </div>
         </div>
-        <div class="fr_input">
-            <div class="fr_input_left">
-                电子邮箱 ：
-            </div>
-            <div class="fr_input_right">
-                <input type="text" placeholder="请输入电子邮箱" class="inp_1" />
-            </div>
+        <div class="dist_but2 ">
+            <input type="hidden" name="type" value="t" />
+            <input type="hidden" name="roomID" value="{$db.id}" />
+            <input type="submit" class="spoert ajax-post confirm" data-msg="您确定填写的订单无误？" target-form="orderForm" value="提交信息" />
+            <!--<a class="spoert" msg-tite="您是否提交信息？”">确认下单</a>-->
         </div>
-        <div class="fr_input">
-            <div class="fr_input_left">
-                成&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;人 ：
-            </div>
-            <div class="fr_input_right">
-                <select class="fr_select">
-                    <option>1</option>
-                    <option>2</option>
-                </select>
-            </div>
-        </div>
-        <div class="fr_input">
-            <div class="fr_input_left">
-                儿&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;童 ：
-            </div>
-            <div class="fr_input_right">
-                <select class="fr_select">
-                    <option>1</option>
-                    <option>2</option>
-                </select>
-            </div>
-        </div>
-        <div class="fr_input">
-            <div class="fr_input_left">
-                备&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;注 ：
-            </div>
-            <div class="fr_input_right">
-                <textarea></textarea>
-            </div>
-        </div>
-    </div>
-    <div class="dist_but2 ">
-        <a class="spoert" msg-tite="您是否提交信息？”">提交信息</a>
-    </div>
+    </form>
 </div>

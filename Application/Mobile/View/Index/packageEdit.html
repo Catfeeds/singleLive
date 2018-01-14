@@ -1,94 +1,155 @@
 <div class="app_center" style="margin-bottom: 120px;">
-    <div class="web_form">
-        <div class="web_flocg">
-            <div class="web_flocg_left">
-                {$db.title}
+    <form class="orderForm" action="__URL__/prepareOrderPackage" method="post">
+        <div class="web_form">
+            <div class="web_flocg">
+                <div class="web_flocg_left">
+                    {$db.title}
+                </div>
+                <div class="web_flocg_right">
+                    <a>￥{$db.packMoney}</a>
+                </div>
             </div>
-            <div class="web_flocg_right">
-                <a>￥{$db.packMoney}</a>
+            <div class="select_start_date">
+                <div class="start_date_left">
+                    入住日期
+                </div>
+                <div class="start_date_right">
+                    <input type="text" name="start_date" id="Time" value="" placeholder="点击选择入住日期" readonly="readonly" />
+                </div>
             </div>
-        </div>
-        <div class="select_start_date">
-            <div class="start_date_left">
-                入住日期
-            </div>
-            <div class="start_date_right">
-                <input type="text" name="start_date" id="start_date" placeholder="点击选择入住日期" readonly="readonly" />
-            </div>
-        </div>
-        <div class="web_flocg">
-            <div class="web_flocg_left">
-                数量<span>（每人限购一份）</span>
-            </div>
-            <div class="web_flocg_right">
-                <div class="jiunter">
-                    <div class="appjian"><img src="__MOBILE__/img/tc07@2x.png"></div>
-                    <div class="appcont">1</div>
-                    <div class="appjia"><img src="__MOBILE__/img/tc06@2x.png"></div>
+            <div class="web_flocg">
+                <div class="web_flocg_left">
+                    数量<span>（每人限购{$db.limit}份）</span>
+                </div>
+                <div class="web_flocg_right">
+                    <div class="jiunter">
+                        <div class="appjian"><img src="__MOBILE__/img/tc07@2x.png"></div>
+                        <div class="appcont limit_num">1</div>
+                        <div class="appjia" limit="{$db.limit}"><img src="__MOBILE__/img/tc06@2x.png"></div>
+                    </div>
                 </div>
             </div>
         </div>
-    </div>
-    <div class="app_dist">
-        <div class="app_dist_tite">
-            <div class="app_dist_tite_img">
-                <img src="__MOBILE__/img/myct02@2x.png">
+        <div class="app_dist">
+            <div class="app_dist_tite">
+                <div class="app_dist_tite_img">
+                    <img src="__MOBILE__/img/myct02@2x.png">
+                </div>
+                <div class="app_dist_tite_colo">
+                    套餐内容
+                </div>
             </div>
-            <div class="app_dist_tite_colo">
-                套餐内容
-            </div>
-        </div>
-        <div class="app_dist_cont">
-            <div class="tibot">
-                <ul>
-                    <li>套餐内容</li>
-                    <li>单价</li>
-                    <li>数量/规格</li>
-                    <li>小计</li>
-                </ul>
-            </div>
-            <volist name="db.set" id="set">
-                <div class="tibot_1">
+            <div class="app_dist_cont">
+                <div class="tibot">
                     <ul>
-                        <li>{$set.title}</li>
-                        <li>{$set.money}</li>
-                        <li>{$set.attr}</li>
-                        <li>{$set.amount}</li>
+                        <li>套餐内容</li>
+                        <li>单价</li>
+                        <li>数量/规格</li>
+                        <li>小计</li>
                     </ul>
                 </div>
-            </volist>
-        </div>
-    </div>
-    <div class="app_dist">
-        <div class="app_dist_tite">
-            <div class="app_dist_tite_img">
-                <img src="__MOBILE__/img/kf06@2x.png">
-            </div>
-            <div class="app_dist_tite_colo">
-                预定须知
-            </div>
-        </div>
-        <div class="app_dist_cont">
-            {:html_entity_decode($db['mark'])}
-        </div>
-    </div>
-    <div class="app_dist">
-        <div class="app_dist_tite">
-            <div class="app_dist_tite_img">
-                <img src="__MOBILE__/img/tc10@2x.png">
-            </div>
-            <div class="app_dist_tite_colo">
-                套餐详情
+                <volist name="db.set" id="set">
+                    <div class="tibot_1">
+                        <ul>
+                            <li>{$set.title}</li>
+                            <li>{$set.money}</li>
+                            <li>{$set.attr}</li>
+                            <li>{$set.amount}</li>
+                        </ul>
+                    </div>
+                </volist>
             </div>
         </div>
-        <div class="app_dist_cont">
-            {:html_entity_decode($db['content'])}
+        <div class="app_dist">
+            <div class="app_dist_tite">
+                <div class="app_dist_tite_img">
+                    <img src="__MOBILE__/img/kf06@2x.png">
+                </div>
+                <div class="app_dist_tite_colo">
+                    预定须知
+                </div>
+            </div>
+            <div class="app_dist_cont">
+                {:html_entity_decode($db['mark'])}
+            </div>
         </div>
-    </div>
-    <div class="dist_but">
-        <a>点击查看纪念日当日空房</a>
-    </div>
+        <div class="app_dist">
+            <div class="app_dist_tite">
+                <div class="app_dist_tite_img">
+                    <img src="__MOBILE__/img/tc10@2x.png">
+                </div>
+                <div class="app_dist_tite_colo">
+                    套餐详情
+                </div>
+            </div>
+            <div class="app_dist_cont">
+                {:html_entity_decode($db['content'])}
+            </div>
+        </div>
+        <div class="dist_but">
+            <a id="look">点击查看纪念日当日空房</a>
+        </div>
+        <div class="dist_but1 " style="margin-bottom: 60px;">
+            <input name="roomID" type="hidden" value="{$db.id}" />
+            <a id="sure" href="javascript:;">立即预定</a>
+            <!--href="{:U('Orders/prepareOrderPackage?id='.$db['id'])}"-->
+        </div>
+    </form>
 </div>
-<div class="dist_but1 " style="margin-bottom: 60px;">
-    <a href="{:U('Orders/prepareOrderPackage')}">立即预定</a>
-</div>
+<script>
+    $(function(){
+        var roomID = "{$db.id}";
+        layui.use('laydate', function() {
+            var laydate = layui.laydate;
+            laydate.render({
+                elem: '#Time',
+                type: 'date',
+                min: "{$myDate['min']}",
+                max: "{$myDate['max']}"
+            });
+        });
+        $('#look').on('click',function(){
+            var createDate = $('#Time').val();
+            if(createDate){
+                $.post("__URL__/search_num",{roomID:roomID,createDate:createDate},function(data){
+                    layer.open({
+                        className: 'attui',
+                        style: 'border:none; background-color:#78BA32; color:#fff;',
+                        content: '剩余房间 ：'+data
+                    })
+                });
+            }else{
+                open_window('请先选择日期在查看');
+            }
+        })
+        $('#sure').on('click',function(){
+            var limit_num = $('.limit_num').text();
+            var createDate = $('#Time').val();
+            layer.open({
+                content: '您确定预定',
+                btn: ['确定', '取消'],
+                skin: 'footer',
+                yes: function(index) {
+                    $.post("__URL__/jumps",{roomID:roomID,createDate:createDate,limit_num:limit_num},function(data){
+                        console.log(data);
+                        if(data.status == 'yes'){
+                            open_window(data.msg);
+                            setTimeout(function(){
+                                window.location.href= "/index.php/Orders/prepareOrderPackage?id={$db.id}";
+                            },1000);
+                        }else{
+                            open_window(data.msg);
+                        }
+                    });
+                }
+            });
+        })
+        function open_window(info){
+            layer.open({
+                content: info
+                ,skin: 'msg'
+                ,time: 2 //2秒后自动关闭
+            });
+        }
+    })
+</script>
