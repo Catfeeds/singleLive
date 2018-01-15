@@ -12,7 +12,24 @@ class CommonController extends Controller{
 				S('url',__SELF__); //缓存当前浏览页面
 				$this->redirect('Login/index', [], 0, '页面跳转中...');
 			}else{
-
+                //获取当前会员的  等级 积分 余额以便页面赋值
+                $userID = session('user');
+                $users = D::find('Users',$userID);
+                $sorce  = D::find('UserSorce',[
+                    'where' => ['userID'=>$userID],
+                    'field' => "SUM(CASE WHEN method = 'plus' THEN sorce ELSE 0 END) up,SUM(CASE WHEN method = 'sub' THEN sorce ELSE 0 END) down"
+                ]);
+                $nowgrade = $users['nowLevel'] != 0 ? D::field('Grades.title',$users['nowLevel']) : '无级别';
+                $myBalance = D::find('Balance',[
+                    'where' => ['userID'=>$userID,'status'=>1],
+                    'field' => "SUM(CASE WHEN method = 'plus' THEN money ELSE 0 END) up,SUM(CASE WHEN method = 'sub' THEN money ELSE 0 END) down"
+                ]);
+                $userMsg = [
+                    'mySorce' => $sorce['up'] - $sorce['down'],
+                    'myGrade' => $nowgrade,
+                    'myBalance' => $myBalance['up'] - $myBalance['down']
+                ];
+                $this->assign('userMsg',$userMsg);
 			}
 		}else{
 			//不需要登录

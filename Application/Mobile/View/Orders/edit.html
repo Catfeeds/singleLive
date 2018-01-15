@@ -1,27 +1,39 @@
 <div class="app_center">
     <div class="app_dister">
         <div class="app_x_img">
-            <img src="__MOBILE__/img/tu@2x.png">
+            <img src="{$db.roomPic}">
         </div>
         <div class="app_bist">
-            <b>￥656</b>
-            <span><a>订单号：</a>12345678945612</span>
+            <b>￥{$db.price}</b>
+            <span><a>订单号：</a>{$db.orderNo}</span>
         </div>
         <div class="app_tiahert">
-            <h3>房型房型</h3>
-            <p>简介：房型简介房型简介房型简介房型简介房型简介房型简介房型简介房型简介...型简介房型简介房型简介房型简介...型简介房型简介房型简介房型简介...</p>
+            <h3>{$db.cateName}</h3>
+            <p>简介：{$db.word}</p>
         </div>
         <div class="app_himt">
-            <span>入住时段：2017年11月8日-2017年11月10日</span>
+            <span>入住时段：{$db.show_date}</span>
         </div>
         <div class="app_himt">
-            <span class="left">入住信息：王某某 </span>
-            <span class="right">13245678912</span>
+            <span class="left">号码：{$db.mobile} </span>
         </div>
         <div class="app_himt">
-            <!--<a class="web_qzf left">去支付</a>
-	 	<a class="web_tk left ">退款</a>-->
-            <span class="right">已完成订单 </span>
+            <span class="left">称谓：{:$db['sex'] == '1' ? '先生' : '女士'} </span>
+        </div>
+        <div class="app_himt">
+            <span class="left">姓名：{$db.username} </span>
+        </div>
+        <div class="app_himt">
+            <span class="left">电子邮箱：{$db.email} </span>
+        </div>
+        <div class="app_himt">
+            <span class="left">成人：{$db.person} </span>
+        </div>
+        <div class="app_himt">
+            <span class="left">儿童：{$db.child} </span>
+        </div>
+        <div class="app_himt">
+            <span class="right">{$db.status_type} </span>
         </div>
     </div>
 </div>

@@ -34,6 +34,14 @@ class SelfController extends CommonController{
 					'field' => "H.id,H.name,H.word,CONCAT('/Uploads',F.savepath,F.savename) `icon`"
 				];
 				break;
+			case 'balance':
+				$map['userID'] = session('user');
+				$map['status'] = 1;
+				$data = [
+					'table' => '__BALANCE__',
+					'where' => $map,
+					'order' => 'createTime desc'
+				];
 		}
 	}
 	/**
@@ -86,25 +94,35 @@ class SelfController extends CommonController{
 		$this->display();
 	}
 	/**
-	 * [balance 账户余额]
-	 * @Author   ヽ(•ω•。)ノ   Mr.Solo
-	 * @DateTime 2018-01-05
-	 * @Function []
-	 * @return   [type]     [description]
+	 * 	zhenHong~
 	 */
 	public function balance()
 	{
+		if(IS_AJAX){
+			parent::index(function($data){
+				if($data['method'] == 'plus'){
+					$data['method_name'] = '充值';
+				}else{
+					$data['method_name'] = '余额消费';
+				}
+				$data['createTime'] = date('Y-m-d');
+			});
+		}
 		$this->display();
 	}
 	/**
-	 * [coupon 电子券]
-	 * @Author   ヽ(•ω•。)ノ   Mr.Solo
-	 * @DateTime 2018-01-05
-	 * @Function []
-	 * @return   [type]     [description]
+	 * 	我的电子券
+	 *	zhenHong~
 	 */
 	public function coupon()
 	{
+		$map['E.userID'] = session('user');
+		$list = D::get(['CouponExchange','E'],[
+			'where' => $map,
+			'join'  => 'LEFT JOIN __COUPON__ C ON C.id = E.cID',
+			'field' => 'E.*,C.exprie_start,exprie_end,C.money'
+		]);
+		$this->assign('list',$list);
 		$this->display();
 	}
 	/**
@@ -139,9 +157,49 @@ class SelfController extends CommonController{
 		$db = D::find('Coupon',$id);
 		$db['houseCate'] = D::get('HouseCate',['id' => ['in',$db['hcate']]]);
 		$db['packageCate'] = D::get('HouseCate',['id' => ['in',$db['tcate']]]);
-		// dump($db);die;
 		$this->assign('db',$db);
 		$this->display();
+	}
+	/*
+	 *
+	 * 	优惠券兑换逻辑
+	 * 		1、判断个人积分
+	 * 		2、判断库存
+	 * 		3、减库存
+	 * 		4、插入兑换记录
+	 * 		5、减积分
+	 *  zhenHong~
+	 * */
+	public function couponCheck()
+	{
+		$post  = I('post.');
+		$ex = D('CouponExchange');
+		$bool = true;
+		if($post['mysorce']<$post['sorce']){
+			$bool = false;
+			$this->error('您当前账号积分不足,无法兑换');
+		}
+		$kucun = D::field('Coupon.num',$post['cID']);
+		if($kucun<1){
+			$bool = false;
+			$this->error('当前电子券库存不足,无法兑换');
+		}
+		if($bool === true){
+			$data = $ex->create();
+			$data['userID'] = session('user');
+			$ex->add($data);
+			D::dec('Coupon.num',$data['cID'],1);
+			$add_data = [
+				'userID' =>session('user'),
+				'type' => 'exchange',
+				'sorce' => D::field('Coupon.sorce',$data['cID']),
+				'method' =>'sub',
+				'createTime' => time()
+			];
+			M('UserSorce')->add($add_data);
+			$this->success('兑换成功,可到我的电子券中查看',U('Self/couponExchange'));
+		}
+
 	}
 	/**
 	 * [upgrade 积分升级]

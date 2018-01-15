@@ -2,55 +2,35 @@
     <div class="app_account">
         <div class="account">
             <div class="app_name_2">
-                消费余额
+                余额
             </div>
             <div class="app_name_3">
-                0.00
+                {$userMsg.myBalance}
             </div>
             <a href="__URL__/balanceIn">
                 <input class="app_name_4" type="button" value="充值" />
             </a>
         </div>
     </div>
-    <div class="erpt_fr">
-        <div class="erpt_fr_cont">
-            <div class="gobet">
-                消费名称:XXXXX
-            </div>
-            <div class="gobet">
-                <span class="left gobet_cor_1">-￥1058</span>
-                <span class="right gobet_cor_2">+￥10积分</span>
-            </div>
-            <div class="gobet">
-                <span class="left gobet_cor_3">2017-11-20</span>
-                <span class="right gobet_cor_4">充值</span>
-            </div>
-        </div>
-        <div class="erpt_fr_cont">
-            <div class="gobet">
-                消费名称:XXXXX
-            </div>
-            <div class="gobet">
-                <span class="left gobet_cor_1">-￥1058</span>
-                <span class="right gobet_cor_2">+￥10积分</span>
-            </div>
-            <div class="gobet">
-                <span class="left gobet_cor_3">2017-11-20</span>
-                <span class="right gobet_cor_4">返积分</span>
-            </div>
-        </div>
-        <div class="erpt_fr_cont">
-            <div class="gobet">
-                消费名称:XXXXX
-            </div>
-            <div class="gobet">
-                <span class="left gobet_cor_1">-￥1058</span>
-                <span class="right gobet_cor_2">+￥10积分</span>
-            </div>
-            <div class="gobet">
-                <span class="left gobet_cor_3">2017-11-20</span>
-                <span class="right gobet_cor_4">升级</span>
-            </div>
-        </div>
+    <div class="erpt_fr" id="view" url="__URL__/balance">
+
     </div>
 </div>
+<script type="text/html" id="layout">
+    <div class="erpt_fr_cont">
+        <div class="gobet">
+            消费名称:{{d.method_name}}
+        </div>
+        <div class="gobet">
+            <span class="left gobet_cor_1">{{d.createTime}}</span>
+            {{# if(d.method == 'plus'{ )}}
+            <span class="right gobet_cor_2">+￥{{d.money}}</span>
+            {{ }else{
+            <span class="right gobet_cor_1">+￥{{d.money}}</span>
+            }}
+        </div>
+    </div>
+</script>
+<script type="text/javascript">
+    yin.lists();
+</script>

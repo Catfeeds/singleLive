@@ -4,23 +4,90 @@ use Think\Controller;
 use Think\D;
 class OrdersController extends CommonController{
 	public static $login = true;
+	public $model = 'Order';
 	/**
-	 * [index 订单]
-	 * @Author   ヽ(•ω•。)ノ   Mr.Solo
-	 * @DateTime 2018-01-05
-	 * @Function []
-	 * @return   [type]     [description]
+	 * zhenhong~
+	 */
+	public function _map(&$data){
+		$map['userID'] = session('user');
+		$data = [
+			'where' => $map,
+			'order'	=> 'createTime desc'
+		];
+	}
+	/**
+	 *  订单显示页面  zhenhong~
 	 */
 	public function index()
 	{
+		if(IS_AJAX){
+			parent::index(function($data){
+				switch ($data['status']) {
+					case '1':
+						$data['url'] = U('Orders/backMoney?orderNo='.$data['orderNo']);
+						break;
+					case '8':
+						$data['url'] = U('Orders/pay?orderNo='.$data['orderNo']);
+						$data['reset_url'] = U('Orders/resetOrder?orderNo='.$data['orderNo']);
+						break;
+				}
+				if($data['type'] == 'k'){
+					$data['type_name'] = '客房';
+					$data['date_show'] = $data['inTime'].'-'.$data['outTime'];
+				}else{
+					$data['type_name'] = '套餐';
+					$data['date_show'] = $data['inTime'];
+				}
+				$data['link'] = U('Orders/edit?orderNo='.$data['orderNo']);
+				$data['status_type'] = getTypes($data['status']);
+				$data['class'] = showClass($data['status']);
+				return $data;
+			});
+		}
 		$this->display();
 	}
+	//订单查看
+	public function edit(){
+		$map['orderNo'] = I('orderNo');
+		$db = D::find('Order',[
+			'where'	=> $map
+		]);
+		if($db['type'] == 'k'){
+			$arr = D::find('House',$db['roomID']);
+			$db['roomPic'] = getSrc($arr['pic']);
+			$db['word'] = $arr['word'];
+			$db['cateName'] = D::field('HouseCate.title',$arr['category']);
+			$db['show_date'] = $db['inTime'].','.$db['outTime'];
+		}else{
+			$arr = D::find('Package',$db['roomID']);
+			$db['roomPic'] = getSrc($arr['pic']);
+			$db['word'] = $arr['word'];
+			$db['cateName'] = D::field('HouseCate.title',$arr['category']);
+			$db['show_date'] = $db['inTime'];
+		}
+		$db['status_type'] = getTypes($db['status']);
+		$this->assign('db',$db);
+		$this->display();
+	}
+	//用户操作发起退款操作
+	public function backMoney(){
+		$map['orderNo'] = I('orderNo');
+		D::save('Order',['where'=>$map],[
+			'updateTime' => NOW_TIME,
+			'status'	=> 5
+		]);
+		$this->success('申请成功,等待管理员审核',U('Orders/index'));
+	}
+	//用户发起 取消未付款的订单
+	public function resetOrder(){
+		$map['orderNo'] = I('orderNo');
+		D::save('Order',['where'=>$map],[
+			'updateTime' => NOW_TIME,
+			'status'	=> 4
+		]);
+		$this->success('取消成功',U('Orders/index'));
+	}
 	/**
-	 * [prepareOrder 房间预订]
-	 * @Author   ヽ(•ω•。)ノ   Mr.Solo
-	 * @DateTime 2018-01-05
-	 * @Function []
-	 * @return   [type]     [description]
 	 * 下单逻辑  zhenhong~
 	 */
 	public function prepareOrder()
@@ -40,11 +107,7 @@ class OrdersController extends CommonController{
 		$this->display();
 	}
 	/**
-	 * [prepareOrder 餐饮下单]
-	 * @Author   ヽ(•ω•。)ノ   Mr.Solo
-	 * @DateTime 2018-01-05
-	 * @Function []
-	 * @return   [type]     [description]
+	 * 下单逻辑  zhenhong~
 	 */
 	public function prepareOrderPackage()
 	{

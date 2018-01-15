@@ -471,7 +471,7 @@ function getTimeFormat($time)
     return str_pad(mt_rand(0, 999999999), 9, "0", STR_PAD_BOTH);
 }*/
 
-//返回type类型
+//返回type类型名称
 function getTypes($type){
     switch($type){
         case 'consume':
@@ -483,8 +483,70 @@ function getTypes($type){
         case 'lvup':
             $word = '购买积分卡升级';
             break;
+        case '1':
+            $word = '已支付';
+            break;
+        case '2':
+            $word = '已完成';
+            break;
+        case '3':
+            $word = '已超时';
+            break;
+        case '4':
+            $word = '已取消';
+            break;
+        case '5':
+            $word = '退款审核中';
+            break;
+        case '6':
+            $word = '已退款';
+            break;
+        case '7':
+            $word = '已驳回';
+            break;
+        case '8':
+            $word = '待付款';
+            break;
+        case '9':
+            $word = '已入住';
+            break;
+
     }
     return $word;
+}
+//根据订单状态  返回class名称
+function showClass($status){
+    switch($status){
+        case '1':
+            $class = 'cor_4';
+            break;
+        case '2':
+            $class = 'cor_1';
+            break;
+        case '3':
+            $class = 'cor_3';
+            break;
+        case '4':
+            $class = 'cor_3';
+            break;
+        case '5':
+            $class = 'cor_5';
+            break;
+        case '6':
+            $class = 'cor_2';
+            break;
+        case '7':
+            $class = 'cor_3';
+            break;
+        case '8':
+            $class = '';
+            break;
+        case '9':
+            $class = 'cor_9';
+            break;
+
+    }
+    return $class;
 }
 /*
  *  封装  生成随机数函数

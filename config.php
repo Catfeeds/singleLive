@@ -3,12 +3,12 @@ return array(
 	'DEFAULT_MODULE'    => 'Mobile',  // 默认模块
 	'MODULE_ALLOW_LIST' => ['Home','Admin','Mobile'],
 	'DB_TYPE'           => 'mysql',//数据库类型
-	'DB_HOST'           => '127.0.0.1',//服务器地址
-	'DB_NAME'           => 'jiudian',//数据库名
-	'DB_USER'           => 'jiudian',//用户名
+	'DB_HOST'           => 'localhost',//服务器地址
+	'DB_NAME'           => 'minsu',//数据库名
+	'DB_USER'           => 'minsu',//用户名
 	'DB_PWD'            => 'w123456',//密码
 	'DB_PORT'           => 3306,//端口
-	'DB_PREFIX'         => 'zc_',//数据库表前缀
+	'DB_PREFIX'         => 'ms_',//数据库表前缀
 	'DB_CHARSET'        => 'utf8',//字符集
 
 
@@ -17,11 +17,14 @@ return array(
 	'WX_SCOPE'     => 'snsapi_userinfo',
 	'WX_APPSECRET' => '7c627a1337e64aca65c7237c11f5c94f', // 开发者密码
 
-
 	//短信
 	'SMS_APPID'   => '1400035846',
 	'SMS_APPKEY'  => 'ebf7fc7a478a06d2d625a37ba6c306d1',
 	'SMS_TEMPLID' => '29997',
+
+
+
+
 
 
 
@@ -50,39 +53,39 @@ return array(
 	 * PAGE_CONFIG
 	 * 分页config配置位置。
 	 */
-	'PAGE_CONFIG'  => array(
-            'prev'   => '<',
-            'next'   => '>',
-            'last'   => '尾页',
-            'first'  => '首页',
-            'theme'  => '%FIRST% %UP_PAGE% %LINK_PAGE% %DOWN_PAGE% %END%',
-            ),
+	// 'PAGE_CONFIG'  => array(
+	//            'prev'   => '<',
+	//            'next'   => '>',
+	//            'last'   => '尾页',
+	//            'first'  => '首页',
+	//            'theme'  => '%FIRST% %UP_PAGE% %LINK_PAGE% %DOWN_PAGE% %END% ',
+	//            ),
 	/**
 	 * PAGE_CLASS
 	 * 分页样式配置位置。
 	 */
 	'PAGE_CLASS'   => array(
-            'header'     => 'class="a"',//共##条数据的class配置
-            'upRow'      => 'class="a"',//上一页
-            'linknum'    => 'class="a"',//1 2 3 4 5 6
-            'nowpage'    => 'style="background-color:#009688;color:#FFF;"',//当前页
-            'first'      => 'class="a"',//首页
-            'downRow'    => 'class="a"',//下一页
-            'last'       => 'class="a"',//尾页
-            'no_upRow'   => '<a class="a previous-off"><<</a>',//当没有上一页的时候显示什么，默认空
-            'no_downRow' => '<a class="a previous-off">>></a>',//当没有下一页的时候显示什么，默认空
-            ),
+		'header'     => 'class="a"',//共##条数据的class配置
+		'upRow'      => 'class="a"',//上一页
+		'linknum'    => 'class="a"',//1 2 3 4 5 6
+		'nowpage'    => 'style="background-color:#009688;color:#FFF;"',//当前页
+		'first'      => 'class="a"',//首页
+		'downRow'    => 'class="a"',//下一页
+		'last'       => 'class="a"',//尾页
+		'no_upRow'   => '<a class="a previous-off"><<</a>',//当没有上一页的时候显示什么，默认空
+		'no_downRow' => '<a class="a previous-off">>></a>',//当没有下一页的时候显示什么，默认空
+	),
 	/**
 	 * UPLOAD_CONFIG
 	 * 上传类配置位置
 	 */
 	// 'UPLOAD_CONFIG' => array(
 	// 	        'maxSize'  => 5242880,
- //                'savePath' => './Uploads/',
- //                'saveName' => array('uniqid',''),
- //                'exts'     => array('jpg', 'gif', 'png', 'jpeg'),
- //                'autoSub'  => true,
- //                'subName'  => array('date','Ymd'),
+	//                'savePath' => './Uploads/',
+	//                'saveName' => array('uniqid',''),
+	//                'exts'     => array('jpg', 'gif', 'png', 'jpeg'),
+	//                'autoSub'  => true,
+	//                'subName'  => array('date','Ymd'),
 	// 	),
 	/**
 	 * FILE_REALNAME
@@ -124,13 +127,13 @@ return array(
 
 	/*邮箱配置*/
 	'MAIL_HOST' =>'smtp.163.com',// smtp服务器的名称
-    'MAIL_SMTPAUTH' =>TRUE, //启用smtp认证
-    'MAIL_USERNAME' =>'*******@163.com',//你的邮箱名
-    'MAIL_FROM' =>'*******@163.com',//发件人地址
-    'MAIL_FROMNAME'=>'蜂蝶旋舞',//发件人姓名
-    'MAIL_PASSWORD' =>'******',//邮箱密码
-    'MAIL_CHARSET' =>'utf-8',//设置邮件编码
-    'MAIL_ISHTML' =>TRUE, // 是否HTML格式邮件
+	'MAIL_SMTPAUTH' =>TRUE, //启用smtp认证
+	'MAIL_USERNAME' =>'*******@163.com',//你的邮箱名
+	'MAIL_FROM' =>'*******@163.com',//发件人地址
+	'MAIL_FROMNAME'=>'蜂蝶旋舞',//发件人姓名
+	'MAIL_PASSWORD' =>'******',//邮箱密码
+	'MAIL_CHARSET' =>'utf-8',//设置邮件编码
+	'MAIL_ISHTML' =>TRUE, // 是否HTML格式邮件
 
 
 

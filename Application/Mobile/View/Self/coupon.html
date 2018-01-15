@@ -1,50 +1,39 @@
 <div class="app_center">
+    <style>
+        .Electronic_right{text-indent: 0%;}
+    </style>
     <div class="barto">
-        <div class="Electronic">
-            <div class="Electronic_left">
-                <div class="bordist">
-                    <div class="bordist_1">
-                        优惠券号：
+        <volist name="list" id="row">
+            <div class="Electronic">
+                <div class="Electronic_left">
+                    <div class="bordist">
+                        <div class="bordist_1">
+                            优惠券号：
+                        </div>
+                        <div class="bordist_1">
+                            <b>{$row.card}</b>
+                        </div>
                     </div>
-                    <div class="bordist_1">
-                        <b>12345678945612</b>
-                    </div>
-                </div>
-                <div class="bordist">
-                    <div class="bordist_1">
-                        有效期：
-                    </div>
-                    <div class="bordist_1">
-                        2017年11月8日-2017年11月10日
-                    </div>
-                </div>
-            </div>
-            <div class="Electronic_right">
-                ¥ <b>100</b>
-            </div>
-        </div>
-        <div class="Electronic">
-            <div class="Electronic_left">
-                <div class="bordist">
-                    <div class="bordist_1">
-                        优惠券号：
-                    </div>
-                    <div class="bordist_1">
-                        <b>12345678945612</b>
+                    <div class="bordist">
+                        <div class="bordist_1">
+                            有效期：
+                        </div>
+                        <div class="bordist_1">
+                            {$row.exprie_start} ~ {$row.exprie_end}
+                        </div>
                     </div>
                 </div>
-                <div class="bordist">
-                    <div class="bordist_1">
-                        有效期：
+                <if condition="$row['status'] eq 1">
+                    <div class="Electronic_right">
+                        ¥ <b>{$row.money}</b>
                     </div>
-                    <div class="bordist_1">
-                        2017年11月8日-2017年11月10日
+                    <else />
+                    <div class="Electronic_right aczert">
+                        ¥ <b>{$row.money}</b>
                     </div>
-                </div>
+                </if>
             </div>
-            <div class="Electronic_right aczert">
-                ¥ <b>50</b>
-            </div>
-        </div>
+        </volist>
+
     </div>
 </div>
