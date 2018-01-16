@@ -318,6 +318,28 @@ class OrdersController extends CommonController{
 			}
 		}else{
 			//充值回调
+			$sel = [
+				'orderNo' => $orderNo,
+				'method' => 'plus'
+			];
+			$info = D::find('Balance',['where'=>$sel]);
+			if($info['status'] == '2'){
+				$save = [
+					'orderNo' => $orderNo,
+					'method' => 'plus'
+				];
+				D::set('Balance.status',['where'=>$save],1);
+				//插入财务流水
+				$Finance = [
+					'userID' => $info['userID'],
+					'orderNO' => $orderNo,
+					'money' => $info['money'],
+					'type' => 'recharge',
+					'createDate' => date('Y-m-d'),
+				];
+				M('Finance')->add($Finance);
+				$this->success('充值成功',U('Self/index'));
+			}
 		}
 	}
 

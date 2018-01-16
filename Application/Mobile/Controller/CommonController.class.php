@@ -27,7 +27,10 @@ class CommonController extends Controller{
                 $userMsg = [
                     'mySorce' => $sorce['up'] - $sorce['down'],
                     'myGrade' => $nowgrade,
-                    'myBalance' => $myBalance['up'] - $myBalance['down']
+                    'myBalance' => $myBalance['up'] - $myBalance['down'],
+                    'myName' => $users['realname'],
+                    'uid'   => $users['id'],
+                    'headImg'   => $users['headImg']
                 ];
                 $this->assign('userMsg',$userMsg);
 			}

@@ -388,7 +388,7 @@ CREATE TABLE IF NOT EXISTS `ms_user_lvup` (
   `after` int(255) NOT NULL COMMENT '升级后级别',
   `createTime` int(255) NOT NULL COMMENT '升级时间',
   `achs` int(11) NOT NULL  COMMENT '花费积分',
-  `admin` int(11) NOT NULL DEFAULT '0' COLLATE utf8_bin COMMENT '说明 0:自动升级 admins::id 管理员修改',
+  `admin` int(11) NOT NULL DEFAULT '0' COLLATE utf8_bin COMMENT '说明 0:购买会员升级卡 admins::id 管理员修改',
   PRIMARY KEY (`id`)
 ) ENGINE=MyISAM DEFAULT CHARSET=utf8 COLLATE=utf8_bin AUTO_INCREMENT=1 ;
 

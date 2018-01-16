@@ -1,7 +1,7 @@
 <div class="app_center">
     <div class="integral_tite">
         <span>我的积分</span>
-        <b>1000</b>
+        <b>{$userMsg.mySorce}</b>
     </div>
     <div class="integral">
         <volist name="db" id="db">
@@ -15,11 +15,10 @@
                         <b>{$db.sorce}积分</b>
                     </div>
                     <div class="integral_right_r">
-                        <a class="diopr spoert" msg-tite="您是否购买？">购买</a>
+                        <a href="__URL__/upGradeBuy?id={$db.id}&my={$userMsg.mySorce}&grade={$db.sorce}" class="diopr ajax-get confirm" msg-tite="您是否购买？">购买</a>
                     </div>
                 </div>
             </div>
         </volist>
-       
     </div>
 </div>

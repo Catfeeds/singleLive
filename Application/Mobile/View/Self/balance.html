@@ -12,7 +12,7 @@
             </a>
         </div>
     </div>
-    <div class="erpt_fr" id="view" url="__URL__/balance">
+    <div class="erpt_fr" id="view">
 
     </div>
 </div>
@@ -23,14 +23,16 @@
         </div>
         <div class="gobet">
             <span class="left gobet_cor_1">{{d.createTime}}</span>
-            {{# if(d.method == 'plus'{ )}}
+            {{# if(d.method == 'plus'){ }}
             <span class="right gobet_cor_2">+￥{{d.money}}</span>
-            {{ }else{
-            <span class="right gobet_cor_1">+￥{{d.money}}</span>
-            }}
+            {{# }else{ }}
+            <span class="right gobet_cor_1">-￥{{d.money}}</span>
+            {{# } }}
         </div>
     </div>
 </script>
 <script type="text/javascript">
-    yin.lists();
+    yin.lists({
+        url:"__URL__/balance"
+    });
 </script>

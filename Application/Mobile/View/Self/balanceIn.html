@@ -1,41 +1,42 @@
 <div class="app_center">
+    <style>
+        .dist_but4 input {
+            width: 80%;
+            height: 6rem;
+            line-height: 6rem;
+            display: block;
+            margin: 0 auto;
+            background: #ff9900;
+            text-align: center;
+            color: #FFF9EC;
+            font-size: 2.5rem;
+            border-radius: 50px;
+        }
+    </style>
     <div class="app_account">
         <div class="account_1">
             <div class="app_name_2">
-                消费余额
+                余额
             </div>
             <div class="app_name_3">
-                0.00
+                {$userMsg.myBalance}
             </div>
         </div>
     </div>
-    <div class="erpt_fr">
-        <div class="erpt_fr_cont">
-            <a class="left">￥1058 </a>
-            <div class="fr_l1 right">
-                <input type="checkbox">
-            </div>
+    <form class="myForm" action="__URL__/add_my_balance" method="post">
+        <div  class="erpt_fr">
+            <volist name="db" id="row">
+                <div class="erpt_fr_cont">
+                    <a class="left">￥{$row.money} </a>
+                    <div class="fr_l1 right">
+                        <input name="money" value="{$row.money}" type="checkbox">
+                    </div>
+                </div>
+            </volist>
         </div>
-        <div class="erpt_fr_cont">
-            <a class="left">￥1058 </a>
-            <div class="fr_l1 right">
-                <input type="checkbox">
-            </div>
+        <div class="dist_but4 ">
+            <input type="submit" class="spoert ajax-post confirm" target-form="myForm" data-msg="您确认充值？" value="充值" />
+            <!--<a class="spoert" msg-tite="您是否充值？”">充值</a>-->
         </div>
-        <div class="erpt_fr_cont">
-            <a class="left">￥1058 </a>
-            <div class="fr_l1 right">
-                <input type="checkbox">
-            </div>
-        </div>
-        <div class="erpt_fr_cont">
-            <a class="left">￥1058 </a>
-            <div class="fr_l1 right">
-                <input type="checkbox">
-            </div>
-        </div>
-    </div>
-    <div class="dist_but4 ">
-        <a class="spoert" msg-tite="您是否充值？”">充值</a>
-    </div>
+    </form>
 </div>

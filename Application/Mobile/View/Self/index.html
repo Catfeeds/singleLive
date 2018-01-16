@@ -2,14 +2,18 @@
     <div class="app_Personal">
         <div class="Personal">
             <div class="app_name">
-                <img src="__MOBILE__/img/my02@2x.png" />
-                <input type="file" />
+                <if condition="$userMsg['headImg']">
+                    <img class="img_show" src="{:getSrc($userMsg['headImg'])}" />
+                    <else />
+                    <img class="img_show" src="__MOBILE__/img/my01@2x.png" />
+                </if>
+                <input id="photo" type="button" />
             </div>
             <div class="app_name_1">
-                丫头
+                {$userMsg.myName}
             </div>
             <div class="app_name_1">
-                会员等级：<a>V1</a>
+                会员等级：<a>{$userMsg.myGrade}</a>
             </div>
         </div>
     </div>
@@ -80,3 +84,18 @@
         <a href="{:U('Login/logout')}" class="ajax-get confirm" msg-tite="您是否退出登录？”">退出登录</a>
     </div>
 </div>
+<script>
+    layui.use('upload', function(){
+        var upload = layui.upload;
+        var uid = "{$userMsg['uid']}";
+        upload.render({
+            elem: '#photo',
+            url: "{:U('UploadPhoto/upload_Photo')}",
+            accept: 'images',
+            data: {uid:uid},
+            done: function(res){
+                $('.img_show').attr('src',res.data.src);
+            }
+        })
+    })
+</script>

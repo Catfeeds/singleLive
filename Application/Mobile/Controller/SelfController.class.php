@@ -42,6 +42,15 @@ class SelfController extends CommonController{
 					'where' => $map,
 					'order' => 'createTime desc'
 				];
+				break;
+			case 'integral':
+				$map['userID'] = session('user');
+				$data = [
+					'table' => '__USER_SORCE__',
+					'where' => $map,
+					'order' => 'createTime desc'
+				];
+				break;
 		}
 	}
 	/**
@@ -106,9 +115,40 @@ class SelfController extends CommonController{
 					$data['method_name'] = '余额消费';
 				}
 				$data['createTime'] = date('Y-m-d');
+				return $data;
 			});
 		}
 		$this->display();
+	}
+	//充值余额显示页面
+	public function balanceIn(){
+		$db = D::get('Recharge',[
+			'where' => "`status`=1",
+		]);
+		$this->assign('db',$db);
+		$this->display();
+	}
+	/*
+	 *充值余额 生成订单  并跳转微信支付
+	 * */
+	public function add_my_balance(){
+		//插入余额 充值表(其实就是充值订单表)
+		if(I('post.money')){
+			$orderNo = 'C'.time().get_random_number(5);
+			$order = [
+				'userID' => session('user'),
+				'money' => I('post.money'),
+				'orderNo' => $orderNo,
+				'method' => 'plus',
+				'createTime' => time(),
+				'status' => 2,
+			];
+			M('Balance')->add($order);
+			A('Orders')->wechatPay($orderNo);
+		}else{
+			$this->error('请选择充值金额');
+		}
+
 	}
 	/**
 	 * 	我的电子券
@@ -142,6 +182,17 @@ class SelfController extends CommonController{
 			'field' => "G.id,G.title,G.sorce,CONCAT('/Uploads',F.savepath,F.savename) `icon`"
 		]);
 		$this->assign('db',$db);
+		$this->display();
+	}
+	//积分明细
+	public function integral(){
+		if(IS_AJAX){
+			parent::index(function($data){
+				$data['createTime'] = date('Y-m-d',$data['createTime']);
+				$data['type_name'] = getTypes($data['type']);
+				return $data;
+			});
+		}
 		$this->display();
 	}
 	/**
@@ -219,6 +270,45 @@ class SelfController extends CommonController{
 		]);
 		$this->assign('db',$db);
 		$this->display();
+	}
+	/*
+	 * 	购买积分升级卡  逻辑
+	 * 		插入积分明细记录
+	 * 		更新user表nowLevel字段
+	 * 		插入升级记录
+	 * */
+	public function upGradeBuy(){
+		$get = I('get.');
+		if($get['my']<$get['grade']){
+			$this->error('积分不足,无法购买会员升级卡');
+		}else{
+			//插入积分明细记录
+			$uid = session('user');
+			$grade = D::field('Grades.title',$get['id']);
+			$sorce = [
+				'userID' => $uid,
+				'type' => 'lvup',
+				'sorce' => $get['sorce'],
+				'method' => 'sub',
+				'createTime' => time()
+			];
+			M('UserSorce')->add($sorce);
+			//插入升级记录
+			$user = D::find('Users',$uid);
+			$level = [
+				'userID' => $uid,
+				'before' => $user['nowLevel'],
+				'after'  => $get['id'],
+				'createTime' => time(),
+				'achs' => $get['sorce'],
+				'admin' => 0
+			];
+			M('UserLvup')->add($level);
+			//更新user表nowLevel字段
+			D::set('Users.nowLevel',$uid,$get['id']);
+			$this->success("购买成功,现在您的级别已经成为$grade",U('Self/index'));
+		}
+
 	}
 	/**
 	 * [message 系统消息]

@@ -454,6 +454,8 @@ font-size: 2.5rem; border-radius: 50px; }
 
 .aczert{background-image: url(../img/dz02.png);}
 
+.aczert_send{background-image: url(../img/send.png);}
+
 .integral_tite{ width:100%; height: 6rem; background: #FFFFFF; padding: 0 2rem; box-sizing: border-box;}
 
 .integral_tite span{ width: auto; float: left; font-size: 2rem; line-height: 6rem;}
