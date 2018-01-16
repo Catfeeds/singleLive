@@ -10,8 +10,7 @@
             <div class="layui-tab-item layui-show">
                 <div class="conter">
                     <div class="conter_sait">
-                        <form action="" method="post" class="form-user">
-
+                        <form action="__URL__/index" method="get" class="form-user">
                             <div class="wort">
                                 <div class="layui-input-inline">
                                     <input name="startTime" value="{:I('startTime')}" id="date" autocomplete="off" placeholder="开始时间" class="layui-input test-item" type="text">
@@ -33,9 +32,8 @@
                                 <button id="select" class="layui-btn">查找</button>
                             </div>
                             <div class="wort">
-                                <button id="export" class="layui-btn layui-btn-normal">导出</button>
+                                <a href="__URL__/export?startTime={:I('endTime')}&endTime{:I('endTime')}&title={:I('title')}"><button type="button" class="layui-btn layui-btn-normal">导出</button></a>
                             </div>
-
                         </form>
                     </div>
 
@@ -65,16 +63,16 @@
                                     <td>{:$data['sex'] == '1' ? '男' : '女'}</td>
                                     <td>{$data.mobile}</td>
                                     <td>{$data.Email}</td>
-                                    <td>{$data.money}</td>
-                                    <td>{$data.sorce}</td>
-                                    <td>无级别</td>
+                                    <td>{$data.allBalance}</td>
+                                    <td>{$data.allSorce}</td>
+                                    <td>{$data.regLevel}</td>
                                     <td>{$data.nowLevel}</td>
                                     <td>{$data.no_md5}</td>
                                     <td>{$data.createTime}</td>
                                     <td>
                                         <switch name="data.status">
-                                            <case value="1"><a href="__URL__/set_status/set/1/id/{$row.id}" class="z_coios_1 ajax-get confirm" data-msg='您确定禁用？禁用后用户将无法登陆'>禁用</a></case>
-                                            <case value="2"><a href="__URL__/set_status/set/2/id/{$row.id}" class="z_coios_2 ajax-get confirm" data-msg='您确定启用？'>启用</a></case>
+                                            <case value="1"><a href="__URL__/set_status?co=MemberList&id={$data.id}&t=Users&sta=1" class="z_coios_1 ajax-get confirm" data-msg='您确定禁用？禁用后用户将无法登陆'>禁用</a></case>
+                                            <case value="2"><a href="__URL__/set_status?co=MemberList&id={$data.id}&t=Users&sta=2" class="z_coios_2 ajax-get confirm" data-msg='您确定启用？'>启用</a></case>
                                         </switch>
                                         <a class="z_coios_4" href="__URL__/edit/id/{$data.id}">重置密码</a>
                                         <a class="z_coios_3 confirm ajax-get" href="__URL__/delUser/id/{$data.id}">删除</a>

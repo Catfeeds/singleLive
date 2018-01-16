@@ -579,5 +579,4 @@ class OrdersController extends CommonController{
 		}
 		return $arr;
 	}
-
 }

@@ -245,10 +245,31 @@ class IndexController extends CommonController{
 		$room = D::find('RoomDate',['where'=>$map,'field'=>'order_num']);
 		$package = D::find('Package',[
 			'where'=>"id=".$post['roomID'],
-			'field'=>'total_num'
+			'field'=>'total_num,limit'
 		]);
+		//满房情况
 		if($room['order_num'] == $package['total_num']){
 			$msg['msg'] = '您选择的日期已经满房,不可预定';
+			$msg['status'] = 'no';
+		}
+		//套餐限购
+		$sel = [
+			'userID' => session('user'),
+			'type' => 't',
+			'roomID' => $post['roomID'],
+			'status' => array('in','1,2,9')
+		];
+		$limit = D::find('Order',[
+			'where' => $sel,
+			'field' => 'SUM(num) limitNum'
+		]);
+		if($limit['limitNum'] == $package['limit']){
+			$msg['msg'] = '您之前购买的该套餐已经到达了限购份数,不能下单';
+			$msg['status'] = 'no';
+		}
+		$number = $limit['limitNum'] + $post['limit_num'];
+		if($number > $package['limit']){
+			$msg['msg'] = "您之前已经购买了该套餐".$limit['limitNum']."份,请减少选购数量";
 			$msg['status'] = 'no';
 		}
 		if($msg['status'] == 'yes'){

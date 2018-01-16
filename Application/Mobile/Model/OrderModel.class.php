@@ -14,6 +14,7 @@ class OrderModel extends Model {
 		['email','require','请填写联系人电子邮箱'],
 		['email','/^[a-zA-Z0-9_-]+@[a-zA-Z0-9_-]+(\.[a-zA-Z0-9_-]+)+$/','邮箱格式不正确',0,'regex'],
 		['mark','require','请填写备注信息'],
+		['price','check_price','优惠券金额只能小于房间金额才可使用',1,'callback'],
 	];
 	protected $_auto = [
 		['date','set_date','1','callback'],
@@ -26,6 +27,20 @@ class OrderModel extends Model {
 		['coupon','set_coupon','1','callback']
 	];
 	/*
+	 * 判断 该订单提交的优惠券价格是否  高于该房价的价格
+	 * 		若高于则不让它提交
+	 * 		$post 下单的表单数组
+	 * */
+	function check_price(){
+		$post = I('post.');
+		$price = $this->set_price($post);
+		if($price<=0){
+			return false;
+		}else{
+			return true;
+		}
+	}
+	/*
 	 * 	设置插入订单价格
 	 * 		首先判断  该订单是否存在优惠券
 	 * 		其次判断  该订单是客房 还是 套餐的订单
@@ -35,8 +50,7 @@ class OrderModel extends Model {
 	 * 		电子券 && 客房 ？ (天数*房间单价) - 电子券金额  : (天数*房间单价)
 	 * 		电子券 && 套餐 ？ (份数*房间单价) - 电子券金额  : (份数*房间单价)
 	 * */
-	function set_price(){
-		$post = I('post.');
+	public function set_price($post){
 		if($post['type'] == 'k'){
 			$money = D::field('House.money',$post['roomID']);//房间单价
 			$start = strtotime($post['inTime']);//入住时间
@@ -95,4 +109,5 @@ class OrderModel extends Model {
 	function set_userID(){
 		return session('user');
 	}
+
 }

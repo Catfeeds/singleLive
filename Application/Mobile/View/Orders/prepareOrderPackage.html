@@ -11,6 +11,7 @@
             color: #FFF9EC;
             font-size: 2rem;
             border-radius: 50px;
+            border: none;
         }
     </style>
     <form class="orderForm" action="__URL__/OrderCheck" method="post">
@@ -36,7 +37,7 @@
                     入住日期
                 </div>
                 <div class="web_flocg_right">
-                    2017年11月08日
+                    {$db.inTime}
                     <input type="hidden" name="inTime" value="{$db.inTime}" />
                 </div>
             </div>
@@ -45,7 +46,7 @@
                     数量
                 </div>
                 <div class="web_flocg_right">
-                    1人<input type="hidden" name="num" value="{$db.num}" />
+                    {$db.num}份<input type="hidden" name="num" value="{$db.num}" />
                 </div>
             </div>
         </div>
@@ -150,6 +151,7 @@
                 </div>
                 <div class="fr_input_right">
                     <select class="fr_select" name="child">
+                        <option value="0">0</option>
                         <option value="1">1</option>
                         <option value="2">2</option>
                         <option value="3">3</option>
