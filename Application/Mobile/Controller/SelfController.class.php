@@ -165,6 +165,75 @@ class SelfController extends CommonController{
 		$this->assign('list',$list);
 		$this->display();
 	}
+	/*
+	 *
+	 * 	转赠电子券 页面
+	 * */
+	public function couponGive(){
+		$map = [
+			'E.userID' => session('user'),
+			'E.status' => 1
+		];
+		$myCoupon = D::get(['CouponExchange','E'],[
+			'where' => $map,
+			'join' => 'INNER JOIN __COUPON__ C ON C.id = E.cID',
+			'field' => 'E.*,C.title,C.money'
+		]);
+		$myCoupon = array_map(function($data){
+			$data['coupon'] = $data['title'].'-'.$data['money'].'元';
+			return $data;
+		},$myCoupon);
+		$this->assign('list',$myCoupon);
+		$this->display();
+	}
+	/*
+	 *  转赠电子券处理
+	 * 		更新当用用户电子券 拥有状态
+	 * 		插入转赠用户电子券的拥有记录
+	 * 		插入转赠记录
+	 * */
+	public function giveCheck(){
+		$post  = I('post.');
+		$map = [
+			'mobile' => $post['mobile'],
+			'status' => 1
+		];
+		$accept = D::find('Users',[
+			'where' => $map,
+			'field' => 'id'
+		]);
+		if(!$accept){
+			$this->error('您要转赠的用户不存在,或被删除');
+		}
+		if($accept['id'] == session('user')){
+			$this->error('不能转赠给自己');
+		}
+		if(!array_key_exists('card',$post) || !$post['card']){
+			$this->error('您还未选择或未拥有电子券');
+		}
+		$my = D::find('CouponExchange',[
+			'where' => "'card'=".$post['card']
+		]);
+		M('CouponExchange')->where("card=".$post['card'])->setField(['status'=>3,'updateTime'=>time()]);
+		$give = [
+			'cID' => $my['cID'],
+			'sendID' => session('user'),
+			'acceptID' => $accept['id'],
+			'sendTime' => time(),
+		];
+		M('CouponGive')->add($give);
+		$exchange = [
+			'cID' => $my['cID'],
+			'createTime' => time(),
+			'updateTime' => time(),
+			'userID' => $accept['id'],
+			'card' => $my['card'],
+			'type' => 'accept',
+			'status' => 1
+		];
+		M('CouponExchange')->add($exchange);
+		$this->success('转赠成功',U('Self/coupon'));
+	}
 	/**
 	 * [couponExchange description]
 	 * @Author   ヽ(•ω•。)ノ   Mr.Solo
