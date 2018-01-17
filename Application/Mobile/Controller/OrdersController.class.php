@@ -174,7 +174,13 @@ class OrdersController extends CommonController{
 			//获取房间总数	查询提交时间的order数量
 			$map['roomID'] = $post['houseID'];
 			$map['createDate'] = date('Y-m-d',$date);
+			$map['type'] = 'h';
 			$num = D::find('RoomDate',['where'=>$map,'field'=>'IFNULL(order_num,0) order_num']);
+			if($num['order_num'] && $num['order_num']>0){
+				$houseNum = $house['total_num']-$num['order_num'];
+			}else{
+				$houseNum = $house['total_num'];
+			}
 			if($data['date']>=$nowDate){
 				$str = $num['order_num'] == $house['total_num'] ? 'true' : 'false';
 			}else{
@@ -186,7 +192,7 @@ class OrdersController extends CommonController{
 				'week'  => $week[date('N',$date)],//N - 星期几
 				'full'  => $str, //客满情况 满员写true[string] 不满则false	no-之前之间不可查询
 				'date'	=> date('Y-m-d',$date),
-				'num'	=> $num['order_num'] === null ? $house['total_num'] : $num['order_num']
+				'num'	=> $houseNum
 			];
 			return $data;
 		}, $dates);
@@ -210,7 +216,7 @@ class OrdersController extends CommonController{
 			$array = ['roomID'=>$data['roomID'],'type'=>$data['type']];
 			$bool = $this->is_house_all($parameter,$array);
 			if($bool === true){
-				if(array_key_exists('coupon',$data)){
+				if(array_key_exists('coupon',$data) && $data['coupon']){
 					$coupon = D::find('coupon',$data['coupon']);
 					$arr = explode("\r\n",$coupon['notDate']);
 					//这里必须要判断   优惠券设置的特定不可用日期
@@ -228,7 +234,7 @@ class OrdersController extends CommonController{
 					}
 				}else{
 					$order->add($data);
-					$this->success('下单成功,正在跳转到支付页面...');
+					$this->success('下单成功,正在跳转到支付页面...',U('Orders/pay?orderNo='.$data['orderNo']));
 				}
 			}else{
 				$this->error('您所选日期中存在已经满房的房间!');
@@ -261,46 +267,52 @@ class OrdersController extends CommonController{
 	public function paySuccess(){
 		$post = I('post.');
 		$order = D::find('Order',['where'=>['orderNo'=>$post['orderNo']]]);
-		if($post['payType'] == 1 || $post['payType'] ==3){
-			if($post['payType'] == 1 && $post['myMoney'] < $post['price']){
-				$this->error('您的余额不足,请到个人中心充值或选择其他支付方式！');
-			}else{
-				//如果余额>=支付的金额  则直接用余额支付
-				if($post['myMoney'] >= $post['price']){
-					$balance = [
-						'userID' => $order['userID'],
-						'money' => $post['myMoney'] - $post['price'],
-						'orderNo' => $post['orderNo'],
-						'method' => 'sub',
-						'createTime' => strtotime(date('Y-m-d'),time()),
-						'status' => 1
-					];
-					M('Balance')->add($balance);
-					$this->checkTable($post['orderNo']);
+		if(array_key_exists('payType',$post)){
+			if($post['payType'] == 1 || $post['payType'] ==3){
+				if($post['payType'] == 1 && $post['myMoney'] < $post['price']){
+					$this->error('您的余额不足,请到个人中心充值或选择其他支付方式！');
 				}else{
-					//跳转微信支付 $money为微信支付传递参数做准备
-					$money = 0;
-					if($post['myMoney']<$post['price'] && $post['myMoney']>0){
-						$money = $post['price']-$post['myMoney'];
+					//如果余额>=支付的金额  则直接用余额支付
+					if($post['myMoney'] >= $post['price']){
 						$balance = [
 							'userID' => $order['userID'],
-							'money' => $money,
+							'money' => $post['myMoney'] - $post['price'],
 							'orderNo' => $post['orderNo'],
 							'method' => 'sub',
 							'createTime' => strtotime(date('Y-m-d'),time()),
-							'status' => 2
+							'status' => 1
 						];
 						M('Balance')->add($balance);
+						$this->checkTable($post['orderNo']);
+						$this->success('支付成功,正在跳转到首页',U('Index/index'));
 					}else{
-						$money = $post['price'];
+						//跳转微信支付 $money为微信支付传递参数做准备
+						$money = 0;
+						if($post['myMoney']<$post['price'] && $post['myMoney']>0){
+							$money = $post['price']-$post['myMoney'];
+							$balance = [
+								'userID' => $order['userID'],
+								'money' => $money,
+								'orderNo' => $post['orderNo'],
+								'method' => 'sub',
+								'createTime' => strtotime(date('Y-m-d'),time()),
+								'status' => 2
+							];
+							M('Balance')->add($balance);
+						}else{
+							$money = $post['price'];
+						}
+						$this->wechatPay($post['orderNo']);
 					}
-					$this->wechatPay($post['orderNo']);
 				}
+			}else{
+				//跳转微信支付
+				$this->wechatPay($post['orderNo']);
 			}
 		}else{
-			//跳转微信支付
-			$this->wechatPay($post['orderNo']);
+			$this->error('请选择支付方式');
 		}
+
 	}
 	/*
 	 * 	微信支付回调

@@ -32,8 +32,7 @@ class OrderModel extends Model {
 	 * 		$post 下单的表单数组
 	 * */
 	function check_price(){
-		$post = I('post.');
-		$price = $this->set_price($post);
+		$price = $this->set_price();
 		if($price<=0){
 			return false;
 		}else{
@@ -50,14 +49,15 @@ class OrderModel extends Model {
 	 * 		电子券 && 客房 ？ (天数*房间单价) - 电子券金额  : (天数*房间单价)
 	 * 		电子券 && 套餐 ？ (份数*房间单价) - 电子券金额  : (份数*房间单价)
 	 * */
-	public function set_price($post){
+	protected function set_price(){
+		$post = I('post.');
 		if($post['type'] == 'k'){
 			$money = D::field('House.money',$post['roomID']);//房间单价
 			$start = strtotime($post['inTime']);//入住时间
 			$end = strtotime($post['outTime']);//离开时间
 			//这里判断$num>=2是因为 现在需求是2017-01-01-2017-01-02这算一天的房间单价
 			$num = intval(($end-$start)/86400);//入住天数
-			if(array_key_exists('coupon',$post) === true){
+			if(array_key_exists('coupon',$post) === true && $post['coupon']){
 				$couponMoney = D::field('Coupon.money',$post['coupon']);
 				$price = $num >= 2 ? ($money*$num-$couponMoney) : ($money-$couponMoney);
 			}else{
@@ -65,7 +65,7 @@ class OrderModel extends Model {
 			}
 		}else{
 			$money = D::field('Package.packMoney',$post['roomID']);//套餐单价
-			if(array_key_exists('coupon',$post) === true){
+			if(array_key_exists('coupon',$post) === true && $post['coupon']){
 				$couponMoney = D::field('Coupon.money',$post['coupon']);
 				$price = $post['num'] > 1 ? ($money*$post['num'] - $couponMoney) : ($money-$couponMoney);
 			}else{

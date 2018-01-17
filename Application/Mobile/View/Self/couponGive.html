@@ -1,0 +1,59 @@
+<div class="app_center">
+    <style>
+        .dist_but2 input {
+            width: 60%;
+            height: 5rem;
+            line-height: 5rem;
+            display: block;
+            margin: 0 auto;
+            background: #ff9900;
+            text-align: center;
+            color: #FFF9EC;
+            font-size: 2rem;
+            border-radius: 50px;
+            border: none;
+        }
+    </style>
+    <form class="orderForm" action="__URL__/giveCheck" method="post">
+        <div class="app_dist">
+            <div class="app_dist_tite">
+                <div class="app_dist_tite_img">
+                    <img src="__MOBILE__/img/yd03@2x.png">
+                </div>
+                <div class="app_dist_tite_colo">
+                    填写电子券转赠信息
+                </div>
+            </div>
+            <div class="fr_input">
+                <div class="fr_input_left">
+                    手机号码 ：
+                </div>
+                <div class="fr_input_right">
+                    <input type="text" name="mobile" placeholder="请输入电话号码" class="inp_1" />
+                </div>
+            </div>
+            <div class="fr_input">
+                <div class="fr_input_left">
+                    电子券：
+                </div>
+                <div class="fr_input_right">
+                    <if condition="$list">
+                        <select class="fr_select" name="card" style="width: 97%;">
+                            <option value="">--请选择要转赠的电子券--</option>
+                            <volist name="list" id="row">
+                                <option value="{$row.card}">{$row.coupon}</option>
+                            </volist>
+                        </select>
+                        <else />
+                        您还有没有可用的电子券,请兑换后再转赠！
+                    </if>
+                </div>
+            </div>
+        </div>
+        <div class="dist_but2 ">
+            <input type="submit" class="spoert ajax-post confirm" data-msg="您确定填写的订单无误？" target-form="orderForm" value="提交信息" />
+            <!--<a class="spoert" msg-tite="您是否提交信息？”">提交信息</a>-->
+        </div>
+    </form>
+</div>
+</html>

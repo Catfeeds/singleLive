@@ -219,12 +219,13 @@ class IndexController extends CommonController{
 			'where'=>"id=".$post['roomID'],
 			'field'=>'total_num'
 		]);
-		if(!$msg['order_num']){
-			$num = '当前剩余房间数:'.$package['total_num'];
-		}elseif($msg['order_num'] == $package['total_num']){
+		if($msg['order_num'] && $msg['order_num']>=0 && $msg['order_num']<$package['total_num']){
+			$shu = $package['total_num']-$msg['order_num'];
+			$num = $shu.'间';
+		}elseif($msg['order_num'] && $msg['order_num'] == $msg['order_num']){
 			$num = '当前选择日期已经满房';
 		}else{
-			$num = '当前剩余房间数:'.$msg['order_num'];
+			$num = $package['total_num'].'间';
 		}
 		$this->ajaxReturn($num);
 	}

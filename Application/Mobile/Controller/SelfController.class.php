@@ -212,7 +212,7 @@ class SelfController extends CommonController{
 			$this->error('您还未选择或未拥有电子券');
 		}
 		$my = D::find('CouponExchange',[
-			'where' => "'card'=".$post['card']
+			'where' => "card='{$post['card']}'"
 		]);
 		M('CouponExchange')->where("card=".$post['card'])->setField(['status'=>3,'updateTime'=>time()]);
 		$give = [
