@@ -216,7 +216,7 @@ class SelfController extends CommonController{
 		]);
 		M('CouponExchange')->where("card=".$post['card'])->setField(['status'=>3,'updateTime'=>time()]);
 		$give = [
-			'cID' => $my['cID'],
+			'cID' => $my['card'],
 			'sendID' => session('user'),
 			'acceptID' => $accept['id'],
 			'sendTime' => time(),

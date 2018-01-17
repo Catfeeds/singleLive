@@ -465,11 +465,7 @@ function getTimeFormat($time)
     $s = str_pad(floor(($time % 3600) % 60),2, "0", STR_PAD_LEFT);
     return $h.':'.$m.':'.$s;
 }
-    
-/*生成7位随机数*/
-/*function random_num(){
-    return str_pad(mt_rand(0, 999999999), 9, "0", STR_PAD_BOTH);
-}*/
+
 
 //返回type类型名称
 function getTypes($type){
@@ -575,5 +571,22 @@ function get_random_number($bit){
 * */
 function set_orderNo($type){
     return strtoupper($type).time().get_random_number(5);
+}
+/*
+ *	$start-开始日期(标准日期格式)  $end-结束日期(标准日期格式)
+ *	返回一个一维数组 从开始到结束的所有日期
+ * */
+function push_select_time($start,$end){
+    $num = (strtotime($end,time()) - strtotime($start,time()))/86400;
+    $arr = [];
+    $x = 0;
+    while($x<=$num){
+        array_push($arr,date('Y-m-d',strtotime("$start +$x days")));
+        $x++;
+        if($x>$num){
+            break;
+        }
+    }
+    return $arr;
 }
 

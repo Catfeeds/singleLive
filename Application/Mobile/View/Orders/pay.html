@@ -73,16 +73,6 @@
                             </div>
                         </div>
                     </div>
-                    <div class="web_icom">
-                        <div class="web_icom_left">
-                            <div class="pay">
-                                <input type="checkbox" name="payType" value="3" />
-                            </div>
-                            <div class="fr_l2">
-                                余额+微信支付
-                            </div>
-                        </div>
-                    </div>
                 </div>
             </div>
             <div class="web_flocg">
@@ -126,7 +116,7 @@
                 $('.pay').removeClass('fr_img').find('input').prop('checked', false);
                 $(this).find('input').prop('checked', true);
                 $(this).addClass('fr_img');
-                if(type == 1 || type ==3){
+                if(type == 1){
                     if(parseInt(balance)>=parseInt(price)){
                         allMoney = parseInt(price);
                     }else{

@@ -3,7 +3,7 @@
         <ul class="layui-tab-title">
             <li class="layui-this">
                 <i class="fa fa-dashboard" aria-hidden="true"></i>
-                <cite>电子券列表</cite>
+                <cite>转赠记录列表</cite>
             </li>
         </ul>
         <div class="layui-tab-content" style="min-height: 150px; padding: 5px 0 0 0;">
@@ -31,11 +31,6 @@
                             <div class="wort">
                                 <button type="submit" id="select" class="layui-btn">查找</button>
                             </div>
-                            <div class="wort">
-                                <a href="__URL__/add">
-                                    <button type="button" class="layui-btn layui-btn-danger">新增</button>
-                                </a>
-                            </div>
                         </form>
                     </div>
                     <div class="botg">
@@ -56,7 +51,7 @@
                                     <td>{$row.money}</td>
                                     <td>{$row.sendName}</td>
                                     <td>{$row.acceptName}</td>
-                                    <td>{$row.sendTime|date='Y-m-d'}</td>
+                                    <td>{$row.sendTime|date='Y-m-d',###}</td>
                                 </tr>
                             </volist>
                             </tbody>

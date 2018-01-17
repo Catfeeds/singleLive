@@ -13,7 +13,7 @@
                         <form action="__URL__/index" method="get">
                             <div class="wort">
                                 <div class="layui-input-inline">
-                                    <input name="start" autocomplete="off" placeholder="点击选择起始日期" class="layui-input" onclick="layui.laydate({elem: this})" type="text">
+                                    <input name="start" autocomplete="off" placeholder="点击选择起始日期" class="layui-input test-item" type="text">
                                 </div>
                             </div>
                             <div class="wort">
@@ -22,7 +22,7 @@
                             </div>
                             <div class="wort">
                                 <div class="layui-input-inline">
-                                    <input name="end" autocomplete="off" placeholder="点击选择结束日期" class="layui-input" onclick="layui.laydate({elem: this})" type="text">
+                                    <input name="end" autocomplete="off" placeholder="点击选择结束日期" class="layui-input test-item" type="text">
                                 </div>
                             </div>
                             <div class="wort">
@@ -45,7 +45,7 @@
                                 <button type="submit" class="layui-btn">查找</button>
                             </div>
                             <div class="wort">
-                                <a href="__URL__/export?{$info}"><button type="button" class="layui-btn layui-btn-normal">导出</button></a>
+                                <a href="__URL__/export?start={:I('start')}&end={:I('end')}&title={:I('title')}"><button type="button" class="layui-btn layui-btn-normal">导出</button></a>
                             </div>
                         </form>
                     </div>
@@ -53,15 +53,14 @@
                         <table class="layui-table">
                             <thead>
                             <tr>
-                                <th>日期</th>
+                                <th>下单时间</th>
                                 <th>订单编号</th>
                                 <th>房间名称</th>
                                 <th>客户姓名</th>
                                 <th>客户电话</th>
                                 <th>成人(个数)</th>
                                 <th>儿童(个数)</th>
-                                <th>入住日期</th>
-                                <th>离开日期</th>
+                                <th>日期区段</th>
                                 <th>订单类型</th>
                                 <th>订单金额</th>
                                 <th>状态</th>
@@ -71,21 +70,25 @@
                             <tbody>
                             <volist name="db" id="list">
                                 <tr>
-                                    <td>{$list.createTime|date_out=###}</td>
+                                    <td>{$list.createTime}</td>
                                     <td>{$list.orderNo}</td>
-                                    <td>{$list.house}</td>
+                                    <td>{$list.houseName}</td>
                                     <td>{$list.username}</td>
                                     <td>{$list.mobile}</td>
                                     <td>{$list.person}</td>
                                     <td>{$list.child}</td>
-                                    <td>{$list.inTime}</td>
-                                    <td>{$list.outTime}</td>
-                                    <td>{$list.type}</td>
+                                    <td>{$list.date_show}</td>
+                                    <td>{$list.type_name}</td>
                                     <td>{$list.price}</td>
-                                    <td>{$list.status}</td>
+                                    <td>{$list.status_name}</td>
                                     <td>
-                                        <a href="__URL__/sure/id/{$list.id}" data-msg="您确定该用户订单要入住？确定后该用户订单成为已入住状态！" class="z_coios_1 ajax-get confirm">确认入住</a>
-                                        <a href="__URL__/leave/id/{$list.id}" data-msg="您确定该用户要离开房间？确定后订单将成为已完成状态！" class="z_coios_4 ajax-get confirm">离开</a>
+                                        <if condition="$list['status'] eq 1">
+                                            <a href="__URL__/sure/id/{$list.id}" data-msg="您确定该用户订单要入住？确定后该用户订单成为已入住状态！" class="z_coios_1 ajax-get confirm">确认入住</a>
+                                            <elseif condition="$list['status'] eq 9"  />
+                                            <a href="__URL__/leave/id/{$list.id}" data-msg="您确定该用户,已入住完成,要离开房间？确定后订单将成为已完成状态！" class="z_coios_4 ajax-get confirm">离开</a>
+                                            <else />
+                                            不可操作
+                                        </if>
                                     </td>
                                 </tr>
                             </volist>
@@ -100,3 +103,14 @@
         </div>
     </div>
 </div>
+<script>
+    layui.use('laydate', function() {
+        var laydate = layui.laydate;
+        lay('.test-item').each(function(){
+            laydate.render({
+                elem: this
+                ,trigger: 'click'
+            });
+        });
+    })
+</script>

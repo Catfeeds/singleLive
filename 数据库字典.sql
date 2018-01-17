@@ -425,7 +425,7 @@ CREATE TABLE IF NOT EXISTS `ms_order` (
   `mark` text COLLATE utf8_bin NOT NULL COMMENT '备注信息',
   `inTime` DATE NOT NULL COMMENT '入住时间',
   `outTime` DATE NOT NULL COMMENT '离开时间',
-  `coupon` int(11) NOT NULL COMMENT '关联优惠券id 若用户成功勾选了,则有,若无,则写入0',
+  `coupon` varchar(13) NOT NULL COMMENT '关联优惠券拥有的表card字段 若用户成功勾选了,则有,若无,则写入0',
   `num` int(5) NOT NULL COMMENT '购买数量(仅用于套餐) 非套餐(客房)默认写入1',
   `status` tinyint(1) NOT NULL COMMENT '付款状态 8-待付款 9-已入住 1-已支付 2-已完成 3-已超时(设置时间内未完成支付) 4-已取消 5-退款审核中(用户),由此状态总后台显示确认退款和驳回 6-已退款 7-已驳回',
   `createTime` int(11) NOT NULL COMMENT '订单生成时间',
@@ -492,7 +492,7 @@ CREATE TABLE IF NOT EXISTS `ms_coupon_exchange` (
 --
 CREATE TABLE IF NOT EXISTS `ms_coupon_give` (
   `id` int(11) NOT NULL AUTO_INCREMENT,
-  `cID` int(11) NOT NULL COMMENT '关联ms_coupon的id,电子卷id',
+  `cID` varchar(13) NOT NULL COMMENT '关联ms_coupon_exchange的card,电子卷号是唯一的',
   `sendID` int(11) NOT NULL COMMENT '转移者id',
   `acceptID` int(11) NOT NULL COMMENT '接受者id',
   `sendTime` int(11) NOT NULL COMMENT '转增时间',
@@ -508,7 +508,7 @@ CREATE TABLE IF NOT EXISTS `ms_coupon_used` (
   `orderNO` varchar(16) COLLATE utf8_bin NOT NULL COMMENT '订单编号',
   `roomID` int(11) NOT NULL COMMENT '房间id,关联客房id和套餐里的房间id',
   `createTime` int(11) NOT NULL COMMENT '创建时间',
-  `cID` int(11) NOT NULL COMMENT '关联ms_coupon的id,电子卷id',
+  `cID` varchar(13) NOT NULL COMMENT '关联ms_coupon_exchange的card,电子卷号是唯一的',
   `type` char(1) COLLATE utf8_bin NOT NULL COMMENT 'k-客房 t-套餐',
   PRIMARY KEY (`id`)
 ) ENGINE=MyISAM DEFAULT CHARSET=utf8 COLLATE=utf8_bin AUTO_INCREMENT=1 ;

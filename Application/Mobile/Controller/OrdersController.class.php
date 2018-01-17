@@ -209,7 +209,7 @@ class OrdersController extends CommonController{
 			$data['orderNo'] = set_orderNo($data['type']);
 			//判断 所选日期中是否存在满房的情况
 			if($data['type'] == 'k'){
-				$parameter = $this->push_select_time($data['inTime'],$data['outTime']);
+				$parameter = push_select_time($data['inTime'],$data['outTime']);
 			}else{
 				$parameter = $data['inTime'];
 			}
@@ -268,42 +268,21 @@ class OrdersController extends CommonController{
 		$post = I('post.');
 		$order = D::find('Order',['where'=>['orderNo'=>$post['orderNo']]]);
 		if(array_key_exists('payType',$post)){
-			if($post['payType'] == 1 || $post['payType'] ==3){
+			if($post['payType'] == 1){
 				if($post['payType'] == 1 && $post['myMoney'] < $post['price']){
 					$this->error('您的余额不足,请到个人中心充值或选择其他支付方式！');
 				}else{
-					//如果余额>=支付的金额  则直接用余额支付
-					if($post['myMoney'] >= $post['price']){
-						$balance = [
-							'userID' => $order['userID'],
-							'money' => $post['myMoney'] - $post['price'],
-							'orderNo' => $post['orderNo'],
-							'method' => 'sub',
-							'createTime' => strtotime(date('Y-m-d'),time()),
-							'status' => 1
-						];
-						M('Balance')->add($balance);
-						$this->checkTable($post['orderNo']);
-						$this->success('支付成功,正在跳转到首页',U('Index/index'));
-					}else{
-						//跳转微信支付 $money为微信支付传递参数做准备
-						$money = 0;
-						if($post['myMoney']<$post['price'] && $post['myMoney']>0){
-							$money = $post['price']-$post['myMoney'];
-							$balance = [
-								'userID' => $order['userID'],
-								'money' => $money,
-								'orderNo' => $post['orderNo'],
-								'method' => 'sub',
-								'createTime' => strtotime(date('Y-m-d'),time()),
-								'status' => 2
-							];
-							M('Balance')->add($balance);
-						}else{
-							$money = $post['price'];
-						}
-						$this->wechatPay($post['orderNo']);
-					}
+					$balance = [
+						'userID' => $order['userID'],
+						'money' => $post['myMoney'] - $post['price'],
+						'orderNo' => $post['orderNo'],
+						'method' => 'sub',
+						'createTime' => strtotime(date('Y-m-d'),time()),
+						'status' => 1
+					];
+					M('Balance')->add($balance);
+					$this->checkTable($post['orderNo']);
+					$this->success('支付成功,正在跳转到首页',U('Index/index'));
 				}
 			}else{
 				//跳转微信支付
@@ -359,7 +338,6 @@ class OrdersController extends CommonController{
 	 *	1、更新订单状态	ms_order
 	 * 	2、插入财务流水表 ms_finance   是否存在余额支付和微信混合支付的情况 ？ 订单金额-余额 : 订单金额
 	 *	3、若存在电子券 ？ 插入电子券使用记录表(ms_coupon_used) && 更新电子卷拥有记录表(ms_coupon_exchange) && 减库存  : 不做操作
-	 *  4、是否存在余额支付和微信混合支付的情况	？ 更新ms_balance	:不做操作
 	 * 	5、插入购买房间时间记录表(ms_room_date)	若是客房 && 选择多天入住 ？ 则要将所有选择的天数都插入,并order+1
 	 * 	6、插入积分变更记录表 ms_user_sorce
 	 *	$orderNo-订单号
@@ -368,34 +346,11 @@ class OrdersController extends CommonController{
 		$map['orderNo'] = $orderNo;
 		$msg = D::find('Order',['where'=>$map]);
 		M('Order')->where($map)->setField(['status'=>1,'updateTime'=>NOW_TIME]);
-		/*
-		 * 这步操作是必要的 因为在支付页面(选择混合支付时且余额有钱，但是比订单金额小)
-		 * 此时唤起微信支付，但不支付并且点返回重复操作，会出现插入多条余额为未付款的现象
-		 * 但订单号始终未改变  所以得先查出最新的一条余额未付款记录
-		 * */
-		$sel = [
-			'orderNo' => $orderNo,
-			'status' => 2,
-			'method'	=> 'sub'
-		];
-		$BalanceID = D::find('Balance',[
-			'where'	=> $sel,
-			'field' => 'MAX(createTime) maxTime,MAX(id) newID'
-		]);
-		//若有余额和微信支付  混合的情况
-		$money = $msg['price'];
-		if($BalanceID){
-			$Balance = M('Balance');
-			//更新余额表状态
-			$Balance->where("id=".$BalanceID['newID'])->save(['status' => '1','updateTime' => NOW_TIME]);
-			$yu = $Balance->where("id=".$BalanceID['newID'])->field('money')->find();
-			$money = $msg['price'] - $yu['money'];
-		}
 		//插入财务流水
 		$Finance = [
 			'userID' => $msg['userID'],
 			'orderNO' => $orderNo,
-			'money' => $money,
+			'money' => $msg['price'],
 			'type' => 'pay',
 			'createDate' => date('Y-m-d'),
 		];
@@ -417,14 +372,20 @@ class OrdersController extends CommonController{
 				'updateTime' => NOW_TIME,
 			];
 			//更新电子券使用状态
-			M('CouponExchange')->where("cID=".$msg['coupon'])->setField($save);
+			M('CouponExchange')->where("card=".$msg['coupon'])->setField($save);
+			$cID = D::field('CouponExchange.cID',[
+				'where' => [
+					'userID' => $msg['userID'],
+					'card' => $msg['coupon']
+				]
+			]);
 			//减库存
-			M('Coupon')->where("id=".$msg['coupon'])->setDec('num',1);
+			M('Coupon')->where("id=".$cID)->setDec('num',1);
 		}
 		$roomDate = $this->search_room_date($msg['roomID'],$msg['type']);
 		if($msg['type'] == 'k'){
 			//客房-购买房间时间记录表 逻辑
-			$arr = $this->push_select_time($msg['inTime'],$msg['outTime']);
+			$arr = push_select_time($msg['inTime'],$msg['outTime']);
 			foreach($arr as $key => $val){
 				if(in_array($val,$roomDate)){
 					$save_date[] = $val;
@@ -495,23 +456,6 @@ class OrdersController extends CommonController{
 		];
 		$roomDate = D::lists('roomDate','createDate',['where'=>$search]);
 		return $roomDate;
-	}
-	/*
-	 *	$start-开始日期(标准日期格式)  $end-结束日期(标准日期格式)
-	 *	返回一个一维数组 从开始到结束的所有日期
-	 * */
-	public function push_select_time($start,$end){
-		$num = (strtotime($end,time()) - strtotime($start,time()))/86400;
-		$arr = [];
-		$x = 0;
-		while($x<=$num){
-			array_push($arr,date('Y-m-d',strtotime("$start +$x days")));
-			$x++;
-			if($x>$num){
-				break;
-			}
-		}
-		return $arr;
 	}
 	/*
 	 * 	判断所选日期内是否存在满房的情况

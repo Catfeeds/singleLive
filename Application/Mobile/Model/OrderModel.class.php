@@ -58,7 +58,8 @@ class OrderModel extends Model {
 			//这里判断$num>=2是因为 现在需求是2017-01-01-2017-01-02这算一天的房间单价
 			$num = intval(($end-$start)/86400);//入住天数
 			if(array_key_exists('coupon',$post) === true && $post['coupon']){
-				$couponMoney = D::field('Coupon.money',$post['coupon']);
+				$couponID = D::field('CouponExchange.cID',['where'=>['card'=>$post['coupon']]]);
+				$couponMoney = D::field('Coupon.money',$couponID);
 				$price = $num >= 2 ? ($money*$num-$couponMoney) : ($money-$couponMoney);
 			}else{
 				$price = $num >= 2 ? ($money*$num) : $money;
@@ -66,7 +67,8 @@ class OrderModel extends Model {
 		}else{
 			$money = D::field('Package.packMoney',$post['roomID']);//套餐单价
 			if(array_key_exists('coupon',$post) === true && $post['coupon']){
-				$couponMoney = D::field('Coupon.money',$post['coupon']);
+				$couponID = D::field('CouponExchange.cID',['where'=>['card'=>$post['coupon']]]);
+				$couponMoney = D::field('Coupon.money',$couponID);
 				$price = $post['num'] > 1 ? ($money*$post['num'] - $couponMoney) : ($money-$couponMoney);
 			}else{
 				$price = $post['num'] > 1 ? $money*$post['num'] : $money;
