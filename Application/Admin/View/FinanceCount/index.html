@@ -47,11 +47,11 @@
                             <tbody>
                             <volist name="db" id="list">
                                 <tr>
-                                    <td>{$list.createTime|date_out=###}</td>
-                                    <td>{$list.username}</td>
-                                    <td>{$list.mobile}</td>
-                                    <td>{$list.price}</td>
-                                    <td><a href="__URL__/detailed/id/{$db.id}">查看明细</a></td>
+                                    <td>{$list.time|date='Y-m-d',###}</td>
+                                    <td>{$list.inMoney}</td>
+                                    <td>{$list.outMoney}</td>
+                                    <td>{$list.sideMoney}</td>
+                                    <td><a class="z_coios_4" href="__URL__/see/date/{$list.time|date='Y-m-d',###}">查看明细</a></td>
                                 </tr>
                             </volist>
                             </tbody>

@@ -111,6 +111,8 @@ class SelfController extends CommonController{
 			parent::index(function($data){
 				if($data['method'] == 'plus'){
 					$data['method_name'] = '充值';
+				}elseif($data['method'] == 'back'){
+					$data['method_name'] = '退款反还';
 				}else{
 					$data['method_name'] = '余额消费';
 				}

@@ -22,12 +22,12 @@ class CommonController extends Controller{
                 $nowgrade = $users['nowLevel'] != 0 ? D::field('Grades.title',$users['nowLevel']) : '无级别';
                 $myBalance = D::find('Balance',[
                     'where' => ['userID'=>$userID,'status'=>1],
-                    'field' => "SUM(CASE WHEN method = 'plus' THEN money ELSE 0 END) up,SUM(CASE WHEN method = 'sub' THEN money ELSE 0 END) down"
+                    'field' => "SUM(CASE WHEN method = 'plus' THEN money ELSE 0 END) upPay,SUM(CASE WHEN method = 'back' THEN money ELSE 0 END) upBack,SUM(CASE WHEN method = 'sub' THEN money ELSE 0 END) down"
                 ]);
                 $userMsg = [
                     'mySorce' => $sorce['up'] - $sorce['down'],
                     'myGrade' => $nowgrade,
-                    'myBalance' => $myBalance['up'] - $myBalance['down'],
+                    'myBalance' => $myBalance['upPay']+$myBalance['upBack'] - $myBalance['down'],
                     'myName' => $users['realname'],
                     'uid'   => $users['id'],
                     'headImg'   => $users['headImg']

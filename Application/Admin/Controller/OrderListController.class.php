@@ -10,6 +10,7 @@ class OrderListController extends CommonController
     public $model = 'Order';
     public function _map(&$data)
     {
+        //这里注意7为已驳回的订单  因为客户确实付了款了,驳回了肯定是要让他入住的
         switch (ACTION_NAME){
             case 'index':
                 if ( I('title') ) {
@@ -21,7 +22,7 @@ class OrderListController extends CommonController
                 if(I('status')){
                     $map['status'] = I('status');
                 }else{
-                    $map['status'] = array('in',"1,2,3,4,8,9");
+                    $map['status'] = array('in',"1,2,3,4,7,8,9");
                 }
                 $data = [
                     'where' => $map,
@@ -38,7 +39,7 @@ class OrderListController extends CommonController
                 if(I('status')){
                     $map['status'] = I('status');
                 }else{
-                    $map['status'] = array('in',"1,2,3,4,8,9");
+                    $map['status'] = array('in',"1,2,3,4,7,8,9");
                 }
                 $data = [
                     'where' => $map,

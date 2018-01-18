@@ -26,15 +26,10 @@
                                 </div>
                             </div>
                             <div class="wort" style="width:280px;">
-                                <input name="title" lay-verify="title" value="{:I('title')}" autocomplete="off" placeholder="发送者/接受者姓名" class="layui-input" type="text">
+                                <input name="title" lay-verify="title" value="{:I('title')}" autocomplete="off" placeholder="用户姓名/电子券名称" class="layui-input" type="text">
                             </div>
                             <div class="wort">
                                 <button type="submit" id="select" class="layui-btn">查找</button>
-                            </div>
-                            <div class="wort">
-                                <a href="__URL__/add">
-                                    <button type="button" class="layui-btn layui-btn-danger">新增</button>
-                                </a>
                             </div>
                         </form>
                     </div>
@@ -42,23 +37,24 @@
                         <table class="layui-table">
                             <thead>
                             <tr>
+                                <th>使用时间</th>
                                 <th>订单编号</th>
                                 <th>电子券名称</th>
                                 <th>电子卷金额</th>
                                 <th>用户姓名</th>
                                 <th>房间名称</th>
-                                <th>转赠时间</th>
+
                             </tr>
                             </thead>
                             <tbody>
                             <volist name="db" id="row">
                                 <tr>
+                                    <td>{$row.createTime}</td>
                                     <td>{$row.orderNO}</td>
                                     <td>{$row.title}</td>
                                     <td>{$row.money}</td>
                                     <td>{$row.realname}</td>
                                     <td>{$row.showName}</td>
-                                    <td>{$row.createTime|date='Y-m-d'}</td>
                                 </tr>
                             </volist>
                             </tbody>

@@ -78,13 +78,24 @@ class OrdersController extends CommonController{
 		]);
 		$this->success('申请成功,等待管理员审核',U('Orders/index'));
 	}
-	//用户发起 取消未付款的订单
+	/*
+	 * 用户发起 取消未付款的订单
+	 * 	这里必须判断  使用优惠券  ?  将该优惠券变为可用状态  : 不做操作
+	 * */
 	public function resetOrder(){
 		$map['orderNo'] = I('orderNo');
+		$msg = D::find('Order',['where'=>$map]);
 		D::save('Order',['where'=>$map],[
 			'updateTime' => NOW_TIME,
 			'status'	=> 4
 		]);
+		if($msg['coupon']){
+			$sel = [
+				'userID' => $msg['userID'],
+				'card' => $msg['coupon'],
+			];
+			D::set('CouponExchange.status',['where'=>$sel],1);
+		}
 		$this->success('取消成功',U('Orders/index'));
 	}
 	/**
@@ -217,7 +228,8 @@ class OrdersController extends CommonController{
 			$bool = $this->is_house_all($parameter,$array);
 			if($bool === true){
 				if(array_key_exists('coupon',$data) && $data['coupon']){
-					$coupon = D::find('coupon',$data['coupon']);
+					$cID = D::field('CouponExchange.cID',['where'=>['card'=>$data['coupon']]]);
+					$coupon = D::find('coupon',$cID);
 					$arr = explode("\r\n",$coupon['notDate']);
 					//这里必须要判断   优惠券设置的特定不可用日期
 					$bool = true;
@@ -228,6 +240,8 @@ class OrdersController extends CommonController{
 					}
 					if($data['inTime']>=$coupon['exprie_start'] && $data['outTime']<=$coupon['exprie_end'] && $bool===true){
 						$order->add($data);
+						//更新优惠券状态--为4(被占用),此状态就是为了避免下了好多单都不付款,然后挨个去付款会出现每单都会少优惠券的金额
+						D::set('CouponExchange.status',['where'=>['card'=>$data['coupon']]],4);
 						$this->success('下单成功,正在跳转到支付页面...',U('Orders/pay?orderNo='.$data['orderNo']));
 					}else{
 						$this->error('您选择的日期内,存在优惠券的不可用日期');
@@ -255,9 +269,9 @@ class OrdersController extends CommonController{
 		];
 		$money = D::find('Balance',[
 			'where' => $map,
-			'field' => "SUM(CASE WHEN method='plus' THEN money ELSE 0 END) up,SUM(CASE WHEN method='sub' THEN money ELSE 0 END) down"
+			'field' => "SUM(CASE WHEN method='plus' THEN money ELSE 0 END) upPay,SUM(CASE WHEN method='back' THEN money ELSE 0 END) upBack,SUM(CASE WHEN method='sub' THEN money ELSE 0 END) down"
 		]);
-		$this->assign('money',$money['up']-$money['down']);
+		$this->assign('money',$money['upPay']+$money['upBack']-$money['down']);
 		$this->assign('db',$db);
 		$this->display();
 	}
@@ -272,12 +286,14 @@ class OrdersController extends CommonController{
 				if($post['payType'] == 1 && $post['myMoney'] < $post['price']){
 					$this->error('您的余额不足,请到个人中心充值或选择其他支付方式！');
 				}else{
+					//更新支付方式字段
+					D::set('Order.payType',['where'=>['orderNo'=>$post['orderNo']]],'balance');
 					$balance = [
 						'userID' => $order['userID'],
-						'money' => $post['myMoney'] - $post['price'],
+						'money' =>  $post['price'],
 						'orderNo' => $post['orderNo'],
 						'method' => 'sub',
-						'createTime' => strtotime(date('Y-m-d'),time()),
+						'createTime' => time(),
 						'status' => 1
 					];
 					M('Balance')->add($balance);
@@ -304,6 +320,7 @@ class OrdersController extends CommonController{
 			$map['orderNo'] = $orderNo;
 			$msg = D::find('Order',['where'=>$map]);
 			if ($msg['status'] == '8') {
+				D::set('Order.payType',['where'=>['orderNo'=>$orderNo]],'wechat');
 				$this->checkTable($orderNo);
 				$this->success('支付成功,正在跳转到首页',U('Index/index'));
 			}
@@ -337,7 +354,7 @@ class OrdersController extends CommonController{
 	/*	确认付款后	操作逻辑
 	 *	1、更新订单状态	ms_order
 	 * 	2、插入财务流水表 ms_finance   是否存在余额支付和微信混合支付的情况 ？ 订单金额-余额 : 订单金额
-	 *	3、若存在电子券 ？ 插入电子券使用记录表(ms_coupon_used) && 更新电子卷拥有记录表(ms_coupon_exchange) && 减库存  : 不做操作
+	 *	3、若存在电子券 ？ 插入电子券使用记录表(ms_coupon_used) && 更新电子卷拥有记录表(ms_coupon_exchange)  : 不做操作
 	 * 	5、插入购买房间时间记录表(ms_room_date)	若是客房 && 选择多天入住 ？ 则要将所有选择的天数都插入,并order+1
 	 * 	6、插入积分变更记录表 ms_user_sorce
 	 *	$orderNo-订单号
@@ -345,7 +362,11 @@ class OrdersController extends CommonController{
 	public function checkTable($orderNo){
 		$map['orderNo'] = $orderNo;
 		$msg = D::find('Order',['where'=>$map]);
-		M('Order')->where($map)->setField(['status'=>1,'updateTime'=>NOW_TIME]);
+		$orderSave = [
+			'status'=>1,
+			'updateTime'=>NOW_TIME
+		];
+		M('Order')->where($map)->setField($orderSave);
 		//插入财务流水
 		$Finance = [
 			'userID' => $msg['userID'],
@@ -364,6 +385,7 @@ class OrdersController extends CommonController{
 				'createTime' => strtotime(date('Y-m-d'),time()),
 				'cID' => $msg['coupon'],
 				'type' => $msg['type'],
+				'status' => 1
 			];
 			//插入电子券使用记录
 			M('CouponUsed')->add($coupon_used);
@@ -373,14 +395,6 @@ class OrdersController extends CommonController{
 			];
 			//更新电子券使用状态
 			M('CouponExchange')->where("card=".$msg['coupon'])->setField($save);
-			$cID = D::field('CouponExchange.cID',[
-				'where' => [
-					'userID' => $msg['userID'],
-					'card' => $msg['coupon']
-				]
-			]);
-			//减库存
-			M('Coupon')->where("id=".$cID)->setDec('num',1);
 		}
 		$roomDate = $this->search_room_date($msg['roomID'],$msg['type']);
 		if($msg['type'] == 'k'){

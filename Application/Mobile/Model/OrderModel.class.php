@@ -24,7 +24,8 @@ class OrderModel extends Model {
 		['userID','set_userID','1','callback'],
 		['status',8],
 		['price','set_price','1','callback'],
-		['coupon','set_coupon','1','callback']
+		['coupon','set_coupon','1','callback'],
+		['payType','no']
 	];
 	/*
 	 * 判断 该订单提交的优惠券价格是否  高于该房价的价格

@@ -399,7 +399,7 @@ CREATE TABLE IF NOT EXISTS `ms_user_lvup` (
 CREATE TABLE IF NOT EXISTS `ms_user_sorce` (
   `id` int(11) NOT NULL AUTO_INCREMENT,
   `userID` int(11) NOT NULL COMMENT '会员id',
-  `type` char(10) COLLATE utf8_bin NOT NULL COMMENT 'consume-消费返积分 exchange-兑换电子卷 lvup-购买积分卡升级',
+  `type` char(10) COLLATE utf8_bin NOT NULL COMMENT 'consume-消费返积分 exchange-兑换电子卷 lvup-购买积分卡升级 backs-退款减积分',
   `sorce` int(11) NOT NULL DEFAULT '0' COMMENT '积分数',
   `method` char(10) COLLATE utf8_bin NOT NULL COMMENT 'plus-加 sub-减',
   `createTime` int(11) NOT NULL COMMENT '创建时间',
@@ -432,6 +432,7 @@ CREATE TABLE IF NOT EXISTS `ms_order` (
   `updateTime` int(11) NOT NULL COMMENT '订单更新时间',
   `date` DATE NOT NULL COMMENT '下单时间(标准日期格式)',
   `type` char(1) COLLATE utf8_bin NOT NULL COMMENT 'k-客房 t-套餐',
+  `payType` char(10) COLLATE utf8_bin NOT NULL COMMENT '支付方式字段 no-未支付 balance-余额支付 wechat-微信支付',
   PRIMARY KEY (`id`)
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8 COLLATE=utf8_bin AUTO_INCREMENT=1 ;
 
@@ -480,7 +481,7 @@ CREATE TABLE IF NOT EXISTS `ms_coupon_exchange` (
   `createTime` int(11) NOT NULL COMMENT '创建时间',
   `updateTime` int(11) NOT NULL COMMENT '更新时间(包括使用和转增)',
   `userID` int(11) NOT NULL COMMENT '用户id',
-  `status` tinyint(1) NOT NULL COMMENT '使用状态  1-未使用 2-已使用 3-已转赠',
+  `status` tinyint(1) NOT NULL COMMENT '使用状态  1-未使用 2-已使用 3-已转赠 4-已占用(当前订单使用了优惠券,但未付款)',
   `card` varchar(13) COLLATE utf8_bin NOT NULL COMMENT '优惠券券号,兑换成功时生成,此字段唯一,转赠后也不能改变',
   `type` char(10) COLLATE utf8_bin NOT NULL COMMENT 'exchange-积分兑换获得,accept-表示从其他用户处接收获得',
   PRIMARY KEY (`id`),
@@ -510,6 +511,7 @@ CREATE TABLE IF NOT EXISTS `ms_coupon_used` (
   `createTime` int(11) NOT NULL COMMENT '创建时间',
   `cID` varchar(13) NOT NULL COMMENT '关联ms_coupon_exchange的card,电子卷号是唯一的',
   `type` char(1) COLLATE utf8_bin NOT NULL COMMENT 'k-客房 t-套餐',
+  `status` tinyint(1) NOT NULL COMMENT '1-正常 3-已删除',
   PRIMARY KEY (`id`)
 ) ENGINE=MyISAM DEFAULT CHARSET=utf8 COLLATE=utf8_bin AUTO_INCREMENT=1 ;
 
@@ -533,7 +535,7 @@ CREATE TABLE IF NOT EXISTS `ms_balance` (
   `userID` int(11) NOT NULL COMMENT '消费用户id',
   `money` float(10,2) COLLATE utf8_bin NOT NULL COMMENT '消费金额',
   `orderNo` varchar(16) COLLATE utf8_bin NOT NULL COMMENT '订单编号',
-  `method` char(10) COLLATE utf8_bin NOT NULL COMMENT 'plus-充值 sub-用余额消费',
+  `method` char(10) COLLATE utf8_bin NOT NULL COMMENT 'plus-充值 sub-用余额消费 back-退款返还',
   `createTime` int(11) NOT NULL COMMENT '创建时间',
   `updateTime` int(11) NOT NULL COMMENT '更新时间',
   `status` tinyint(1) NOT NULL COMMENT '1-已支付 2-待付款',

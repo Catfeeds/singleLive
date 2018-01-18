@@ -9,25 +9,47 @@ use Think\D;
 */
 class FinanceCountController extends CommonController
 {
-    public $model = 'Order';
+   // public $model = 'Finance';
     public function _map(&$data)
     {
-        if ( I('title') ) {
-            $map['orderNo'] = ['like','%'.I('title').'%'];
+        switch (ACTION_NAME){
+            case 'index':
+                if ( I('start') || I('end') ) {
+                $map['time'] = get_selectTime(I('start'),I('end'));
+                }
+                $sql = D::get('Finance',[
+                    'where' => $map,
+                    'field' => "UNIX_TIMESTAMP(MAX(createDate)) time,SUM(CASE WHEN type='pay' THEN money ELSE 0 END) upPay,SUM(CASE WHEN type='recharge' THEN money ELSE 0 END) up,SUM(CASE WHEN type='back' THEN money ELSE 0 END) down",
+                    'group' => 'createDate',
+                ],false);
+                $data = [
+                    'table' => "{$sql} M",
+                    'field' => 'M.time,(M.upPay+M.up) inMoney,M.down outMoney,(M.upPay+M.up-M.down) sideMoney',
+                    'order' => 'M.time DESC',
+                ];
+                break;
+            case 'see':
+                $map['createDate'] = I('date');
+                $data = [
+                    'table' => '__FINANCE__',
+                    'where' => $map,
+                    'order' => 'createDate desc,id desc'
+                ];
+                break;
         }
-        $data = [
-            'where' => $map,
-            'order' => 'createTime DESC',
-        ];
+
     }
     //用户订单列表
     public function index()
-    {   
-        $info = http_build_query(I('get.'));
+    {
         $db = parent::index(false);
-        $this->assign('info',$info);
         $this->assign('db',$db['db']);
-        $this->assign('db',$db['page']);
+        $this->assign('page',$db['page']);
+        $this->display();
+    }
+    //查看明细
+    public function see(){
+        echo parent::index('sql');die;
         $this->display();
     }
     //导出

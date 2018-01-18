@@ -10,7 +10,7 @@
             <div class="layui-tab-item layui-show">
                 <div class="conter">
                     <div class="conter_sait">
-                        <form action="">
+                        <form action="__URL__/index" method="get">
                             <div class="wort">
                                 <div class="layui-input-inline">
                                     <input name="start" autocomplete="off" placeholder="点击选择起始日期" class="layui-input test-item" onclick="layui.laydate({elem: this})" type="text">
@@ -26,13 +26,13 @@
                                 </div>
                             </div>
                             <div class="wort" style="width:280px;">
-                                <input name="title" lay-verify="title" autocomplete="off" placeholder="客户姓名/客户电话" class="layui-input" type="text">
+                                <input name="title" lay-verify="title" autocomplete="off" placeholder="客户姓名/客户电话/订单号" class="layui-input" type="text">
                             </div>
                             <div class="wort">
                                 <button type="submit" class="layui-btn">查找</button>
                             </div>
                             <!--<div class="wort">
-                                <a href="__URL__/export?{$info}"><button type="button" class="layui-btn layui-btn-normal">导出</button></a>
+                                <a href="__URL__/export?start={:I('start')}&end={:I('end')}&title={:I('title')}"><button type="button" class="layui-btn layui-btn-normal">导出</button></a>
                             </div>-->
                         </form>
                     </div>
@@ -52,10 +52,11 @@
                             <volist name="db" id="list">
                                 <tr>
                                     <td>{$list.createTime|date_out=###}</td>
+                                    <td>{$list.orderNo}</td>
                                     <td>{$list.username}</td>
                                     <td>{$list.mobile}</td>
                                     <td>{$list.price}</td>
-                                    <td>{$list.status}</td>
+                                    <td>{$list.status_name}</td>
                                 </tr>
                             </volist>
                             </tbody>

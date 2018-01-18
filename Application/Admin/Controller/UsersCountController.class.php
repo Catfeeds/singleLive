@@ -9,70 +9,104 @@ use Think\D;
 */
 class UsersCountController extends CommonController
 {
-    public $model = ['Users','U'];
+    //public $model = 'Finance';
     public function _map(&$data)
     {
-        if ( I('title') ) {
-            $map['CONCAT(U.realname,U.mobile)'] = ['like','%'.I('title').'%'];
+        switch (ACTION_NAME){
+            case 'index':
+                if ( I('title') ) {
+                    $map['CONCAT(U.realname,U.mobile)'] = ['like','%'.I('title').'%'];
+                }
+                if ( I('start') || I('end') ) {
+                    $map['M.lastDate'] = get_selectTime( I('start'),I('end') );
+                }
+                $sql = D::get(['Finance','F'],[
+                    'field' => "userID,UNIX_TIMESTAMP(MAX(createDate)) lastDate,SUM(CASE WHEN type='pay' THEN money ELSE 0 END) pay,SUM(CASE WHEN type='recharge' THEN money ELSE 0 END) recharge,SUM(CASE WHEN type='back' THEN money ELSE 0 END) back",
+                    'join'  => 'LEFT JOIN __USERS__ U ON U.id = F.userID',
+                    'group' => 'F.userID'
+                ],false);
+                $data = [
+                    'where' => $map,
+                    'table' => "{$sql} M",
+                    'field' => 'M.*,(M.pay+M.recharge-M.back) total,U.realname,U.mobile',
+                    'join'  => "LEFT JOIN __USERS__ U ON U.id = M.userID",
+                    'order' => 'M.lastDate DESC',
+                ];
+                break;
+            case 'export':
+                if ( I('title') ) {
+                    $map['CONCAT(U.realname,U.mobile)'] = ['like','%'.I('title').'%'];
+                }
+                if ( I('start') || I('end') ) {
+                    $map['M.lastDate'] = get_selectTime( I('start'),I('end') );
+                }
+
+                $sql = D::get(['Finance','F'],[
+                    'field' => "userID,UNIX_TIMESTAMP(MAX(createDate)) lastDate,SUM(CASE WHEN type='pay' THEN money ELSE 0 END) pay,SUM(CASE WHEN type='recharge' THEN money ELSE 0 END) recharge,SUM(CASE WHEN type='back' THEN money ELSE 0 END) back",
+                    'join'  => 'LEFT JOIN __USERS__ U ON U.id = F.userID',
+                    'group' => 'F.userID'
+                ],false);
+                $data = [
+                    'where' => $map,
+                    'table' => "{$sql} M",
+                    'field' => 'M.*,(M.pay+M.recharge-M.back) total,U.realname,U.mobile',
+                    'join'  => "LEFT JOIN __USERS__ U ON U.id = M.userID",
+                    'order' => 'M.lastDate DESC',
+                ];
+                break;
         }
-        if ( I('start') || I('end') ) {
-            $map['O.createTime'] = get_selectTime( I('start'),I('end') );
-        }
-        $sql = D::get('Order',[
-            'field' => 'userID,MAX(createTime) orderTime,SUM(price) total',
-            'where' => "`status` IN ('1,2,9')",
-            'group' => 'userID'
-        ],false);
-        $data = [
-            'where' => $map,
-            'field' => 'U.*,O.total,O.orderTime',
-            'join'  => "LEFT JOIN $sql O ON O.userID = U.id",
-            'order' => 'O.createTime DESC',
-        ];
+
     }
     //用户订单列表
     public function index()
-    {   
+    {
         $info = http_build_query(I('get.'));
         $db = parent::index(false);
         $this->assign('info',$info);
         $this->assign('db',$db['db']);
-        $this->assign('db',$db['page']);
+        $this->assign('page',$db['page']);
         $this->display();
     }
     //导出
     public function export(){
-        $db = parent::index(true);
+        $db = array_map(function($data){
+            $data['lastDate'] = date('Y-m-d',$data['lastDate']);
+            return $data;
+        },parent::index(true));
         $xlsName  = date('Y-m-d_H:i:s',time()).'客户统计';
         $xlsCell  = array(
-            array('orderTime','日期'),
+            array('lastDate','日期'),
             array('realname','姓名'),
             array('mobile','电话'),
-            array('total','成交金额')
+            array('total','成交总金额')
         );
         export_Excel($xlsName,$xlsCell,$db);
     }
     //查看明细
     public function see(){
-        $id = I('id');
+        $map['userID'] = I('uid');
         if ( I('start') || I('end') ) {
-            $map['O.createTime'] = get_selectTime( I('start'),I('end') );
+            $map['F.createDate'] = get_DateTime(I('start'),I('end'));
         }
         if(I('title')){
-            $map['O.orderNo'] = I('title');
+            $map['F.orderNO'] = I('title');
         }
-        $map['O.status'] = ['in','1,2,9'];
-        $map['O.userID'] = $id;
-        $count = D::count(['Order','O'],[
+        $count = D::count(['Finance','F'],[
             'where' => $map
         ]);
         $page = new \Org\Util\Page($count,C('PAGE_NUMBER'));
-        $list = D::get(['Order','O'],[
+        $list = D::get(['Finance','F'],[
             'where' => $map,
-            'field' => 'O.*,U.realname,U.mobile',
-            'join'  => 'LEFT JOIN __USERS__ U ON U.id = O.userID',
+            'field' => 'F.*,U.realname,U.mobile',
+            'join'  => 'LEFT JOIN __USERS__ U ON U.id = F.userID',
+            'order' => 'F.createDate desc,F.id desc',
             'limit' => $page->firstRow.','.$page->listRows
         ]);
+        $list = array_map(function($data){
+            $data['type_name'] = getTypes($data['type']);
+            return $data;
+        },$list);
+        $this->assign('uid',I('uid'));
         $this->assign('db',$list);
         $this->assign('page',$page->show());
         $this->display();

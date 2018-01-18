@@ -393,6 +393,36 @@ function get_selectTime($start='',$end='')
         }
     }
 }
+//标准日期格式
+function get_DateTime($start='',$end='')
+{
+    $nowTime = date('Y-m-d');
+    if (!empty($start)) {
+        $startTime = $start;
+        if ($startTime > $nowTime) {
+            $startTime = $nowTime;
+        }
+    }
+    if (!empty($end)) {
+        $endTime = date('Y-m-d',strtotime($end.' +1 days'));
+        if ($endTime > $nowTime) {
+            $endTime = $nowTime;
+        }
+    }
+    if ($startTime) {
+        if ($endTime) {
+            return ['between',[$startTime,$endTime]];
+        }else{
+            return ['between',[$startTime,$nowTime]];
+        }
+    }else{
+        if ($endTime) {
+            return ['lt',date('Y-m-d',strtotime($endTime.' +1 days'))];
+        }else{
+            return ['lt',date('Y-m-d',strtotime($nowTime.' +1 days'))];
+        }
+    }
+}
 
 
 /**
@@ -478,6 +508,18 @@ function getTypes($type){
             break;
         case 'lvup':
             $word = '购买积分卡升级';
+            break;
+        case 'backs':
+            $word = '退款减积分';
+            break;
+        case 'pay':
+            $word = '下单';
+            break;
+        case 'back':
+            $word = '退款';
+            break;
+        case 'recharge':
+            $word = '充值';
             break;
         case '1':
             $word = '已支付';

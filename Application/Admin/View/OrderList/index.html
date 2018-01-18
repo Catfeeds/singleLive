@@ -82,7 +82,7 @@
                                     <td>{$list.price}</td>
                                     <td>{$list.status_name}</td>
                                     <td>
-                                        <if condition="$list['status'] eq 1">
+                                        <if condition="($list['status'] eq 1) or ($list['status'] eq 7)">
                                             <a href="__URL__/sure/id/{$list.id}" data-msg="您确定该用户订单要入住？确定后该用户订单成为已入住状态！" class="z_coios_1 ajax-get confirm">确认入住</a>
                                             <elseif condition="$list['status'] eq 9"  />
                                             <a href="__URL__/leave/id/{$list.id}" data-msg="您确定该用户,已入住完成,要离开房间？确定后订单将成为已完成状态！" class="z_coios_4 ajax-get confirm">离开</a>

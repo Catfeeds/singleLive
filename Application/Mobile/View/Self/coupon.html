@@ -31,6 +31,10 @@
                     <div class="Electronic_right aczert_send">
                         ¥ <b>{$row.money}</b>
                     </div>
+                    <elseif condition="$row['status'] eq 4" />
+                    <div class="Electronic_right aczert_no">
+                        ¥ <b>{$row.money}</b>
+                    </div>
                     <else />
                     <div class="Electronic_right aczert">
                         ¥ <b>{$row.money}</b>

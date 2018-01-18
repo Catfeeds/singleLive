@@ -10,7 +10,7 @@
             <div class="layui-tab-item layui-show">
                 <div class="conter">
                     <div class="conter_sait">
-                        <form action="">
+                        <form action="__URL__/index" method="get">
                             <div class="wort">
                                 <div class="layui-input-inline">
                                     <input name="start" autocomplete="off" placeholder="点击选择起始日期" class="layui-input test-item" onclick="layui.laydate({elem: this})" type="text">
@@ -31,9 +31,9 @@
                             <div class="wort">
                                 <button type="submit" class="layui-btn">查找</button>
                             </div>
-                            <!--<div class="wort">
-                                <a href="__URL__/export?{$info}"><button type="button" class="layui-btn layui-btn-normal">导出</button></a>
-                            </div>-->
+                            <div class="wort">
+                                <a href="__URL__/export?start={:I('start')}&end={:I('end')}&title={:I('title')}"><button type="button" class="layui-btn layui-btn-normal">导出</button></a>
+                            </div>
                         </form>
                     </div>
 
@@ -51,11 +51,11 @@
                             <tbody>
                             <volist name="db" id="list">
                                 <tr>
-                                    <td>{$list.orderTime|date_out=###}</td>
+                                    <td>{$list.lastDate|date='Y-m-d',###}</td>
                                     <td>{$list.realname}</td>
                                     <td>{$list.mobile}</td>
-                                    <td>{$list.total}</td>
-                                    <td><a href="__URL__/see/id/{$list.id}">查看明细</a></td>
+                                    <td style="color: red;">{$list.total}</td>
+                                    <td><a class="z_coios_4" href="__URL__/see/uid/{$list.userID}">查看明细</a></td>
                                 </tr>
                             </volist>
                             </tbody>
