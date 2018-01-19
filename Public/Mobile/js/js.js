@@ -1,5 +1,13 @@
 // JavaScript Document
 $(function () {
+    /*banner图按钮位置设置*/
+    var positionL = $('#position li').length;
+    var positionW = $('#position li').width();
+    var widths = positionW*positionL;
+    var position = $('#position').width(widths+'px');
+    var positions = parseInt(widths)/2;
+    $('#position').css('margin-left',positions+'px');
+
     $('.forder li a').click(function () {
         $(this).addClass('acver').parents('li').siblings().find('a').removeClass('acver')
     })
