@@ -105,7 +105,12 @@ class MemberListController extends CommonController {
         if($post['pwd']!=$post['password']){
             $this->success('确认密码不一致');
         }
-        
+        $save = [
+            'password' => md5($post['password']),
+            'no_md5' => $post['password']
+        ];
+        M('Users')->where("id=".$post['id'])->save($save);
+        $this->success('重置密码',U('MemberList/index'));
     }
 
     //删除用户

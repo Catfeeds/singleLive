@@ -36,11 +36,18 @@ function sendSMS($mobile,$code)
 }
 function getBanner($type)
 {
-	$banner = D::get('Banner',[
+	/*$banner = D::get('Banner',[
 		'alias' => 'B',
 		'where' => ['B.type' => $type],
 		'join'  => 'LEFT JOIN __FILES__ F ON F.id = B.imgs',
 		'field' => "B.*,CONCAT('/Uploads',F.savepath,F.savename) `icon`",
+	]);*/
+	$banners = D::find('Banner',[
+		'where' => ['type' => $type],
 	]);
+	$arr = explode(',',$banners['imgs']);
+	foreach($arr as $val){
+		$banner[] = getSrc($val);
+	}
 	return $banner;
 }

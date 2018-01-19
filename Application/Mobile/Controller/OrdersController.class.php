@@ -69,9 +69,26 @@ class OrdersController extends CommonController{
 		$this->assign('db',$db);
 		$this->display();
 	}
-	//用户操作发起退款操作
+	/*
+	 * 	用户操作发起退款操作
+	 *		首先看后台设置的参数 && 该订单是否在设置时间内 ？ 可以退款 ;否则不可以
+	 * */
 	public function backMoney(){
 		$map['orderNo'] = I('orderNo');
+		$orderMsg = D::find('Order',['where'=>$map]);
+		$web = D('Config')->get_config('backTime');
+		if($web && $web['backTime']>0){
+			//该订单的开始时间
+			$order_inTime = strtotime($orderMsg['inTime'],time());
+			//设置退款时间
+			$backTime = $web['backTime']*60*60;
+			//当前时间戳
+			$nowTime = time();
+			//如果当钱时间戳 大于 $order_inTime - $backTime这个时间就不让它退款
+			if( $nowTime > ($order_inTime - $backTime)){
+				$this->error('您已经超过了退款时间限制,退款时间为订单所选开始日期的前'.$web['backTime'].'小时');
+			}
+		}
 		D::save('Order',['where'=>$map],[
 			'updateTime' => NOW_TIME,
 			'status'	=> 5
