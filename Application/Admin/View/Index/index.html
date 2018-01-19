@@ -3,12 +3,11 @@
     <style>
         .xiopr ul li{width: 12%;}
         .xiopr ul li img{width: 80px;height: 80px;}
-
     </style>
         <div class="layui-tab-content" style="min-height: 150px; padding: 5px 0 0 0;">
             <div class="layui-tab-item layui-show">
                 <div class="conter">
-                    <div class="xiopr">
+                    <div class="xiopr" style="width: 1400px;">
                         <ul>
                             <li>
                                 <img src="__PUBLIC__/Admin/images/pay/user.png">
@@ -34,7 +33,7 @@
                             </li>-->
                             <li>
                                 <img src="__PUBLIC__/Admin/images/pay/status6.png" >
-                                <p>已退款订单 ： <b style="color:#F00;">{$Count.orderCompleteCount}</b></p>
+                                <p>已退款订单 ： <b style="color:#F00;">{$Count.status6}</b></p>
                             </li>
                             <!--<li>
                                 <img src="__PUBLIC__/Admin/images/pay/status7.png" >
@@ -42,11 +41,11 @@
                             </li>-->
                             <li>
                                 <img src="__PUBLIC__/Admin/images/pay/status8.png" >
-                                <p>待付款订单 ： <b style="color:#F00;">{$Count.orderCompleteCount}</b></p>
+                                <p>待付款订单 ： <b style="color:#F00;">{$Count.status8}</b></p>
                             </li>
                             <li>
                                 <img src="__PUBLIC__/Admin/images/pay/status9.png" >
-                                <p>已入住订单 ： <b style="color:#F00;">{$Count.orderCompleteCount}</b></p>
+                                <p>已入住订单 ： <b style="color:#F00;">{$Count.status9}</b></p>
                             </li>
                         </ul>
                     </div>
@@ -59,16 +58,15 @@
                                 <th>收入</th>
                                 <th>支出</th>
                                 <th>沉淀</th>
-                                <!--<th>操作</th>-->
                             </tr>
                             </thead>
                             <tbody>
                             <volist name="db" id="list">
                                 <tr>
-                                    <td></td>
-                                    <td></td>
-                                    <td></td>
-                                    <td></td>
+                                    <td>{$list.time|date='Y-m-d',###}</td>
+                                    <td>{$list.inMoney}</td>
+                                    <td>{$list.outMoney}</td>
+                                    <td>{$list.sideMoney}</td>
                                 </tr>
                             </volist>
                             </tbody>

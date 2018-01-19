@@ -1,6 +1,5 @@
 <?php
 namespace Admin\Controller;
-
 use Think\Controller;
 use Think\Faster;
 use Think\D;

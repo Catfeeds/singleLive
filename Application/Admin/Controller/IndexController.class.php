@@ -3,91 +3,74 @@ namespace Admin\Controller;
 use Think\Controller;
 use Think\D;
 class IndexController extends CommonController {
-
-    public $model = ['OrderHotel','OH'];
     public function _map(&$data)
     {
-        if ( I('title') ) {
-            $map['CONCAT(OH.no,U.realname,U.mobile)'] = ['like','%'.I('title').'%'];
+        switch (ACTION_NAME){
+            case 'index':
+                if ( I('start') || I('end') ) {
+                    $map['time'] = get_selectTime(I('start'),I('end'));
+                }
+                $sql = D::get('Finance',[
+                    'where' => $map,
+                    'field' => "UNIX_TIMESTAMP(MAX(createDate)) time,SUM(CASE WHEN type='pay' THEN money ELSE 0 END) upPay,SUM(CASE WHEN type='recharge' THEN money ELSE 0 END) up,SUM(CASE WHEN type='back' THEN money ELSE 0 END) down",
+                    'group' => 'createDate',
+                ],false);
+                $data = [
+                    'table' => "{$sql} M",
+                    'field' => 'M.time,(M.upPay+M.up) inMoney,M.down outMoney,(M.upPay+M.up-M.down) sideMoney',
+                    'order' => 'M.time DESC',
+                ];
+                break;
+            case 'see':
+                if(I('title')){
+                    $map['CONCAT(U.realname,U.mobile)'] = array('like','%'.I('title').'%');
+                }
+                $map['createDate'] = I('date');
+                $data = [
+                    'alias' => 'F',
+                    'table' => '__FINANCE__',
+                    'where' => $map,
+                    'join'  => 'LEFT JOIN __USERS__ U ON U.id = F.userID',
+                    'field' => 'F.*,U.realname,U.mobile',
+                    'order' => 'createDate desc,id desc'
+                ];
+                break;
         }
-        if ( I('start') || I('end') ) {
-            $map['OH.createTime'] = get_selectTime( I('start'),I('end') );
-        }
-
-        $where['OH.status'] = ['eq',2];        
-        $where['OH.endTime'] = ['gt',strtotime(date('Y-m-d'))]; 
-        $where['_logic'] = 'or';
-        $map['_complex'] = $where;
-
-        $data = [
-            'where' => $map,
-            'field' => 'OH.*,U.realname,U.nickname,U.mobile',
-            'join'  => [
-                'LEFT JOIN __USERS__ U ON U.id = OH.userId'
-            ],
-            'order' => 'OH.createTime DESC',
-        ];
 
     }
     public function index()
     {
-        $Count = [
-            'userCount' => D::count('users','status!=9'),           //用户总数
-            'hotelCount' => D::count('hotels','status!=9'),         //酒店总数
-            'orderHangCount' => D::count('order_hotel','status=2'), //截止现在未完成订单数
-            'orderCompleteCount' => D::count('order_hotel','endTime>'.strtotime(date('Y-m-d')).'')//今日已完成订单数
+        $db = parent::index(false);
+        $showNum = [
+            'user' => $this->countNum('users','1,2'),
+            'status1' => $this->countNum('Order','1'),
+            'status2' => $this->countNum('Order','2'),
+            'status3' => $this->countNum('Order','3'),
+            'status4' => $this->countNum('Order','4'),
+            'status6' => $this->countNum('Order','6'),
+            'status8' => $this->countNum('Order','8'),
+            'status9' => $this->countNum('Order','9')
         ];
-
-        $info = http_build_query(I('get.'));
-
-        $this->assign('Count',$Count);
-        $this->assign('info',$info);
-        parent::index('checkData');
+        //dump($showNum);die;
+        $this->assign('Count',$showNum);
+        $this->assign('db',$db['db']);
+        $this->assign('page',$db['page']);
+        $this->display();
     }
-
     /*
-        封装一个数据集函数
-    */
-    public function checkData( $data ){
-        $order = D::find(['Order','O'],[
-            'where' => ['O.id' => $data['orderId']],
-            'join'  => [
-                'LEFT JOIN __HOTEL_ROOMS__ R ON R.id = O.room',
-                'LEFT JOIN __HOTELS__ C ON C.id = R.hotel'
-            ],
-            'field' => 'R.*,(O.duration - O.used) have,C.hotelName',
-        ]);
-        $data['roomType'] = D::field('Rooms.roomName',$order['room']);
-        $data['hotelName'] = $order['hotelName'];
-        $data['uname'] = D::field('Users.realname',$data['userId']);
-        $data['utel'] = D::field('Users.mobile',$data['userId']);
-        $data['have'] = $order['have'];
-        $data['min'] = $order['minimum'];
-        $data['minute'] = $order['minute'];
-        $data['now'] = NOW_TIME - $data['startTime'];
-        $h = floor(($data['endTime'] - $data['startTime']) / 3600);
-        $m = floor((($data['endTime'] - $data['startTime'])% 3600) / 60);
-        $s = floor((($data['endTime'] - $data['startTime'])% 3600) % 60);
-        $data['old'] = ($data['status'] == 1)?str_pad($h,2, "0", STR_PAD_LEFT).':'.str_pad($m,2, "0", STR_PAD_LEFT).':'.str_pad($s,2, "0", STR_PAD_LEFT):'00:00:00';
-        if ($data['status'] == 1) {
-            if ($h < $order['minimum']) {
-                $data['use'] = $order['minimum'];
-            }else{
-                $data['use'] = ($order['minute'] <= $m )?$h + 1:$h;
-            }
+     *  统计函数
+     *      查询表名 $table [string]
+     *      查询状态 $status [string]
+     * */
+    public function countNum($table,$status){
+        if($table == 'users'){
+            $map['status'] = array('in',explode(',',$status));
+            $count = D::count("$table",['where'=>$map]);
         }else{
-            $data['use'] = 0;
+            $count = D::count("$table",$status);
         }
-        //订单金额
-        if($data['use']==0){
-            $data['umoney'] = 0;
-        }else{
-            $data['umoney'] = $data['use']*$order['amount'];
-        }
-        return $data;
+        return $count;
     }
-
-
     //登录页面
     public function login()
     {

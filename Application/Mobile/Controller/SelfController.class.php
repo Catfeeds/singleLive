@@ -350,16 +350,25 @@ class SelfController extends CommonController{
 	 * */
 	public function upGradeBuy(){
 		$get = I('get.');
+		$uid = session('user');
+		$user = D::find(['Users','U'],[
+			'join' => 'LEFT JOIN __GRADES__ G ON G.id = U.nowLevel',
+			'field' => 'U.nowLevel,G.sort'
+		]);
+
+		$grade = D::find('Grades',$get['id']);
 		if($get['my']<$get['grade']){
 			$this->error('积分不足,无法购买会员升级卡');
+		}elseif($user['nowLevel'] == $get['id']){
+			$this->error('您当前等级已是此等级无法购买');
+		}elseif($grade['sort'] < $user['sort']){
+			$this->error('您不能购买等级比您低的会员升级卡');
 		}else{
 			//插入积分明细记录
-			$uid = session('user');
-			$grade = D::field('Grades.title',$get['id']);
 			$sorce = [
 				'userID' => $uid,
 				'type' => 'lvup',
-				'sorce' => $get['sorce'],
+				'sorce' => $get['grade'],
 				'method' => 'sub',
 				'createTime' => time()
 			];
@@ -371,13 +380,13 @@ class SelfController extends CommonController{
 				'before' => $user['nowLevel'],
 				'after'  => $get['id'],
 				'createTime' => time(),
-				'achs' => $get['sorce'],
+				'achs' => $get['grade'],
 				'admin' => 0
 			];
 			M('UserLvup')->add($level);
 			//更新user表nowLevel字段
 			D::set('Users.nowLevel',$uid,$get['id']);
-			$this->success("购买成功,现在您的级别已经成为$grade",U('Self/index'));
+			$this->success("购买成功,现在您的级别已经成为{$grade['title']}",U('Self/index'));
 		}
 
 	}

@@ -46,11 +46,11 @@ class MemberListController extends CommonController {
                 $map["U.status"] = array('neq',3);
                 $balance_sql = D::get('Balance',[
                     'where' => "`status` = 1",
-                    'field' => "userID,SUM(CASE WHEN method='plus' THEN money ELSE 0 END) BalanceUp,SUM(CASE WHEN method='sub' THEN money ELSE 0 END) BalanceDown",
+                    'field' => "userID,IFNULL(SUM(CASE WHEN method='plus' THEN money ELSE 0 END),0) BalanceUp,IFNULL(SUM(CASE WHEN method='sub' THEN money ELSE 0 END),0) BalanceDown",
                     'group' => 'userID'
                 ],false);
                 $sorce_sql = D::get('UserSorce',[
-                    'field' => "userID,SUM(CASE WHEN method='plus' THEN sorce ELSE 0 END) SorceUp,SUM(CASE WHEN method='sub' THEN sorce ELSE 0 END) SorceDown",
+                    'field' => "userID,IFNULL(SUM(CASE WHEN method='plus' THEN sorce ELSE 0 END),0) SorceUp,IFNULL(SUM(CASE WHEN method='sub' THEN sorce ELSE 0 END),0) SorceDown",
                     'group' => 'userID'
                 ],false);
                 $data =[
@@ -59,7 +59,7 @@ class MemberListController extends CommonController {
                         "LEFT JOIN $balance_sql B ON B.userID = U.id",
                         "LEFT JOIN $sorce_sql S ON S.userID = U.id",
                     ],
-                    'field' => 'U.*,(B.BalanceUp-B.BalanceDown) allBalance,(S.SorceUp-S.SorceDown) allSorce',
+                    'field' => 'U.*,IFNULL((B.BalanceUp-B.BalanceDown),0) allBalance,IFNULL((S.SorceUp-S.SorceDown),0) allSorce',
                     'order' => 'createTime'
                 ];
                 break;
@@ -75,6 +75,12 @@ class MemberListController extends CommonController {
             }else{
                 $data['nowLevel'] = D::field('Grades.title',$data['nowLevel']);
             }
+             if(!$data['allBalance']){
+                 $data['allBalance'] = 0;
+             }
+             if(!$data['allSorce']){
+                 $data['allSorce'] = 0;
+             }
         	return $data;
         });
         

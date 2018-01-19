@@ -11,25 +11,12 @@
             <div class="layui-tab-item layui-show">
                 <div class="conter">
                     <div class="conter_sait">
-                        <form action="">
-                            <div class="wort">
-                                <div class="layui-input-inline">
-                                    <input name="start" autocomplete="off" placeholder="点击选择起始日期" class="layui-input" onclick="layui.laydate({elem: this})" type="text">
-                                </div>
-                            </div>
-                            <div class="wort">
-                                <div class="layui-input-inline">至
-                                </div>
-                            </div>
-                            <div class="wort">
-                                <div class="layui-input-inline">
-                                    <input name="end" autocomplete="off" placeholder="点击选择结束日期" class="layui-input" onclick="layui.laydate({elem: this})" type="text">
-                                </div>
-                            </div>
+                        <form action="__URL__/see" method="get">
                             <div class="wort" style="width:280px;">
-                            <input name="title" lay-verify="title" autocomplete="off" placeholder="订单编号" class="layui-input" type="text">
+                            <input name="title" lay-verify="title" autocomplete="off" placeholder="客户姓名/电话" class="layui-input" type="text">
                         </div>
                             <div class="wort">
+                                <input type="hidden" name="date" value="{$date}">
                                 <button type="submit" class="layui-btn">查找</button>
                             </div>
                             <!--<div class="wort">
@@ -45,17 +32,21 @@
                                 <th>姓名</th>
                                 <th>电话</th>
                                 <th>成交金额</th>
-                                <th>操作</th>
+                                <th>交易类型</th>
                             </tr>
                             </thead>
                             <tbody>
                             <volist name="db" id="list">
                                 <tr>
-                                    <td>{$list.createTime|date_out=###}</td>
+                                    <td>{$list.createDate}</td>
                                     <td>{$list.realname}</td>
                                     <td>{$list.mobile}</td>
-                                    <td>{$list.price}</td>
-                                    <td><a href="__URL__/see/id/{$list.id}">查看明细</a></td>
+                                    <if condition="$list['type'] eq 'back'">
+                                        <td style="color: red;">-{$list.money}</td>
+                                        <else />
+                                        <td style="color: green;">{$list.money}</td>
+                                    </if>
+                                    <td>{$list.type_name}</td>
                                 </tr>
                             </volist>
                             </tbody>

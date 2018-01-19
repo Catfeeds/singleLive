@@ -6,7 +6,6 @@
                 <cite>级别管理</cite>
             </li>
         </ul>
-
         <div class="layui-tab-content" style="min-height: 150px; padding: 5px 0 0 0;">
             <div class="layui-tab-item layui-show">
                 <div class="conter">
@@ -30,6 +29,7 @@
                             <thead>
                             <tr>
                                 <th>级别名称</th>
+                                <th>等级顺序</th>
                                 <th>所需积分</th>
                                 <th>图片</th>
                                 <th>状态</th>
@@ -40,6 +40,7 @@
                             <volist name="db" id="row">
                                 <tr>
                                     <td>{$row.title}</td>
+                                    <td>{$row.sort}</td>
                                     <td>{$row.sorce}</td>
                                     <td><img style="width: 100px;height: 100px;" src="{:getSrc($row['pic'])}" /></td>
                                     <td>{$row['status'] == '1' ? '正常' : '禁用'}</td>

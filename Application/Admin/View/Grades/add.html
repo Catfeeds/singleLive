@@ -18,6 +18,12 @@
                                     <input class="fn-tinput requ" name="title" placeholder="请填写级别名称">
                                 </div>
                             </div>
+                            <div class="glylb_szmm"><span class="glylb_szmm_span">等级顺序：</span>
+                                <div class="layui-input-block z_min_left_10">
+                                    <input type="number" class="fn-tinput requ" name="sort" placeholder="请输入等级顺序" value="{$db.sort}">
+                                    <span style="color: red;font-size: 17px;">特别注意：只能填写数字(最小为1)并且不能出现与已添加的等级顺序重复,数字越大代表等级越高,数字越小等级越低</span>
+                                </div>
+                            </div>
                             <div class="glylb_szmm"><span class="glylb_szmm_span">所需积分：</span>
                                 <div class="layui-input-block z_min_left_10">
                                     <input class="fn-tinput requ" name="sorce" placeholder="请填写所需积分">
@@ -44,8 +50,7 @@
                     <div class="gater">
                         <input type="hidden" name="__GO__" value="__URL__/index">
                         <input type="submit" value="确认" class="glylb_an_qd ajax-post" target-form="form-hotelAdd"/>
-                        <input type="button" value="取消" class="glylb_an_fh"
-                               onclick="javascript:history.back(-1);return false"/>
+                        <a href="__URL__/index"><input type="button" value="返回" class="glylb_an_fh" /></a>
                     </div>
                 </form>
             </div>

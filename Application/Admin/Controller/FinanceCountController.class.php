@@ -3,7 +3,6 @@ namespace Admin\Controller;
 use Think\Controller;
 use Think\Faster;
 use Think\D;
-
 /*
    订单统计
 */
@@ -29,17 +28,23 @@ class FinanceCountController extends CommonController
                 ];
                 break;
             case 'see':
+                if(I('title')){
+                    $map['CONCAT(U.realname,U.mobile)'] = array('like','%'.I('title').'%');
+                }
                 $map['createDate'] = I('date');
                 $data = [
+                    'alias' => 'F',
                     'table' => '__FINANCE__',
                     'where' => $map,
+                    'join'  => 'LEFT JOIN __USERS__ U ON U.id = F.userID',
+                    'field' => 'F.*,U.realname,U.mobile',
                     'order' => 'createDate desc,id desc'
                 ];
                 break;
         }
 
     }
-    //用户订单列表
+    //财务列表
     public function index()
     {
         $db = parent::index(false);
@@ -49,7 +54,15 @@ class FinanceCountController extends CommonController
     }
     //查看明细
     public function see(){
-        echo parent::index('sql');die;
+        $date = I('date');
+        $db = parent::index(false);
+        $db['db'] = array_map(function($data){
+            $data['type_name'] = getTypes($data['type']);
+            return $data;
+        },$db['db']);
+        $this->assign('date',$date);
+        $this->assign('db',$db['db']);
+        $this->assign('page',$db['page']);
         $this->display();
     }
     //导出

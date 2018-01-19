@@ -14,6 +14,7 @@ class LoginController extends CommonController{
 	 */
 	public function index()
 	{
+		C('LAYOUT_ON',false);
 		$this->display();
 	}
 	/**
@@ -71,9 +72,13 @@ class LoginController extends CommonController{
 			];
 			$user = D::find('Users',$map);
 			if ($user) {
-				if ( md5(I('password')) === $user['password'] ) {
-					session('user',$user['id']);
-					$this->success('登录成功，正在跳转...',S('url'));
+				if ( md5(I('password')) === $user['password']) {
+					if($user['status'] == 1){
+						session('user',$user['id']);
+						$this->success('登录成功，正在跳转...',S('url'));
+					}else{
+						$this->error('您的账号已被禁用或删除');
+					}
 				}else{
 					$this->error('密码错误');
 				}

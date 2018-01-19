@@ -14,6 +14,7 @@ class CouponUsedController extends CommonController {
         if(I('title')){
             $map['CONTACT(U.realname,P.title)'] = ['like','%'.I('title').'%'];
         }
+        $map['C.status'] = 1;
         $data = [
             'where' => $map,
             'field' => 'C.*,U.realname,P.title,P.money',
@@ -22,7 +23,7 @@ class CouponUsedController extends CommonController {
                 'LEFT JOIN __COUPON_EXCHANGE__ E ON E.card = C.cID',
                 'LEFT JOIN __COUPON__ P ON P.id = E.cID'
             ],
-            'order' => 'C.createTime desc'
+            'order' => 'C.createTime desc,C.id desc'
         ];
     }
     public function index(){
@@ -30,10 +31,10 @@ class CouponUsedController extends CommonController {
         $db['db'] = array_map(function($data){
             switch ($data['type']){
                 case 'k':
-                    $data['showName'] = D::field('Package.title',$data['roomID']);
+                    $data['showName'] = D::field('House.name',$data['roomID']);
                     break;
                 case 't':
-                    $data['showName'] = D::field('House.name',$data['roomID']);
+                    $data['showName'] = D::field('Package.title',$data['roomID']);
                     break;
             }
             $data['createTime'] = date('Y-m-d',$data['createTime']);
