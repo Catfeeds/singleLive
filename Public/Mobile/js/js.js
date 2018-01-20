@@ -2,11 +2,12 @@
 $(function () {
     /*banner图按钮位置设置*/
     var positionL = $('#position li').length;
-    var positionW = $('#position li').width();
+    var positionW = $('#position li').width()+4;
     var widths = positionW*positionL;
     var position = $('#position').width(widths+'px');
-    var positions = parseInt(widths)/2;
+    var positions = -(parseInt(widths)/2);
     $('#position').css('margin-left',positions+'px');
+    /*banner图按钮位置设置结束*/
 
     $('.forder li a').click(function () {
         $(this).addClass('acver').parents('li').siblings().find('a').removeClass('acver')
@@ -14,8 +15,7 @@ $(function () {
     $('.app_Guest li').click(function () {
         $(this).addClass('avcet').siblings().removeClass('avcet')
     })
-//商品加减
-
+    /*选择套餐限购份数开始*/
     $('.appjia').click(function () {
         var pp = $('.appcont');
         var limit = $(this).attr('limit');
@@ -45,6 +45,7 @@ $(function () {
             });
         }
     })
+    /*选择套餐限购份数结束*/
 //通用提示框
     /*$(".spoert").click(function () {
      var msg = $(this).attr("msg-tite")
@@ -74,7 +75,6 @@ $(function () {
             }
         }
     });
-
 
     $('.fr_radio').click(function () {
         $('.fr_radio').removeClass('radiodsi')

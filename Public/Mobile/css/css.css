@@ -57,7 +57,7 @@ textarea {
 	float: right !important;
 }
 
-
+.app_dist_cont img{ width: 100%;}
 
 /*解决iphone safari上的圆角问题*/
 input[type="button"], input[type="submit"], input[type="reset"] {

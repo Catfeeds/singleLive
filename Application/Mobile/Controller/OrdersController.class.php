@@ -469,7 +469,7 @@ class OrdersController extends CommonController{
 			'type' => 'consume',
 			'sorce' => $sorce,
 			'method' => 'plus',
-			'createTime' => strtotime(date('Y-m-d'))
+			'createTime' => time()
 		];
 		M('UserSorce')->add($sorce_data);
 	}

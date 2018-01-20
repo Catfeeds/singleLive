@@ -7,7 +7,9 @@
                     <else />
                     <img class="img_show" src="__MOBILE__/img/my01@2x.png" />
                 </if>
-                <input id="photo" type="button" />
+                <form id="upForm">
+                    <input id="photo" type="file" />
+                </form>
             </div>
             <div class="app_name_1">
                 {$userMsg.myName}
@@ -103,4 +105,11 @@
             }
         })
     })
+    /*$('#photo').on('click',function(){
+        var uid = "{$userMsg['uid']}";
+        var formData = new FormData($( "#upForm" )[0]);
+        $.post("{:U('UploadPhoto/upload_Photo')}",formData,function(){
+
+        })
+    })*/
 </script>

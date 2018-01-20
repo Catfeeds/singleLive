@@ -9,6 +9,9 @@ class GradesModel extends Model {
 	    ['sorce','require','请填写该级别所需的积分'],
 	    ['content','require','请填写级别描述'],
 	];
+	protected $_auto = [
+		['status','1']
+	];
 	//设置等级顺序
 	function check_sorts($data){
 		$gradeSort = D::lists('Grades','sort');
