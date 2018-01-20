@@ -111,10 +111,14 @@ class PackageListController extends CommonController {
     public function content(){
         $pid = I('pid');
         $package_set = M('PackageSet');
-        $count = $package_set->where("pid=".$pid)->count();
+        if(I('title')){
+            $map['title'] = array('like','%'.I('title').'%');
+        }
+        $map['pid'] = $pid;
+        $count = $package_set->where($map)->count();
         $page = new \Org\Util\Page($count,C('PAGE_NUMBER'));
         $list = $package_set->field("*,(money*attr) total")
-            ->where("pid=".$pid)
+            ->where($map)
             ->limit($page->firstRow.','.$page->listRows)
             ->select();
         $this->assign('list',$list);

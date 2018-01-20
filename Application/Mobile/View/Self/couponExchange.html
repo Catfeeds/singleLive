@@ -1,3 +1,10 @@
+<style type="text/css">
+    .bbbb {
+        overflow: hidden;
+        text-overflow: ellipsis;
+        white-space: nowrap;
+    }
+</style>
 <div class="app_center">
     <div class="integral_tite">
         <span>我的积分</span>
@@ -11,7 +18,7 @@
                 </div>
                 <div class="integral_right">
                     <div class="integral_right_f">
-                        <span>{$db.title}</span>
+                        <span class="bbbb">{$db.title}</span>
                         <b>{$db.sorce}积分</b>
                     </div>
                     <div class="integral_right_r">

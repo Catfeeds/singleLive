@@ -33,6 +33,7 @@
                                     <button name="file" style="margin-top:7px;" class="layui-btn test" type="button" lay-data="{url: '/index.php/Admin/AjaxPost/uploadOne', accept: 'images'}" >
                                         <i class="layui-icon">&#xe67c;</i>上传封面图片
                                     </button>
+                                    <span style="color: red;">最佳:376*175px</span>
                                     <input name="pic" id="logo" type="hidden" value="{$db.pic}">
                                 </div>
                             </div>
@@ -42,7 +43,7 @@
                                 </div>
                             </div>
                             <div class="glylb_szmm">
-                                <span class="glylb_szmm_span">轮播图：</span>
+                                <span class="glylb_szmm_span">轮播图：<span style="color: red;">最佳效果需要上传的每张图片大小完全一致</span></span>
                                 <div class="layui-input-block z_min_left_10">
                                     <div id="zyupload" class="zyupload" style="margin:0 0 20px 0;"></div>
                                 </div>

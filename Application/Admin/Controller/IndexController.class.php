@@ -51,7 +51,6 @@ class IndexController extends CommonController {
             'status8' => $this->countNum('Order','8'),
             'status9' => $this->countNum('Order','9')
         ];
-        //dump($showNum);die;
         $this->assign('Count',$showNum);
         $this->assign('db',$db['db']);
         $this->assign('page',$db['page']);
@@ -67,7 +66,8 @@ class IndexController extends CommonController {
             $map['status'] = array('in',explode(',',$status));
             $count = D::count("$table",['where'=>$map]);
         }else{
-            $count = D::count("$table",$status);
+            $map['status'] = $status;
+            $count = D::count("$table",['where'=>$map]);
         }
         return $count;
     }

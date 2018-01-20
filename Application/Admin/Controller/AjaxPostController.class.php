@@ -83,7 +83,6 @@ class AjaxPostController extends CommonController
             $info['status'] = 'false';
             $info['error'] = $upload->getError();
         } else {// 上传成功 获取上传文件信息\
-            // dump($info);die;
             $id = D::add('Files', $info);
             $info['id'] = $id;
             $info['status'] = 'true';

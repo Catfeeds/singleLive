@@ -36,7 +36,7 @@
                                 </div>
                             </div>
                             <div class="glylb_szmm">
-                                <span class="glylb_szmm_span">轮播图：</span>
+                                <span class="glylb_szmm_span">轮播图：<span style="color: red;">最佳效果需要上传的每张图片大小完全一致</span></span>
                                 <div class="layui-input-block z_min_left_10">
                                     <div id="zyupload" class="zyupload" style="margin:0 0 20px 0;"></div>
                                 </div>
@@ -90,7 +90,7 @@
             var fileId = $(this).attr('data-id');
             var url_file = "{:U('AjaxPost/imgDel')}";
             var id = $("input[name='id']").val();
-            var table = 'Environment';
+            var table = 'Banner';
             layer.confirm('您确定删除这张图片吗?', function () {
                 $.post(url_file, {id: id, fileId: fileId,table:table}, function (item) {
                     if (item.status == 'yes') {

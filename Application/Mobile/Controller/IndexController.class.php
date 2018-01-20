@@ -72,7 +72,7 @@ class IndexController extends CommonController{
 			parent::index(function($data){
 				switch ($data['type']) {
 					case 'h':
-						$data['url'] = U('Rooms/Edit',['id' => $data['id']]);
+						$data['url'] = U('Rooms/edit',['id' => $data['id']]);
 						break;
 					case 'p':
 						$data['url'] = U('Index/packageEdit',['id' => $data['id']]);

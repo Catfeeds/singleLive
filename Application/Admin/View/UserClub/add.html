@@ -33,7 +33,7 @@
                                 </div>
                             </div>
                             <div class="glylb_szmm">
-                                <span class="glylb_szmm_span">轮播图：</span>
+                                <span class="glylb_szmm_span">轮播图：<span style="color: red;">最佳效果需要上传的每张图片大小完全一致</span></span>
                                 <div class="layui-input-block z_min_left_10">
                                     <div id="zyupload" class="zyupload" style="margin:0 0 20px 0;"></div>
                                 </div>
@@ -72,9 +72,10 @@
             dragDrop         :   true,                    // 是否可以拖动上传文件
             tailor           :   true,                    // 是否可以裁剪图片
             del              :   true,                    // 是否可以删除文件
-            finishDel        :   false,           // 是否在上传文件完成后删除预览
+            finishDel        :   false,                     // 是否在上传文件完成后删除预览
             onSuccess: function(file, response){          // 文件上传成功的回调方法
                 //alert('上传完成的回调为JSON：'+JSON.stringify(file));
+                console.log(file);
                 var json  = JSON.parse(response);
                 $('#zyupload').append("<input type='hidden' name='imgs[]' value=" + json.id + ">");
             }

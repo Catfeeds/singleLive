@@ -5,6 +5,7 @@
         </ul>
         <style>
             .house .houseCate{width: 100px;float: left;}
+            .cates{display: block;margin-top: 7px;}
         </style>
         <div class="layui-tab-item layui-show">
             <div class="conter">
@@ -60,7 +61,7 @@
                                 <div class="layui-input-block z_min_left_10">
                                     <volist name="house" id="house">
                                         <div class="houseCate">
-                                            <input style="width:auto;" type="checkbox" name="hcate[]" value="{$house.id}"><span>{$house.title}</span>
+                                            <input style="width:auto;" type="checkbox" name="hcate[]" value="{$house.id}"><span class="cates">{$house.title}</span>
                                         </div>
                                     </volist>
                                     <span style="color: red;font-size: 18px;">说明:想要某些房间可以使用电子券,只需勾选它的客房分类即可,在客房添加时选择该分类,系统会自动识别</span>
@@ -70,7 +71,7 @@
                                 <div class="layui-input-block z_min_left_10">
                                     <volist name="package" id="package">
                                         <div class="houseCate">
-                                            <input style="width:auto;" type="checkbox" name="tcate[]" value="{$package.id}"><span>{$package.title}</span>
+                                            <input style="width:auto;" type="checkbox" name="tcate[]" value="{$package.id}"><span class="cates">{$package.title}</span>
                                         </div>
                                     </volist>
                                     <span style="color: red;font-size: 18px;">说明:想要某些套餐可以使用电子券,只需勾选它的套餐分类即可,在套餐添加时选择该分类,系统会自动识别</span>
