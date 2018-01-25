@@ -159,7 +159,6 @@ CREATE TABLE `ms_root` (
 INSERT INTO `ms_root` (`id`, `name`, `infoname`, `realname`, `number`, `pwd`, `status`, `admin`) VALUES
 (1, 'admin', '总管理员', '卓诚', '12345678910', '21232f297a57a5a743894a0e4a801fc3', '1', 0);
 
--- --------------------------------------------------------
 
 --
 -- 表的结构 `root_login`
@@ -346,6 +345,8 @@ CREATE TABLE IF NOT EXISTS `ms_package` (
   `paper` char(1) COLLATE utf8_bin NOT NULL COMMENT '是否可以使用电子卷 y-是 n-否',
   `word` text COLLATE utf8_bin NOT NULL COMMENT '简介',
   `push` tinyint(1) NOT NULL DEFAULT '2' COMMENT '是否设置为首页推荐: 1-推荐 2-不推荐',
+  `allowIn` DATE NOT NULL COMMENT '允许开始入住时间',
+  `allowOut` DATE NOT NULL COMMENT '允许开始结束时间',
   PRIMARY KEY (`id`)
 ) ENGINE=MyISAM DEFAULT CHARSET=utf8 COLLATE=utf8_bin AUTO_INCREMENT=1;
 
@@ -374,8 +375,7 @@ CREATE TABLE IF NOT EXISTS `ms_grades` (
   `content` text COLLATE utf8_bin NOT NULL COMMENT '详情介绍',
   `sort` int(11) NOT NULL COMMENT '排序',
   `status` tinyint(1) NOT NULL COMMENT '1-正常 2-禁用 3-删除',
-  PRIMARY KEY (`id`),
-  UNIQUE KEY(`sort`)
+  PRIMARY KEY (`id`)
 )ENGINE=MyISAM DEFAULT CHARSET=utf8 COLLATE=utf8_bin AUTO_INCREMENT=1;
 
 --
@@ -384,11 +384,11 @@ CREATE TABLE IF NOT EXISTS `ms_grades` (
 CREATE TABLE IF NOT EXISTS `ms_user_lvup` (
   `id` int(11) NOT NULL AUTO_INCREMENT,
   `userID` int(255) NOT NULL COMMENT '会员id',
-  `before` int(255) NOT NULL COMMENT '升级前级别',
-  `after` int(255) NOT NULL COMMENT '升级后级别',
+  `before` int(255) NOT NULL COMMENT '变更前级别',
+  `after` int(255) NOT NULL COMMENT '变更后级别',
   `createTime` int(255) NOT NULL COMMENT '升级时间',
-  `achs` int(11) NOT NULL  COMMENT '花费积分',
-  `admin` int(11) NOT NULL DEFAULT '0' COLLATE utf8_bin COMMENT '说明 0:购买会员升级卡 admins::id 管理员修改',
+--  `achs` int(11) NOT NULL  COMMENT '花费积分',
+  `admin` int(11) NOT NULL DEFAULT '0' COLLATE utf8_bin COMMENT '说明 0:自己变更 admins::id 管理员修改积分时触发',
   PRIMARY KEY (`id`)
 ) ENGINE=MyISAM DEFAULT CHARSET=utf8 COLLATE=utf8_bin AUTO_INCREMENT=1 ;
 
@@ -399,10 +399,11 @@ CREATE TABLE IF NOT EXISTS `ms_user_lvup` (
 CREATE TABLE IF NOT EXISTS `ms_user_sorce` (
   `id` int(11) NOT NULL AUTO_INCREMENT,
   `userID` int(11) NOT NULL COMMENT '会员id',
-  `type` char(10) COLLATE utf8_bin NOT NULL COMMENT 'consume-消费返积分 exchange-兑换电子卷 lvup-购买积分卡升级 backs-退款减积分',
+  `type` char(10) COLLATE utf8_bin NOT NULL COMMENT 'consume-消费返积分 admin-管理员修改 recharge-充值返积分 exchange-兑换电子卷 lvup-购买积分卡升级 backs-退款减积分',
   `sorce` int(11) NOT NULL DEFAULT '0' COMMENT '积分数',
   `method` char(10) COLLATE utf8_bin NOT NULL COMMENT 'plus-加 sub-减',
   `createTime` int(11) NOT NULL COMMENT '创建时间',
+  `admin` int(11) NOT NULL COMMENT '0-自动获得 其他数字登陆后台管理员id',
   PRIMARY KEY (`id`)
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8 COLLATE=utf8_bin AUTO_INCREMENT=1 ;
 
@@ -433,6 +434,8 @@ CREATE TABLE IF NOT EXISTS `ms_order` (
   `date` DATE NOT NULL COMMENT '下单时间(标准日期格式)',
   `type` char(1) COLLATE utf8_bin NOT NULL COMMENT 'k-客房 t-套餐',
   `payType` char(10) COLLATE utf8_bin NOT NULL COMMENT '支付方式字段 no-未支付 balance-余额支付 wechat-微信支付',
+  `orderCome` char(10) COLLATE utf8_bin NOT NULL COMMENT '订单来源 user-表示客户自己下单 admin-表示是从后台添加的订单',
+  `do` int(11) NOT NULL COMMENT '操作人用户自己下单写入0 管理员-写入当前登录者id',
   PRIMARY KEY (`id`)
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8 COLLATE=utf8_bin AUTO_INCREMENT=1 ;
 
@@ -450,7 +453,7 @@ CREATE TABLE IF NOT EXISTS `ms_room_date` (
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8 COLLATE=utf8_bin AUTO_INCREMENT=1 ;
 
 --
---  电子卷管理表--现在改需求了,只能积分来兑换
+--  电子卷管理表--现在改需求了,只能积分来兑换  新加需求电子券要设置可兑换会员的等级,未到等级不可兑换
 --
 CREATE TABLE IF NOT EXISTS `ms_coupon` (
   `id` int(11) NOT NULL AUTO_INCREMENT,
@@ -469,6 +472,7 @@ CREATE TABLE IF NOT EXISTS `ms_coupon` (
   `status` tinyint(1) NOT NULL COMMENT '1-正常 2-禁用 3-删除',
   `add_time` int(11) NOT NULL COMMENT '添加时间',
   `update_time` int(11) NOT NULL COMMENT '修改时间',
+  `userLevel` text COLLATE utf8_bin NOT NULL COMMENT '可兑换电子券的会员等级字符串',
   PRIMARY KEY (`id`)
 ) ENGINE=MyISAM DEFAULT CHARSET=utf8 COLLATE=utf8_bin AUTO_INCREMENT=1 ;
 
@@ -521,6 +525,7 @@ CREATE TABLE IF NOT EXISTS `ms_coupon_used` (
 CREATE TABLE IF NOT EXISTS `ms_recharge` (
   `id` int(11) NOT NULL AUTO_INCREMENT,
   `money` float(10,2) COLLATE utf8_bin NOT NULL COMMENT '充值金额',
+  `sorce` int(11) NOT NULL COMMENT '赠送积分',
   `createTime` int(11) NOT NULL COMMENT '创建时间',
   `updateTime` int(11) NOT NULL COMMENT '修改时间',
   `status` tinyint(1) NOT NULL COMMENT '1-正常 2-禁用 3-删除 备用字段(添加时全部设置为1)',
@@ -534,6 +539,7 @@ CREATE TABLE IF NOT EXISTS `ms_balance` (
   `id` int(11) NOT NULL AUTO_INCREMENT,
   `userID` int(11) NOT NULL COMMENT '消费用户id',
   `money` float(10,2) COLLATE utf8_bin NOT NULL COMMENT '消费金额',
+  `sorce` int(11) NOT NULL COMMENT '赠送积分数',
   `orderNo` varchar(16) COLLATE utf8_bin NOT NULL COMMENT '订单编号',
   `method` char(10) COLLATE utf8_bin NOT NULL COMMENT 'plus-充值 sub-用余额消费 back-退款返还',
   `createTime` int(11) NOT NULL COMMENT '创建时间',

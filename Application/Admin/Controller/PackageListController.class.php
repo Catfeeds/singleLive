@@ -51,6 +51,8 @@ class PackageListController extends CommonController {
                 $this->error($house->getError());
             }
         }
+        $myDate = get_minDate_maxDate();
+        $this->assign('myDate',$myDate);
         $this->assign('cate',$houseCate);
         $this->display();
     }
@@ -84,7 +86,9 @@ class PackageListController extends CommonController {
                     'push' => $data['push'],
                     'status' => 1,
                     'add_time' => time(),
-                    'update_time' => time()
+                    'update_time' => time(),
+                    'allowIn' =>$data['allowIn'],
+                    'allowOut' =>$data['allowOut']
                 ];
                 $newId = $house->add($arr);
                 //修改之前 套餐状态
@@ -96,6 +100,8 @@ class PackageListController extends CommonController {
                 $this->error($house->getError());
             }
         }
+        $myDate = get_minDate_maxDate();
+        $this->assign('myDate',$myDate);
         $this->assign('cate',$houseCate);
         $this->assign('db',$db);
         $this->display();

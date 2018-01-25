@@ -70,6 +70,7 @@ class BackMoneyListController extends CommonController
             array('date_show','日期区段'),
             array('type_name','订单类型'),
             array('price','订单金额'),
+            array('payType','支付方式'),
             array('status_name','状态'),
         );
         export_Excel($xlsName,$xlsCell,$list);
@@ -86,6 +87,7 @@ class BackMoneyListController extends CommonController
             }
             $data['createTime'] = date_out($data['createTime']);
             $data['status_name'] = getTypes($data['status']);
+            $data['payType'] = getTypes($data['payType']);
             return $data;
         },$db);
     }
@@ -107,86 +109,9 @@ class BackMoneyListController extends CommonController
      * */
     public function pass(){
         $id = I('id');
-        $msg = D::find('Order',$id);
-        //更新order表状态
-        M('Order')->where("id=".$id)->setField('status','6');
-        //插入财务明细表
-        $Finance = [
-            'userID' => $msg['userID'],
-            'orderNO' => $msg['orderNo'],
-            'money' => $msg['price'],
-            'type' => 'back',
-            'createDate' => date('Y-m-d')
-        ];
-        M('Finance')->add($Finance);
-        //插入退款表
-        $back = [
-            'orderId' => $msg['id'],
-            'createTime' => time(),
-            'money' => $msg['price']
-        ];
-        M('Drawback')->add($back);
-        //判断此订单是否用了优惠券
-        if($msg['coupon']){
-            //更新使用记录 状态为3
-            $sel = [
-                'userID' => $msg['userID'],
-                'cID' => $msg['coupon'],
-                'type' => $msg['type'],
-                'orderNO' => $msg['orderNo'],
-                'roomID' => $msg['roomID'],
-            ];
-            M('CouponUsed')->where($sel)->setField('status',3);
-            //更新电子券拥有表
-            $map = [
-                'userID' => $msg['userID'],
-                'card' => $msg['coupon']
-            ];
-            D::set('CouponExchange.status',['where'=>$map],1);
-        }
-        if($msg['payType'] == 'balance'){
-            $myBalance = [
-                'userID' => $msg['userID'],
-                'money' => $msg['price'],
-                'orderNo' => $msg['orderNo'],
-                'method' => 'back',
-                'createTime' => time(),
-                'updateTime' => time(),
-                'status' => 1,
-            ];
-           M('Balance')->add($myBalance);
-        }
-        //增加房间剩余数量(实质是减去当天的  order_num的数量) 减积分
-        if($msg['type'] == 'k'){
-            $arr = push_select_time($msg['inTime'],$msg['outTime']);
-            $where['createDate'] = array('in',$arr);
-            $where['roomID'] = $msg['roomID'];
-            M('RoomDate')->where($where)->setDec('order_num',1);
-            //减积分
-            $sorce = D::field('House.sorce',$msg['roomID']);
-            $sorce_data = [
-                'userID' => $msg['userID'],
-                'type' => 'back',
-                'sorce' => $sorce,
-                'method' => 'sub',
-                'createTime' => time(),
-            ];
-            M('UserSorce')->add($sorce_data);
-        }else{
-            $where['createDate'] = $msg['inTime'];
-            $where['roomID'] = $msg['roomID'];
-            M('RoomDate')->where($where)->setDec('order_num',$msg['num']);
-            //减积分
-            $sorce = D::field('Package.sorce',$msg['roomID']);
-            $sorce_data = [
-                'userID' => $msg['userID'],
-                'type' => 'backs',
-                'sorce' => $sorce,
-                'method' => 'sub',
-                'createTime' => time(),
-            ];
-            M('UserSorce')->add($sorce_data);
-        }
+        $uid = I('uid');
+        do_order_back($id);
+        event_user_level($uid);
         $this->success('操作成功',U('BackMoneyList/index'));
     }
     //退款申请驳回

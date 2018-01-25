@@ -1428,6 +1428,52 @@ text-indent: 5px;
 
 .bniop{ width:100%; height:150px; padding:20px; box-sizing:border-box; border:1px solid #099;}
 
+/*查看房间日历css开始*/
+ .onertpis{ width: 100%; height:180px;}
+
+.onertpis_tite{ width: 100%; height: 40px; background: #ff9900;}
+
+.onertpis_tite_left{ width: 200px; height: 40px; float: left;}
+
+.weekleft{ width: 60px; height: 26px; float: left; margin-left: 23px; border: 2px solid #FFFFFF; border-radius: 50px; margin-top: 7px;box-sizing: border-box;
+	background: url('../images/fj01.png') no-repeat 10px center #ff7d26; text-indent: 30px; line-height: 24px; color: #FFFFFF;}
+
+.weekleft:hover{ cursor: pointer;}
+
+.onertpis_tite_right{width: 200px; height: 40px; float: right;}
+
+.weekleft1{ width: 60px; height: 26px; float: left; margin-left: 23px; border: 2px solid #FFFFFF; border-radius: 50px; margin-top: 7px; box-sizing: border-box;
+	background: url('../images/fj02.png') no-repeat 40px center #ff7d26; text-indent: 15px; line-height: 22px; color: #FFFFFF;}
+.weekleft1:hover{ cursor: pointer;}
+
+.onertpis_tite_cont input{ width: 140px; height: 40px; margin: 0 auto; border: none; display: block; text-align: center; background: #ff9900; color: #FFFFFF;}
+
+.onertpis_cent{ width: 100%; height: 140px;}
+
+.onertpis_cent_left{ width:20%; height: 140px; float: left; background: #ffcc7f;}
+
+.mintor{ width: 100%; height: 80px; line-height: 80px; color: #FFFFFF; text-align: center;}
+
+.mintor1{ width: 100%; height: 60px; line-height: 60px; color: #FFFFFF; text-align: center;}
+
+.onertpis_cent_right{ width: 80%; height: 140px; float: right;}
+
+.onertpis_cent_right ul{ padding: 0; margin: 0;}
+
+.onertpis_cent_right ul li{ width: 14.28%; height: 140px; overflow: hidden; float: left; text-align: center; border-left:1px solid #FFFFFF ; box-sizing: border-box;}
+
+.onertpis_cent_right ul li p{ background: #ffcc7f; line-height: 30px; color: #FFFFFF;}
+
+.onertpis_cent_right ul li span{ line-height: 50px; color: #ff9900;}
+
+.vor{color: #3c9f59 !important;}
+
+.onertpis_tite_cont1{width: 200px;height: 40px; float: left; margin-left: 20%;}
+
+.onertpis_tite_cont1 input {width: 140px;  height: 40px; margin: 0 auto; border: none;  display: block; text-align: center; background: #ff9900;   color: #FFFFFF;}
+
+/*查看房间日历css结束*/
+
 
 
 

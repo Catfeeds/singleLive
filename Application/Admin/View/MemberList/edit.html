@@ -3,38 +3,41 @@
         <ul class="layui-tab-title">
             <li class="layui-this">
                 <i class="fa fa-dashboard" aria-hidden="true"></i>
-                <cite>重置密码</cite>
+                <cite>修改会员积分</cite>
             </li>
         </ul>
         <div class="layui-tab-item layui-show">
-            <form action="__URL__/setPassword" method="post" class="form-user">
+            <form action="__URL__/edit" method="post" class="form-user">
                 <div class="conter">
                     <div class="xxkt">
                         <ul>
-                            <li class="xxkt_bt">重置密码</li>
+                            <li class="xxkt_bt">修改会员积分</li>
                         </ul>
                     </div>
                     <div class="xxknr">
                         <div>
                             <div class="glylb_szmm">
-                                <span class="glylb_szmm_span">请输入密码：</span>
+                                <span class="glylb_szmm_span">请选择修改方式：</span>
                                 <div class="layui-input-block z_min_left_10">
-                                    <input name="password" autocomplete="off" class="layui-input" type="text">
+                                    <select name="method">
+                                        <option value="">---请选择修改方式---</option>
+                                        <option value="plus">加积分</option>
+                                        <option value="sub">减积分</option>
+                                    </select>
                                 </div>
                             </div>
                             <div class="glylb_szmm">
-                                <span class="glylb_szmm_span">确认密码：</span>
+                                <span class="glylb_szmm_span">请输入积分值：</span>
                                 <div class="layui-input-block z_min_left_10">
-                                    <input name="pwd" autocomplete="off" class="layui-input" type="text">
+                                    <input name="sorce" autocomplete="off" placeholder="请输入积分值" class="layui-input" type="text">
                                 </div>
                             </div>
                         </div>
                     </div>
                     <div class="gater">
-                        <input type="hidden" value="{$row.id}" name="id">
-                        <input type="submit" value="确认" class="glylb_an_qd ajax-post confirm" target-form="form-user"/>
-                        <input type="button" value="返回" onclick="javascript:history.back(-1);return false"
-                               class="glylb_an_fh"/>
+                        <input type="hidden" value="{$row.id}" name="userID">
+                        <input type="submit" value="确认" class="glylb_an_qd ajax-post confirm" data-msg="您确定修改?" target-form="form-user"/>
+                        <a href="__URL__/index"><input type="button" value="返回" class="glylb_an_fh"/></a>
                     </div>
                 </div>
             </form>

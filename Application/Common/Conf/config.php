@@ -13,9 +13,9 @@ return array(
 
 
 	//微信端
-	'WX_APP_ID'    => 'wxc0409eaaf9ff2628', // 公众号的唯一标识 开发者ID
+	'WX_APP_ID'    => 'wx8f68246df0934c07', // 公众号的唯一标识 开发者ID
 	'WX_SCOPE'     => 'snsapi_userinfo',
-	'WX_APPSECRET' => '7c627a1337e64aca65c7237c11f5c94f', // 开发者密码
+	'WX_APPSECRET' => '9147fbb06eb5eedc72471643a039134b', // 开发者密码
 
 	//短信
 	'SMS_APPID'   => '1400035846',

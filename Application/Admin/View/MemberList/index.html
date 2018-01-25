@@ -74,7 +74,8 @@
                                             <case value="1"><a href="__URL__/set_status?co=MemberList&id={$data.id}&t=Users&sta=1" class="z_coios_1 ajax-get confirm" data-msg='您确定禁用？禁用后用户将无法登陆'>禁用</a></case>
                                             <case value="2"><a href="__URL__/set_status?co=MemberList&id={$data.id}&t=Users&sta=2" class="z_coios_2 ajax-get confirm" data-msg='您确定启用？'>启用</a></case>
                                         </switch>
-                                        <a class="z_coios_4" href="__URL__/edit/id/{$data.id}">重置密码</a>
+                                        <a class="z_coios_4 ajax-get confirm" data-msg="您确定重置改用户密码,重置后密码为123456" href="__URL__/setPassword/id/{$data.id}">重置密码</a>
+                                        <a class="z_coios_5" href="__URL__/edit/id/{$data.id}">修改积分</a>
                                         <a class="z_coios_3 confirm ajax-get" href="__URL__/delUser/id/{$data.id}">删除</a>
                                     </td>
                                 </tr>

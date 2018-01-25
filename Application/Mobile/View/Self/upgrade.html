@@ -12,11 +12,14 @@
                 <div class="integral_right">
                     <div class="integral_right_f">
                         <span>{$db.title}</span>
-                        <b>{$db.sorce}积分</b>
+                        <b>需要达到{$db.sorce}积分</b>
                     </div>
+                    <!--
+                    此功能现在客户不要了改为自动升级
                     <div class="integral_right_r">
                         <a href="__URL__/upGradeBuy?id={$db.id}&my={$userMsg.mySorce}&grade={$db.sorce}" class="diopr ajax-get confirm" msg-tite="您是否购买？">购买</a>
                     </div>
+                    -->
                 </div>
             </div>
         </volist>

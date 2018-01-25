@@ -4,9 +4,9 @@ use Think\Model;
 use Think\D;
 class OrderModel extends Model {
 	protected $_validate = [
-		['inTime','require','请选择开始入住日期'],
-		['outTime','require','请选择离开日期',0],
-		['outTime','check_outTime','离开日期至少比入住日期大一天',0,'callback'],
+		['inTime','require','请选择入住时间'],
+		['outTime','require','请选择退房时间',0],
+		['outTime','check_outTime','退房时间至少比入住时间大一天',0,'callback'],
 		['mobile','require','请输入联系人手机号码'],
 		['mobile','/^(((13[0-9]{1})|(15[0-35-9]{1})|(17[0-9]{1})|(18[0-9]{1}))+\d{8})$/','手机号码不正确',0,'regex'],
 		['sex','require','请选择称谓'],
@@ -25,7 +25,9 @@ class OrderModel extends Model {
 		['status',8],
 		['price','set_price','1','callback'],
 		['coupon','set_coupon','1','callback'],
-		['payType','no']
+		['payType','no'],
+		['orderCome','user'],
+		['do',0]
 	];
 	/*
 	 * 判断 该订单提交的优惠券价格是否  高于该房价的价格

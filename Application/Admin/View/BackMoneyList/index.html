@@ -60,6 +60,7 @@
                                 <th>日期区段</th>
                                 <th>订单类型</th>
                                 <th>订单金额</th>
+                                <th>付款方式</th>
                                 <th>状态</th>
                                 <th>操作</th>
                             </tr>
@@ -77,10 +78,11 @@
                                     <td>{$list.date_show}</td>
                                     <td>{$list.type_name}</td>
                                     <td>{$list.price}</td>
+                                    <td>{$list.payType}</td>
                                     <td>{$list.status_name}</td>
                                     <td>
                                         <if condition="$list['status'] eq 5">
-                                            <a class="z_coios_1 ajax-get confirm" href="__URL__/pass/id/{$list.id}" data-msg="您确定给该用户退完款了？确定后该订单将成为已退款状态！">确认退款</a>
+                                            <a class="z_coios_1 ajax-get confirm" href="__URL__/pass/id/{$list.id}/uid/{$list.userID}" data-msg="您确定给该用户退完款了？确定后该订单将成为已退款状态！">确认退款</a>
                                             <a class="z_coios_4 ajax-get confirm" href="__URL__/down/id/{$list.id}" data-msg="您确定要驳回该退款申请？确定后该订单将成为已驳回状态！">驳回</a>
                                             <else />
                                             不可操作

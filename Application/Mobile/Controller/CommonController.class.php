@@ -15,11 +15,13 @@ class CommonController extends Controller{
                 //获取当前会员的  等级 积分 余额以便页面赋值
                 $userID = session('user');
                 $users = D::find('Users',$userID);
+                //调用积分监控函数
+                event_user_level($userID);
                 $sorce  = D::find('UserSorce',[
                     'where' => ['userID'=>$userID],
                     'field' => "SUM(CASE WHEN method = 'plus' THEN sorce ELSE 0 END) up,SUM(CASE WHEN method = 'sub' THEN sorce ELSE 0 END) down"
                 ]);
-                $nowgrade = $users['nowLevel'] != 0 ? D::field('Grades.title',$users['nowLevel']) : '无级别';
+                $nowgrade = $users['nowLevel'] != 0 ? D::field('Grades.title',$users['nowLevel']) : '顾客';
                 $myBalance = D::find('Balance',[
                     'where' => ['userID'=>$userID,'status'=>1],
                     'field' => "SUM(CASE WHEN method = 'plus' THEN money ELSE 0 END) upPay,SUM(CASE WHEN method = 'back' THEN money ELSE 0 END) upBack,SUM(CASE WHEN method = 'sub' THEN money ELSE 0 END) down"
@@ -33,6 +35,7 @@ class CommonController extends Controller{
                     'headImg'   => $users['headImg']
                 ];
                 $this->assign('userMsg',$userMsg);
+
 			}
 		}else{
 			//不需要登录

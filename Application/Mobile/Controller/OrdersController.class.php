@@ -124,12 +124,7 @@ class OrdersController extends CommonController{
 		//查询当前房间信息
 		$house = D::find('House',$houseID);
 		//设置可预订房间的最小与最大日期
-		$minDate = date('Y-m-d');
-		$maxDate = date('Y-m-d',strtotime("$minDate +6 month"));
-		$myDate = [
-			'min' => $minDate,
-			'max' => $maxDate,
-		];
+		$myDate = get_minDate_maxDate();
 		$this->assign('house',$house);
 		$this->assign('myDate',$myDate);
 		$this->display();
@@ -144,7 +139,7 @@ class OrdersController extends CommonController{
 		$package = D::find('Package',I('id'));
 		$package['inTime'] = $info['createDate'];
 		$package['num'] = $info['limit_num'];
-		$coupon = $this->get_coupon($userID,$package,$info['createDate'],'tcate');
+		$coupon = get_coupon($userID,$package,$info['createDate'],'tcate');
 		$this->assign('db',$package);
 		$this->assign('coupon',$coupon);
 		$this->display();
@@ -227,7 +222,7 @@ class OrdersController extends CommonController{
 		//用户id
 		$userID = session('user');
 		//查询当前用户已经拥有的且未使用的电子券
-		$data['coupon'] = $this->get_coupon($userID,$house,$post['date'],'hcate');
+		$data['coupon'] = get_coupon($userID,$house,$post['date'],'hcate');
 		$this->ajaxReturn($data);
 	}
 	//订单处理
@@ -314,179 +309,21 @@ class OrdersController extends CommonController{
 						'status' => 1
 					];
 					M('Balance')->add($balance);
-					$this->checkTable($post['orderNo']);
-					$this->success('支付成功,正在跳转到首页',U('Index/index'));
+					A('Index')->checkTable($post['orderNo']);
+					//$this->success('支付成功,正在跳转到我的订单',U('Orders/index'));
+					$this->redirect('Orders/showSuccess',[],0,'');
 				}
 			}else{
+				//A('Index')->wechatPay($post['orderNo']);
 				//跳转微信支付
-				$this->wechatPay($post['orderNo']);
+				$url = '/WeiXinPay/example/jsapi.php?title=房间预订&orderNo='.$post['orderNo'].'&amount='.($post['price'] * 100).'&';
+				redirect($url, 0, '页面跳转中...');
+				exit;
 			}
 		}else{
 			$this->error('请选择支付方式');
 		}
 
-	}
-	/*
-	 * 	微信支付回调
-	 * */
-	public function wechatPay($orderNo){
-		//$orderNo = I('orderNo');
-		$str = substr($orderNo,0,1);
-		if($str === 'K' || $str === 'T'){
-			//套餐  和  客房走一个回调逻辑
-			$map['orderNo'] = $orderNo;
-			$msg = D::find('Order',['where'=>$map]);
-			if ($msg['status'] == '8') {
-				D::set('Order.payType',['where'=>['orderNo'=>$orderNo]],'wechat');
-				$this->checkTable($orderNo);
-				$this->success('支付成功,正在跳转到首页',U('Index/index'));
-			}
-		}else{
-			//充值回调
-			$sel = [
-				'orderNo' => $orderNo,
-				'method' => 'plus'
-			];
-			$info = D::find('Balance',['where'=>$sel]);
-			if($info['status'] == '2'){
-				$save = [
-					'orderNo' => $orderNo,
-					'method' => 'plus'
-				];
-				D::set('Balance.status',['where'=>$save],1);
-				//插入财务流水
-				$Finance = [
-					'userID' => $info['userID'],
-					'orderNO' => $orderNo,
-					'money' => $info['money'],
-					'type' => 'recharge',
-					'createDate' => date('Y-m-d'),
-				];
-				M('Finance')->add($Finance);
-				$this->success('充值成功',U('Self/index'));
-			}
-		}
-	}
-
-	/*	确认付款后	操作逻辑
-	 *	1、更新订单状态	ms_order
-	 * 	2、插入财务流水表 ms_finance   是否存在余额支付和微信混合支付的情况 ？ 订单金额-余额 : 订单金额
-	 *	3、若存在电子券 ？ 插入电子券使用记录表(ms_coupon_used) && 更新电子卷拥有记录表(ms_coupon_exchange)  : 不做操作
-	 * 	5、插入购买房间时间记录表(ms_room_date)	若是客房 && 选择多天入住 ？ 则要将所有选择的天数都插入,并order+1
-	 * 	6、插入积分变更记录表 ms_user_sorce
-	 *	$orderNo-订单号
-	 * */
-	public function checkTable($orderNo){
-		$map['orderNo'] = $orderNo;
-		$msg = D::find('Order',['where'=>$map]);
-		$orderSave = [
-			'status'=>1,
-			'updateTime'=>NOW_TIME
-		];
-		M('Order')->where($map)->setField($orderSave);
-		//插入财务流水
-		$Finance = [
-			'userID' => $msg['userID'],
-			'orderNO' => $orderNo,
-			'money' => $msg['price'],
-			'type' => 'pay',
-			'createDate' => date('Y-m-d'),
-		];
-		M('Finance')->add($Finance);
-		//判断是否用了优惠券
-		if($msg['coupon']){
-			$coupon_used = [
-				'userID' => $msg['userID'],
-				'orderNO' => $orderNo,
-				'roomID' => $msg['roomID'],
-				'createTime' => strtotime(date('Y-m-d'),time()),
-				'cID' => $msg['coupon'],
-				'type' => $msg['type'],
-				'status' => 1
-			];
-			//插入电子券使用记录
-			M('CouponUsed')->add($coupon_used);
-			$save = [
-				'status' => 2,
-				'updateTime' => NOW_TIME,
-			];
-			//更新电子券使用状态
-			M('CouponExchange')->where("card=".$msg['coupon'])->setField($save);
-		}
-		$roomDate = $this->search_room_date($msg['roomID'],$msg['type']);
-		if($msg['type'] == 'k'){
-			//客房-购买房间时间记录表 逻辑
-			$arr = push_select_time($msg['inTime'],$msg['outTime']);
-			foreach($arr as $key => $val){
-				if(in_array($val,$roomDate)){
-					$save_date[] = $val;
-				}else{
-					$add_date[$key]['createDate'] = $val;
-				}
-			}
-			//已经存在日期,则更新
-			if($save_date){
-				$save['createDate'] = implode(',',$save_date);
-				$save['type'] = 'h';
-				M('RoomDate')->where($save)->setInc('order_num',1);
-			}
-			//不存在的日期,则新增
-			if($add_date){
-				$add_date = array_map(function($data)use($msg){
-					$data['roomID'] = $msg['roomID'];
-					$data['order_num'] = 1;
-					$data['type'] = 'h';
-					return $data;
-				},$add_date);
-				M('RoomDate')->addAll($add_date);
-			}
-		}else{
-			//套餐-购买房间时间记录表 逻辑
-			if(in_array($msg['inTime'],$roomDate)){
-				$save = [
-					'createDate' => $msg['inTime'],
-					'type' => 't'
-				];
-				M('RoomDate')->where($save)->setInc('order_num',$msg['num']);
-			}else{
-				$add = [
-					'createDate' => $msg['inTime'],
-					'order_num' => $msg['num'],
-					'type' => 't',
-					'roomID' => $msg['roomID']
-				];
-				M('RoomDate')->add($add);
-			}
-		}
-		//插入积分变更记录表
-		if($msg['type'] == 'k'){
-			$sorce = D::field('House.sorce',$msg['roomID']);
-		}else{
-			$sorce = D::field('Package.sorce',$msg['roomID']);
-		}
-		$sorce_data = [
-			'userID' => $msg['userID'],
-			'type' => 'consume',
-			'sorce' => $sorce,
-			'method' => 'plus',
-			'createTime' => time()
-		];
-		M('UserSorce')->add($sorce_data);
-	}
-
-	/*
-	 * 	查询购买房间时间记录表  数据
-	 * 	$roomID 房间id
-	 * 	$type   h-客房  t-套餐
-	 * 	返回一个  一维数组
-	 * */
-	public function search_room_date($roomID,$type){
-		$search = [
-			'type' => $type,
-			'roomID' => $roomID
-		];
-		$roomDate = D::lists('roomDate','createDate',['where'=>$search]);
-		return $roomDate;
 	}
 	/*
 	 * 	判断所选日期内是否存在满房的情况
@@ -522,48 +359,5 @@ class OrdersController extends CommonController{
 			}
 		}
 		return $bool;
-	}
-
-	/*
-	 * 	获得该房间的优惠券列表
-	 * 	$userID-用户id
-	 *  $house -房间信息
-	 *  $date-提交日期
-	 *  $type - coupon表的  套餐  客房字段
-	 * */
-	public function get_coupon($userID,$house,$date,$type){
-		$map = [
-			'E.status' => 1,
-			'E.userID' => $userID
-		];
-		$coupon = D::get(['CouponExchange','E'],[
-			'where' => $map,
-			'join'	=> 'LEFT JOIN __COUPON__ C ON C.id = E.cID',
-			'field'	=> 'E.*,C.money,C.exprie_start,C.exprie_end,hcate,tcate,C.notDate'
-		]);
-		if($coupon){
-			$arr = array_map(function($data)use($house,$date,$type){
-				$data["$type"] = explode(',',$data["$type"]);
-				$data['notDate'] = explode("\r\n",$data['notDate']);
-				/*
-                 * 	首先判断该优惠券可不可以在该房间类型使用 ?  可以在查日期 : 若不可以直接就查日期了
-                 * */
-				if(in_array($house['category'],$data["$type"])){
-					$data['allow'] = 'yes';
-					//若该房间 允许使用优惠券 则判断  当前提交日期是否在  优惠券的限定时间内,且不在不可使用日期内
-					if($date>=$data['exprie_start'] && $date<=$data['exprie_end'] && !in_array($date,$data['notDate'])){
-						$data['allow'] = "yes";
-					}else{
-						$data['allow'] = 'no';
-					}
-				}else{
-					$data['allow'] = 'no';
-				}
-				return $data;
-			},$coupon);
-		}else{
-			$arr = [];
-		}
-		return $arr;
 	}
 }

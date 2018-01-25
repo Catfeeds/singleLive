@@ -96,17 +96,16 @@
             <input type="hidden" name="orderNo" value="{$db.orderNo}">
             <input type="hidden" name="myMoney" value="{$money}">
             <input type="hidden" name="price" value="{$db.price}">
-            <input type="hidden" name="allMoney" value="">
             <a href="__URL__/resetOrder?orderNo={$db.orderNo}" class="ajax-get confirm" data-msg="您确定取消此订单？取消后该订单无法操作">取消</a>
-            <input type="submit" class="spoert ajax-post confirm" data-msg="您确认支付?" target-form="orderForm" value="确认支付" />
+            <input id="subMit" type="button" class="spoert" value="确认支付" />
         </div>
     </form>
 </div>
 <script>
     $(function(){
+        var price = "{$db['price']}";
+        var balance = "{$money}";
         $(document).on('click', '.pay', function () {
-            var price = "{$db['price']}";
-            var balance = "{$money}";
             var type = $(this).find('input').val();
             var allMoney;
             if ($(this).hasClass('fr_img')) {
@@ -126,9 +125,34 @@
                     allMoney = parseInt(price)
                 }
                 $('#allMoney').text(allMoney);
-                $("input[name='allMoney']").val(allMoney);
             }
         });
+        $('#subMit').click(function(){
+            var data = $("form").serializeArray();
+            var d = [];
+            $.each(data,function(){
+                d[this.name] = this.value;
+            });
+            if(d['payType']){
+                if(d['payType'] == '1'){
+                    if(parseInt(balance)>=parseInt(price)){
+                        $('.orderForm').submit();
+                    }else{
+                        openMsg('您的余额不足请选择其他的支付方式');
+                    }
+                }else{
+                    $('.orderForm').submit();
+                }
+            }else{
+                openMsg('请先选择支付方式');
+            }
+        });
+        function openMsg(message){
+            layer.open({
+                content: message,
+                skin: 'msg',
+                time: 2 //2秒后自动关闭
+            });
+        }
     });
 </script>
-</html>

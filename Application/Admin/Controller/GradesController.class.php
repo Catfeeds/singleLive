@@ -26,7 +26,18 @@ class GradesController extends CommonController
         $id = I('id');
         $db  = D::find('Grades',$id);
         if(IS_POST){
-            $map['nowLevel'] = I('id');
+            $list = D::lists('Grades','id',['where'=>['status'=>1]]);
+            if($info  = D('Grades')->create()){
+                if(in_array($info['sort'],$list) && !$info['id']){
+                    $this->error('级别顺序已存在,请先禁用或删除');
+                }else{
+                    M('Grades')->save($info);
+                    $this->success('更新成功',U('Grades/index'));
+                }
+            }else{
+                $this->error(D('Grades')->getError());
+            }
+            /*$map['nowLevel'] = I('id');
             $num = M('Users')->where($map)->count();
             if($info  = D('Grades')->create()){
                 if($num>0){
@@ -35,7 +46,9 @@ class GradesController extends CommonController
                         'title' => I('title'),
                         'sorce' => I('sorce'),
                         'pic' => I('pic'),
-                        'content' => I('content')
+                        'content' => I('content'),
+                        'status' => 1,
+                        'sort' => I('sort')
                     );
                     M($this->model)->add($data);
                     D::set('Grades.status',I('id'),'9');
@@ -46,7 +59,7 @@ class GradesController extends CommonController
                 $this->success('更新成功',U('Grades/index'));
             }else{
                 $this->error(D('Grades')->getError());
-            }
+            }*/
         }
         $this->assign('db',$db);
         $this->display();

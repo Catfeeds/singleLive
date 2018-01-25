@@ -29,14 +29,34 @@
                 <div class="erpt_fr_cont">
                     <a class="left">￥{$row.money} </a>
                     <div class="fr_l1 right">
-                        <input name="money" value="{$row.money}" type="checkbox">
+                        <input name="id" value="{$row.id}" type="checkbox">
                     </div>
                 </div>
             </volist>
         </div>
         <div class="dist_but4 ">
-            <input type="submit" class="spoert ajax-post confirm" target-form="myForm" data-msg="您确认充值？" value="充值" />
-            <!--<a class="spoert" msg-tite="您是否充值？”">充值</a>-->
+            <input id="subMit" style="border: none;" type="button" class="spoert" value="充值" />
         </div>
     </form>
 </div>
+<script>
+    $('#subMit').click(function(){
+        var data = $("form").serializeArray();
+        var d = [];
+        $.each(data,function(){
+            d[this.name] = this.value;
+        });
+        if(d['id']){
+            $('.myForm').submit();
+        }else{
+            showMsg('请选择要充值的金额');
+        }
+    });
+    function showMsg(message){
+        layer.open({
+            content: message,
+            skin: 'msg',
+            time: 2 //2秒后自动关闭
+        });
+    }
+</script>

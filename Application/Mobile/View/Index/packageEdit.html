@@ -11,10 +11,18 @@
             </div>
             <div class="select_start_date">
                 <div class="start_date_left">
-                    入住日期
+                    可入住时间段
+                </div>
+                <div class="start_date_right" style="width: 51%;">
+                    {$db.allowIn} ~ {$db.allowOut}
+                </div>
+            </div>
+            <div class="select_start_date">
+                <div class="start_date_left">
+                    入住时间
                 </div>
                 <div class="start_date_right">
-                    <input type="text" name="start_date" id="Time" value="" placeholder="点击选择入住日期" readonly="readonly" />
+                    <input type="text" name="start_date" id="Time" value="" placeholder="点击选择入住时间" readonly="readonly" />
                 </div>
             </div>
             <div class="web_flocg">
@@ -104,8 +112,8 @@
             laydate.render({
                 elem: '#Time',
                 type: 'date',
-                min: "{$myDate['min']}",
-                max: "{$myDate['max']}"
+                min: "{$db['allowIn']}",
+                max: "{$db['allowOut']}"
             });
         });
         $('#look').on('click',function(){

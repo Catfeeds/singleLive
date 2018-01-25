@@ -55,7 +55,10 @@ class UsersLvupController extends CommonController {
         parent::index(function($data){
         	$data['createTime'] = date('Y-m-d',$data['createTime']);
             if($data['beforeName'] == ''){
-                $data['beforeName'] = '无级别';
+                $data['beforeName'] = '顾客';
+            }
+            if($data['afterName'] == ''){
+                $data['afterName'] = '顾客';
             }
         	return $data;
         });
@@ -68,9 +71,12 @@ class UsersLvupController extends CommonController {
     	$db = array_map(function($data){
             $data['createTime'] = date('Y-m-d',$data['createTime']);
             if($data['beforeName'] == ''){
-                $data['beforeName'] = '无级别';
+                $data['beforeName'] = '顾客';
             }
-            $data['regLevel'] = '无级别';
+            if($data['afterName'] == ''){
+                $data['afterName'] = '顾客';
+            }
+            $data['regLevel'] = '顾客';
             return $data;
         },parent::index(true));
     	$dbName = array(

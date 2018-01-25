@@ -135,22 +135,25 @@ class SelfController extends CommonController{
 	 * */
 	public function add_my_balance(){
 		//插入余额 充值表(其实就是充值订单表)
-		if(I('post.money')){
-			$orderNo = 'C'.time().get_random_number(5);
-			$order = [
-				'userID' => session('user'),
-				'money' => I('post.money'),
-				'orderNo' => $orderNo,
-				'method' => 'plus',
-				'createTime' => time(),
-				'status' => 2,
-			];
-			M('Balance')->add($order);
-			A('Orders')->wechatPay($orderNo);
-		}else{
-			$this->error('请选择充值金额');
-		}
-
+		$id = I('id');
+		$recharge = D::find('Recharge',$id);
+		$orderNo = 'C'.time().get_random_number(5);
+		$order = [
+			'userID' => session('user'),
+			'money' => $recharge['money'],
+			'orderNo' => $orderNo,
+			'method' => 'plus',
+			'sorce' => $recharge['sorce'],
+			'createTime' => time(),
+			'status' => 2,
+		];
+		M('Balance')->add($order);
+		//本地测试
+		//A('Index')->wechatPay($orderNo);
+	    //微信支付
+		$url = '/WeiXinPay/example/jsapi.php?title=房间预订&orderNo='.$orderNo.'&amount='.($recharge['money']	 * 100).'&';
+		redirect($url, 0, '页面跳转中...');
+		exit;
 	}
 	/**
 	 * 	我的电子券

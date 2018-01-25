@@ -23,6 +23,7 @@
                             <thead>
                             <tr>
                                 <th>充值金额</th>
+                                <th>赠送积分</th>
                                 <th>添加时间</th>
                                 <th>操作</th>
                             </tr>
@@ -31,6 +32,7 @@
                             <volist name="db" id="row">
                                 <tr>
                                     <td>{$row.money}</td>
+                                    <td>{$row.sorce}</td>
                                     <td>{$row.createTime|date='Y-m-d',###}</td>
                                     <td>
                                         <a class="z_coios_4" href="__URL__/edit/id/{$row.id}">修改</a>

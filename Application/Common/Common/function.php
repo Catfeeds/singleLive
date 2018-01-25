@@ -512,6 +512,18 @@ function getTypes($type){
         case 'backs':
             $word = '退款减积分';
             break;
+        case 'admin':
+            $word = '管理员修改';
+            break;
+        case 'balance':
+            $word = '余额支付';
+            break;
+        case 'wechat':
+            $word = '微信支付';
+            break;
+        case 'no':
+            $word = '未支付';
+            break;
         case 'pay':
             $word = '下单';
             break;
@@ -631,4 +643,280 @@ function push_select_time($start,$end){
     }
     return $arr;
 }
+/*
+ *  退款和后台管理员取消订单(此订单是已被驳回的订单,肯定是付过款的)操作
+*       更新order表字段
+ *      插入财务明细表
+ *      插入退款表
+ *      增加房间数量 && 客房  ？存在多天 ？则所有天数都要减1 :否则只减所选的天数
+ *      判断此订单是否用了优惠券  ？ 返优惠券(更新电子券拥有表状态，删除电子券使用记录) : 不做操作
+ *      判断支付方式 余额支付 ？  插入余额表记录  :  线下退款
+ *      减去已返积分
+ *
+ *      现在需求是：
+ *              如果已经被管理员驳回的退款申请订单，加上取消订单的按钮，逻辑和退款一致
+ *      $id     订单ID
+ * */
+function do_order_back($id){
+    $msg = D::find('Order',$id);
+    switch ($msg['status']){
+        case '5':
+            $status = 6;
+            break;
+        case '7':
+            $status = 4;
+            break;
+    }
+    M('Order')->where("id=".$id)->setField('status',$status);
+    //插入财务明细表
+    $Finance = [
+        'userID' => $msg['userID'],
+        'orderNO' => $msg['orderNo'],
+        'money' => $msg['price'],
+        'type' => 'back',
+        'createDate' => date('Y-m-d')
+    ];
+    M('Finance')->add($Finance);
+    //插入退款表
+    $back = [
+        'orderId' => $msg['id'],
+        'createTime' => time(),
+        'money' => $msg['price']
+    ];
+    M('Drawback')->add($back);
+    //判断此订单是否用了优惠券
+    if($msg['coupon']){
+        //更新使用记录 状态为3
+        $sel = [
+            'userID' => $msg['userID'],
+            'cID' => $msg['coupon'],
+            'type' => $msg['type'],
+            'orderNO' => $msg['orderNo'],
+            'roomID' => $msg['roomID'],
+        ];
+        M('CouponUsed')->where($sel)->setField('status',3);
+        //更新电子券拥有表
+        $map = [
+            'userID' => $msg['userID'],
+            'card' => $msg['coupon']
+        ];
+        D::set('CouponExchange.status',['where'=>$map],1);
+    }
+    if($msg['payType'] == 'balance'){
+        $myBalance = [
+            'userID' => $msg['userID'],
+            'money' => $msg['price'],
+            'orderNo' => $msg['orderNo'],
+            'method' => 'back',
+            'createTime' => time(),
+            'updateTime' => time(),
+            'status' => 1,
+        ];
+        M('Balance')->add($myBalance);
+    }
+    //增加房间剩余数量(实质是减去当天的  order_num的数量) 减积分
+    if($msg['type'] == 'k'){
+        $arr = push_select_time($msg['inTime'],$msg['outTime']);
+        $where['createDate'] = array('in',$arr);
+        $where['roomID'] = $msg['roomID'];
+        M('RoomDate')->where($where)->setDec('order_num',1);
+        //减积分
+        $sorce = D::field('House.sorce',$msg['roomID']);
+        $sorce_data = [
+            'userID' => $msg['userID'],
+            'type' => 'backs',
+            'sorce' => $sorce,
+            'method' => 'sub',
+            'createTime' => time(),
+            'admin' => '0'
+        ];
+        M('UserSorce')->add($sorce_data);
+    }else{
+        $where['createDate'] = $msg['inTime'];
+        $where['roomID'] = $msg['roomID'];
+        M('RoomDate')->where($where)->setDec('order_num',$msg['num']);
+        //减积分
+        $sorce = D::field('Package.sorce',$msg['roomID']);
+        $sorce_data = [
+            'userID' => $msg['userID'],
+            'type' => 'backs',
+            'sorce' => $sorce,
+            'method' => 'sub',
+            'createTime' => time(),
+            'admin' => '0'
+        ];
+        M('UserSorce')->add($sorce_data);
+    }
+}
 
+/*
+ * 	获得该房间的优惠券列表
+ * 	$userID-用户id
+ *  $house -房间信息
+ *  $date-提交日期
+ *  $type - coupon表的  套餐  客房字段
+ * */
+function get_coupon($userID,$house,$date,$type){
+    $map = [
+        'E.status' => 1,
+        'E.userID' => $userID
+    ];
+    $coupon = D::get(['CouponExchange','E'],[
+        'where' => $map,
+        'join'	=> 'LEFT JOIN __COUPON__ C ON C.id = E.cID',
+        'field'	=> 'E.*,C.money,C.exprie_start,C.exprie_end,hcate,tcate,C.notDate'
+    ]);
+    if($coupon){
+        $arr = array_map(function($data)use($house,$date,$type){
+            $data["$type"] = explode(',',$data["$type"]);
+            $data['notDate'] = explode("\r\n",$data['notDate']);
+            /*
+             * 	首先判断该优惠券可不可以在该房间类型使用 ?  可以在查日期 : 若不可以直接就不查日期了
+             * */
+            if(in_array($house['category'],$data["$type"])){
+                $data['allow'] = 'yes';
+                //若该房间 允许使用优惠券 则判断  当前提交日期是否在  优惠券的限定时间内,且不在不可使用日期内
+                if($date>=$data['exprie_start'] && $date<=$data['exprie_end'] && !in_array($date,$data['notDate'])){
+                    $data['allow'] = "yes";
+                }else{
+                    $data['allow'] = 'no';
+                }
+            }else{
+                $data['allow'] = 'no';
+            }
+            return $data;
+        },$coupon);
+    }else{
+        $arr = [];
+    }
+    return $arr;
+}
+/*
+ *  获取当天提交日期的房间数量 和 当日可用的优惠券
+ *     参数： $post一维数组
+ *       数组key:   date-标准日期格式
+ *       数组key:   houseID-房间ID
+ *      返回一个二维数组
+ * */
+function get_postDate_roomNum_coupon($post){
+    $dates = [
+        [
+            'date' => strtotime($post['date'].'-3 days'),
+        ],
+        [
+            'date' => strtotime($post['date'].'-2 days'),
+        ],
+        [
+            'date' => strtotime($post['date'].'-1 days'),
+        ],
+        [
+            'date' => strtotime($post['date']),
+        ],
+        [
+            'date' => strtotime($post['date'].'+1 days'),
+        ],
+        [
+            'date' => strtotime($post['date'].'+2 days'),
+        ],
+        [
+            'date' => strtotime($post['date'].'+3 days'),
+        ],
+    ];
+    //在php中1-7的数字分别代表  周1-----周日
+    $week = [
+        1 => '一',
+        2 => '二',
+        3 => '三',
+        4 => '四',
+        5 => '五',
+        6 => '六',
+        7 => '日',
+    ];
+    //查询房间信息
+    $house = D::find("House",$post['houseID']);
+    $data['db'] = array_map(function($data)use($week,$post,$house){
+        //获取当前日期
+        $nowDate = strtotime(date('Y-m-d'),time());
+        $date = $data['date'];
+        //获取房间总数	查询提交时间的order数量
+        $map['roomID'] = $post['houseID'];
+        $map['createDate'] = date('Y-m-d',$date);
+        $map['type'] = 'h';
+        $num = D::find('RoomDate',['where'=>$map,'field'=>'IFNULL(order_num,0) order_num']);
+        if($num['order_num'] && $num['order_num']>0){
+            $houseNum = $house['total_num']-$num['order_num'];
+        }else{
+            $houseNum = $house['total_num'];
+        }
+        if($data['date']>=$nowDate){
+            $str = $num['order_num'] == $house['total_num'] ? 'true' : 'false';
+        }else{
+            $str = 'no';
+        }
+        $data = [
+            'month' => date('m月',$date),
+            'day'   => date('d',$date),
+            'week'  => $week[date('N',$date)],//N - 星期几
+            'full'  => $str, //客满情况 满员写true[string] 不满则false	no-之前之间不可查询
+            'date'	=> date('Y-m-d',$date),
+            'num'	=> $houseNum
+        ];
+        return $data;
+    }, $dates);
+    //用户id
+    $userID = session('user');
+    //查询当前用户已经拥有的且未使用的电子券
+    $data['coupon'] = get_coupon($userID,$house,$post['date'],'hcate');
+    return $data;
+}
+/*
+ *  可预定的最小-最大日期
+ * */
+function get_minDate_maxDate(){
+    //设置可预订房间的最小与最大日期
+    $minDate = date('Y-m-d');
+    $maxDate = date('Y-m-d',strtotime("$minDate +3 month"));
+    $myDate = [
+        'min' => $minDate,
+        'max' => $maxDate,
+    ];
+    return $myDate;
+}
+
+/*
+ *  监控用户的级别变动情况
+ *       达到规定的积分数则插入升级记录，更改用户现级别
+ *       若出现积分不满足当前级别时则降级,并找到离此级别最近的级别,插入升级记录
+ * */
+function event_user_level($userID,$admin = ''){
+    //用户积分
+    $before = D::field('Users.nowLevel',$userID);
+    $sorce  = D::find('UserSorce',[
+        'where' => ['userID'=>$userID],
+        'field' => "SUM(CASE WHEN method = 'plus' THEN sorce ELSE 0 END) up,SUM(CASE WHEN method = 'sub' THEN sorce ELSE 0 END) down"
+    ]);
+    //当前用户的总积分
+    $all = $sorce['up'] - $sorce['down'];
+    $map = [
+        'sorce' => ['elt', $all],
+        'status' => 1,
+    ];
+    //这块的逻辑就是拿用户现在总积分去查grades表,
+    $grades = D::find('Grades',[
+        'where'=> $map,
+        'order'=>'sort desc',
+    ]);
+    $gid = $grades['id'] ? $grades['id'] : 0;
+    if($grades['id'] != $before){
+        $arr = [
+            'userID' => $userID,
+            'before' => $before,
+            'after'  => $gid,
+            'createTime' => time(),
+            'admin' => $admin ? $admin : 0
+        ];
+        M('UserLvup')->add($arr);
+        //更新现级别
+        D::set('Users.nowLevel',$userID,$gid);
+    }
+}

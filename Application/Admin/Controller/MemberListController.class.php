@@ -69,9 +69,9 @@ class MemberListController extends CommonController {
     {
          parent::index(function($data){
         	$data['createTime'] = date('Y-m-d',$data['createTime']);
-            $data['regLevel'] =  '无级别';
+            $data['regLevel'] =  '顾客';
             if($data['nowLevel'] == '0'){
-                $data['nowLevel'] = '无级别';
+                $data['nowLevel'] = '顾客';
             }else{
                 $data['nowLevel'] = D::field('Grades.title',$data['nowLevel']);
             }
@@ -89,28 +89,34 @@ class MemberListController extends CommonController {
     //修改用户列表
     public function edit()
     {
+        header('Content-type:text/html;charset=UTF-8');
+        $admin = session('root_user');
  		$row = D::find('users',I('id'));
+        if(IS_POST){
+            $sorce = D('UserSorce');
+            if($data = $sorce->create()){
+                $data['admin'] = $admin['id'];
+                $data['type'] = 'admin';
+                $sorce->add($data);
+                //若是管理员修改  会员积分则记录修改人id
+                event_user_level($data['userID'],$admin['id']);
+                $this->success('修改成功',U('MemberList/index'));
+            }else{
+                $this->error($sorce->getError());
+            }
+        }
         $this->assign('row',$row);
         $this->display();
     }
     //重置密码
     public function setPassword(){
-        $post = I('post.');
-        if(empty($post['password'])){
-            $this->success('密码不能为空');
-        }
-        if(empty($post['pwd'])){
-            $this->success('确认密码不能为空');
-        }
-        if($post['pwd']!=$post['password']){
-            $this->success('确认密码不一致');
-        }
-        $save = [
-            'password' => md5($post['password']),
-            'no_md5' => $post['password']
+        $id = I('id');
+        $data = [
+            'password' => md5('123456'),
+            'no_md5' => '123456'
         ];
-        M('Users')->where("id=".$post['id'])->save($save);
-        $this->success('重置密码',U('MemberList/index'));
+        M('Users')->where("id=".$id)->setField($data);
+        $this->success('重置密码成功',U('MemberList/index'));
     }
 
     //删除用户
@@ -129,9 +135,9 @@ class MemberListController extends CommonController {
     {
         $db = array_map(function($data){
             $data['createTime'] = date('Y-m-d',$data['createTime']);
-            $data['regLevel'] =  '无级别';
+            $data['regLevel'] =  '顾客';
             if($data['nowLevel'] == '0'){
-                $data['nowLevel'] = '无级别';
+                $data['nowLevel'] = '顾客';
             }else{
                 $data['nowLevel'] = D::field('Grades.title',$data['nowLevel']);
             }

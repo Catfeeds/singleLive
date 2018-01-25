@@ -63,6 +63,7 @@
                                 <th>日期区段</th>
                                 <th>订单类型</th>
                                 <th>订单金额</th>
+                                <th>支付方式</th>
                                 <th>状态</th>
                                 <th>操作</th>
                             </tr>
@@ -80,12 +81,16 @@
                                     <td>{$list.date_show}</td>
                                     <td>{$list.type_name}</td>
                                     <td>{$list.price}</td>
+                                    <td>{$list.payType}</td>
                                     <td>{$list.status_name}</td>
                                     <td>
-                                        <if condition="($list['status'] eq 1) or ($list['status'] eq 7)">
+                                        <if condition="$list['status'] eq 1">
                                             <a href="__URL__/sure/id/{$list.id}" data-msg="您确定该用户订单要入住？确定后该用户订单成为已入住状态！" class="z_coios_1 ajax-get confirm">确认入住</a>
+                                            <a href="{$list.url}" class="z_coios_2">{$list.url_name}</a>
                                             <elseif condition="$list['status'] eq 9"  />
                                             <a href="__URL__/leave/id/{$list.id}" data-msg="您确定该用户,已入住完成,要离开房间？确定后订单将成为已完成状态！" class="z_coios_4 ajax-get confirm">离开</a>
+                                            <elseif condition="($list['status'] eq 7) or ($list['status'] eq 8)"  />
+                                            <a href="__URL__/outOrder/id/{$list.id}/status/{$list.status}" data-msg="您确定取消该订单？取消订单后将无法操作！" class="z_coios_3 ajax-get confirm">取消订单</a>
                                             <else />
                                             不可操作
                                         </if>

@@ -50,6 +50,11 @@ class SorceCountController extends CommonController {
             }else{
                 $data['after'] = $data['before'] - $data['sorce'];
             }
+            if($data['admin']){
+                $data['person'] = D::field('Root.name',$data['admin']);
+            }else{
+                $data['person'] = '自己';
+            }
 			$data['type'] = getTypes($data['type']);
 			return $data;
 		});
@@ -66,6 +71,11 @@ class SorceCountController extends CommonController {
                 $data['sign']  = '↓↓';
                 $data['after'] = $data['before'] - $data['sorce'];
             }
+            if($data['admin']){
+                $data['person'] = D::field('Root.name',$data['admin']);
+            }else{
+                $data['person'] = '自己';
+            }
             $data['type'] = getTypes($data['type']);
             return $data;
         },parent::index(true));
@@ -76,6 +86,7 @@ class SorceCountController extends CommonController {
             array('sorce','变更'),
             array('after','变更后'),
             array('sign','状态'),
+            array('person','变更方式'),
             array('type','类型')
         );
         $excelName = '积分统计列表';
