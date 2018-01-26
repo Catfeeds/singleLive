@@ -7,11 +7,10 @@ class PermRootController extends CommonController {
     public $model = ['Root','R'];
     public function _map(&$data)
     {
-
-        $map['status'] = ['neq','9'];
+        $map['R.status'] = ['neq','9'];
         //根据前台传来的值查询
         if(I('title')) {
-            $map['infoname'] = ['like','%'.I('title').'%'];
+            $map['R.name'] = ['like','%'.I('title').'%'];
         }
 
         $sql = D::get('RootLogin',[
@@ -19,7 +18,7 @@ class PermRootController extends CommonController {
             'where' => 'status=0'
             ],false);
         $sql = D::get('',[
-            'table' => $sql.' R',
+            'table' => $sql.' G',
             'group' => 'root_id',
             'field' => 'root_id,login_time,login_ip,count(*) count'
             ],false);
@@ -31,7 +30,7 @@ class PermRootController extends CommonController {
 
     }
     public function index(){
-        $db = parent::index(function($data){
+       parent::index(function($data){
             $data['time'] = $data['time'] == 0?'未登录':date('Y-m-d H:i:s',$data['time']);
             return $data;
         });

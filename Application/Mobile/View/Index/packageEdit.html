@@ -112,8 +112,8 @@
             laydate.render({
                 elem: '#Time',
                 type: 'date',
-                min: "{$db['allowIn']}",
-                max: "{$db['allowOut']}"
+                min: "{$myDate['min']}",
+                max: "{$myDate['max']}"
             });
         });
         $('#look').on('click',function(){

@@ -74,6 +74,21 @@
         <div class="app_dist">
             <div class="app_dist_tite">
                 <div class="app_dist_tite_img">
+                    <img src="__MOBILE__/img/kf02@2x.png">
+                </div>
+                <div class="app_dist_tite_colo">
+                    可兑换的等级
+                </div>
+            </div>
+            <div class="app_dist_cont">
+                <volist name="db.level" id="level">
+                    <div style="width: auto;height: 4rem;line-height: 4rem;background-color: #ff9900;float: left;padding: 0 1rem 0 1rem;margin: 10px;color: #ffffff;border-radius: 5px;">{$level.title}</div>
+                </volist>
+            </div>
+        </div>
+        <div class="app_dist">
+            <div class="app_dist_tite">
+                <div class="app_dist_tite_img">
                     <img src="__MOBILE__/img/kf03@2x.png">
                 </div>
                 <div class="app_dist_tite_colo">

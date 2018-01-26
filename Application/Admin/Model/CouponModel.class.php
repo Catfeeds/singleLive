@@ -12,8 +12,8 @@ class CouponModel extends Model {
 		['exprie_end','require','请选择结束日期'],
 		['exprie_end','check_exprie_end','结束日期必须大于开始日期',0,'callback'],
 		['num','require','请设置电子券库存数量'],
-		['notDate','require','请设置电子券不可使用日期'],
-		['notDate','check_notDate','日期格式设置出现错误,月份在(1-12)之间,日期在(1-31)之间',0,'callback'],
+		['notDate','require','请设置电子券不可使用日期',2],
+		['notDate','check_notDate','日期格式设置出现错误,月份在(1-12)之间,日期在(1-31)之间',2,'callback'],
 	    ['sorce','require','请设置兑换所需积分'],
 	    ['sorce','check_sorce','兑换所需积分必须为正整数',0,'callback'],
 	];
@@ -23,6 +23,7 @@ class CouponModel extends Model {
 		['notDate','format_date',self::MODEL_BOTH,'callback'],
 		['hcate','set_hcate',self::MODEL_BOTH,'callback'],
 		['tcate','set_tcate',self::MODEL_BOTH,'callback'],
+		['userLevel','set_level',self::MODEL_BOTH,'callback'],
 		['add_time','time',self::MODEL_INSERT,'function'],
 		['update_time','time',self::MODEL_BOTH,'function'],
 	];
@@ -74,6 +75,11 @@ class CouponModel extends Model {
 	function set_tcate(){
 		$tcate = I('tcate');
 		return implode(',',$tcate);
+	}
+	//设置可以兑换电子券的等级
+	function set_level(){
+		$level = I('userLevel');
+		return implode(',',$level);
 	}
 	//检查设置的日期格式
 	function check_notDate($data){

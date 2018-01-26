@@ -77,6 +77,15 @@
                                     <span style="color: red;font-size: 18px;">说明:想要某些套餐可以使用电子券,只需勾选它的套餐分类即可,在套餐添加时选择该分类,系统会自动识别</span>
                                 </div>
                             </div>
+                            <div class="glylb_szmm house"><span class="glylb_szmm_span">可以使用兑换电子券的等级：</span>
+                                <div class="layui-input-block z_min_left_10">
+                                    <volist name="grades" id="grade">
+                                        <div class="houseCate">
+                                            <input disabled="disabled" style="width:auto;" <?php if(in_array($grade['id'],$db['userLevel'])){?> <?php echo 'checked=checked';}?> type="checkbox" name="userLevel[]" value="{$grade.id}"><span class="cates">{$grade.title}</span>
+                                        </div>
+                                    </volist>
+                                </div>
+                            </div>
                             <div class="glylb_szmm"><span class="glylb_szmm_span">兑换所需积分：</span>
                                 <div class="layui-input-block z_min_left_10">
                                     <input disabled="disabled" class="fn-tinput requ" name="sorce" placeholder="请填写兑换所需积分" value="{$db.sorce}">

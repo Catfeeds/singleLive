@@ -82,14 +82,14 @@
         </div>
     </div>
 </div>
-
-
 <script>
-    $('#export').click(function () {
-        $(this).parents('.form-user').attr('action', '__URL__/export');
-    })
-    $('#select').click(function () {
-
-        $(this).parents('.form-user').attr('action', '__URL__/index');
+    layui.use('laydate', function() {
+        var laydate = layui.laydate;
+        lay('.test-item').each(function(){
+            laydate.render({
+                elem: this
+                ,trigger: 'click'
+            });
+        });
     })
 </script>

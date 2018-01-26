@@ -282,6 +282,7 @@ class SelfController extends CommonController{
 		$db = D::find('Coupon',$id);
 		$db['houseCate'] = D::get('HouseCate',['id' => ['in',$db['hcate']]]);
 		$db['packageCate'] = D::get('HouseCate',['id' => ['in',$db['tcate']]]);
+		$db['level'] = D::get('Grades',['id' => ['in',$db['userLevel']]]);
 		$this->assign('db',$db);
 		$this->display();
 	}
@@ -308,6 +309,12 @@ class SelfController extends CommonController{
 		if($kucun<1){
 			$bool = false;
 			$this->error('当前电子券库存不足,无法兑换');
+		}
+		$level = D::field('Users.nowLevel',session('user'));
+		$allow = D::field('Coupon.userLevel',$post['cID']);
+		if(!in_array($level,explode(',',$allow))){
+			$bool = false;
+			$this->error('您当前会员等级不够，无法兑换');
 		}
 		if($bool === true){
 			$data = $ex->create();

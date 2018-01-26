@@ -28,9 +28,13 @@ class CouponController extends CommonController {
         $house = D::get('houseCate',[
             'where' => "`status`=1 AND `type`='h'"
         ]);
+        $grades = D::get('Grades',[
+            'where' => "`status`=1"
+        ]);
         //最小日期
         $mixDate = date('Y-m-d');
         $this->assign('min',$mixDate);
+        $this->assign('grades',$grades);
         $this->assign('house',$house);
         $this->assign('package',$package);
         $this->display();
@@ -42,11 +46,15 @@ class CouponController extends CommonController {
         $db = D::find('Coupon',I('id'));
         $db['hcate'] = explode(',',$db['hcate']);
         $db['tcate'] = explode(',',$db['tcate']);
+        $db['userLevel'] = explode(',',$db['userLevel']);
         $package = D::get('houseCate',[
             'where' => "`status`=1 AND `type`='t'"
         ]);
         $house = D::get('houseCate',[
             'where' => "`status`=1 AND `type`='h'"
+        ]);
+        $grades = D::get('Grades',[
+            'where' => "`status`=1"
         ]);
         if(IS_POST){
             $Coupon = D('Coupon');
@@ -76,6 +84,7 @@ class CouponController extends CommonController {
                 $this->error($Coupon->getError());
             }
         }
+        $this->assign('grades',$grades);
         $this->assign('house',$house);
         $this->assign('package',$package);
         $this->assign('db',$db);

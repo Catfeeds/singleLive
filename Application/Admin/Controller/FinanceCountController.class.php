@@ -14,11 +14,11 @@ class FinanceCountController extends CommonController
         switch (ACTION_NAME){
             case 'index':
                 if ( I('start') || I('end') ) {
-                $map['time'] = get_selectTime(I('start'),I('end'));
+                    $map['createDate'] = get_DateTime(I('start'),I('end'));
                 }
                 $sql = D::get('Finance',[
                     'where' => $map,
-                    'field' => "UNIX_TIMESTAMP(MAX(createDate)) time,SUM(CASE WHEN type='pay' THEN money ELSE 0 END) upPay,SUM(CASE WHEN type='recharge' THEN money ELSE 0 END) up,SUM(CASE WHEN type='back' THEN money ELSE 0 END) down",
+                    'field' => "MAX(createDate) time,SUM(CASE WHEN type='pay' THEN money ELSE 0 END) upPay,SUM(CASE WHEN type='recharge' THEN money ELSE 0 END) up,SUM(CASE WHEN type='back' THEN money ELSE 0 END) down",
                     'group' => 'createDate',
                 ],false);
                 $data = [

@@ -237,7 +237,7 @@ class OrdersController extends CommonController{
 				$parameter = $data['inTime'];
 			}
 			$array = ['roomID'=>$data['roomID'],'type'=>$data['type']];
-			$bool = $this->is_house_all($parameter,$array);
+			$bool = is_house_all($parameter,$array);
 			if($bool === true){
 				if(array_key_exists('coupon',$data) && $data['coupon']){
 					$cID = D::field('CouponExchange.cID',['where'=>['card'=>$data['coupon']]]);
@@ -309,7 +309,7 @@ class OrdersController extends CommonController{
 						'status' => 1
 					];
 					M('Balance')->add($balance);
-					A('Index')->checkTable($post['orderNo']);
+					checkTable($post['orderNo']);
 					//$this->success('支付成功,正在跳转到我的订单',U('Orders/index'));
 					$this->redirect('Orders/showSuccess',[],0,'');
 				}
@@ -323,41 +323,5 @@ class OrdersController extends CommonController{
 		}else{
 			$this->error('请选择支付方式');
 		}
-
-	}
-	/*
-	 * 	判断所选日期内是否存在满房的情况
-	 * 	若存在 return false  否则  return true
-	 * 	$arr 数组 [type,roomID]
-	 *	$obj 一维数组 或  字符串
-	 * */
-	public function is_house_all($obj,$arr){
-		$bool = true;
-		if(is_array($obj) === true && $arr['type'] == 'k'){
-			$house_num = D::field('House.total_num',$arr['roomID']);
-			$sel = [
-				'roomID' => $arr['roomID'],
-				'type' => $arr['type'],
-				'order_num' => $house_num
-			];
-			$arr = D::lists('RoomDate','createDate',['where'=>$sel]);
-			foreach ($obj as $val){
-				if(in_array($val,$arr)){
-					$bool = false;
-				}
-			}
-		}else{
-			$pack_num = D::field('Package.total_num',$arr['roomID']);
-			$sel = [
-				'roomID' => $arr['roomID'],
-				'type' => $arr['type'],
-				'order_num' => $pack_num
-			];
-			$arr = D::lists('RoomDate','createDate',['where'=>$sel]);
-			if(in_array($obj,$arr)){
-				$bool = false;
-			}
-		}
-		return $bool;
 	}
 }

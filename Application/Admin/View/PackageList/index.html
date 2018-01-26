@@ -57,6 +57,7 @@
                                 <th>套餐名称</th>
                                 <th>套餐金额</th>
                                 <th>反还积分</th>
+                                <th>允许入住时间段</th>
                                 <th>添加时间</th>
                                 <th>操作</th>
                             </tr>
@@ -69,9 +70,11 @@
                                     <td>{$row.title}</td>
                                     <td>{$row.packMoney}</td>
                                     <td>{$row.sorce}</td>
+                                    <td>{$row.allowIn} ~ {$row.allowOut}</td>
                                     <td>{$row.add_time}</td>
                                     <td>
-                                        <a class="z_coios_2" href="__URL__/content/pid/{$row.id}">套餐内容</a>
+                                        <a class="z_coios_6" href="__URL__/OrderPackage/id/{$row.id}">下单</a>
+                                        <a class="z_coios_2" href="__URL__/content/id/{$row.id}">套餐内容</a>
                                         <switch name="row.status">
                                             <case value="1">
                                                 <a href="__URL__/set_status?co=PackageList&id={$row.id}&t=Package&sta=1" class="z_coios_1 ajax-get confirm" data-msg='您确定禁用？'>禁用</a></case>

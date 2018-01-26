@@ -12,6 +12,9 @@ class ContentManageController extends CommonController
     public $model = 'Environment';
     public function _map(&$data)
     {
+        if(I('title')){
+            $map['name'] = ['like','%'.I('title').'%'];
+        }
         $map['type'] = ['in',"f,e,a"];
         $data = [
             'where' => $map,

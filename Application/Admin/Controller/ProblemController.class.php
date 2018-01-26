@@ -16,6 +16,7 @@ class ProblemController extends CommonController
             $map['title'] = array('like','%'.I('title').'%');
         }
         $data = [
+            'where' => $map,
             'order' => 'add_time desc'
         ];
     }

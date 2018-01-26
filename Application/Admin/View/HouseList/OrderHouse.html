@@ -1,0 +1,125 @@
+<div class="layui-body" style="bottom: 0;border-left: solid 2px #1AA094;" id="admin-body">
+    <div class="layui-tab admin-nav-card layui-tab-brief" lay-filter="admin-tab">
+        <ul class="layui-tab-title">
+            <li class="layui-this">
+                <i class="fa fa-dashboard" aria-hidden="true"></i>
+                <cite>添加客房订单</cite>
+            </li>
+        </ul>
+        <div class="layui-tab-item layui-show">
+            <div class="conter">
+                <div class="xxkt">
+                    <ul>
+                        <li class="xxkt_bt">添加客房订单</li>
+                    </ul>
+                </div>
+                <form class="form-hotelAdd" action="__URL__/OrderHouse" method="post">
+                    <div class="xxknr">
+                        <div>
+                            <div class="glylb_szmm">
+                                <span class="glylb_szmm_span">会员手机号：</span>
+                                <div class="layui-input-block z_min_left_10">
+                                    <input class="fn-tinput" name="phone" placeholder="请输入注册会员的手机号" >
+                                    <span style="color: red;">已经注册的会员</span>
+                                </div>
+                            </div>
+                            <div class="glylb_szmm">
+                                <span class="glylb_szmm_span">订单金额：</span>
+                                <div class="layui-input-block z_min_left_10">
+                                    <input class="fn-tinput" name="price" placeholder="请输入订单金额" >
+                                </div>
+                            </div>
+                            <div class="glylb_szmm">
+                                <span class="glylb_szmm_span">入住时间：</span>
+                                <div class="layui-input-block z_min_left_10">
+                                    <input class="fn-tinput test-item" placeholder="请选择入住时间" name="inTime" readonly="readonly">
+                                </div>
+                            </div>
+                            <div class="glylb_szmm">
+                                <span class="glylb_szmm_span">退房时间：</span>
+                                <div class="layui-input-block z_min_left_10">
+                                    <input class="fn-tinput test-item" placeholder="请选择退房时间" name="outTime" readonly="readonly">
+                                </div>
+                            </div>
+                            <div class="glylb_szmm">
+                                <span class="glylb_szmm_span">客户手机号：</span>
+                                <div class="layui-input-block z_min_left_10">
+                                    <input class="fn-tinput" placeholder="请输入客户手机号" name="mobile" >
+                                </div>
+                            </div>
+                            <div class="glylb_szmm">
+                                <span class="glylb_szmm_span">客户称谓：</span>
+                                <div class="layui-input-block z_min_left_10">
+                                    <select name="sex">
+                                        <option value="1">先生</option>
+                                        <option value="2">女士</option>
+                                    </select>
+                                </div>
+                            </div>
+                            <div class="glylb_szmm">
+                                <span class="glylb_szmm_span">客户姓名：</span>
+                                <div class="layui-input-block z_min_left_10">
+                                    <input class="fn-tinput" placeholder="请输入客户姓名" name="username" >
+                                </div>
+                            </div>
+                            <div class="glylb_szmm">
+                                <span class="glylb_szmm_span">客户电子邮箱：</span>
+                                <div class="layui-input-block z_min_left_10">
+                                    <input class="fn-tinput" placeholder="请输入客户电子邮箱" name="email" >
+                                </div>
+                            </div>
+                            <div class="glylb_szmm">
+                                <span class="glylb_szmm_span">成人：</span>
+                                <div class="layui-input-block z_min_left_10">
+                                    <select name="person">
+                                        <option value="1">1</option>
+                                        <option value="2">2</option>
+                                        <option value="3">3</option>
+                                        <option value="4">4</option>
+                                    </select>
+                                </div>
+                            </div>
+                            <div class="glylb_szmm">
+                                <span class="glylb_szmm_span">儿童：</span>
+                                <div class="layui-input-block z_min_left_10">
+                                    <select name="child">
+                                        <option value="0">0</option>
+                                        <option value="1">1</option>
+                                        <option value="2">2</option>
+                                        <option value="3">3</option>
+                                        <option value="4">4</option>
+                                    </select>
+                                </div>
+                            </div>
+                            <div class="glylb_szmm">
+                                <span class="glylb_szmm_span">备注：</span>
+                                <div class="layui-input-block z_min_left_10">
+                                    <textarea style="width:354px;height: 158px;max-width: 354px;"></textarea>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="gater">
+                        <input type="hidden" name="type" value="k" />
+                        <input type="hidden" name="roomID" value="{$info.id}" />
+                        <input type="submit" value="确认" class="glylb_an_qd ajax-post confirm" data-msg="您确定添加此订单？添加后为已支付状态" target-form="form-hotelAdd">
+                        <a href="__URL__/index"><input type="button" value="返回" class="glylb_an_fh"/></a>
+                    </div>
+                </form>
+            </div>
+        </div>
+    </div>
+</div>
+<script>
+    layui.use('laydate', function() {
+        var laydate = layui.laydate;
+        lay('.test-item').each(function () {
+            laydate.render({
+                elem: this,
+                trigger: 'click',
+                min: "{$myDate['min']}",
+                max: "{$myDate['max']}"
+            });
+        });
+    })
+</script>

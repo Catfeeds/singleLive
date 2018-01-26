@@ -92,16 +92,6 @@ class OrderListController extends CommonController
         );
         export_Excel($xlsName,$xlsCell,$list);
     }
-
-
-    /*
-     *  查看订单详情
-     *      现在不加此功能，因为没有用
-     * */
-    public function look()
-    {
-        $this->display();
-    }
     //确认入住
     public function sure(){
         $id = I('id');

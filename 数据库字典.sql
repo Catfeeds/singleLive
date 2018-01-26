@@ -433,7 +433,7 @@ CREATE TABLE IF NOT EXISTS `ms_order` (
   `updateTime` int(11) NOT NULL COMMENT '订单更新时间',
   `date` DATE NOT NULL COMMENT '下单时间(标准日期格式)',
   `type` char(1) COLLATE utf8_bin NOT NULL COMMENT 'k-客房 t-套餐',
-  `payType` char(10) COLLATE utf8_bin NOT NULL COMMENT '支付方式字段 no-未支付 balance-余额支付 wechat-微信支付',
+  `payType` char(10) COLLATE utf8_bin NOT NULL COMMENT '支付方式字段 no-未支付 outline-线下支付(后台添加) balance-余额支付 wechat-微信支付',
   `orderCome` char(10) COLLATE utf8_bin NOT NULL COMMENT '订单来源 user-表示客户自己下单 admin-表示是从后台添加的订单',
   `do` int(11) NOT NULL COMMENT '操作人用户自己下单写入0 管理员-写入当前登录者id',
   PRIMARY KEY (`id`)

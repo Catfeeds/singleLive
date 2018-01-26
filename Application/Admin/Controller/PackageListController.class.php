@@ -169,4 +169,45 @@ class PackageListController extends CommonController {
         M('PackageSet')->where("id=".$id)->delete();
         $this->success('删除成功');
     }
+    //添加套餐订单
+    public function OrderPackage(){
+        $info = D::find('Package',I('id'));
+        $order = D('Order');
+        if(IS_POST){
+            if($data = $order->create()){
+                $parameter = $data['inTime'];
+                $arr = [
+                    'roomID' => $data['roomID'],
+                    'type' => $data['type']
+                ];
+                $bool = is_house_all($parameter,$arr);
+                if($bool === true){
+                    $data['orderNo'] = set_orderNo($data['type']);
+                    $order->add($data);
+                    checkTable($data['orderNo']);
+                    $this->success('添加订单成功,可到订单列表查看',U('HouseList/index'));
+                }else{
+                    $this->error('所选日期存在满房的情况');
+                }
+            }else{
+                $this->error($order->getError());
+            }
+        }
+        /*
+         *  判断
+         *      当前日期是不是比设定的允许开始时间大 ？ 当前时间 : 设定时间
+         * */
+        if(date('Y-m-d') > $info['allowIn']){
+            $date = date('Y-m-d');
+        }else{
+            $date = $info['allowIn'];
+        }
+        $myDate = [
+            'min' => $date,
+            'max' => $info['allowOut']
+        ];
+        $this->assign('myDate',$myDate);
+        $this->assign('info',$info);
+        $this->display();
+    }
 }

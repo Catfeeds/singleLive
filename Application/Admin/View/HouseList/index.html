@@ -69,6 +69,9 @@
                                     <td>{$row.sorce}</td>
                                     <td>{$row.add_time}</td>
                                     <td>
+                                        <if condition="$row['status'] eq 1">
+                                            <a class="z_coios_6" href="__URL__/OrderHouse/id/{$row.id}">下单</a>
+                                        </if>
                                         <a class="z_coios_2" href="__URL__/banner/id/{$row.id}">轮播图</a>
                                         <switch name="row.status">
                                             <case value="1">

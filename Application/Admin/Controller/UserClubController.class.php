@@ -12,8 +12,12 @@ class UserClubController extends CommonController
     public $model = 'Environment';
     public function _map(&$data)
     {
+        if(I('title')){
+            $map['name'] = ['like','%'.I('title').'%'];
+        }
+        $map['type'] = 'm';
         $data = [
-            'where' => "`type`='m'",
+            'where' => $map,
             'order' => 'add_time desc'
         ];
     }

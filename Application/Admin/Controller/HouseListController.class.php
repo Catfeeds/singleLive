@@ -145,4 +145,34 @@ class HouseListController extends CommonController {
         $this->assign('id',$id);
         $this->display();
     }
+
+    //添加客房订单
+    public function OrderHouse(){
+        $info = D::find('House',I('id'));
+        $order = D('Order');
+        if(IS_POST){
+            if($data = $order->create()){
+                $parameter = push_select_time($data['inTime'],$data['outTime']);
+                $arr = [
+                    'roomID' => $data['roomID'],
+                    'type' => $data['type']
+                ];
+                $bool = is_house_all($parameter,$arr);
+                if($bool === true){
+                    $data['orderNo'] = set_orderNo($data['type']);
+                    $order->add($data);
+                    checkTable($data['orderNo']);
+                    $this->success('添加订单成功,可到订单列表查看',U('HouseList/index'));
+                }else{
+                    $this->error('所选日期存在满房的情况');
+                }
+            }else{
+                $this->error($order->getError());
+            }
+        }
+        $myDate = get_minDate_maxDate();
+        $this->assign('myDate',$myDate);
+        $this->assign('info',$info);
+        $this->display();
+    }
 }

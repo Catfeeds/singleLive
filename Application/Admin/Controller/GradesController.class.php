@@ -13,6 +13,9 @@ class GradesController extends CommonController
     public $model = 'Grades';
     public function _map(&$data)
     {
+        if(I('title')){
+            $map['title'] = array('like','%'.I('title').'%');
+        }
         $map['status'] = array('neq','9');
         $data = [
             'where' => $map,
