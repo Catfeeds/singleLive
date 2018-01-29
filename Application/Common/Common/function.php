@@ -1078,3 +1078,27 @@ function is_house_all($obj,$arr){
     }
     return $bool;
 }
+/*
+ *  获取规定开始到结束日期内的  标准日期格式数组
+ *      $start  开始日期
+ *      $end    结束日期
+ *      返回一个二维数组    type-1: 周1--周五  type-2: 六日价格
+ * */
+function get_start_end_week($start,$end){
+    $arr = push_select_time($start,$end);
+    foreach($arr as $key => $val){
+        $data[$key]['week'] = date('w',strtotime($val));
+        $data[$key]['day'] = $val;
+    }
+    $array = [];
+    foreach($data as $kk => $value){
+        if($value['week'] == '0' || $value['week'] == '6') {
+            $array[$kk]['day'] = $value['day'];
+            $array[$kk]['type'] = 2;
+        }else{
+            $array[$kk]['day'] = $value['day'];
+            $array[$kk]['type'] = 1;
+        }
+    }
+    return $array;
+}

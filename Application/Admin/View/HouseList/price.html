@@ -1,0 +1,130 @@
+<div class="layui-body" style="bottom: 0;border-left: solid 2px #1AA094;" id="admin-body">
+    <div class="layui-tab admin-nav-card layui-tab-brief" lay-filter="admin-tab">
+        <ul class="layui-tab-title">
+            <li class="layui-this"><i class="fa fa-dashboard" aria-hidden="true"></i> <cite>设置价格</cite></li>
+        </ul>
+        <div class="layui-tab-item layui-show">
+            <div class="conter">
+                <div class="xxkt">
+                    <ul>
+                        <li class="xxkt_bt">设置价格</li>
+                    </ul>
+                </div>
+                <form action="__URL__/setPrice" method="post" class="form-hotelAdd">
+                    <div class="xxknr">
+                        <div>
+                            <div class="glylb_szmm">
+                                <span class="glylb_szmm_span">设置说明(只给后台管理看的)：</span>
+                                <div class="layui-input-block z_min_left_10">
+                                    <span style="color: red;font-size: 16px;">
+                                        周一到周五  和  周六日价格,是必须设置的<br/>
+                                        如果想在此基础之上设置特殊日期价格,选择日期后,填写价格(填写多个点击加号图标即可)<br/>
+                                        如果不想设置特殊日期价格,则选择否即可
+                                    </span>
+                                </div>
+                            </div>
+                            <div class="glylb_szmm">
+                                <span class="glylb_szmm_span">工作日价格(周一到周五)：</span>
+                                <div class="layui-input-block z_min_left_10">
+                                    <input class="fn-tinput requ" type="text" name="price1" placeholder="请填写工作日价格" value="{$arr.MF_day.price}" >
+                                </div>
+                            </div>
+                            <div class="glylb_szmm">
+                                <span class="glylb_szmm_span">周六日价格：</span>
+                                <div class="layui-input-block z_min_left_10">
+                                    <input class="fn-tinput requ" name="price2" placeholder="请填写周六日价格" value="{$arr.SS_day.price}">
+                                </div>
+                            </div>
+                            <div class="glylb_szmm">
+                                <span class="glylb_szmm_span">是否设置特殊价格日期：</span>
+                                <div class="layui-input-block z_min_left_10">
+                                    <select name="choose" id="choose">
+                                        <option value="1" <if condition="$class eq yes">selected</if>>是</option>
+                                        <option value="2" <if condition="$class eq no">selected</if>>否</option>
+                                    </select>
+                                </div>
+                            </div>
+                            <notempty name="arr.special_day">
+                                <volist name="arr.special_day" id="row">
+                                    <div class="glylb_szmm special">
+                                        <span class="glylb_szmm_span">特殊日期价格：</span>
+                                        <div class="layui-input-block z_min_left_10">
+                                            <input class="fn-tinput requ test-item" name="day[]" readonly placeholder="选择日期" value="{$row.day}">
+                                            <input style="margin-left: 10px;" class="fn-tinput requ" name="price3[]" value="{$row.price}" placeholder="输入特殊日期价格">
+                                            <a href="javascript:;" class="add-price"><img src="__PUBLIC__/Admin/images/add.png" /></a>
+                                            <a href="__URL__/del_price/id/{$row.id}/tID/{$row.tID}" class="ajax-get confirm sub-price" data-msg="您确定删除此设置？删除后会回归当前日期所属的星期的价格~"><img src="__PUBLIC__/Admin/images/sub.png" /></a>
+                                        </div>
+                                    </div>
+                                </volist>
+                                <else />
+                                <div class="glylb_szmm special">
+                                    <span class="glylb_szmm_span">特殊日期价格：</span>
+                                    <div class="layui-input-block z_min_left_10">
+                                        <input class="fn-tinput requ test-item" name="day[]" readonly placeholder="选择日期" value="{$row.day}">
+                                        <input style="margin-left: 10px;" class="fn-tinput requ" name="price3[]" value="{$row.price}" placeholder="输入特殊日期价格">
+                                        <a href="javascript:;" class="add-price"><img src="__PUBLIC__/Admin/images/add.png" /></a>
+                                        <a href="javascript:;" class="sub-price"><img src="__PUBLIC__/Admin/images/sub.png" /></a>
+                                    </div>
+                                </div>
+                            </notempty>
+
+                        </div>
+                    </div>
+                    <div class="gater">
+                        <input type="hidden" name="__GO__" value="__URL__/index">
+                        <input type="hidden" name="tID" value="{$tpl.id}">
+                        <input type="hidden" name="roomID" value="{$tpl.roomID}">
+                        <input type="submit" value="确认" class="glylb_an_qd ajax-post" target-form="form-hotelAdd"/>
+                        <a href="__URL__/templete/id/{$tpl.roomID}"><button class="glylb_an_fh" type="button">返回</button></a>
+                    </div>
+                </form>
+            </div>
+        </div>
+    </div>
+</div>
+<script type="text/html" id="layout">
+    <div class="glylb_szmm special">
+        <span class="glylb_szmm_span">特殊日期价格：</span>
+        <div class="layui-input-block z_min_left_10">
+            <input class="fn-tinput requ test-item" name="day[]" readonly placeholder="选择日期">
+            <input style="margin-left: 10px;" class="fn-tinput requ" name="price3[]" placeholder="输入特殊日期价格">
+            <a href="javascript:;" class="add-price"><img src="__PUBLIC__/Admin/images/add.png" /></a>
+            <a href="javascript:;" class="sub-price"><img src="__PUBLIC__/Admin/images/sub.png" /></a>
+        </div>
+    </div>
+</script>
+<script>
+    $('body').on('click','.test-item',function () {
+        layui.use('laydate', function() {
+            var laydate = layui.laydate;
+            lay('.test-item').each(function(){
+                laydate.render({
+                    elem: this,
+                    trigger: 'click',
+                    min: "{$tpl['start']}",
+                    max: "{$tpl['end']}"
+                });
+            });
+        });
+    });
+    var className = "{$class}";
+    if(className == 'no'){
+        $('.special').css('display','none');
+    }
+    $('#choose').change(function(){
+        var choose = $(this).val();
+        if(choose == '2'){
+            $('.special').css('display','none');
+        }else{
+            $('.special').css('display','block');
+        }
+    });
+    $('body').on('click','.add-price',function(){
+        var str = $('#layout').html();
+        $(this).parents('.special').after(str);
+    });
+    $('body').on('click','.sub-price',function(){
+        $(this).parents('.special').remove();
+    });
+</script>
+

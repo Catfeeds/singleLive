@@ -175,4 +175,163 @@ class HouseListController extends CommonController {
         $this->assign('info',$info);
         $this->display();
     }
+    /*
+     *  现在客户提的新需求
+     *      对于客房要每天设置的价格
+     *      思路：
+     *          1、首先添加时间区段在这个时间区段内的价格都一致
+     *          2、在当前时间区段内，添加特殊时间设置
+     *              (周一 ~ 周五 ) 设定一个价格
+     *              周六日 设定一个价格
+     *              特殊时间  无限添加设置一个价格
+     * */
+    public function templete(){
+        $roomID = I('id');
+        if(I('startTime') || I('endTime')){
+            $map['createTime'] = get_selectTime(I('startTime'),I('endTime'));
+        }
+        $map['status'] = array('neq','3');
+        $count = D::count('Templete',['where'=>$map]);
+        $page = new \Org\Util\Page($count,C('PAGE_NUMBER'));
+        $db = D::get('Templete',[
+            'where' => $map
+        ]);
+        $this->assign('page',$page->show());
+        $this->assign('db',$db);
+        $this->assign('roomID',$roomID);
+        $this->display();
+    }
+    /*
+     *  价格模板 区段添加
+     *      每次添加成功后，再次添加时去查一下该房间的最大的结束时间
+     *      并赋值给日历插件，防止重复选择日期
+     * */
+    public function addTemplete(){
+        $roomID = I('roomID');
+        $myDate = [];
+        $time = D::find('Templete',[
+            'where'=>['roomID'=>$roomID],
+            'field'=>'MAX(end) endTime'
+        ]);
+        $showTime = date('Y-m-d',strtotime("{$time['endTime']} +1 day"));
+        $now = date('Y-m-d');
+        $myDate['min'] = $time['endTime'] ? $showTime : $now;
+        $myDate['max'] = $time['endTime'] ? date('Y-m-d',strtotime("$showTime +3 month")) : date('Y-m-d',strtotime("$now +3 month"));
+        $tpl = D('Templete');
+        if(IS_POST){
+            if($data = $tpl->create()){
+                $tpl->add($data);
+                $this->success('添加成功',U('HouseList/templete?id='.$data['roomID']));
+            }else{
+                $this->error($tpl->getError());
+            }
+        }
+        $this->assign('roomID',$roomID);
+        $this->assign('myDate',$myDate);
+        $this->display();
+    }
+    /*
+     *  设置价格
+     * */
+    public function price(){
+        $tID = I('id');
+        $tpl = D::find('Templete',$tID);
+        $arr = [
+            'MF_day' => $this->select_price($tID,$tpl['start'],$tpl['end'],'1'),
+            'SS_day' => $this->select_price($tID,$tpl['start'],$tpl['end'],'2'),
+            'special_day' => $this->select_price($tID,$tpl['start'],$tpl['end'],'3')
+        ];
+        $result = D::get('TempletePrice',['where'=>['tID'=>$tID]]);
+        if(!$result){
+            $class = 'yes';
+        }elseif($result && $arr['special_day']){
+            $class = 'ok';
+        }else{
+            $class = 'no';
+        }
+        $this->assign('class',$class);
+        $this->assign('arr',$arr);
+        $this->assign('tpl',$tpl);
+        $this->display();
+    }
+    //删除特殊价格设置
+    public function del_price(){
+        $get = I('get.');
+        $tpl = D::find('Templete',$get['tID']);
+
+        $date = D::field('TempletePrice.day',$get['id']);
+        $week = date('w',strtotime($date));
+        if($week == '0' || $week == '6'){
+            $type = 2;
+        }else{
+            $type = 1;
+        }
+        $arr = $this->select_price($get['tID'],$tpl['start'],$tpl['end'],$type);
+        D::save('TempletePrice',$get['id'],[
+            'price' => $arr['price'],
+            'type'  => $type
+        ]);
+        $this->success('删除成功',U('HouseList/templete?id='.$tpl['roomID']));
+    }
+    //设置价格逻辑
+    public function setPrice(){
+        $price = D('TempletePrice');
+        if($data = $price->create()){
+            $post = I('post.');
+            $tpl = D::find('Templete',$post['tID']);
+            $arr = get_start_end_week($tpl['start'],$tpl['end']);
+            //组装要插入的数组
+            $arrAll = array_map(function($data)use($post){
+                if($data['type'] == 1){
+                    $data['price'] = $post['price1'];
+                }else{
+                    $data['price'] = $post['price2'];
+                }
+                $data['roomID'] = $post['roomID'];
+                $data['tID'] = $post['tID'];
+                return $data;
+            },$arr);
+            /*
+             *  判断是否已经存在了价格模板
+             *      若存在,则先删除在插入(这里不去看到底是改了哪个值不去做循环,直接删除，重新插入)
+             *      若不存在直接插入
+             * */
+            $is = D::find('TempletePrice',$post['tID']);
+            if($is){
+                M('TempletePrice')->where("tID=".$post['tID'])->delete();
+            }
+            M('TempletePrice')->addAll($arrAll);
+            //判断是否设置了特殊日期
+            if($post['choose'] == 1){
+                //两个数组合并 参数1：作为键的数组，参数2：作为值的数组
+                $combine = array_combine($post['day'],$post['price3']);
+                //循环更新特殊日期的价格
+                foreach ($combine as $key => $val){
+                    $map['tID'] = $post['tID'];
+                    $map['day'] = $key;
+                    D::save('TempletePrice',['where'=>$map],[
+                        'price' => $val,
+                        'type'  => 3
+                    ]);
+                }
+            }
+            $this->success('设置成功',U('HouseList/templete?id='.$post['roomID']));
+        }else{
+            $this->error($price->getError());
+        }
+    }
+    //模板id  开始 结束  类型
+    public function select_price($tID,$start,$end,$type){
+        $map['tID'] = $tID;
+        $map['day'] = array('between',[$start,$end]);
+        $map['type'] = $type;
+        if($type == 1 || $type == 2){
+            $arr = D::find('TempletePrice',['where'=>$map]);
+        }else{
+            $arr = D::get('TempletePrice',[
+                'where'=>$map
+            ]);
+        }
+        return $arr;
+    }
 }

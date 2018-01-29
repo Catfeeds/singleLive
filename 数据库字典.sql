@@ -572,10 +572,36 @@ CREATE TABLE IF NOT EXISTS `ms_drawback` (
   `createTime` int(11) DEFAULT NULL COMMENT '操作时间',
   `money` int(10) DEFAULT NULL COMMENT '退款金额',
   PRIMARY KEY (`id`)
-) ENGINE=MyISAM  DEFAULT CHARSET=utf8 COLLATE=utf8_bin AUTO_INCREMENT=2 ;
+) ENGINE=MyISAM  DEFAULT CHARSET=utf8 COLLATE=utf8_bin AUTO_INCREMENT=1 ;
 
 
+--
+-- `ms_templete` 客房价格模板表 新加需求
+--
+CREATE TABLE IF NOT EXISTS `ms_templete` (
+  `id` int(11) NOT NULL AUTO_INCREMENT,
+  `start` DATE NOT NULL COMMENT '开始时间',
+  `end` DATE NOT NULL COMMENT '结束时间',
+  `roomID` int(10) NOT NULL COMMENT '房间ID',
+  `createTime` int(11) NOT NULL COMMENT '添加时间',
+  `status` tinyint(1) NOT NULL COMMENT '1-正常 2-禁用 3-删除',
+  PRIMARY KEY (`id`)
+) ENGINE=MyISAM  DEFAULT CHARSET=utf8 COLLATE=utf8_bin AUTO_INCREMENT=1 ;
 
+--
+-- `ms_templete_price` 客房价格设置表 新加需求
+--
+CREATE TABLE IF NOT EXISTS `ms_templete_price` (
+  `id`  int(11) NOT NULL AUTO_INCREMENT,
+  `tID` int(11) NOT NULL COMMENT '关联ms_templete表id',
+  `day` DATE NOT NULL COMMENT '日期',
+  `price` float(10,2) COLLATE utf8_bin NOT NULL COMMENT '金额',
+  `type` tinyint(1) COLLATE utf8_bin NOT NULL COMMENT '周一到周五价格-1,周六日价格-2,特殊日期价格-3',
+  `roomID` int(10) NOT NULL COMMENT '房间ID',
+  PRIMARY KEY (`id`),
+  KEY `day` (`day`),
+  KEY `price` (`price`)
+) ENGINE=MyISAM  DEFAULT CHARSET=utf8 COLLATE=utf8_bin AUTO_INCREMENT=1 ;
 
 
 
