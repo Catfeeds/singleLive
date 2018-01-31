@@ -191,6 +191,7 @@ class HouseListController extends CommonController {
             $map['createTime'] = get_selectTime(I('startTime'),I('endTime'));
         }
         $map['status'] = array('neq','3');
+        $map['roomID'] = $roomID;
         $count = D::count('Templete',['where'=>$map]);
         $page = new \Org\Util\Page($count,C('PAGE_NUMBER'));
         $db = D::get('Templete',[
@@ -258,10 +259,9 @@ class HouseListController extends CommonController {
     public function del_price(){
         $get = I('get.');
         $tpl = D::find('Templete',$get['tID']);
-
         $date = D::field('TempletePrice.day',$get['id']);
         $week = date('w',strtotime($date));
-        if($week == '0' || $week == '6'){
+        if($week == '0' || $week == '5' || $week == '6'){
             $type = 2;
         }else{
             $type = 1;
@@ -296,7 +296,7 @@ class HouseListController extends CommonController {
              *      若存在,则先删除在插入(这里不去看到底是改了哪个值不去做循环,直接删除，重新插入)
              *      若不存在直接插入
              * */
-            $is = D::find('TempletePrice',$post['tID']);
+            $is = D::find('TempletePrice',['where'=>['tID'=>$post['tID']]]);
             if($is){
                 M('TempletePrice')->where("tID=".$post['tID'])->delete();
             }

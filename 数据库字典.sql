@@ -448,7 +448,7 @@ CREATE TABLE IF NOT EXISTS `ms_room_date` (
   `createDate` DATE NOT NULL COMMENT '入住时间',
   `roomID` int(11) NOT NULL COMMENT '房间id',
   `order_num` int(11) NOT NULL COMMENT '订单数量(只要有已经支付的订单就加1,退款或已完成则减1)',
-  `type` char(1) COLLATE utf8_bin NOT NULL COMMENT 'h-客房 t-套餐',
+  `type` char(1) COLLATE utf8_bin NOT NULL COMMENT 'k-客房 t-套餐',
   PRIMARY KEY (`id`)
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8 COLLATE=utf8_bin AUTO_INCREMENT=1 ;
 

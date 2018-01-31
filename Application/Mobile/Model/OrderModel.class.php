@@ -55,52 +55,7 @@ class OrderModel extends Model {
 	 * */
 	protected function set_price(){
 		$post = I('post.');
-		if($post['type'] == 'k'){
-			$start = strtotime($post['inTime']);//入住时间
-			$end = strtotime($post['outTime']);//离开时间
-			$oldMoney = D::field('House.money',$post['roomID']);//房间单价
-			//这里判断$num>=2是因为 现在需求是2017-01-01-2017-01-02这算一天的房间单价 并且算房间价格时应算入住时间的价格
-			$num = intval(($end-$start)/86400);//入住天数
-			//判断后台是否设置了价格模板 这里就拿开始入住时间查找就行
-			$sel = [
-				'day' => array('between',[$post['inTime'],$post['outTime']]),
-				'roomID' => $post['roomID']
-			];
-			$is = D::get('TempletePrice',[
-				'where' => $sel
-			]);
-			//这里先计算出所选日期的总价格
-			if($is){
-				$more = D::field('TempletePrice.SUM(price)',['where'=>$sel]);
-				$less = D::field('TempletePrice.price',[
-					'where'	=> [
-						'day' => $post['inTime'],
-						'roomID' => $post['roomID']
-					]
-				]);
-				$money = $num >= 2 ? $more : $less;
-			}else{
-				$money = $num >= 2 ? ($oldMoney*$num) : $oldMoney;
-			}
-			//判断是否使用了优惠券		存在 ？ 总价格-优惠券价格 : 总价格
-			if(array_key_exists('coupon',$post) === true && $post['coupon']){
-				$couponID = D::field('CouponExchange.cID',['where'=>['card'=>$post['coupon']]]);
-				$couponMoney = D::field('Coupon.money',$couponID);
-				$price = $money-$couponMoney;
-			}else{
-				$price = $money;
-			}
-		}else{
-			$money = D::field('Package.packMoney',$post['roomID']);//套餐单价
-			if(array_key_exists('coupon',$post) === true && $post['coupon']){
-				$couponID = D::field('CouponExchange.cID',['where'=>['card'=>$post['coupon']]]);
-				$couponMoney = D::field('Coupon.money',$couponID);
-				$price = $post['num'] > 1 ? ($money*$post['num'] - $couponMoney) : ($money-$couponMoney);
-			}else{
-				$price = $post['num'] > 1 ? $money*$post['num'] : $money;
-			}
-		}
-		return $price;
+		return get_order_price($post);
 	}
 
 	//设置下单标准日期

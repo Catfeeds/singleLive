@@ -144,85 +144,13 @@ class OrdersController extends CommonController{
 		$this->assign('coupon',$coupon);
 		$this->display();
 	}
-	/**
-	 * [getStrtotime 获取时间日期格式信息]
-	 * @Author   ヽ(•ω•。)ノ   Mr.Solo
-	 * @DateTime 2018-01-11
-	 * @Function []
-	 * @param    [type]     $time   [选中日期（时间戳）]
-	 * @return   [type]             [description]
-	 */
+	//获取日期 优惠券数组
 	public function getStrtotime()
 	{
 		$post = I('post.');
-		$dates = [
-			[
-				'date' => strtotime($post['date'].'-3 days'),
-			],
-			[
-				'date' => strtotime($post['date'].'-2 days'),
-			],
-			[
-				'date' => strtotime($post['date'].'-1 days'),
-			],
-			[
-				'date' => strtotime($post['date']),
-			],
-			[
-				'date' => strtotime($post['date'].'+1 days'),
-			],
-			[
-				'date' => strtotime($post['date'].'+2 days'),
-			],
-			[
-				'date' => strtotime($post['date'].'+3 days'),
-			],
-		];
-		//在php中1-7的数字分别代表  周1-----周日
-		$week = [
-			1 => '一',
-			2 => '二',
-			3 => '三',
-			4 => '四',
-			5 => '五',
-			6 => '六',
-			7 => '日',
-		];
-		//查询房间信息
-		$house = D::find("House",$post['houseID']);
-		$data['db'] = array_map(function($data)use($week,$post,$house){
-			//获取当前日期
-			$nowDate = strtotime(date('Y-m-d'),time());
-			$date = $data['date'];
-			//获取房间总数	查询提交时间的order数量
-			$map['roomID'] = $post['houseID'];
-			$map['createDate'] = date('Y-m-d',$date);
-			$map['type'] = 'h';
-			$num = D::find('RoomDate',['where'=>$map,'field'=>'IFNULL(order_num,0) order_num']);
-			if($num['order_num'] && $num['order_num']>0){
-				$houseNum = $house['total_num']-$num['order_num'];
-			}else{
-				$houseNum = $house['total_num'];
-			}
-			if($data['date']>=$nowDate){
-				$str = $num['order_num'] == $house['total_num'] ? 'true' : 'false';
-			}else{
-				$str = 'no';
-			}
-			$data = [
-				'month' => date('m月',$date),
-				'day'   => date('d',$date),
-				'week'  => $week[date('N',$date)],//N - 星期几
-				'full'  => $str, //客满情况 满员写true[string] 不满则false	no-之前之间不可查询
-				'date'	=> date('Y-m-d',$date),
-				'num'	=> $houseNum
-			];
-			return $data;
-		}, $dates);
-		//用户id
-		$userID = session('user');
-		//查询当前用户已经拥有的且未使用的电子券
-		$data['coupon'] = get_coupon($userID,$house,$post['date'],'hcate');
+		$post['userID'] = session('user');
+		//dump($post);die;
+		$data = get_postDate_roomNum_coupon($post);
 		$this->ajaxReturn($data);
 	}
 	//订单处理

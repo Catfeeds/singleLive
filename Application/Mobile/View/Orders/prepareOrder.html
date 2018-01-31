@@ -69,6 +69,9 @@
                         <div class="dinoter">
                             房间数
                         </div>
+                        <div class="dinoter1">
+                            价格
+                        </div>
                     </div>
                     <div class="timet_smt_right" id="view"></div>
                 </div>
@@ -203,10 +206,11 @@ layui.use(['laytpl', 'laydate'], function() {
         now = date;
         $('#Time').text(date);
         var houseID = "{$house.id}";
+        var type = "k";
         /*$.ajaxSetup({
             'async':false
         });*/
-        $.post('__URL__/getStrtotime', { date: date,houseID: houseID}, function(res) {
+        $.post('__URL__/getStrtotime', { date: date,houseID: houseID,type:type}, function(res) {
             //日期信息
             laytpl($('#layout').html()).render(res.db, function(string) {
                 $('#view').html(string);
@@ -273,10 +277,11 @@ layui.use(['laytpl', 'laydate'], function() {
             {{# if(item.full === 'false'){ }}
             <p class="str3" num="{{item.num}}"><a>查房</a></p>
             {{# }else if(item.full === 'no'){ }}
-            <p class="str2" style="background-color: red;color: #000;">查房</p>
+            <p class="str2"><a style="color: red; border: 1px solid red; padding: .5rem;  border-radius: 5px;">查房</a></p>
             {{# }else{ }}
             <p class="str2">满房</p>
             {{# } }}
+            <p>{{item.price}}</p>
         </li>
         {{# }); }}
 </script>

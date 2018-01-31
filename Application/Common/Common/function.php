@@ -722,6 +722,7 @@ function do_order_back($id){
         $arr = push_select_time($msg['inTime'],$msg['outTime']);
         $where['createDate'] = array('in',$arr);
         $where['roomID'] = $msg['roomID'];
+        $where['type'] = $msg['type'];
         M('RoomDate')->where($where)->setDec('order_num',1);
         //减积分
         $sorce = D::field('House.sorce',$msg['roomID']);
@@ -737,6 +738,7 @@ function do_order_back($id){
     }else{
         $where['createDate'] = $msg['inTime'];
         $where['roomID'] = $msg['roomID'];
+        $where['type'] = $msg['type'];
         M('RoomDate')->where($where)->setDec('order_num',$msg['num']);
         //减积分
         $sorce = D::field('Package.sorce',$msg['roomID']);
@@ -799,6 +801,8 @@ function get_coupon($userID,$house,$date,$type){
  *     参数： $post一维数组
  *       数组key:   date-标准日期格式
  *       数组key:   houseID-房间ID
+ *       数组key:   type:k(客房) t(套餐)
+ *       数组key:   userID:用户id
  *      返回一个二维数组
  * */
 function get_postDate_roomNum_coupon($post){
@@ -835,16 +839,22 @@ function get_postDate_roomNum_coupon($post){
         6 => '六',
         7 => '日',
     ];
-    //查询房间信息
-    $house = D::find("House",$post['houseID']);
-    $data['db'] = array_map(function($data)use($week,$post,$house){
+    //查询房间信息(这是h-代表客房  t-代表套餐)
+    if($post['type'] == 'k'){
+        $house = D::find("House",$post['houseID']);
+        $parameter = 'hcate';
+    }else{
+        $house = D::find('Package',$post['houseID']);
+        $parameter = 'tcate';
+    }
+    $data['db'] = array_map(function($data)use($week,$post,$house,$parameter){
         //获取当前日期
         $nowDate = strtotime(date('Y-m-d'),time());
         $date = $data['date'];
         //获取房间总数	查询提交时间的order数量
         $map['roomID'] = $post['houseID'];
         $map['createDate'] = date('Y-m-d',$date);
-        $map['type'] = 'h';
+        $map['type'] = $post['type'];
         $num = D::find('RoomDate',['where'=>$map,'field'=>'IFNULL(order_num,0) order_num']);
         if($num['order_num'] && $num['order_num']>0){
             $houseNum = $house['total_num']-$num['order_num'];
@@ -856,20 +866,33 @@ function get_postDate_roomNum_coupon($post){
         }else{
             $str = 'no';
         }
+        if($post['type'] == 'k'){
+            //判断是否设置了价格模板
+            $is = D::find('TempletePrice',[
+                'where' => [
+                    'roomID' => $post['houseID'],
+                    'day' => date('Y-m-d',$date)
+                ],
+                'field' => 'price'
+            ]);
+            $money = $is['price'] ? $is['price'] : $house['money'];
+        }else{
+            $money = $house['packMoney'];
+        }
         $data = [
             'month' => date('m月',$date),
             'day'   => date('d',$date),
             'week'  => $week[date('N',$date)],//N - 星期几
             'full'  => $str, //客满情况 满员写true[string] 不满则false	no-之前之间不可查询
             'date'	=> date('Y-m-d',$date),
-            'num'	=> $houseNum
+            'num'	=> $houseNum,
+            'price' => $money
+
         ];
         return $data;
     }, $dates);
-    //用户id
-    $userID = session('user');
     //查询当前用户已经拥有的且未使用的电子券
-    $data['coupon'] = get_coupon($userID,$house,$post['date'],'hcate');
+    $data['coupon'] = get_coupon($post['userID'],$house,$post['date'],$parameter);
     return $data;
 }
 /*
@@ -982,7 +1005,8 @@ function checkTable($orderNo){
         //已经存在日期,则更新
         if($save_date){
             $save['createDate'] = implode(',',$save_date);
-            $save['type'] = 'h';
+            $save['type'] = 'k';
+            $save['roomID'] = $msg['roomID'];
             M('RoomDate')->where($save)->setInc('order_num',1);
         }
         //不存在的日期,则新增
@@ -990,7 +1014,7 @@ function checkTable($orderNo){
             $add_date = array_map(function($data)use($msg){
                 $data['roomID'] = $msg['roomID'];
                 $data['order_num'] = 1;
-                $data['type'] = 'h';
+                $data['type'] = 'k';
                 return $data;
             },$add_date);
             M('RoomDate')->addAll($add_date);
@@ -1092,7 +1116,7 @@ function get_start_end_week($start,$end){
     }
     $array = [];
     foreach($data as $kk => $value){
-        if($value['week'] == '0' || $value['week'] == '6') {
+        if($value['week'] == '0' || $value['week'] == '5' || $value['week'] == '6') {
             $array[$kk]['day'] = $value['day'];
             $array[$kk]['type'] = 2;
         }else{
@@ -1101,4 +1125,69 @@ function get_start_end_week($start,$end){
         }
     }
     return $array;
+}
+/*
+ * 	设置插入订单价格
+* 		首先判断  该订单是否存在优惠券
+* 		其次判断  该订单是客房 还是 套餐的订单
+* 				 客房：根据开始-结束求出天数 则价格为天数*房间单价
+* 				 套餐：根据购买的份数 则价格为  份数*房间单价
+* 		则该订单的总价格为：
+ * 		电子券 && 客房 ？ (天数*房间单价) - 电子券金额  : (天数*房间单价)
+* 		电子券 && 套餐 ？ (份数*房间单价) - 电子券金额  : (份数*房间单价)
+* 	    新需求  仅用于客房 每天都可能设置房价
+* */
+function get_order_price($post){
+    if($post['type'] == 'k'){
+        $start = strtotime($post['inTime']);//入住时间
+        $end = strtotime($post['outTime']);//离开时间
+        $oldMoney = D::field('House.money',$post['roomID']);//房间单价
+        /*
+         * 	这里判断$num>=2是因为 现在需求是2017-01-01-2017-01-02这算一天的房间单价 并且算房间价格时应算入住时间的价格
+         *	2017-01-01-2017-01-03这算两天的钱(2017-01-01和2017-01-02的钱)
+         * */
+        $num = intval(($end-$start)/86400);//入住天数
+        //判断后台是否设置了价格模板 这里就拿开始入住时间查找就行
+        if($num >=2){
+            $search = date('Y-m-d',strtotime("{$post['outTime']} -1 day"));
+            $sel = [
+                'day' => array('between',[$post['inTime'],$search]),
+                'roomID' => $post['roomID']
+            ];
+        }else{
+            $sel = [
+                'day' => $post['inTime'],
+                'roomID' => $post['roomID']
+            ];
+        }
+        $is = D::get('TempletePrice',[
+            'where' => $sel
+        ]);
+        //这里先计算出所选日期的总价格
+        if($is){
+            $more = D::field('TempletePrice.SUM(price)',['where'=>$sel]);
+            $less = D::field('TempletePrice.price',['where'=>$sel]);
+            $money = $num >= 2 ? $more : $less;
+        }else{
+            $money = $num >= 2 ? ($oldMoney*$num) : $oldMoney;
+        }
+        //判断是否使用了优惠券		存在 ？ 总价格-优惠券价格 : 总价格
+        if(array_key_exists('coupon',$post) === true && $post['coupon']){
+            $couponID = D::field('CouponExchange.cID',['where'=>['card'=>$post['coupon']]]);
+            $couponMoney = D::field('Coupon.money',$couponID);
+            $price = $money-$couponMoney;
+        }else{
+            $price = $money;
+        }
+    }else{
+        $money = D::field('Package.packMoney',$post['roomID']);//套餐单价
+        if(array_key_exists('coupon',$post) === true && $post['coupon']){
+            $couponID = D::field('CouponExchange.cID',['where'=>['card'=>$post['coupon']]]);
+            $couponMoney = D::field('Coupon.money',$couponID);
+            $price = $post['num'] > 1 ? ($money*$post['num'] - $couponMoney) : ($money-$couponMoney);
+        }else{
+            $price = $post['num'] > 1 ? $money*$post['num'] : $money;
+        }
+    }
+    return $price;
 }

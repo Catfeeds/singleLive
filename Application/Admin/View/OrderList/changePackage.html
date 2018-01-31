@@ -14,89 +14,119 @@
                         <li class="xxkt_bt">订单信息</li>
                     </ul>
                 </div>
-                <div class="xxknr">
-                    <div>
-                        <div class="glylb_szmm">
-                            <span class="glylb_szmm_span">订单编号：</span>
-                            <div class="layui-input-block z_min_left_10">
-                                <input class="fn-tinput" value="{$db.orderNo}" disabled>
+                <form action="__URL__/change_order_date" method="post" class="myForm">
+                    <div class="xxknr">
+                        <div>
+                            <div class="glylb_szmm">
+                                <span class="glylb_szmm_span">订单编号：</span>
+                                <div class="layui-input-block z_min_left_10">
+                                    <input class="fn-tinput" value="{$db.orderNo}" disabled>
+                                </div>
                             </div>
-                        </div>
-                        <div class="glylb_szmm">
-                            <span class="glylb_szmm_span">房间名称：</span>
-                            <div class="layui-input-block z_min_left_10">
-                                <input class="fn-tinput" value="{$db.houseName}" disabled>
-                            </div>
-                        </div>
-                        <div class="glylb_szmm">
-                            <span class="glylb_szmm_span">客户姓名：</span>
-                            <div class="layui-input-block z_min_left_10">
-                                <input class="fn-tinput" value="{$db.username}" disabled>
-                            </div>
-                        </div>
-                        <div class="glylb_szmm">
-                            <span class="glylb_szmm_span">客户电话：</span>
-                            <div class="layui-input-block z_min_left_10">
-                                <input class="fn-tinput" value="{$db.mobile}" disabled>
-                            </div>
-                        </div>
-                        <div class="glylb_szmm">
-                            <span class="glylb_szmm_span">订单金额：</span>
-                            <div class="layui-input-block z_min_left_10">
-                                <input class="fn-tinput" value="{$db.price}" disabled>
-                            </div>
-                        </div>
-                        <div class="glylb_szmm">
-                            <span class="glylb_szmm_span">入住时间：</span>
-                            <div class="layui-input-block z_min_left_10">
-                                <input class="fn-tinput test-item" name="inTime" value="{$db.inTime}" readonly="readonly">
-                            </div>
-                        </div>
-                        <div class="glylb_szmm">
-                            <span class="glylb_szmm_span">退房时间：</span>
-                            <div class="layui-input-block z_min_left_10">
-                                <input class="fn-tinput test-item" name="outTime" value="{$db.outTime}" readonly="readonly">
-                            </div>
-                        </div>
-                        <div class="glylb_szmm">
-                            <span class="glylb_szmm_span">查看房间：</span>
-                            <div class="layui-input-block z_min_left_10">
-                                <div class="Timeplug">
-                                    <div class="onertpis">
-                                        <div class="onertpis_tite">
-                                            <div class="onertpis_tite_left">
-                                                <div class="weekleft timeCheck" days="minusWeek">
-                                                    周
-                                                </div>
-                                                <div class="weekleft timeCheck" days="minusDay">
-                                                    天
-                                                </div>
-                                            </div>
-                                            <div class="onertpis_tite_cont1">
-                                                <input id="Time" value="{$myDate.min}" >
-                                            </div>
-                                            <div class="onertpis_tite_right">
-                                                <div class="weekleft1 timeCheck" days="plusDay">
-                                                    天
-                                                </div>
-                                                <div class="weekleft1 timeCheck" days="plusWeek">
-                                                    周
-                                                </div>
-                                            </div>
-                                        </div>
-                                        <div class="onertpis_cent">
-                                            <div class="onertpis_cent_left">
-                                                <div class="mintor">
-                                                    已选择房间类型
-                                                </div>
-                                                <div class="mintor1">
-                                                    仙都啦城堡
-                                                </div>
-                                            </div>
-                                            <div class="onertpis_cent_right">
-                                                <ul id="view">
+                            <empty name="db.coupon">
+                                <div class="glylb_szmm">
+                                    <span class="glylb_szmm_span">是否使用电子券：</span>
+                                    <div class="layui-input-block z_min_left_10">
+                                        没有使用电子券
+                                    </div>
+                                </div>
+                                <else />
+                                <div class="glylb_szmm">
+                                    <span class="glylb_szmm_span">是否使用电子券：</span>
+                                    <div class="layui-input-block z_min_left_10">
+                                        <p> 券号：{$coupon.cID}<br />
+                                            电子券名称：{$coupon.title}<br />
+                                            电子券金额：{$coupon.money}
+                                        </p>
+                                        <p>允许日期：{$coupon.exprie_start} ~ {$coupon.exprie_end}</p>
+                                        <p>不可使用日期：
+                                            <notempty name="coupon.notDate_show">
+                                                <volist name="coupon.notDate_show" id="rows">
+                                                    <b>{$rows}</b>
+                                                </volist>
+                                                <else />
+                                                    无
+                                            </notempty>
+                                        </p>
+                                    </div>
+                                    <input type="hidden" name="cID" value="{$coupon.id}" />
+                                    <input type="hidden" name="coupon" value="{$coupon.cID}" />
+                                </div>
+                            </empty>
 
-                                                </ul>
+                            <div class="glylb_szmm">
+                                <span class="glylb_szmm_span">房间名称：</span>
+                                <div class="layui-input-block z_min_left_10">
+                                    <input class="fn-tinput" value="{$db.houseName}" disabled>
+                                </div>
+                            </div>
+                            <div class="glylb_szmm">
+                                <span class="glylb_szmm_span">客户姓名：</span>
+                                <div class="layui-input-block z_min_left_10">
+                                    <input class="fn-tinput" value="{$db.username}" disabled>
+                                </div>
+                            </div>
+                            <div class="glylb_szmm">
+                                <span class="glylb_szmm_span">客户电话：</span>
+                                <div class="layui-input-block z_min_left_10">
+                                    <input class="fn-tinput" value="{$db.mobile}" disabled>
+                                </div>
+                            </div>
+                            <div class="glylb_szmm">
+                                <span class="glylb_szmm_span">订单金额：</span>
+                                <div class="layui-input-block z_min_left_10">
+                                    <input class="fn-tinput" value="{$db.price}" disabled>
+                                </div>
+                            </div>
+                            <div class="glylb_szmm">
+                                <span class="glylb_szmm_span">入住时间：</span>
+                                <div class="layui-input-block z_min_left_10">
+                                    <input class="fn-tinput test-item" name="inTime" value="{$db.inTime}" readonly="readonly">
+                                </div>
+                            </div>
+                            <div class="glylb_szmm" style="height: 500px;">
+                                <span class="glylb_szmm_span">查看房间：</span>
+                                <div class="layui-input-block z_min_left_10">
+                                    <div class="Timeplug">
+                                        <div class="onertpis">
+                                            <div class="onertpis_tite">
+                                                <div class="onertpis_tite_left">
+                                                    <div class="weekleft timeCheck" days="minusWeek">
+                                                        周
+                                                    </div>
+                                                    <div class="weekleft timeCheck" days="minusDay">
+                                                        天
+                                                    </div>
+                                                </div>
+                                                <div class="onertpis_tite_cont1">
+                                                    <input id="Time" value="{$myDate.min}" >
+                                                </div>
+                                                <div class="onertpis_tite_right">
+                                                    <div class="weekleft1 timeCheck" days="plusDay">
+                                                        天
+                                                    </div>
+                                                    <div class="weekleft1 timeCheck" days="plusWeek">
+                                                        周
+                                                    </div>
+                                                </div>
+                                            </div>
+                                            <div class="onertpis_cent">
+                                                <div class="onertpis_cent_left">
+                                                    <div class="mintor">
+                                                        房间名称
+                                                    </div>
+                                                    <div class="mintor1">
+                                                        {$db.houseName}
+                                                    </div>
+                                                    <div class="mintor1">
+                                                        价格
+                                                    </div>
+                                                </div>
+                                                <div class="onertpis_cent_right">
+                                                    <ul id="view">
+
+                                                    </ul>
+                                                </div>
                                             </div>
                                         </div>
                                     </div>
@@ -104,10 +134,15 @@
                             </div>
                         </div>
                     </div>
-                </div>
-                <div class="gater">
-                    <a href="__URL__/index"><input type="button" value="返回" class="glylb_an_fh"/></a>
-                </div>
+                    <div class="gater">
+                        <input type="hidden" name="roomID" value="{$db.roomID}">
+                        <input type="hidden" name="id" value="{$db.id}">
+                        <input type="hidden" name="price" value="{$db.price}">
+                        <input type="hidden" name="type" value="{$db.type}">
+                        <input type="submit" value="确认修改" class="glylb_an_qd ajax-post" target-form="myForm"/>
+                        <a href="__URL__/index"><input type="button" value="返回" class="glylb_an_fh"/></a>
+                    </div>
+                </form>
             </div>
         </div>
     </div>
@@ -139,7 +174,9 @@
             now = date;
             $('#Time').text(date);
             var houseID = "{$db.roomID}";
-            $.post('__URL__/getStrtotime', { date: date,houseID: houseID}, function(res) {
+            var type = "{$db.type}";
+            var userID = "{$db.userID}";
+            $.post('__URL__/getStrtotime', { date: date,houseID: houseID,type:type,userID:userID}, function(res) {
                 //日期信息
                 laytpl($('#layout').html()).render(res.db, function(string) {
                     $('#view').html(string);
@@ -180,10 +217,10 @@
                 layer.alert('选择时间不可小于当前时间', {icon: 2});
             }
         });
-        $(document).on('click','.vor',function(){
-            var num = $(this).attr('num');
-            layer.alert('剩余房间 ：'+num, {icon: 1});
-        });
+        /*$(document).on('click','.vor',function(){
+         var num = $(this).attr('num');
+         layer.alert('剩余房间 ：'+num, {icon: 1});
+         });*/
     });
 </script>
 <script type="text/html" id="layout">
@@ -196,12 +233,13 @@
         <p>{{item.day}}</p>
         <p>{{item.month}}</p>
         {{# if(item.full === 'false'){ }}
-        <span class="vor" num="{{item.num}}">查房</span>
+        <span class="vor" num="{{item.num}}">剩余{{item.num}}间</span>
         {{# }else if(item.full === 'no'){ }}
         <span class="vorNO" style="color:red;">不可预定</span>
         {{# }else{ }}
         <span>满房</span>
         {{# } }}
+        <p style="line-height: 60px">{{item.price}}</p>
     </li>
     {{# }); }}
 </script>

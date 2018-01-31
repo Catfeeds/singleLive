@@ -518,13 +518,15 @@ background-image: url(../img/wt01@2x.png); background-repeat: no-repeat; backgro
 
 .timet_smt{ width:100%; height: 16rem;}
 
-.timet_smt_left{ width:13%; height: 16rem; float: left; }
+.timet_smt_left{ width:13%; height: 20rem; float: left; }
 
 .dinoter{ width: 100%; height: 4rem; line-height: 4rem; margin-top: 4rem; text-align: center; color:#ff9900; font-size: 1.8rem;}
 
-.timet_smt_right{ width: 87%; height: 16rem; float: right;}
+.dinoter1{ width: 100%; height: 4rem; line-height: 4rem;  text-align: center; color:#ff9900; font-size: 1.8rem;}
 
-.timet_smt_right li{ width: 14%; float: left; height: 16rem; text-align: center;}
+.timet_smt_right{ width: 87%; height: 20rem; float: right;}
+
+.timet_smt_right li{ width: 14%; float: left; height: 20rem; text-align: center;}
 
 .timet_smt_right li p{ line-height: 4rem; font-size: 1.8rem;}
 

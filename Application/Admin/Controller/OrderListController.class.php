@@ -87,7 +87,7 @@ class OrderListController extends CommonController
             array('date_show','日期区段'),
             array('type_name','订单类型'),
             array('price','订单金额'),
-            array('payType','订单金额'),
+            array('payType','支付方式'),
             array('status_name','状态'),
         );
         export_Excel($xlsName,$xlsCell,$list);
@@ -120,7 +120,19 @@ class OrderListController extends CommonController
         $orderID = I('id');
         $db = D::find('Order',$orderID);
         $db['houseName'] = D::field('House.name',$db['roomID']);
+        if($db['coupon']){
+            $coupon = D::find(['CouponUsed','CU'],[
+                'where'=>['CU.orderNo'=>$db['orderNo']],
+                'join' =>[
+                    'LEFT JOIN __COUPON_EXCHANGE__ CE ON CE.card = CU.cID',
+                    'LEFT JOIN __COUPON__ C ON C.id = CE.cID'
+                ],
+                'field'=>'CU.cID,C.*'
+            ]);
+            $coupon['notDate_show'] = $coupon['notDate'] ? explode("\r\n",$coupon['notDate']) : '' ;
+        }
         $myDate = get_minDate_maxDate();
+        $this->assign('coupon',$coupon);
         $this->assign('myDate',$myDate);
         $this->assign('db',$db);
         $this->display();
@@ -129,9 +141,171 @@ class OrderListController extends CommonController
     public function changePackage(){
         $orderID = I('id');
         $db = D::find('Order',$orderID);
+        $db['houseName'] = D::field('Package.title',$db['roomID']);
+        if($db['coupon']){
+            $map = [
+                'CU.orderNo'=>$db['orderNo'],
+                'CU.status' =>1
+            ];
+            $coupon = D::find(['CouponUsed','CU'],[
+                'where'=>$map,
+                'join' =>[
+                    'LEFT JOIN __COUPON_EXCHANGE__ CE ON CE.card = CU.cID',
+                    'LEFT JOIN __COUPON__ C ON C.id = CE.cID'
+                ],
+                'field'=>'CU.cID,C.*'
+            ]);
+            $coupon['notDate_show'] = $coupon['notDate'] ? explode("\r\n",$coupon['notDate']) : '' ;
+        }
+        $package = D::find('Package',$db['roomID']);
+        if(date('Y-m-d') > $package['allowIn']){
+            $date = date('Y-m-d');
+        }else{
+            $date = $package['allowIn'];
+        }
+        $myDate = [
+            'min' => $date,
+            'max' => $package['allowOut']
+        ];
+        $this->assign('myDate',$myDate);
+        $this->assign('coupon',$coupon);
         $this->assign('db',$db);
         $this->display();
     }
+    /*
+     *  变更客房日期处理
+     *  这里需要判断3中清况
+     *      1、满房
+     *      2、是否使用了优惠券  使用了 ？ 判断所选日期内是否存在优惠券不可用或已过期（存在不能改） : 跳过
+     *      3、价格不一致也不能改
+     *      4、若所选时间和原订单时间都一致也不能改
+     * */
+    public function change_order_date(){
+        $post = I('post.');
+        $order = D::find('Order',$post['id']);
+        $is_like = true;
+        if($post['type'] == 'k'){
+            $parameter = push_select_time($post['inTime'],$post['outTime']);
+            if($order['inTime'] == $post['inTime'] && $order['inTime'] == $post['outTime']){
+                $is_like = false;
+            }
+        }else{
+            $parameter = $post['inTime'];
+            if($order['inTime'] == $post['inTime']){
+                $is_like = false;
+            }
+        }
+        if($is_like !== true){
+            $this->error('您所选日期与原订单一致,无法更改');
+        }
+        $array = ['roomID'=>$post['roomID'],'type'=>$post['type']];
+        $bool = is_house_all($parameter,$array);
+        if($bool !== true){
+           $this->error('您所选日期内,存在满房情况无法预订');
+        }
+       //判断该订单是否使用了优惠券
+       if(array_key_exists('coupon',$post) && $post['coupon']){
+           $coupon = D::find('coupon',$post['cID']);
+           $arr = explode("\r\n",$coupon['notDate']);
+           //这里必须要判断   优惠券设置的特定不可用日期
+           if($post['type'] == 'k'){
+               $boolen = true;
+               foreach ($arr as $val){
+                   if($val>=$post['inTime'] && $val<=$post['outTime']){
+                       $boolen = false;
+                   }
+               }
+               if($post['inTime']<$coupon['exprie_start'] || $post['outTime']<$coupon['exprie_start'] || $post['inTime']>$coupon['exprie_end'] || $post['outTime']>$coupon['exprie_end'] || $boolen!==true){
+                   $this->error('您选择的日期内,存在优惠券的不可用日期');
+               }
+           }else{
+               $boo = true;
+               if(in_array($post['inTime'],$arr)){
+                   $boo = false;
+               }
+               if($post['inTime']<$coupon['exprie_start'] || $post['inTime']>$coupon['exprie_end'] || $boo!==true){
+                   $this->error('您选择的日期内,存在优惠券的不可用日期');
+               }
+           }
+       }
+        //判断提交的订单价格
+       $price = get_order_price($post);
+       if($price!=$post['price']){
+           $this->error('您所选择的日期,与原订单价格不符无法更改');
+       }
+       //将原订单所选日期减去 在添加新的更改日期
+        $roomDate = search_room_date($order['roomID'],$order['type']);
+       if($post['type'] == 'k'){
+           //减去
+           $arr = push_select_time($order['inTime'],$order['outTime']);
+           $where['createDate'] = array('in',$arr);
+           $where['roomID'] = $order['roomID'];
+           $where['type'] = $order['type'];
+           M('RoomDate')->where($where)->setDec('order_num',1);
+           //更新订单时间
+           $save_data = [
+               'inTime' => $post['inTime'],
+               'outTime' => $post['outTime'],
+           ];
+           M('Order')->where("id=".$post['id'])->save($save_data);
+           //新增 修改后的时间
+           $arrNew =  push_select_time($post['inTime'],$post['outTime']);
+           foreach($arrNew as $key => $val){
+               if(in_array($val,$roomDate)){
+                   $save_date[] = $val;
+               }else{
+                   $add_date[$key]['createDate'] = $val;
+               }
+           }
+           //已经存在日期,则更新
+           if($save_date){
+               $save['createDate'] = implode(',',$save_date);
+               $save['type'] = 'k';
+               $save['roomID'] = $order['roomID'];
+               M('RoomDate')->where($save)->setInc('order_num',1);
+           }
+           //不存在的日期,则新增
+           if($add_date){
+               $add_date = array_map(function($data)use($order){
+                   $data['roomID'] = $order['roomID'];
+                   $data['order_num'] = 1;
+                   $data['type'] = 'k';
+                   return $data;
+               },$add_date);
+               M('RoomDate')->addAll($add_date);
+           }
+       }else{
+           //减去
+           $aa = [
+               'createDate' => $order['inTime'],
+               'type' => 't',
+               'roomID' => $order['roomID']
+           ];
+           M('RoomDate')->where($aa)->setDec('order_num',$order['num']);
+           //更新
+           $save_data['inTime'] = $post['inTime'];
+           M('Order')->where("id=".$post['id'])->save($save_data);
+           //新增提交的时间
+           if(in_array($post['inTime'],$roomDate)){
+               $save = [
+                   'createDate' => $post['inTime'],
+                   'type' => 't',
+                   'roomID'=> $order['roomID']
+               ];
+               M('RoomDate')->where($save)->setInc('order_num',$order['num']);
+           }else{
+               $add = [
+                   'createDate' => $post['inTime'],
+                   'order_num' => $order['num'],
+                   'type' => 't',
+                   'roomID' => $order['roomID']
+               ];
+               M('RoomDate')->add($add);
+           }
+       }
+       $this->success('变更日期订单日期成功,请记得通知用户！！！',U('OrderList/index'));
+    }
+
     /*
      *  数据集处理
      *  $db--二维数组
