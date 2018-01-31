@@ -596,7 +596,7 @@ CREATE TABLE IF NOT EXISTS `ms_templete_price` (
   `tID` int(11) NOT NULL COMMENT '关联ms_templete表id',
   `day` DATE NOT NULL COMMENT '日期',
   `price` float(10,2) COLLATE utf8_bin NOT NULL COMMENT '金额',
-  `type` tinyint(1) COLLATE utf8_bin NOT NULL COMMENT '周一到周五价格-1,周六日价格-2,特殊日期价格-3',
+  `type` tinyint(1) COLLATE utf8_bin NOT NULL COMMENT '周一到周四价格-1,周五周六日价格-2,特殊日期价格-3',
   `roomID` int(10) NOT NULL COMMENT '房间ID',
   PRIMARY KEY (`id`),
   KEY `day` (`day`),
