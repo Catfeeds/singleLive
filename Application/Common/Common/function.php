@@ -719,7 +719,8 @@ function do_order_back($id){
     }
     //增加房间剩余数量(实质是减去当天的  order_num的数量) 减积分
     if($msg['type'] == 'k'){
-        $arr = push_select_time($msg['inTime'],$msg['outTime']);
+        $before_date = date('Y-m-d',strtotime("{$msg['outTime']} -1 day"));
+        $arr = push_select_time($msg['inTime'],$before_date);
         $where['createDate'] = array('in',$arr);
         $where['roomID'] = $msg['roomID'];
         $where['type'] = $msg['type'];
@@ -993,8 +994,9 @@ function checkTable($orderNo){
     }
     $roomDate = search_room_date($msg['roomID'],$msg['type']);
     if($msg['type'] == 'k'){
-        //客房-购买房间时间记录表 逻辑
-        $arr = push_select_time($msg['inTime'],$msg['outTime']);
+        //客房-购买房间时间记录表 逻辑   新需求改动如果是订2-1,2-2连续的增加时应只增到退房日期的前一天
+        $before_date = date('Y-m-d',strtotime("{$msg['outTime']} -1 day"));
+        $arr = push_select_time($msg['inTime'],$before_date);
         foreach($arr as $key => $val){
             if(in_array($val,$roomDate)){
                 $save_date[] = $val;

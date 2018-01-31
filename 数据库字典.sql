@@ -604,9 +604,17 @@ CREATE TABLE IF NOT EXISTS `ms_templete_price` (
 ) ENGINE=MyISAM  DEFAULT CHARSET=utf8 COLLATE=utf8_bin AUTO_INCREMENT=1 ;
 
 
-
-
-
+--
+--   后台管理员行为日志记录表 `ms_admin_behaviorLog` 新需求加功能：记录后台管理员 记录所有行为操作(增、删、改、禁用、启用等)
+--
+CREATE TABLE IF NOT EXISTS `ms_admin_behaviorLog` (
+  `id`  int(11) NOT NULL AUTO_INCREMENT,
+  `adminID` int(11) NOT NULL COMMENT  '当前登录管理员id',
+  `url` text COLLATE utf8_bin NOT NULL COMMENT '当前操作的url,完整路径',
+  `param` longtext COLLATE utf8_bin NOT NULL COMMENT '修改详细参数,标准的json格式,方便拓展',
+  `createTime` int(11) NOT NULL COMMENT  '操作时间',
+  PRIMARY KEY (`id`)
+) ENGINE=MyISAM  DEFAULT CHARSET=utf8 COLLATE=utf8_bin AUTO_INCREMENT=1 ;
 
 
 

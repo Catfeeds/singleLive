@@ -237,7 +237,8 @@ class OrderListController extends CommonController
         $roomDate = search_room_date($order['roomID'],$order['type']);
        if($post['type'] == 'k'){
            //减去
-           $arr = push_select_time($order['inTime'],$order['outTime']);
+           $sub_before_date = date('Y-m-d',strtotime("{$order['outTime']} -1 day"));
+           $arr = push_select_time($order['inTime'],$sub_before_date);
            $where['createDate'] = array('in',$arr);
            $where['roomID'] = $order['roomID'];
            $where['type'] = $order['type'];
@@ -249,7 +250,8 @@ class OrderListController extends CommonController
            ];
            M('Order')->where("id=".$post['id'])->save($save_data);
            //新增 修改后的时间
-           $arrNew =  push_select_time($post['inTime'],$post['outTime']);
+           $add_before_date = date('Y-m-d',strtotime("{$post['outTime']} -1 day"));
+           $arrNew =  push_select_time($post['inTime'],$add_before_date);
            foreach($arrNew as $key => $val){
                if(in_array($val,$roomDate)){
                    $save_date[] = $val;
