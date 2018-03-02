@@ -1,0 +1,14 @@
+<div class="MemberCenter_tite">
+    <span>会员中心</span>
+    <ul>
+        <li <if condition="ACTION_NAME eq 'information'">class="avcor"</if>><a href="{:U('Self/information')}">基本信息</a></li>
+        <li <if condition="CONTROLLER_NAME eq 'Orders'">class="avcor"</if>><a href="{:U('Orders/index')}">我的订单</a></li>
+        <li <if condition="(ACTION_NAME eq 'couponExchange') or (ACTION_NAME eq 'couponEdit')">class="avcor"</if>><a href="{:U('Self/couponExchange')}">电子券兑换</a></li>
+        <li <if condition="ACTION_NAME eq 'coupon'">class="avcor"</if>><a href="{:U('Self/coupon')}">我的电子卷</a></li>
+        <li <if condition="ACTION_NAME eq 'couponGive'">class="avcor"</if>><a href="{:U('Self/couponGive')}">转赠电子券</a></li>
+        <li <if condition="ACTION_NAME eq 'upgrade'">class="avcor"</if>><a href="{:U('Self/upgrade')}">积分升级</a></li>
+        <li <if condition="ACTION_NAME eq 'integral'">class="avcor"</if>><a href="{:U('Self/integral')}">积分明细</a></li>
+        <li <if condition="(ACTION_NAME eq 'message') or (ACTION_NAME eq 'messageEdit')">class="avcor"</if>><a href="{:U('Self/message')}">系统消息</a></li>
+        <li <if condition="(ACTION_NAME eq 'activity') or (ACTION_NAME eq 'activityEdit')">class="avcor"</if>><a href="{:U('Self/activity')}">活动消息</a></li>
+    </ul>
+</div>

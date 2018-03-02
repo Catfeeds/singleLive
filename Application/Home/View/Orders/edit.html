@@ -1,0 +1,39 @@
+<div class="app_center">
+    <div class="app_dister">
+        <div class="app_x_img">
+            <img src="{$db.roomPic}">
+        </div>
+        <div class="app_bist">
+            <b>￥{$db.price}</b>
+            <span><a>订单号：</a>{$db.orderNo}</span>
+        </div>
+        <div class="app_tiahert">
+            <h3>{$db.cateName}</h3>
+            <p>简介：{$db.word}</p>
+        </div>
+        <div class="app_himt">
+            <span>入住时段：{$db.show_date}</span>
+        </div>
+        <div class="app_himt">
+            <span class="left">号码：{$db.mobile} </span>
+        </div>
+        <div class="app_himt">
+            <span class="left">称谓：{:$db['sex'] == '1' ? '先生' : '女士'} </span>
+        </div>
+        <div class="app_himt">
+            <span class="left">姓名：{$db.username} </span>
+        </div>
+        <div class="app_himt">
+            <span class="left">电子邮箱：{$db.email} </span>
+        </div>
+        <div class="app_himt">
+            <span class="left">成人：{$db.person} </span>
+        </div>
+        <div class="app_himt">
+            <span class="left">儿童：{$db.child} </span>
+        </div>
+        <div class="app_himt">
+            <span class="right">{$db.status_type} </span>
+        </div>
+    </div>
+</div>

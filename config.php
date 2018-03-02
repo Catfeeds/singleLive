@@ -1,6 +1,6 @@
 <?php
 return array(
-	'DEFAULT_MODULE'    => 'Mobile',  // 默认模块
+	'DEFAULT_MODULE'    => 'Home',  // 默认模块
 	'MODULE_ALLOW_LIST' => ['Home','Admin','Mobile'],
 	'DB_TYPE'           => 'mysql',//数据库类型
 	'DB_HOST'           => 'localhost',//服务器地址

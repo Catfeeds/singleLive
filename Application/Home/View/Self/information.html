@@ -1,0 +1,158 @@
+<div class="nater">
+    <div class="navs">
+        <ul>
+            <li class="left"><a href="{:U('Index/index')}">首页</a></li>
+            <li class="left"><a href="{:U('Rooms/index')}">客房</a></li>
+            <li class="left"><a href="{:U('Index/restaurant')}">餐饮</a></li>
+            <li class="left liop"><a href="{:U('Index/environment')}">环境</a></li>
+            <li class="right liop"><a href="{:U('Self/club')}">会员俱乐部</a></li>
+            <li class="right"><a href="{:U('Index/package')}">套餐</a></li>
+            <li class="right"><a href="{:U('Index/campaign')}">体验活动</a></li>
+        </ul>
+        <span><img src="__IMAGES__/logo.png"></span>
+    </div>
+</div>
+<div class="MemberCenter">
+    <include file="Public:memberNav" />
+    <div class="MemberCenter_cont">
+        <div class="formation">
+            <div class="formation_left">
+                <p>您好，{$db.realname},尊敬的贵宾，以下是您的注册个人信息:</p>
+                <p class="on">姓      名：{$db.realname}</p>
+                <p>{$db.cardType}号： {$db.idCard} </p>
+                <p class="on">手机号码：{$db.mobile} <span class="op">修改</span></p>
+                <p>电子邮箱：{$db.Email} <span class="op1">修改</span></p>
+                <p class="on">会员等级：{$userMsg.myGrade}</p>
+                <p>会员积分：{$userMsg.mySorce}</p>
+            </div>
+            <div class="formation_right">
+                <h3>会员权益</h3>
+                <p>•  会员权益会员权益会员权益会员权益会员权益会员权益会员权益会员权</p>
+                <p>•  会员权益会员权益会员权益会员权益会员权益会员权益会员权益会员权</p>
+                <p>•  会员权益会员权益会员权益会员权益会员权益会员权益会员权益会员权</p>
+                <p>•  会员权益会员权益会员权益会员权益会员权益会员权益会员权益会员权</p>
+                <h3>会员办理</h3>
+                <p>•  住宿时间下午15:00入住；次日中午12:00退房。如超过12:00另            外加收50%房费，超过17:00加收100%房费。</p>
+                <p>•  为求住宿舒适以及服务质量，谢绝超过限定人数住房。1.2m以上儿童视为成人计算。</p>
+                <p>•  景区为山林防火重地，区内全面禁烟，严禁自行携带烹饪器具；为维持住宿卫生质量，不得携带宠物入内。</p>
+                <p>•  云峰山景区客房营业时间为每年的4月1日-11月15日，冬天时是休馆的唷，在此提醒大家。</p>
+                <p>•  景区为山林防火重地，区内全面禁烟，严禁自行携带烹饪器具；为维持住宿卫生质量，不得携带宠物入内。</p>
+                <p>•  云峰山景区客房营业时间为每年的4月1日-11月15日，冬天时是休馆的唷，在此提醒大家。</p>
+            </div>
+
+        </div>
+    </div>
+</div>
+<script type="text/html" id="enction">
+    <div class="enction_tite">
+        修改手机号
+    </div>
+    <div class="enction_cont">
+        <form class="update_mobile" action="__URL__/update_mobile" method="post">
+            <div class="enction_diti">
+                <div class="enction_diti_left">
+                    原手机号
+                </div>
+                <div class="enction_diti_right">
+                    <input type="text" name="old_mobile" id="old_mobile" placeholder="请输入原手机号" value="{$db.mobile}" readonly="readonly" />
+                </div>
+            </div>
+            <div class="enction_diti">
+                <div class="enction_diti_left">
+                    验证码
+                </div>
+                <div class="enction_diti_right">
+                    <input type="text" name="old_verification" placeholder="请输入验证码" class="binort" />
+                    <div getsms="old_mobile" class="binort1 layui-btn layui-btn-warm verification-button">点击获取</div>
+                </div>
+            </div>
+            <div class="enction_diti">
+                <div class="enction_diti_left">
+                    新手机号
+                </div>
+                <div class="enction_diti_right">
+                    <input type="text" name="new_mobile" id="new_mobile" placeholder="请再次输入新手机号" />
+                </div>
+            </div>
+            <div class="enction_diti">
+                <div class="enction_diti_left">
+                    验证码
+                </div>
+                <div class="enction_diti_right">
+                    <input type="text" name="new_verification" placeholder="请输入验证码" class="binort" />
+                    <div getsms="new_mobile" class="binort1 layui-btn layui-btn-warm verification-button">点击获取</div>
+                </div>
+            </div>
+            <div class="dister">
+                <input type="hidden" name="id" value="{$db.id}" />
+                <input type="button" value="取消" class="dister_but_1" />
+                <input type="submit" value="确认" class="dister_but_2 parent-ajax-post" target-form="update_mobile"/>
+            </div>
+        </form>
+    </div>
+</script>
+<script type="text/html" id="enction1">
+    <div class="enction_tite">
+        修改邮箱
+    </div>
+    <div class="enction_cont">
+        <form action="__URL__/update_email" class="update_email" method="post">
+            <div class="enction_diti">
+                <div class="enction_diti_left">
+                    原邮箱
+                </div>
+                <div class="enction_diti_right">
+                    <input type="text" name="old_email" value="{$db.Email}" placeholder="请输入原邮箱" readonly="readonly" />
+                </div>
+            </div>
+            <div class="enction_diti">
+                <div class="enction_diti_left">
+                    新邮箱
+                </div>
+                <div class="enction_diti_right">
+                    <input type="text" name="Email" placeholder="请输入新邮箱" />
+                </div>
+            </div>
+            <div class="dister">
+                <input type="hidden" name="id" value="{$db.id}" />
+                <input type="button" value="取消" class="dister_but_1" />
+                <input type="submit" value="确认" target-form="update_email" class="dister_but_2 parent-ajax-post"/>
+            </div>
+        </form>
+    </div>
+</script>
+<script type="text/javascript">
+    $('body').on('click','.verification-button',function() {
+        var t = $(this);
+        if (t.hasClass('layui-btn-disabled')) {
+            //不能点击
+        } else {
+            var sMobile = $('#' + $(this).attr('getsms')).val();
+            var uid = "{$db.id}";
+            if (!(/^1[3|4|5|8][0-9]\d{4,8}$/.test(sMobile))) {
+                layer.msg('请填写正确的手机号');
+                return false;
+            } else {
+                $.post('__URL__/verification', { mobile: sMobile,uid: uid}, function(res) {
+                    if (res.status) {
+                        t.addClass('layui-btn-disabled');
+                        var s = 60;
+                        layer.msg('验证码已发送到您的手机上');
+                        var a = setInterval(function() {
+                            s--;
+                            if (s == 0) {
+                                clearInterval(a);
+                                t.removeClass('layui-btn-disabled');
+                                t.text('点击获取');
+                            } else {
+                                t.text(s + '秒');
+                            }
+                        }, 1000);
+                    } else {
+                        layer.msg(res.info);
+                    }
+                });
+            }
+        }
+    });
+</script>

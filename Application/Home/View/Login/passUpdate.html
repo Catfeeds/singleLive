@@ -1,0 +1,98 @@
+{__NOLAYOUT__}
+<!DOCTYPE html>
+<html>
+<head>
+    <meta charset="utf-8" />
+    <title>{$web.webName}</title>
+    <link rel="stylesheet" type="text/css" href="__CSS__/css.css" />
+    <link rel="stylesheet" href="__JS__/layui/css/layui.css">
+    <script type="text/javascript" src="__JS__/jquery-1.11.0.min.js"></script>
+    <script type="text/javascript" src="__PUBLIC__/Home/layer/layer.js"></script>
+    <script type="text/javascript" src="__JS__/common.js"></script>
+    <script src="__JS__/layui/layui.js"></script>
+    <script src="__JS__/yin_lists.js"></script>
+</head>
+<body >
+<div class="wab_hend">
+    <div class="hend_nav">
+        <div class="hend_nav_right">
+            <ul>
+                <if condition="$my['uid']">
+                    <li><a title="个人中心" href="{:U('Self/information')}">您好欢迎您，<b>{$my['realname']}</b></a></li>
+                    <li><a class="ajax-get confirm" data-msg="您是否退出登录？" href="{:U('Login/logout')}"><b style="color: red;">注销</b></a></li>
+                    <li><a href="{:U('Orders/index')}">订单管理</a></li>
+                    <else />
+                    <li><a href="{:U('Login/index')}">您好，<b>请登录</b></a></li>
+                    <li><a href="{:U('Login/register')}">现在加入</a></li>
+                </if>
+            </ul>
+        </div>
+    </div>
+</div>
+<div class="nater">
+    <div class="navs">
+        <ul>
+            <li class="left"><a href="{:U('Index/index')}">首页</a></li>
+            <li class="left"><a href="{:U('Rooms/index')}">客房</a></li>
+            <li class="left"><a href="{:U('Index/restaurant')}">餐饮</a></li>
+            <li class="left liop"><a href="{:U('Index/environment')}">环境</a></li>
+            <li class="right liop"><a href="{:U('Self/club')}">会员俱乐部</a></li>
+            <li class="right"><a href="{:U('Index/package')}">套餐</a></li>
+            <li class="right"><a href="{:U('Index/campaign')}">体验活动</a></li>
+        </ul>
+        <span><img src="__IMAGES__/logo.png"></span>
+    </div>
+</div>
+<div class="register">
+    <div class="register_tite">
+        修改密码
+    </div>
+    <div class="register_cont">
+        <form action="__URL__/update" class="registers">
+            <div class="minjot">
+                <div class="minjot_left">
+                    <b> * </b>登 录 密 码 ：
+                </div>
+                <div class="minjot_inout">
+                    <input type="password" name="password"  placeholder="请输入登录密码" class="register_input_1" />
+                </div>
+            </div>
+            <div class="minjot">
+                <div class="minjot_left">
+                    <b> * </b>确 认 密 码 ：
+                </div>
+                <div class="minjot_inout">
+                    <input type="password" name="repassword" placeholder="请再次输入登录密码" class="register_input_1" />
+                </div>
+            </div>
+            <div class="register_bot">
+                <input type="hidden" name="id" value="{:I('id')}">
+                <input type="submit" class="dh_bo ajax-post confirm" target-form="registers" value="确认" data-msg="您确认修改？"/>
+            </div>
+        </form>
+    </div>
+</div>
+<div class="forder">
+    <div class="nav_1">
+        <ul>
+            <li><a href="{:U('Rooms/index')}">客房</a></li>
+            <li><a href="{:U('Index/restaurant')}">餐饮</a></li>
+            <li><a href="{:U('Index/environment')}">环境</a></li>
+            <li><a href="{:U('Index/campaign')}">体验活动</a></li>
+            <li><a href="{:U('Index/campaign')}">套餐</a></li>
+            <li><a href="{:U('Self/club')}">会员俱乐部</a></li>
+        </ul>
+    </div>
+    <div class="nav_2">
+        <ul>
+            <li class="ind_li_4"><a href="常见问题.html">常见问题</a></li>
+            <li class="ind_li_5"><a href="交通指南.html">交通指南</a></li>
+            <li class="ind_li_6"><a>400-1234-123</a></li>
+        </ul>
+    </div>
+    <div class="footerp">
+        Copyright 版权信息版权信息 版权信息 版权信息 版权信息 版权信息 版权信息  ｜ 京公网安备 11010502026144
+    </div>
+</div>
+</body>
+</html>

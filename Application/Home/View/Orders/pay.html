@@ -1,0 +1,100 @@
+<div class="nater">
+    <div class="navs">
+        <ul>
+            <li class="left"><a href="{:U('Index/index')}">首页</a></li>
+            <li class="left"><a class="avcer" href="{:U('Rooms/index')}">客房</a></li>
+            <li class="left"><a href="{:U('Index/restaurant')}">餐饮</a></li>
+            <li class="left liop"><a href="{:U('Index/environment')}">环境</a></li>
+            <li class="right liop"><a href="{:U('Self/club')}">会员俱乐部</a></li>
+            <li class="right"><a href="{:U('Index/package')}">套餐</a></li>
+            <li class="right"><a href="{:U('Index/campaign')}">体验活动</a></li>
+        </ul>
+        <span><img src="__IMAGES__/logo.png"></span>
+    </div>
+</div>
+<div class="web_coent">
+    <div class="GuestRoom_tite">
+        <div class="GuestRoom_tite_left">
+            支付详情
+        </div>
+    </div>
+    <div class="zenmint">
+        <div class="ongrt">
+            <ul>
+                <li class="aisaver">余额支付</li>
+                <li>微信支付</li>
+            </ul>
+        </div>
+        <div class="moigt_cont">
+            <div class="moigt">
+                <p>我的余额 ：200</p>
+                <p>订单编号 ：001</p>
+                <p>产品名称 ：大床房</p>
+                <p>支付金额 ： 7000</p>
+                <p><input type="button" value="提交" class="zenibut"></p>
+            </div>
+            <div class="moigt">
+                <p><img src="img/cy02.png" width="100" height="100"></p>
+                <p>订单编号 ：001</p>
+                <p>产品名称 ：大床房</p>
+                <p>支付金额 ： 7000</p>
+                <p><input type="button" value="提交" class="zenibut"></p>
+            </div>
+        </div>
+    </div>
+</div>
+<script>
+    $(function(){
+        var price = "{$db['price']}";
+        var balance = "{$money}";
+        $(document).on('click', '.pay', function () {
+            var type = $(this).find('input').val();
+            var allMoney;
+            if ($(this).hasClass('fr_img')) {
+                $(this).find('input').prop('checked', false);
+                $(this).removeClass('fr_img');
+            } else {
+                $('.pay').removeClass('fr_img').find('input').prop('checked', false);
+                $(this).find('input').prop('checked', true);
+                $(this).addClass('fr_img');
+                if(type == 1){
+                    if(parseInt(balance)>=parseInt(price)){
+                        allMoney = parseInt(price);
+                    }else{
+                        allMoney = parseInt(price)-parseInt(balance)
+                    }
+                }else{
+                    allMoney = parseInt(price)
+                }
+                $('#allMoney').text(allMoney);
+            }
+        });
+        $('#subMit').click(function(){
+            var data = $("form").serializeArray();
+            var d = [];
+            $.each(data,function(){
+                d[this.name] = this.value;
+            });
+            if(d['payType']){
+                if(d['payType'] == '1'){
+                    if(parseInt(balance)>=parseInt(price)){
+                        $('.orderForm').submit();
+                    }else{
+                        openMsg('您的余额不足请选择其他的支付方式');
+                    }
+                }else{
+                    $('.orderForm').submit();
+                }
+            }else{
+                openMsg('请先选择支付方式');
+            }
+        });
+        function openMsg(message){
+            layer.open({
+                content: message,
+                skin: 'msg',
+                time: 2000 //2秒后自动关闭
+            });
+        }
+    });
+</script>

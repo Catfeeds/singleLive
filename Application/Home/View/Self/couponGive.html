@@ -1,0 +1,51 @@
+<div class="nater">
+    <div class="navs">
+        <ul>
+            <li class="left"><a href="{:U('Index/index')}">首页</a></li>
+            <li class="left"><a href="{:U('Rooms/index')}">客房</a></li>
+            <li class="left"><a href="{:U('Index/restaurant')}">餐饮</a></li>
+            <li class="left liop"><a href="{:U('Index/environment')}">环境</a></li>
+            <li class="right liop"><a href="{:U('Self/club')}">会员俱乐部</a></li>
+            <li class="right"><a href="{:U('Index/package')}">套餐</a></li>
+            <li class="right"><a href="{:U('Index/campaign')}">体验活动</a></li>
+        </ul>
+        <span><img src="__IMAGES__/logo.png"></span>
+    </div>
+</div>
+<div class="MemberCenter">
+    <include file="Public:memberNav" />
+    <div class="MemberCenter_cont">
+        <form class="orderForm" action="__URL__/giveCheck" method="post">
+            <div class="Integralmall">
+                <div class="iopes">
+                    <div class="iopes_left">
+                        转赠人手机号
+                    </div>
+                    <div class="iopes_right">
+                        <input type="text" name="mobile" placeholder="请输入转赠人手机号" class="meinht" />
+                    </div>
+                </div>
+                <div class="iopes">
+                    <div class="iopes_left">
+                        选择转赠电子卷
+                    </div>
+                    <div class="iopes_right">
+                        <if condition="$list">
+                            <select name="card" class="meinht">
+                                <option value="">--请选择要转赠的电子券--</option>
+                                <volist name="list" id="row">
+                                    <option value="{$row.card}">{$row.coupon}</option>
+                                </volist>
+                            </select>
+                            <else />
+                            您还有没有可用的电子券,请兑换后再转赠！
+                        </if>
+                    </div>
+                </div>
+                <p class="biue">
+                    <input type="submit" style="border:none;" class="minort ajax-post confirm" data-msg="您确定转赠？" target-form="orderForm" value="提交信息" />
+                </p>
+            </div>
+        </form>
+    </div>
+</div>

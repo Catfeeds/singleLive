@@ -1,0 +1,55 @@
+<div class="nater">
+    <div class="navs">
+        <ul>
+            <li class="left"><a href="{:U('Index/index')}">首页</a></li>
+            <li class="left"><a href="{:U('Rooms/index')}">客房</a></li>
+            <li class="left"><a href="{:U('Index/restaurant')}">餐饮</a></li>
+            <li class="left liop"><a href="{:U('Index/environment')}">环境</a></li>
+            <li class="right liop"><a href="{:U('Self/club')}">会员俱乐部</a></li>
+            <li class="right"><a href="{:U('Index/package')}">套餐</a></li>
+            <li class="right"><a href="{:U('Index/campaign')}">体验活动</a></li>
+        </ul>
+        <span><img src="__IMAGES__/logo.png"></span>
+    </div>
+</div>
+<style>
+    .layui-laypage{float: right;}
+</style>
+<div class="MemberCenter">
+    <include file="Public:memberNav" />
+    <div class="MemberCenter_cont">
+        <div class="formation">
+            <div class="coil">
+                <div class="coil_tb">
+                    <table cellspacing="0" cellpadding="0">
+                        <tr class="firstRow">
+                            <th>优惠券号</th>
+                            <th>开始日期</th>
+                            <th>截止日期</th>
+                            <th>电子券金额</th>
+                            <th>状态</th>
+                        </tr>
+                        <tbody id="view" url="__URL__/index">
+                            <volist name="list" id="db">
+                                <tr>
+                                    <td>{$db.card}</td>
+                                    <td>{$db.exprie_start}</td>
+                                    <td>{$db.exprie_end}</td>
+                                    <td>{$db.money}</td>
+                                    <td class="web_cor_3">
+                                        <if condition="$db['times'] eq 'over'">
+                                            <span style="color: red;">{$db.status_name}</span>
+                                            <else />
+                                            {$db.status_name}
+                                        </if>
+                                    </td>
+                                </tr>
+                            </volist>
+                        {$page}
+                        </tbody>
+                    </table>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>

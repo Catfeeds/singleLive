@@ -9,7 +9,7 @@ use Think\D;
  * @param    [type]     $code   [验证码]
  * @return   [type]             [description]
  */
-function sendSMS($mobile,$code)
+/*function sendSMS($mobile,$code)
 {
 	$url = 'http://smssh1.253.com/msg/variable/json';
 	$param = '{"account":"N7720646","password":"nglIWbkKZ3a90c","msg":"【山野运动基地】您的验证码是：{$var}","params":"'.$mobile.','.$code.'","sendtime":"201801010101","report":"true","extend":"555","uid":"123456"}';
@@ -32,22 +32,4 @@ function sendSMS($mobile,$code)
 			'errorMsg' => $result['errorMsg']
 		];
 	}
-
-}
-function getBanner($type)
-{
-	/*$banner = D::get('Banner',[
-		'alias' => 'B',
-		'where' => ['B.type' => $type],
-		'join'  => 'LEFT JOIN __FILES__ F ON F.id = B.imgs',
-		'field' => "B.*,CONCAT('/Uploads',F.savepath,F.savename) `icon`",
-	]);*/
-	$banners = D::find('Banner',[
-		'where' => ['type' => $type],
-	]);
-	$arr = explode(',',$banners['imgs']);
-	foreach($arr as $val){
-		$banner[] = getSrc($val);
-	}
-	return $banner;
-}
+}*/

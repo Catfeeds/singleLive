@@ -1,0 +1,39 @@
+<div class="layui-body" style="bottom: 0;border-left: solid 2px #1AA094;" id="admin-body">
+    <div class="layui-tab admin-nav-card layui-tab-brief" lay-filter="admin-tab">
+        <ul class="layui-tab-title">
+            <li class="layui-this"><i class="fa fa-dashboard" aria-hidden="true"></i> <cite>交通指南-修改</cite></li>
+        </ul>
+        <div class="layui-tab-item layui-show">
+            <div class="conter">
+                <div class="xxkt">
+                    <ul>
+                        <li class="xxkt_bt">交通指南-修改</li>
+                    </ul>
+                </div>
+                <form action="__URL__/update" method="post" class="form-hotelAdd">
+                    <div class="xxknr">
+                        <div>
+                            <div class="glylb_szmm"><span class="glylb_szmm_span">问题：</span>
+                                <div class="layui-input-block z_min_left_10">
+                                    <input class="fn-tinput requ" name="title" placeholder="请填写问题名称" value="{$db.title}">
+                                </div>
+                            </div>
+                            <div class="glylb_szmm"><span class="glylb_szmm_span">解答：</span>
+                                <div class="layui-input-block z_min_left_10">
+                                    <textarea class="layui-textarea" name="content">{$db.content}</textarea>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="gater">
+                        <input type="hidden" name="__GO__" value="__URL__/index">
+                        <input type="hidden" name="id" value="{$db.id}">
+                        <input type="submit" value="确认" class="glylb_an_qd ajax-post" target-form="form-hotelAdd"/>
+                        <a href="__URL__/index"><button type="button" class="glylb_an_fh">返回</button></a>
+                    </div>
+                </form>
+            </div>
+        </div>
+    </div>
+</div>
+

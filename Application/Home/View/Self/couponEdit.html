@@ -1,0 +1,62 @@
+<div class="nater">
+    <div class="navs">
+        <ul>
+            <li class="left"><a href="{:U('Index/index')}">首页</a></li>
+            <li class="left"><a href="{:U('Rooms/index')}">客房</a></li>
+            <li class="left"><a href="{:U('Index/restaurant')}">餐饮</a></li>
+            <li class="left liop"><a href="{:U('Index/environment')}">环境</a></li>
+            <li class="right liop"><a href="{:U('Self/club')}">会员俱乐部</a></li>
+            <li class="right"><a href="{:U('Index/package')}">套餐</a></li>
+            <li class="right"><a href="{:U('Index/campaign')}">体验活动</a></li>
+        </ul>
+        <span><img src="__IMAGES__/logo.png"></span>
+    </div>
+</div>
+<div class="MemberCenter">
+    <include file="Public:memberNav" />
+    <div class="MemberCenter_cont">
+        <form action="__URL__/couponCheck" method="post" class="myForm">
+        <div class="Integralmall">
+            <p class="biomt">电子券名称 ：{$db.title}</p>
+            <p class="biomt">电子券金额 ：{$db.money}</p>
+            <p class="biomt">开始日期 ：{$db.exprie_start}</p>
+            <p class="biomt">结束日期 ：{$db.exprie_end}</p>
+            <p class="biomt">电子券库存 ：{$db.num}</p>
+            <p class="biomt">不可使用日期 ：
+                {$db.notDate}
+            </p>
+            <p class="biomt">兑换积分 ：{$db.sorce}</p>
+            <div class="biomt">
+                <div style="float: left;">可使用客房分类 ：</div>
+                <volist name="db.houseCate" id="hcate">
+                    <div class="coupon_exc">{$hcate.title}</div>
+                </volist>
+            </div>
+            <div class="biomt">
+                <div style="float: left;">可使用套餐分类 ：</div>
+                <volist name="db.packageCate" id="pcate">
+                    <span class="coupon_exc">{$pcate.title}</span>
+                </volist>
+            </div>
+            <div class="biomt">
+                <div style="float: left;">可兑换使用等级 ：</div>
+                <volist name="db.level" id="level">
+                    <div class="coupon_exc">{$level.title}</div>
+                </volist>
+            </div>
+            <div class="biomt">使用说明 ：{:html_entity_decode($db['mark'])}</div>
+            <p class="biue">
+                <input type="hidden" name="cID" value="{$db.id}">
+                <input type="hidden" name="type" value="exchange">
+                <input type="hidden" name="mysorce" value="{$userMsg.mySorce}">
+                <input type="hidden" name="sorce" value="{$db.sorce}">
+                <if condition="$db['can'] eq 'yes'">
+                    <input type="submit" class="minort ajax-post confirm" data-msg="您确定要花费{$db.sorce}积分兑换这张优惠券吗?" target-form="myForm" value="立即兑换" />
+                    <else />
+                    <input type="button" style="background-color: #C9C9C9;" disabled="disabled" class="minort" value="已过期">
+                </if>
+            </p>
+        </div>
+        </form>
+    </div>
+</div>

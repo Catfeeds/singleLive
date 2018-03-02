@@ -1,0 +1,54 @@
+<div class="nater">
+    <div class="navs">
+        <ul>
+            <li class="left"><a href="{:U('Index/index')}">首页</a></li>
+            <li class="left"><a href="{:U('Rooms/index')}">客房</a></li>
+            <li class="left"><a href="{:U('Index/restaurant')}">餐饮</a></li>
+            <li class="left liop"><a href="{:U('Index/environment')}">环境</a></li>
+            <li class="right liop"><a href="{:U('Self/club')}">会员俱乐部</a></li>
+            <li class="right"><a href="{:U('Index/package')}">套餐</a></li>
+            <li class="right"><a href="{:U('Index/campaign')}">体验活动</a></li>
+        </ul>
+        <span><img src="__IMAGES__/logo.png"></span>
+    </div>
+</div>
+<style>
+    .layui-laypage{float: right;}
+</style>
+<div class="MemberCenter">
+    <include file="Public:memberNav" />
+    <div class="MemberCenter_cont">
+        <div class="formation">
+            <div class="coil">
+                <div class="coil_tite">
+                    <span>您好，{$userMsg.myName}</span>
+                    <span><strong>账户余额：</strong> <b>{$userMsg.myBalance}</b></span>
+                    <a href="{:U('Self/balance')}">充值</a>
+                </div>
+                <div class="coil_tb">
+                    <table cellspacing="0" cellpadding="0">
+                        <tr class="firstRow">
+                            <th>积分</th>
+                            <th>类型</th>
+                            <th>日期</th>
+                        </tr>
+                        <tbody id="view" url="__URL__/index">
+                        <volist name="db" id="db">
+                            <tr>
+                                <if condition="$db['method'] eq 'plus'">
+                                    <td style="color: green;">+{$db.sorce}</td>
+                                    <else />
+                                    <td style="color: red;">-{$db.sorce}</td>
+                                </if>
+                                <td>{$db.type_name}</td>
+                                <td>{$db.createTime}</td>
+                            </tr>
+                        </volist>
+                        {$page}
+                        </tbody>
+                    </table>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>

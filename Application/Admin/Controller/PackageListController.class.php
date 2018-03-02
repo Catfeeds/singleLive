@@ -110,7 +110,7 @@ class PackageListController extends CommonController {
         列表删除
      */
     public function package_del(){
-        M($this->model)->where("id=".I('id'))->setField('status',3);
+        M('Package')->where("id=".I('id'))->setField('status',3);
         $this->success('删除成功');
     }
     //套餐内容列表

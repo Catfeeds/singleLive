@@ -1,0 +1,104 @@
+<div class="nater">
+    <div class="navs">
+        <ul>
+            <li class="left"><a href="{:U('Index/index')}">首页</a></li>
+            <li class="left"><a href="{:U('Rooms/index')}">客房</a></li>
+            <li class="left"><a href="{:U('Index/restaurant')}">餐饮</a></li>
+            <li class="left liop"><a href="{:U('Index/environment')}">环境</a></li>
+            <li class="right liop"><a href="{:U('Self/club')}">会员俱乐部</a></li>
+            <li class="right"><a class="avcer" href="{:U('Index/package')}">套餐</a></li>
+            <li class="right"><a href="{:U('Index/campaign')}">体验活动</a></li>
+        </ul>
+        <span><img src="__IMAGES__/logo.png"></span>
+    </div>
+</div>
+<div class="web_cont">
+    <div class="flexslider1">
+        <ul class="slides aoct">
+            <volist name="banners" id="banner">
+                <li style='background:url("{$banner}") 50% 0 no-repeat;'></li>
+            </volist>
+        </ul>
+    </div>
+    <div class="web_index_time">
+        <div class="web_enop">
+            <div class="index_time_1">
+                <p>选择入住日期 ：</p>
+                <input type="text" placeholder="选择入住日期" onfocus="WdatePicker({dateFmt:'yyyy-MM-dd'})"  />
+            </div>
+            <div class="index_time_2">
+                <p>成人 ：</p>
+                <select>
+                    <option>1</option>
+                </select>
+            </div>
+            <div class="index_time_2">
+                <p>成人 ：</p>
+                <select>
+                    <option>1</option>
+                </select>
+            </div>
+        </div>
+        <a><input type="button" class="web_index_but" value="预定" /></a>
+    </div>
+</div>
+<div class="web_coent">
+    <div class="GuestRoom_tite">
+        <div class="GuestRoom_tite_left">
+            套餐
+        </div>
+        <div class="GuestRoom_tite_cont">
+            <span class="deavcer">套餐选择 </span>
+            <span>&gt;</span>
+            <span>立即预定</span>
+            <span>&gt;</span>
+            <span>立即支付</span>
+        </div>
+        <div class="GuestRoom_tite_right">
+            <select class="toc_sele">
+                <option value="timeDesc">按时间最近</option>
+                <option value="timeAsc">按时间最远</option>
+                <option value="priceH">按价格最高</option>
+                <option value="priceL">按价格最低</option>
+            </select>
+        </div>
+    </div>
+    <div class="ioncton_cont" id="view">
+        <!--<div class="onicut">
+            <h3>预订须知</h3>
+            <p>•  购买优惠套装需全额支付活动费用，始完成预订。</p>
+            <h3>入住须知</h3>
+            <p>•  活动时间、套装包含内容、参与人数以发布活动公告为准，谢绝超过限定人数参加，额外消费需另行支付。</p>
+            <p>•  客房住宿时间下午15:00入住；中午12:00退房。超过12:00另外加收50%房费，超过17时加收100%房费。 </p>
+            <p>•  为维持住宿卫生质量，景区内全面禁烟，不得携带宠物入客房。 </p>
+        </div>-->
+    </div>
+</div>
+<script type="text/html" id="layout">
+    <div class="ioncton">
+        <div class="ionctlist">
+            <div class="ionctlist_img">
+                <img src="{{d.icon}}">
+            </div>
+            <div class="ionctlist_right">
+                <h3>{{d.title}}</h3>
+                <p class="wordOver">{{d.word}}</p>
+                <span>官网尊享价：<b>￥{{d.packMoney}}</b> <!--<a>￥699.00</a>--></span>
+                <a href="{{d.url}}" class="inpost">立即预定</a>
+            </div>
+        </div>
+    </div>
+</script>
+<script type="text/javascript">
+    yin.lists({
+        url: '/index.php/Home/Index/package'
+    });
+    $('.toc_sele').change(function(){
+        $('#view').html('');
+        var order = $(this).val();
+        yin.lists({
+            url: '/index.php/Home/Index/package/order/'+order
+        });
+    });
+</script>
+

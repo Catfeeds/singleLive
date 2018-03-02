@@ -3,8 +3,63 @@ namespace Home\Controller;
 use Think\Controller;
 use Think\Faster;
 use Think\D;
-class CommonController extends Controller {
-    public $Config;
+class CommonController extends Controller{
+	public static $login = false;
+	public function _initialize(){
+		if ( static::$login === true ) {
+			//需要登录
+			if ( !session('user') ) {
+				S('url',__SELF__); //缓存当前浏览页面
+				$this->redirect('Login/index', [], 0, '页面跳转中...');
+			}else{
+                //获取当前会员的  等级 积分 余额以便页面赋值
+                $userID = session('user');
+                $users = D::find('Users',$userID);
+                //调用积分监控函数
+                event_user_level($userID);
+                $sorce  = D::find('UserSorce',[
+                    'where' => ['userID'=>$userID],
+                    'field' => "SUM(CASE WHEN method = 'plus' THEN sorce ELSE 0 END) up,SUM(CASE WHEN method = 'sub' THEN sorce ELSE 0 END) down"
+                ]);
+                $nowgrade = $users['nowLevel'] != 0 ? D::field('Grades.title',$users['nowLevel']) : '顾客';
+                $myBalance = D::find('Balance',[
+                    'where' => ['userID'=>$userID,'status'=>1],
+                    'field' => "SUM(CASE WHEN method = 'plus' THEN money ELSE 0 END) upPay,SUM(CASE WHEN method = 'back' THEN money ELSE 0 END) upBack,SUM(CASE WHEN method = 'sub' THEN money ELSE 0 END) down"
+                ]);
+                $userMsg = [
+                    'mySorce' => $sorce['up'] - $sorce['down'],
+                    'myGrade' => $nowgrade,
+                    'myBalance' => $myBalance['upPay']+$myBalance['upBack'] - $myBalance['down'],
+                    'myName' => $users['realname'],
+                    'uid'   => $users['id'],
+                    'headImg'   => $users['headImg']
+                ];
+                $this->assign('my',$users);
+                $this->assign('userMsg',$userMsg);
+			}
+		}else{
+			//不需要登录
+            if(session('user')){
+                $users = D::find('Users',session('user'));
+                $this->assign('my',$users);
+            }
+		}
+        //加载网站设置
+        $webConfig = D('Config')->get_config();
+        /*
+         *  搜索查询
+         * */
+        $nowTime = date('Y-m-d');
+        $endTime = date('Y-m-d',strtotime("$nowTime +3 month"));
+        $allowTimes = [
+            'min' =>$nowTime,
+            'max' =>$endTime
+        ];
+        $houses = D::get('House',['where'=>['status'=>1]]);
+        $this->assign('houses',$houses);
+        $this->assign('allowTimes',$allowTimes);
+        $this->assign('web',$webConfig);
+	}
     public function __call($function_name,$argments)
     {
         $model = Faster::start($this->model);
@@ -26,57 +81,4 @@ class CommonController extends Controller {
             parent::__call($function_name,$argments);
         }
     }
-
-    public function _initialize()
-    {
-        $mobile = getConfig('mobile',0);
-        $this->assign('mobile',$mobile);
-        $URL=CONTROLLER_NAME;
-        if(ACTION_NAME!="login"&&ACTION_NAME!="loginDo"&&!isset($_SESSION["hotel_user"])){
-            $this->redirect('/Home/Index/login', array(), 0, '页面跳转中...');
-        }else{
-            $i = 0;
-            if($_SESSION["hotel_user"]["root"]==0){
-                $i = 1;
-            }else{
-                $row = M("role_root")->where("root_id=".$_SESSION["hotel_user"]["group"]."")->find();
-
-                $permCount=M("perm_role")->join("perm on perm_role.perm_id=perm.perm_id")
-                        ->where("role_id=".$row["role_id"]." and perm_url='$URL'")->count();   
-                if($permCount===0){
-                    $this->error("对不起，您没有权限访问当前页面！",U("Admin/Index/login"));
-                }else{
-                    $i = 1;
-                }                     
-            }
-            if($i==1){
-                $temp=M('perm')->where("perm_url='$URL' and status=1")->find();
-                $item=M('perm')->where('perm_id='.$temp['perm_parentid'].' and status=1')->find();
-                $count=D::count(['news_hotel','NH'],[
-                        'where' => 'NH.hotel='.session('hotel_user.hotel').' and NH.status=0 and N.status!=9',
-                        'join' => '__NEWS__ N on N.id=NH.news'
-                    ]);
-                session('counts',$count);
-                session('ParentContor',$item['perm_type']);
-                session('Controller',$URL); 
-                session('config', getConfig());
-            }
-            /*
-             *  查询当前酒店  是否存在正在入住的订单
-             * */
-            $sel = array(
-                'A.status' => 2,
-                'B.hotel' =>session('hotel_user.hotel')
-            );
-            $hotel_ing = D::count(['OrderHotel','A'],[
-                'where' => $sel,
-                'join'  => [
-                    'LEFT JOIN __ORDER__ B ON B.id = A.orderId'
-                ]
-            ]);
-            $this->assign('hotel_ing',$hotel_ing);
-        }
-    }
-
-
 }

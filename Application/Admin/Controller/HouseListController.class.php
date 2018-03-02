@@ -181,8 +181,8 @@ class HouseListController extends CommonController {
      *      思路：
      *          1、首先添加时间区段在这个时间区段内的价格都一致
      *          2、在当前时间区段内，添加特殊时间设置
-     *              (周一 ~ 周五 ) 设定一个价格
-     *              周六日 设定一个价格
+     *              (周一 ~ 周四 ) 设定一个价格
+     *              周五、周六日 设定一个价格
      *              特殊时间  无限添加设置一个价格
      * */
     public function templete(){
@@ -206,18 +206,30 @@ class HouseListController extends CommonController {
      *  价格模板 区段添加
      *      每次添加成功后，再次添加时去查一下该房间的最大的结束时间
      *      并赋值给日历插件，防止重复选择日期
+     *      2018/02/26客户新改需求：
+     *      价格模板需要每月添加，且只能是当月月初-当月月末，之前已经过完的月份不能添加
+     *      这里date('Y-m-t')有个坑就是，如果当月是31天如：2018-03-31->转化后显示2018-05-31,所以一定要用开始时间
      * */
     public function addTemplete(){
         $roomID = I('roomID');
         $myDate = [];
         $time = D::find('Templete',[
             'where'=>['roomID'=>$roomID],
-            'field'=>'MAX(end) endTime'
+            'field'=>'MAX(end) endTime,MAX(start) startTime'
         ]);
-        $showTime = date('Y-m-d',strtotime("{$time['endTime']} +1 day"));
-        $now = date('Y-m-d');
-        $myDate['min'] = $time['endTime'] ? $showTime : $now;
-        $myDate['max'] = $time['endTime'] ? date('Y-m-d',strtotime("$showTime +3 month")) : date('Y-m-d',strtotime("$now +3 month"));
+        //当前年份月份的初始日期
+        $nowFirst = date('Y-m-01');
+        //开始日期
+        if(date('Y-m-d')>$nowFirst){
+            $now = date('Y-m-d');
+        }else{
+            $now = $nowFirst;
+        }
+        //下月月份
+        $nextMonth = date('m',strtotime($time['startTime']."+1 month"));
+        //这里要判断一下虽然数据库里存在了$time,但是还是要跟当前日期作比较
+        $myDate['min'] = $time['endTime'] ? (date('Y-'.$nextMonth.'-01')>$now ? date('Y-'.$nextMonth.'-01') : $now) : $now;
+        $myDate['max'] = $time['endTime'] ? date('Y-m-t',strtotime('next month',strtotime($time['startTime']))) : date('Y-m-d', strtotime("$nowFirst +1 month -1 day"));;
         $tpl = D('Templete');
         if(IS_POST){
             if($data = $tpl->create()){

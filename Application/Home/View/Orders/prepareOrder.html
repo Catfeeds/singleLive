@@ -1,0 +1,450 @@
+<div class="nater">
+    <div class="navs">
+        <ul>
+            <li class="left"><a href="{:U('Index/index')}">首页</a></li>
+            <li class="left"><a class="avcer" href="{:U('Rooms/index')}">客房</a></li>
+            <li class="left"><a href="{:U('Index/restaurant')}">餐饮</a></li>
+            <li class="left liop"><a href="{:U('Index/environment')}">环境</a></li>
+            <li class="right liop"><a href="{:U('Self/club')}">会员俱乐部</a></li>
+            <li class="right"><a href="{:U('Index/package')}">套餐</a></li>
+            <li class="right"><a href="{:U('Index/campaign')}">体验活动</a></li>
+        </ul>
+        <span><img src="__IMAGES__/logo.png"></span>
+    </div>
+</div>
+
+<div class="web_coent">
+    <div class="GuestRoom_tite">
+        <div class="GuestRoom_tite_left">
+            客房
+        </div>
+        <div class="GuestRoom_tite_cont">
+            <span class="deavcer">房型选择 </span>
+            <span class="deavcer">></span>
+            <span class="deavcer">填写信息</span>
+            <span>></span>
+            <span>确认预约</span>
+        </div>
+        <!--<div class="GuestRoom_tite_right">
+            <select class="toc_sele">
+                <option>按时间最近</option>
+                <option>按时间最远</option>
+                <option>按价格最高</option>
+                <option>按价格最低</option>
+            </select>
+        </div>-->
+    </div>
+    <div class="ioncton_cont">
+        <div class="titesb">
+            {$house.name}
+        </div>
+        <div class="aoncont">
+            <div class="aoncont_left">
+                <form class="orderForm" action="__URL__/OrderCheck" method="post">
+                    <div class="bistor">
+                    <h2>价格：CNY  <b>{$house.money}</b></h2>
+                    <!--<div class="bioert">
+                        <div class="bioert_tite">
+                            基本详情
+                        </div>
+                        <div class="bioert_cont">
+                            <div class="ord_div">
+                                <div class="ord_div_left">
+                                    入住人数：
+                                </div>
+                                <div class="ord_div_right">
+                                    4人
+                                </div>
+                            </div>
+                            <div class="ord_div">
+                                <div class="ord_div_left">
+                                    房价-CNY：
+                                </div>
+                                <div class="ord_div_right">
+                                    3058.00
+                                </div>
+                            </div>
+                            <div class="ord_div">
+                                <div class="ord_div_left">
+                                    预订间数：
+                                </div>
+                                <div class="ord_div_right">
+                                    1间
+                                </div>
+                            </div>
+                            <div class="ord_div">
+                                <div class="ord_div_left">
+                                    入住：
+                                </div>
+                                <div class="ord_div_right">
+                                    1晚
+                                </div>
+                            </div>
+                            <div class="ord_div">
+                                <div class="ord_div_left">
+                                    总房费：
+                                </div>
+                                <div class="ord_div_right">
+                                    ￥3058.00(1晚) × 1间 = ￥3058.00
+                                </div>
+                            </div>
+                            <div class="ord_div">
+                                <div class="ord_div_left">
+                                    税费：
+                                </div>
+                                <div class="ord_div_right">
+                                    ￥0
+                                </div>
+                            </div>
+                            <div class="ord_div">
+                                <div class="ord_div_left">
+                                    服务费：
+                                </div>
+                                <div class="ord_div_right">
+                                    ￥0
+                                </div>
+                            </div>
+                        </div>
+                    </div>-->
+                    <div class="Timeplug">
+                        <div class="Timeplug_time">
+                            <div class="web_time left">
+                                <div class="web_time_left">
+                                    入住日期
+                                </div>
+                                <div class="web_time_right">
+                                    <input class="test-item" type="text" name="inTime" readonly="readonly" placeholder="入住日期" />
+                                </div>
+                            </div>
+                            <div class="web_time right">
+                                <div class="web_time_left">
+                                    退房日期
+                                </div>
+                                <div class="web_time_right">
+                                    <input class="test-item" type="text" name="outTime" readonly="readonly" placeholder="退房日期" />
+                                </div>
+                            </div>
+                        </div>
+                        <div class="onertpis">
+                            <div class="onertpis_tite">
+                                <div class="onertpis_tite_left">
+                                    <div class="weekleft timeCheck" days="minusWeek">
+                                        周
+                                    </div>
+                                    <div class="weekleft timeCheck" days="minusDay">
+                                        天
+                                    </div>
+                                </div>
+                                <div class="onertpis_tite_cont1">
+                                    <input id="Time" value="{$myDate['min']}"/>
+                                </div>
+                                <div class="onertpis_tite_right">
+                                    <div class="weekleft1 timeCheck" days="plusDay">
+                                        天
+                                    </div>
+                                    <div class="weekleft1 timeCheck" days="plusWeek">
+                                        周
+                                    </div>
+                                </div>
+                            </div>
+                            <div class="onertpis_cent">
+                                <div class="onertpis_cent_left">
+                                    <div class="mintor">
+                                        已选择房间类型
+                                    </div>
+                                    <div class="mintor1">
+                                        仙都啦城堡
+                                    </div>
+                                    <div class="mintor1">
+                                        价格
+                                    </div>
+                                </div>
+                                <div class="onertpis_cent_right">
+                                    <ul id="view">
+
+                                    </ul>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                    <!--<div class="Items">
+                        <table cellspacing="0" cellpadding="0" >
+                            <tbody>
+                            <tr class="firstRow">
+                                <th>额外服务项目</th>
+                                <th>费用</th>
+                                <th>选择</th>
+                            </tr>
+                            <tr>
+                                <td>客房惊喜布置</td>
+                                <td>免费</td>
+                                <td><input type="checkbox"/></td>
+                            </tr>
+                            <tr>
+                                <td colspan="3">如您乘公交车来云峰山，我们可提供接驳车至燕落村公交站的服务（免费往返一次），请提前致电81098688，核对您的到达时间。</td>
+                            </tr>
+                            <tr>
+                                <td>客房惊喜布置</td>
+                                <td>免费</td>
+                                <td><input type="checkbox"/></td>
+                            </tr>
+                            <tr>
+                                <td colspan="3">如您乘公交车来云峰山，我们可提供接驳车至燕落村公交站的服务（免费往返一次），请提前致电81098688，核对您的到达时间。</td>
+                            </tr>
+                            </tbody>
+                        </table>
+                    </div>-->
+                    <div class="voert">
+                        <div class="voert_tite">
+                            使用电子卷
+                        </div>
+                        <div class="voert_tb">
+                            <table cellspacing="0" cellpadding="0">
+                                <tbody id="showCoupon">
+                                </tbody>
+                            </table>
+                        </div>
+                    </div>
+                    <div class="voert">
+                        <div class="voert_tite">
+                            您的联系方式
+                        </div>
+                        <div class="ontorb">
+                            为方便您查询及修改订单，请输入有效手机号码作为查询账号，并牢记查询密码。
+                        </div>
+                        <div class="oneme">
+                            <div class="oneme_cont">
+                                <div class="oneme_cont_left">
+                                    手机号码 ：
+                                </div>
+                                <div class="oneme_cont_right">
+                                    <input type="text" name="mobile" placeholder="请输入您的手机号" class="oneme_cont_right_inp" />
+                                    <b>*</b>
+                                </div>
+                            </div>
+                            <div class="oneme_cont">
+                                <div class="oneme_cont_left">
+                                    性&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;别 ：
+                                </div>
+                                <div class="oneme_cont_right">
+                                    <select name="sex" class="oneme_cont_right_select">
+                                        <option value="1">先生</option>
+                                        <option value="2">女士</option>
+                                    </select>
+                                </div>
+                            </div>
+                            <div class="oneme_cont">
+                                <div class="oneme_cont_left">
+                                    姓&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;名 ：
+                                </div>
+                                <div class="oneme_cont_right">
+                                    <input type="text" name="username" placeholder="请输入您的姓名" class="oneme_cont_right_inp" />
+                                    <b>*</b>
+                                </div>
+                            </div>
+                            <div class="oneme_cont">
+                                <div class="oneme_cont_left">
+                                    电子邮箱 ：
+                                </div>
+                                <div class="oneme_cont_right">
+                                    <input type="text" placeholder="请输入您的电子邮箱" class="oneme_cont_right_inp" />
+                                </div>
+                            </div>
+                            <div class="oneme_cont">
+                                <div class="oneme_cont_left">
+                                    成&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;人 ：
+                                </div>
+                                <div class="oneme_cont_right">
+                                    <select name="person" class="oneme_cont_right_select">
+                                        <option value="1">1</option>
+                                        <option value="2">2</option>
+                                        <option value="3">3</option>
+                                        <option value="4">4</option>
+                                    </select>
+                                </div>
+                            </div>
+                            <div class="oneme_cont">
+                                <div class="oneme_cont_left">
+                                    儿&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;童 ：
+                                </div>
+                                <div class="oneme_cont_right">
+                                    <select name="child" class="oneme_cont_right_select">
+                                        <option value="0">0</option>
+                                        <option value="1">1</option>
+                                        <option value="2">2</option>
+                                        <option value="3">3</option>
+                                        <option value="4">4</option>
+                                    </select>
+                                </div>
+                            </div>
+                            <div class="oneme_cont">
+                                <div class="oneme_cont_left">
+                                    备&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;注 ：
+                                </div>
+                                <div class="oneme_cont_right">
+                                    <textarea name="mark" class="oneme_cont_right_textarea"></textarea>
+                                </div>
+                            </div>
+                            <div class="oneme_but">
+                                <input type="hidden" name="type" value="k" />
+                                <input type="hidden" name="roomID" value="{$house.id}" />
+                                <a href="__URL__/pay"><input type="button" value="提交信息" class="tcon" data-msg="您是否提交？" /></a>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+                </form>
+            </div>
+            <div class="ziotop">
+                <h3 style="text-align: center;">订房条款</h3>
+                <h3>预订须知</h3>
+                <p>{:html_entity_decode($house['back'])}</p>
+                <h3>入住须知</h3>
+                <p>
+                    {:html_entity_decode($house['come'])}
+                </p>
+                <h3>更改订单</h3>
+                <p>
+                    {:html_entity_decode($house['change'])}
+                </p>
+            </div>
+        </div>
+    </div>
+</div>
+<script type="text/javascript">
+    layui.use(['laytpl', 'laydate'], function() {
+        var laydate = layui.laydate;
+        var laytpl = layui.laytpl;
+        laydate.render({
+            elem: '#Time',
+            type: 'date',
+            min: "{$myDate['min']}",
+            max: "{$myDate['max']}",
+            done: function(value, date, endDate) {
+                getDates(value);
+            }
+        });
+        lay('.test-item').each(function() {
+            laydate.render({
+                elem: this,
+                trigger: 'click',
+                min: "{$myDate['min']}",
+                max: "{$myDate['max']}"
+            });
+        });
+        var now = $('#Time').val();
+        getDates(now);
+        function getDates(date) {
+            now = date;
+            $('#Time').val(date);
+            var houseID = "{$house.id}";
+            var type = "k";
+            /*$.ajaxSetup({
+             'async':false
+             });*/
+            $.post('__URL__/getStrtotime', { date: date,houseID: houseID,type:type}, function(res) {
+                //日期信息
+                laytpl($('#layout').html()).render(res.db, function(string) {
+                    $('#view').html(string);
+                });
+                //优惠券信息
+                laytpl($('#coupon').html()).render(res.coupon, function(string) {
+                    $('#showCoupon').html(string);
+                });
+            });
+        }
+        function fmtDate(obj) {
+            var date = new Date(obj);
+            var y = 1900 + date.getYear();
+            var m = "0" + (date.getMonth() + 1);
+            var d = "0" + date.getDate();
+            return y + "-" + m.substring(m.length - 2, m.length) + "-" + d.substring(d.length - 2, d.length);
+        }
+        //js中的标准日期格式必须是2017/01/03的这种形式 Date.parse()是 Date 对象的静态方法。
+        $('.timeCheck').click(function() {
+            var type = $(this).attr('days');
+            var date = new Date(Date.parse(now.replace(/-/g, "/")));
+            date = date.getTime();
+            if (type == 'minusWeek') {
+                date = date - 86400000 * 7;
+            } else if (type == 'minusDay') {
+                date = date - 86400000;
+            } else if (type == 'plusWeek') {
+                date = date + 86400000 * 7;
+            } else if (type == 'plusDay') {
+                date = date + 86400000;
+            }
+            var nowDate ="{$myDate['min']}";
+            var Dates = new Date(Date.parse(nowDate.replace(/-/g, "/")));
+            if(date>=Dates.getTime()){
+                date = fmtDate(date);
+                getDates(date);
+            }else{
+                layer.open({
+                    content: '选择时间不可小于当前时间'
+                    ,skin: 'msg'
+                    ,time: 2000 //2秒后自动关闭
+                });
+            }
+        });
+        $(document).on('click','.str3',function(){
+            var num = $(this).attr('num');
+            layer.open({
+                className:'attui',
+                style: 'border:none; background-color:#78BA32; color:#fff;',
+                content:'剩余房间 ：'+num
+            })
+        });
+    });
+</script>
+<script type="text/html" id="layout">
+    {{# layui.each(d, function(index, item){ }} {{# if(index === 3){ }}
+    <li style="background-color: #eee;">
+        {{# }else{ }}
+    <li>
+        {{# } }}
+        <p class="str1">{{item.week}}</p>
+        <p>{{item.day}}</p>
+        <p>{{item.month}}</p>
+        {{# if(item.full === 'false'){ }}
+        <span class="vor" num="{{item.num}}">{{item.num}}</span>
+        {{# }else if(item.full === 'no'){ }}
+        <span class="str2"><a style="color: red; border: 1px solid red; border-radius: 5px;">不可预定</a></span>
+        {{# }else{ }}
+        <span>满房</span>
+        {{# } }}
+        <p class="vor" style="line-height: 60px">{{item.price}}</p>
+    </li>
+    {{# }); }}
+</script>
+<!--优惠券信息位置-->
+<script type="text/html" id="coupon">
+    <tr class="firstRow">
+        <th>选择</th>
+        <th>券号</th>
+        <th>面值</th>
+        <th>面值有效期开始</th>
+        <th>面值有效期结束</th>
+        <th>状态</th>
+    </tr>
+    {{# layui.each(d, function(index, item){ }}
+    <tr>
+        {{# if(item.allow == 'yes') { }}
+        <td><input name="coupon" type="checkbox" value="{{item.card}}" /></td>
+        {{# }else{ }}
+        <td><input disabled="disabled" type="checkbox" /></td>
+        {{# } }}
+        <td>{{item.card}}</td>
+        <td>￥{{item.money}}元</td>
+        <td>{{item.exprie_start}}</td>
+        <td>{{item.exprie_end}}</td>
+        <td>
+            {{# if(item.allow == 'yes') { }}
+            可使用
+            {{# }else{ }}
+            不可用
+            {{# } }}
+        </td>
+    </tr>
+    {{#  }); }}
+</script>

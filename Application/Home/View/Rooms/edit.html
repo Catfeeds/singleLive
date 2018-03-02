@@ -1,0 +1,119 @@
+<div class="nater">
+    <div class="navs">
+        <ul>
+            <li class="left"><a href="{:U('Index/index')}">首页</a></li>
+            <li class="left"><a class="avcer" href="{:U('Rooms/index')}">客房</a></li>
+            <li class="left"><a href="{:U('Index/restaurant')}">餐饮</a></li>
+            <li class="left liop"><a href="{:U('Index/environment')}">环境</a></li>
+            <li class="right liop"><a href="{:U('Self/club')}">会员俱乐部</a></li>
+            <li class="right"><a href="{:U('Index/package')}">套餐</a></li>
+            <li class="right"><a href="{:U('Index/campaign')}">体验活动</a></li>
+        </ul>
+        <span><img src="__IMAGES__/logo.png"></span>
+    </div>
+</div>
+<div class="GuestRoom">
+    <div class="GuestRoom_tite">
+        <div class="GuestRoom_tite_left">
+            客房
+        </div>
+        <div class="GuestRoom_tite_cont">
+            <span class="deavcer">房型选择 </span>
+            <span>></span>
+            <span>填写信息</span>
+            <span>></span>
+            <span>确认预约</span>
+        </div>
+        <!--<div class="GuestRoom_tite_right">
+            <select class="toc_sele">
+                <option>2人房间优先</option>
+            </select>
+        </div>-->
+    </div>
+    <div class="GuestRoom_cont">
+        <div class="currency_tite">
+            {$db.name}
+        </div>
+        <div class="GuestRoom_banner">
+            <div class="GuestRoom_banner_left">
+                <img src="{:getSrc($first)}">
+            </div>
+            <div class="GuestRoom_banner_right">
+                <volist name="banners" id="banner">
+                    <a msg_img="/Uploads{$banner.savepath}{$banner.savename}"><img src="/Uploads{$banner.savepath}{$banner.savename}"></a>
+                </volist>
+            </div>
+        </div>
+        <div class="GuestRoom_dist">
+            <div class="GuestRoom_dist_left">
+                <div class="joint">
+                    <div class="joint_tite">
+                        房间设备
+                        <a class="joina">
+                            <img src="__IMAGES__/s1.png">
+                        </a>
+                    </div>
+                    <div class="joint_cont">
+                        <!--<div class="joint_cont_lit">
+                            <span><img src="__IMAGES__/kf05.png"></span><a>室内80m²、庭院及露台75 m²</a>
+                        </div>-->
+                        {:html_entity_decode($db['equipment'])}
+                    </div>
+                </div>
+                <div class="joint">
+                    <div class="joint_tite">
+                        房间价格
+                        <span>法定假日房价<b>{$db.money}</b>元，当日房价以页面显示为准</span>
+                    </div>
+                </div>
+                <div class="joint">
+                    <div class="joint_tite">
+                        房间描述
+                        <a class="joina"><img src="__IMAGES__/s1.png"></a>
+                    </div>
+                    <div class="joint_cont">
+                        <div class="bists">
+                            {:html_entity_decode($db['mark'])}
+                        </div>
+                    </div>
+                </div>
+                <div class="joint">
+                    <div class="joint_tite">
+                        订房须知
+                        <a class="joina"><img src="__IMAGES__/s1.png"></a>
+                    </div>
+                    <div class="joint_cont">
+                        <div class="bists">
+                            {:html_entity_decode($db['back'])}
+                        </div>
+                    </div>
+                </div>
+                <div class="joint">
+                    <div class="joint_tite">
+                        入住须知
+                        <a class="joina"><img src="__IMAGES__/s1.png"></a>
+                    </div>
+                    <div class="joint_cont">
+                        <div class="bists">
+                            {:html_entity_decode($db['come'])}
+                        </div>
+                    </div>
+                </div>
+                <div class="joint">
+                    <div class="joint_tite">
+                        更改订单
+                        <a class="joina"><img src="__IMAGES__/s1.png"></a>
+                    </div>
+                    <div class="joint_cont">
+                        <div class="bists">
+                            {:html_entity_decode($db['change'])}
+                        </div>
+                    </div>
+                </div>
+            </div>
+            <div class="GuestRoom_dist_right">
+                <a href="{:U('Orders/prepareOrder?id='.$db['id'])}"><input type="button"  value="立即预定" class="hont" /></a>
+            </div>
+        </div>
+    </div>
+</div>

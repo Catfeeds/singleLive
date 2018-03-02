@@ -1,0 +1,98 @@
+<div class="nater">
+    <div class="navs">
+        <ul>
+            <li class="left"><a href="{:U('Index/index')}">首页</a></li>
+            <li class="left"><a href="{:U('Rooms/index')}">客房</a></li>
+            <li class="left"><a href="{:U('Index/restaurant')}">餐饮</a></li>
+            <li class="left liop"><a href="{:U('Index/environment')}">环境</a></li>
+            <li class="right liop"><a href="{:U('Self/club')}">会员俱乐部</a></li>
+            <li class="right"><a href="{:U('Index/package')}">套餐</a></li>
+            <li class="right"><a href="{:U('Index/campaign')}">体验活动</a></li>
+        </ul>
+        <span><img src="__IMAGES__/logo.png"></span>
+    </div>
+</div>
+<style>
+    .layui-laypage{float: right;}
+</style>
+<div class="MemberCenter">
+    <include file="Public:memberNav" />
+    <div class="MemberCenter_cont">
+        <div class="formation">
+            <div class="coil">
+                <div class="coil_tite">
+                    <span>您好，{$userMsg.myName}</span>
+                    <span><strong>账户余额：</strong> <b>{$userMsg.myBalance}</b></span>
+                    <a href="{:U('Self/balanceIn')}">充值</a>
+                </div>
+                <div class="coil_tb">
+                    <table cellspacing="0" cellpadding="0">
+                        <tr class="firstRow">
+                            <th>订单号</th>
+                            <th>类型</th>
+                            <th>订单金额</th>
+                            <th>下单时间</th>
+                            <th>入住日期</th>
+                            <th>状态</th>
+                            <th>操作</th>
+                        </tr>
+                        <tbody id="view" url="__URL__/index">
+                        <volist name="db" id="db">
+                            <tr>
+                                <td>{$db.orderNo}</td>
+                                <td>{$db.type_name}</td>
+                                <td>{$db.price}元</td>
+                                <td>{$db.createTime|date='Y-m-d H:i:s',###}</td>
+                                <td>{$db.date_show}</td>
+                                <td class="web_cor_3">
+                                    {$db.status_type}
+                                </td>
+                                <td>
+                                    <if condition="$db['status'] eq 8">
+                                        <a href="{$db.url}" class="ajax-get"><button type="button" class="layui-btn layui-btn-radius layui-btn-sm">去支付</button></a>
+                                        <a href="{$db.reset_url}" class="ajax-get confirm" data-msg="您确定取消此订单？取消后该订单将无法操作">
+                                            <button type="button" class="layui-btn layui-btn-radius layui-btn-sm">取消订单</button>
+                                        </a>
+                                        <elseif condition="$db['status'] eq 1" />
+                                        <a href="{$db.url}" class="ajax-get confirm" data-msg="您确定申请退款?申请退款后需要管理员审核,详细请电话咨询">
+                                            <button type="button" class="layui-btn layui-btn-radius layui-btn-danger layui-btn-sm">退款</button>
+                                        </a>
+                                        <else />
+                                        <button type="button" class="layui-btn layui-btn-radius layui-btn-disabled layui-btn-sm">不可操作</button>
+                                    </if>
+                                </td>
+                            </tr>
+                        </volist>
+                        {$page}
+                        </tbody>
+                    </table>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+<!--<script type="text/html" id="layout">
+    <tr>
+        <td>{{d.orderNo}}</td>
+        <td>{{d.type_name}}</td>
+        <td>{{d.price}}元</td>
+        <td>{{d.date_show}}</td>
+        <td class="web_cor_3">
+            {{d.status_type}}
+        </td>
+        <td>
+            {{# if(d.status == '8'){ }}
+                <a href="{{d.url}}" class="ajax-get"><button type="button" class="layui-btn layui-btn-radius layui-btn-sm">去支付</button></a>
+                <a href="{{d.reset_url}}" class="ajax-get confirm" data-msg="您确定取消此订单？取消后该订单将无法操作">
+                    <button type="button" class="layui-btn layui-btn-radius layui-btn-sm">取消订单</button>
+                </a>
+            {{# }else if(d.status == '1'){  }}
+                <a href="{{d.url}}" class="ajax-get confirm" data-msg="您确定申请退款?申请退款后需要管理员审核,详细请电话咨询">
+                    <button type="button" class="layui-btn layui-btn-radius layui-btn-danger layui-btn-sm">退款</button>
+                </a>
+            {{# }else{ }}
+            <button type="button" class="layui-btn layui-btn-radius layui-btn-disabled layui-btn-sm">不可操作</button>
+            {{# }}}
+        </td>
+    </tr>
+</script>-->

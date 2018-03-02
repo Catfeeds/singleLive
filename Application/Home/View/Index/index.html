@@ -1,21 +1,55 @@
-            
-			<div class="layui-body" style="bottom: 0;border-left: solid 2px #1AA094;" id="admin-body">
-				<div class="layui-tab admin-nav-card layui-tab-brief" lay-filter="admin-tab">
-					<ul class="layui-tab-title">
-						<li class="layui-this">
-							<i class="fa fa-dashboard" aria-hidden="true"></i>
-							<cite>欢迎页</cite>
-						</li>
-					</ul>
-					<div class="layui-tab-content" style="min-height: 150px; padding: 5px 0 0 0;">
-						<div class="layui-tab-item layui-show">
-							 <div class="conter">
-                                  <div class="cont_top">
-                                       <img src="__PUBLIC__/Home/images/q.jpg">
-                                  </div>
-                            
-                             </div>
-						</div>
-					</div>
-				</div>
-			</div>
+<div class="web_cont">
+	<div class="flexslider">
+		<ul class="slides">
+			<volist name="banners" id="banner">
+				<li style='background:url("{$banner}") 50% 0 no-repeat;'></li>
+			</volist>
+		</ul>
+	</div>
+	<div class="nav">
+		<ul>
+			<li class="left"><a class="avcer" href="{:U('Index/index')}">首页</a></li>
+			<li class="left"><a href="{:U('Rooms/index')}">客房</a></li>
+			<li class="left"><a href="{:U('Index/restaurant')}">餐饮</a></li>
+			<li class="left liop"><a href="{:U('Index/environment')}">环境</a></li>
+			<li class="right liop"><a href="{:U('Self/club')}">会员俱乐部</a></li>
+			<li class="right"><a href="{:U('Index/package')}">套餐</a></li>
+			<li class="right"><a href="{:U('Index/campaign')}">体验活动</a></li>
+		</ul>
+		<span><img src="__IMAGES__/logo.png"></span>
+	</div>
+	<include file="Public:search" />
+</div>
+<div class="web_coent">
+	<div class="currency_tite">
+		客&nbsp;&nbsp;&nbsp;&nbsp;房
+	</div>
+	<div class="web_efnt">
+		<ul>
+			<li class="inacvr" url="__URL__/index">全部客房</li>
+			<volist name="cates" id="cate">
+				<li url="__URL__/index/cate/{$cate.id}">{$cate.title}</li>
+			</volist>
+		</ul>
+	</div>
+	<div class="entweb" id="view">
+	</div>
+</div>
+<script type="text/html" id="layout">
+	<div class="linomt">
+		<a href="{{d.url}}"><img src="{{d.icon}}"></a>
+		<b>{{d.name}}</b>
+		<p>{{d.word}}</p>
+	</div>
+</script>
+<script type="text/javascript">
+	yin.lists({
+		url: $('.inacvr').attr('url')
+	});
+	$('.web_efnt').on('click', 'li', function() {
+		$('#view').html('');
+		yin.lists({
+			url: $(this).attr('url')
+		});
+	});
+</script>

@@ -1,0 +1,35 @@
+<div class="nater">
+    <div class="navs">
+        <ul>
+            <li class="left"><a href="{:U('Index/index')}">首页</a></li>
+            <li class="left"><a href="{:U('Rooms/index')}">客房</a></li>
+            <li class="left"><a href="{:U('Index/restaurant')}">餐饮</a></li>
+            <li class="left liop"><a href="{:U('Index/environment')}">环境</a></li>
+            <li class="right liop"><a href="{:U('Self/club')}">会员俱乐部</a></li>
+            <li class="right"><a href="{:U('Index/package')}">套餐</a></li>
+            <li class="right"><a href="{:U('Index/campaign')}">体验活动</a></li>
+        </ul>
+        <span><img src="__IMAGES__/logo.png"></span>
+    </div>
+</div>
+<div class="register1">
+    <div class="register_tite">
+        交通指南
+    </div>
+    <div class="problem">
+        <div class="problem_left">
+            <ul>
+                <volist name="db" id="db" key="k">
+                    <li class="{:($k == 1)?'inavcr':''}">{$db.title}</li>
+                </volist>
+            </ul>
+        </div>
+        <div class="problem_right">
+            <volist name="list" id="list">
+                <div class="minorigth">
+                    {:html_entity_decode($list['content'])}
+                </div>
+            </volist>
+        </div>
+    </div>
+</div>

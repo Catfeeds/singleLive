@@ -1,0 +1,43 @@
+<div class="nater">
+    <div class="navs">
+        <ul>
+            <li class="left"><a href="{:U('Index/index')}">首页</a></li>
+            <li class="left"><a href="{:U('Rooms/index')}">客房</a></li>
+            <li class="left"><a href="{:U('Index/restaurant')}">餐饮</a></li>
+            <li class="left liop"><a href="{:U('Index/environment')}">环境</a></li>
+            <li class="right liop"><a href="{:U('Self/club')}">会员俱乐部</a></li>
+            <li class="right"><a href="{:U('Index/package')}">套餐</a></li>
+            <li class="right"><a class="avcer" href="{:U('Index/campaign')}">体验活动</a></li>
+        </ul>
+        <span><img src="__IMAGES__/logo.png"></span>
+    </div>
+</div>
+<div class="web_cont">
+    <div class="flexslider1">
+        <ul class="slides aoct">
+            <volist name="banners" id="banner">
+                <li style='background:url("{$banner}") 50% 0 no-repeat;'></li>
+            </volist>
+        </ul>
+    </div>
+    <include file="Public:search" />
+</div>
+<div class="web_coent">
+    <div class="currency_tite onert">
+        体验活动
+    </div>
+    <div class="entweb" id="view">
+    </div>
+</div>
+<script type="text/html" id="layout">
+    <div class="linomt">
+        <a href="__URL__/environmentEdit/id/{{d.id}}"><img src="{{d.icon}}"></a>
+        <b>{{d.name}}</b>
+        <p>{{d.word}}</p>
+    </div>
+</script>
+<script type="text/javascript">
+    yin.lists({
+        url: '/index.php/Mobile/Index/campaign/type/a'
+    });
+</script>

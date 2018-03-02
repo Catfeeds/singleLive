@@ -283,6 +283,11 @@ class SelfController extends CommonController{
 		$db['houseCate'] = D::get('HouseCate',['id' => ['in',$db['hcate']]]);
 		$db['packageCate'] = D::get('HouseCate',['id' => ['in',$db['tcate']]]);
 		$db['level'] = D::get('Grades',['id' => ['in',$db['userLevel']]]);
+		if($db['exprie_end'] < date('Y-m-d')){
+			$db['can']  = 'no';
+		}else{
+			$db['can']  = 'yes';
+		}
 		$this->assign('db',$db);
 		$this->display();
 	}

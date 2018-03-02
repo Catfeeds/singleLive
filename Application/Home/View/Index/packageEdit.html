@@ -1,0 +1,211 @@
+<div class="nater">
+    <div class="navs">
+        <ul>
+            <li class="left"><a href="{:U('Index/index')}">首页</a></li>
+            <li class="left"><a href="{:U('Rooms/index')}">客房</a></li>
+            <li class="left"><a href="{:U('Index/restaurant')}">餐饮</a></li>
+            <li class="left liop"><a href="{:U('Index/environment')}">环境</a></li>
+            <li class="right liop"><a href="{:U('Self/club')}">会员俱乐部</a></li>
+            <li class="right"><a class="avcer" href="{:U('Index/package')}">套餐</a></li>
+            <li class="right"><a href="{:U('Index/campaign')}">体验活动</a></li>
+        </ul>
+        <span><img src="__IMAGES__/logo.png"></span>
+    </div>
+</div>
+
+<div class="web_coent">
+    <div class="GuestRoom_tite">
+        <div class="GuestRoom_tite_left">
+            套餐
+        </div>
+        <div class="GuestRoom_tite_cont">
+            <span class="deavcer">套餐选择 </span>
+            <span class="deavcer">&gt;</span>
+            <span class="deavcer">立即预定</span>
+            <span class="deavcer">&gt;</span>
+            <span class="deavcer">立即支付</span>
+        </div>
+        <!--<div class="GuestRoom_tite_right">
+            <select class="toc_sele">
+                <option>按时间最近</option>
+                <option>按时间最远</option>
+                <option>按价格最高</option>
+                <option>按价格最低</option>
+            </select>
+        </div>-->
+    </div>
+    <div class="ioncton_cont">
+        <div class="titesb">
+            {$db.title}
+        </div>
+        <div class="aoncont">
+            <div class="aoncont_left">
+                <div class="aoncont_left_img">
+                    <div class="img_tist">
+                        <img src="{:getSrc($db['pic'])}">
+                    </div>
+                    <!--<div class="omert">
+                        <ul>
+                            <volist name="banners" id="banner">
+                                <li msg_img="/Uploads{$banner.savepath}{$banner.savename}"><img src="/Uploads{$banner.savepath}{$banner.savename}"></li>
+                            </volist>
+                        </ul>
+                    </div>-->
+                </div>
+                <div class="onipert">
+                    <div class="joint">
+                        <div class="joint_tite">
+                            套餐内容
+                            <a class="joina"><img src="__IMAGES__/s1.png"></a>
+                        </div>
+                        <div class="joint_cont">
+                            <div class="bists">
+                                <table cellspacing="0" cellpadding="0">
+                                    <tbody>
+                                    <tr class="firstRow">
+                                        <th>套餐内容</th>
+                                        <th>单价</th>
+                                        <th>数量/规格</th>
+                                        <th>小计</th>
+                                    </tr>
+                                    <volist name="db.set" id="set">
+                                        <tr>
+                                            <ul>
+                                                <td>{$set.title}</td>
+                                                <td>{$set.money}</td>
+                                                <td>{$set.attr}</td>
+                                                <td>{$set.amount}</td>
+                                            </ul>
+                                        </tr>
+                                    </volist>
+                                    </tbody>
+                                </table>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="joint">
+                        <div class="joint_tite">
+                            订房须知
+                            <a class="joina"><img src="__IMAGES__/s1.png"></a>
+                        </div>
+                        <div class="joint_cont">
+                            <div class="bists">
+                                {:html_entity_decode($db['mark'])}
+                            </div>
+                        </div>
+                    </div>
+                    <div class="joint">
+                        <div class="joint_tite">
+                            套餐详情
+                            <a class="joina"><img src="__IMAGES__/s1.png"></a>
+                        </div>
+                        <div class="joint_cont">
+                            <div class="bists">
+                                {:html_entity_decode($db['content'])}
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+            <div class="aoncont_right">
+                <div class="aoncont_right_img">
+                    <div class="mioput">
+                        <div class="mioput_top">
+                            可入住时间段：  <a style="text-decoration: none;">{$db.allowIn} ~ {$db.allowOut}</a>
+                        </div>
+                        <div class="mioput_top1">
+                            官网尊享价：  <b>￥{$db.packMoney}</b>
+                        </div>
+                    </div>
+                    <div class="aoncont_time">
+                        <div class="tome_omt">
+                            <div class="tome_omt_left">
+                                入 住 日 期 ：
+                            </div>
+                            <div class="tome_omt_right">
+                                <input class="ont_inp_1" name="start_date" id="Time" readonly="readonly" type="text" placeholder="请选择日期" />
+                                <input id="look" type="button" value="查询" class="ont_inp_2" />
+                            </div>
+                        </div>
+                        <div class="tome_omt">
+                            <div class="tome_omt_left">
+                                数&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;量 ：
+                            </div>
+                            <div class="tome_omt_right1">
+                                <div class="jiunter">
+                                    <div class="appjian">-</div>
+                                    <input type="text" class="appcont limit_num" value="1"/>
+                                    <div class="appjia" limit="{$db.limit}">+</div>
+                                </div>
+                                <div class="sopm">
+                                    （每人限购{$db.limit}份）
+                                </div>
+                            </div>
+                        </div>
+                        <div class="hern">
+                            <input name="roomID" type="hidden" value="{$db.id}" />
+                            <a id="sure" href="javascript:;"><input type="button" value="填写信息" /></a>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+<script>
+    $(function(){
+        var roomID = "{$db.id}";
+        layui.use('laydate', function() {
+            var laydate = layui.laydate;
+            laydate.render({
+                elem: '#Time',
+                type: 'date',
+                min: "{$myDate['min']}",
+                max: "{$myDate['max']}"
+            });
+        });
+        $('#look').on('click',function(){
+            var createDate = $('#Time').val();
+            if(createDate){
+                $.post("__URL__/search_num",{roomID:roomID,createDate:createDate},function(data){
+                    layer.open({
+                        type: 1,
+                        title: false,
+                        skin: 'mindet', //样式类名
+                        closeBtn: 0, //不显示关闭按钮
+                        anim: 2,
+                        shadeClose: true, //开启遮罩关闭
+                        content: '剩余房间 ：' + data
+                    });
+                });
+            }else{
+                open_window('请先选择日期在查看');
+            }
+        })
+        $('#sure').on('click',function(){
+            var limit_num = $('.limit_num').val();
+            var createDate = $('#Time').val();
+            layer.open({
+                content: '您确定选择好了？',
+                btn: ['确定', '取消'],
+                yes: function(index) {
+                    $.post("__URL__/jumps",{roomID:roomID,createDate:createDate,limit_num:limit_num},function(data){
+                        if(data.status == 'yes'){
+                            open_window(data.msg);
+                            setTimeout(function(){
+                                window.location.href= "/index.php/Orders/prepareOrderPackage?id={$db.id}";
+                            },1000);
+                        }else{
+                            open_window(data.msg);
+                        }
+                    });
+                }
+            });
+        })
+        function open_window(info){
+            layer.msg(info, {
+                time: 2000
+            });
+        }
+    })
+</script>

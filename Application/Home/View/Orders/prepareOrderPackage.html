@@ -1,0 +1,209 @@
+<div class="nater">
+    <div class="navs">
+        <ul>
+            <li class="left"><a href="{:U('Index/index')}">首页</a></li>
+            <li class="left"><a href="{:U('Rooms/index')}">客房</a></li>
+            <li class="left"><a href="{:U('Index/restaurant')}">餐饮</a></li>
+            <li class="left liop"><a href="{:U('Index/environment')}">环境</a></li>
+            <li class="right liop"><a href="{:U('Self/club')}">会员俱乐部</a></li>
+            <li class="right"><a class="avcer" href="{:U('Index/package')}">套餐</a></li>
+            <li class="right"><a href="{:U('Index/campaign')}">体验活动</a></li>
+        </ul>
+        <span><img src="__IMAGES__/logo.png"></span>
+    </div>
+</div>
+
+<div class="web_coent">
+    <div class="GuestRoom_tite">
+        <div class="GuestRoom_tite_left">
+            套餐
+        </div>
+        <div class="GuestRoom_tite_cont">
+            <span class="deavcer">套餐选择 </span>
+            <span class="deavcer">&gt;</span>
+            <span class="deavcer">立即预定</span>
+            <span class="deavcer">&gt;</span>
+            <span class="deavcer">立即支付</span>
+        </div>
+<!--        <div class="GuestRoom_tite_right">
+            <select class="toc_sele">
+                <option>按时间最近</option>
+                <option>按时间最远</option>
+                <option>按价格最高</option>
+                <option>按价格最低</option>
+            </select>
+        </div>-->
+    </div>
+    <div class="ioncton_cont">
+        <div class="titesb">
+            {$db.title}
+        </div>
+        <div class="aoncont">
+            <div class="aoncont_left">
+                <form class="orderForm" action="__URL__/OrderCheck" method="post">
+                    <div class="bistor">
+                    <h2>价格：CNY  <b>{$db.packMoney}</b></h2>
+                    <div class="bioert">
+                        <div class="bioert_tite">
+                            基本详情
+                        </div>
+                        <div class="bioert_cont">
+                            <div class="ord_div">
+                                <div class="ord_div_left">
+                                    入住时间：
+                                </div>
+                                <div class="ord_div_right">
+                                    {$db.inTime}<input type="hidden" name="inTime" value="{$db.inTime}" />
+                                </div>
+                            </div>
+                            <div class="ord_div">
+                                <div class="ord_div_left">
+                                    数量：
+                                </div>
+                                <div class="ord_div_right">
+                                    {$db.num}份<input type="hidden" name="num" value="{$db.num}" />
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="voert">
+                        <div class="voert_tite">
+                            使用电子卷
+                        </div>
+                        <div class="voert_tb">
+                            <table cellspacing="0" cellpadding="0">
+                                <tbody>
+                                <tr class="firstRow">
+                                    <th>选择</th>
+                                    <th>券号</th>
+                                    <th>面值</th>
+                                    <th>面值有效期开始</th>
+                                    <th>面值有效期结束</th>
+                                    <th>状态</th>
+                                </tr>
+                                <volist name="coupon" id="coupons">
+                                    <tr>
+                                        <if condition="$coupons['allow'] eq 'yes'">
+                                            <input name="coupon" type="checkbox" value="{$coupons.card}" />
+                                            <else />
+                                            <td><input disabled="disabled" type="checkbox"  /></td>
+                                        </if>
+                                        <td>{$coupons.card}</td>
+                                        <td>{$coupons.money}元</td>
+                                        <td>{$coupons.exprie_start}</td>
+                                        <td>{$coupons.exprie_end}</td>
+                                        <td>
+                                            <if condition="$coupons['allow'] eq 'yes'">
+                                            可使用
+                                            <else />
+                                            不可使用
+                                            </if>
+                                        </td>
+                                    </tr>
+                                </volist>
+                                </tbody>
+                            </table>
+                        </div>
+                    </div>
+
+                    <div class="voert">
+                        <div class="voert_tite">
+                            您的联系方式
+                        </div>
+                        <div class="ontorb">
+                            为方便您查询及修改订单，请输入有效手机号码作为查询账号，并牢记查询密码。
+                        </div>
+                        <div class="oneme">
+                            <div class="oneme_cont">
+                                <div class="oneme_cont_left">
+                                    手机号码 ：
+                                </div>
+                                <div class="oneme_cont_right">
+                                    <input type="text" name="mobile" placeholder="请输入您的手机号" class="oneme_cont_right_inp" />
+                                    <b>*</b>
+                                </div>
+                            </div>
+                            <div class="oneme_cont">
+                                <div class="oneme_cont_left">
+                                    性&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;别 ：
+                                </div>
+                                <div class="oneme_cont_right">
+                                    <select name="sex" class="oneme_cont_right_select">
+                                        <option value="1">先生</option>
+                                        <option value="2">女士</option>
+                                    </select>
+                                </div>
+                            </div>
+                            <div class="oneme_cont">
+                                <div class="oneme_cont_left">
+                                    姓&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;名 ：
+                                </div>
+                                <div class="oneme_cont_right">
+                                    <input type="text" name="username" placeholder="请输入您的姓名" class="oneme_cont_right_inp" />
+                                    <b>*</b>
+                                </div>
+                            </div>
+                            <div class="oneme_cont">
+                                <div class="oneme_cont_left">
+                                    电子邮箱 ：
+                                </div>
+                                <div class="oneme_cont_right">
+                                    <input name="email" type="text" placeholder="请输入您的电子邮箱" class="oneme_cont_right_inp" />
+                                </div>
+                            </div>
+                            <div class="oneme_cont">
+                                <div class="oneme_cont_left">
+                                    成&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;人 ：
+                                </div>
+                                <div class="oneme_cont_right">
+                                    <select name="person" class="oneme_cont_right_select">
+                                        <option value="1">1</option>
+                                        <option value="2">2</option>
+                                        <option value="3">3</option>
+                                        <option value="4">4</option>
+                                    </select>
+                                </div>
+                            </div>
+                            <div class="oneme_cont">
+                                <div class="oneme_cont_left">
+                                    儿&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;童 ：
+                                </div>
+                                <div class="oneme_cont_right">
+                                    <select name="child" class="oneme_cont_right_select">
+                                        <option value="0">0</option>
+                                        <option value="1">1</option>
+                                        <option value="2">2</option>
+                                        <option value="3">3</option>
+                                        <option value="4">4</option>
+                                    </select>
+                                </div>
+                            </div>
+                            <div class="oneme_cont">
+                                <div class="oneme_cont_left">
+                                    备&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;注 ：
+                                </div>
+                                <div class="oneme_cont_right">
+                                    <textarea name="mark" class="oneme_cont_right_textarea"></textarea>
+                                </div>
+                            </div>
+                            <div class="oneme_but">
+                                <input type="hidden" name="type" value="t" />
+                                <input type="hidden" name="roomID" value="{$db.id}" />
+                                <a href="__URL__/pay"><input type="button" value="提交信息" class="tcon" data-msg="您是否提交？" /></a>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+                </form>
+            </div>
+            <div class="ziotop">
+                <h3 style="text-align: center;">订房条款</h3>
+                <h3>预订须知</h3>
+                <p>{:html_entity_decode($db['mark'])}</p>
+                <h3>套餐详情</h3>
+                <p>{:html_entity_decode($db['content'])}</p>
+            </div>
+
+        </div>
+    </div>
+</div>

@@ -76,7 +76,8 @@ INSERT INTO `ms_perm` (`perm_id`, `perm_type`, `perm_url`, `status`, `perm_paren
 -- (38, '参数设置', 'Parameter', 0,11),
 (39, '常见问题列表', 'Problem', 0,7),
 (40, 'Banner管理', 'Banner', 0,7),
-(41, '充值管理', 'Recharge', 0,2);
+(41, '充值管理', 'Recharge', 0,2),
+(42, '交通指南列表', 'Traffic', 0,7);
 
 
 
@@ -356,6 +357,18 @@ CREATE TABLE IF NOT EXISTS `ms_package` (
 --  常见问题管理表
 --
 CREATE TABLE IF NOT EXISTS `ms_problem` (
+  `id` int(11) NOT NULL AUTO_INCREMENT,
+  `title` varchar(100) COLLATE utf8_bin NOT NULL COMMENT '问题名称',
+  `content` text COLLATE utf8_bin NOT NULL COMMENT '问题答案',
+  `add_time` int(11) COLLATE utf8_bin NOT NULL COMMENT '插入时间',
+  `update_time` int(11) COLLATE utf8_bin NOT NULL COMMENT '修改时间',
+   PRIMARY KEY (`id`)
+)ENGINE=MyISAM DEFAULT CHARSET=utf8 COLLATE=utf8_bin AUTO_INCREMENT=1;
+
+--
+--  交通指南管理表
+--
+CREATE TABLE IF NOT EXISTS `ms_traffic` (
   `id` int(11) NOT NULL AUTO_INCREMENT,
   `title` varchar(100) COLLATE utf8_bin NOT NULL COMMENT '问题名称',
   `content` text COLLATE utf8_bin NOT NULL COMMENT '问题答案',
