@@ -88,7 +88,11 @@ class LoginController extends CommonController{
 					if(check_verify(I('post.yzm')) === true){
 						if($user['status'] == 1){
 							session('user',$user['id']);
-							$url = S('url') ?  : U('/Self/index');
+							if(S('url') == '/index.php/Home/Login/login' || S('url') == '/index.php/Home/Login/index'){
+								$url = U('/Self/information');
+							}else{
+								$url = S('url');
+							}
 							$this->success('登录成功，正在跳转...',$url);
 						}else{
 							$this->error('您的账号已被禁用或删除');

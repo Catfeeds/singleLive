@@ -1,18 +1,20 @@
 <div class="web_index_time">
-    <div class="web_enop">
-        <div class="index_time_1">
-            <p>选择入住日期 ：</p>
-            <input type="text" name="time" id="search" placeholder="选择入住日期"  />
+    <form action="{:U('Index/search')}" method="get">
+        <div class="web_enop">
+            <div class="index_time_1">
+                <p>选择入住日期 ：</p>
+                <input type="text" name="date" id="search" placeholder="选择入住日期"  />
+            </div>
+            <div class="index_time_2" style="width: 47%;">
+                <p>房间名称 ：</p>
+                <select name="houseID">
+                    <option value="">选择房间</option>
+                    <volist name="houses" id="row">
+                        <option value="{$row.id}">{$row.name}</option>
+                    </volist>
+                </select>
+            </div>
         </div>
-        <div class="index_time_2" style="width: 47%;">
-            <p>房间名称 ：</p>
-            <select name="houseID">
-                <option value="">选择房间</option>
-                <volist name="houses" id="row">
-                    <option value="{$row.id}">{$row.name}</option>
-                </volist>
-            </select>
-        </div>
-    </div>
-    <a href="#"><input type="button" class="web_index_but" value="预定" /></a>
+        <input type="submit" class="web_index_but" value="查询" /></a>
+    </form>
 </div>

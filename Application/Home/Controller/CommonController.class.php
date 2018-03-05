@@ -6,10 +6,10 @@ use Think\D;
 class CommonController extends Controller{
 	public static $login = false;
 	public function _initialize(){
+        S('url',__SELF__); //缓存当前浏览页面
 		if ( static::$login === true ) {
 			//需要登录
 			if ( !session('user') ) {
-				S('url',__SELF__); //缓存当前浏览页面
 				$this->redirect('Login/index', [], 0, '页面跳转中...');
 			}else{
                 //获取当前会员的  等级 积分 余额以便页面赋值

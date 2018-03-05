@@ -572,6 +572,7 @@ class SelfController extends CommonController{
 	 */
 	public function clubEdit()
 	{
+		$id = I('id');
 		$house = D::find('Environment',$id);
 		$bannerMap['id'] = ['in',array_filter(explode(',', $house['imgs']))]; //banner ids
 		$Banners = D::get('Files',$bannerMap); //获取banner

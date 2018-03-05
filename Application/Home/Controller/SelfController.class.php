@@ -158,6 +158,26 @@ class SelfController extends CommonController{
 		}
 	}
 	/**
+	 * 	修改密码
+	*/
+	public function update_pwd(){
+		$post = I('post.');
+		$pwd = D::field('Users.no_md5',$post['id']);
+		if(!$post['pwd'] || $post['pwd']!=$pwd){
+			$this->error('原密码错误');
+		}
+		if(!$post['password'] || !$post['rpwd'] || $post['rpwd']!=$post['password']){
+			$this->error('两次输入不一致');
+		}
+		$data = [
+			'no_md5' => I('password'),
+			'password' => md5(I('password'))
+		];
+		M('Users')->where('id='.$post['id'])->save($data);
+		session('user',null);
+		$this->success('修改成功,请重新登录',U('Login/index'));
+	}
+	/**
 	 * 	zhenHong~
 	 */
 	public function balance()

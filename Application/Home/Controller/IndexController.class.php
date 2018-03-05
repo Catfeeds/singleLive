@@ -104,6 +104,134 @@ class IndexController extends CommonController{
 			$this->display();
 		}
 	}
+	/*
+	 * 	查询房间
+	 * */
+	public function search(){
+		$this->display();
+	}
+	public function getStrtotime(){
+//		if(is_numeric(I('houseID'))){
+//			$post['houseID'] = I('houseID');
+//		}
+//		if(I('date')){
+//			$post['date'] = I('date');
+//		}else{
+//			$post['date'] = date('Y-m-d');
+//		}
+		$post = I('post.');
+		$dates = [
+			[
+				'date' => strtotime($post['date'].'-3 days'),
+			],
+			[
+				'date' => strtotime($post['date'].'-2 days'),
+			],
+			[
+				'date' => strtotime($post['date'].'-1 days'),
+			],
+			[
+				'date' => strtotime($post['date']),
+			],
+			[
+				'date' => strtotime($post['date'].'+1 days'),
+			],
+			[
+				'date' => strtotime($post['date'].'+2 days'),
+			],
+			[
+				'date' => strtotime($post['date'].'+3 days'),
+			],
+		];
+		//在php中1-7的数字分别代表  周1-----周日
+		$week = [
+			1 => '一',
+			2 => '二',
+			3 => '三',
+			4 => '四',
+			5 => '五',
+			6 => '六',
+			7 => '日',
+		];
+		$data['db'] = array_map(function($data)use($week,$post){
+			$date = $data['date'];
+			$data = [
+				'month' => date('m月',$date),
+				'day'   => date('d',$date),
+				'week'  => $week[date('N',$date)],//N - 星期几
+			];
+			return $data;
+		}, $dates);
+		//查询房间信息(这是h-代表客房  t-代表套餐)
+		if($post['type'] == 'k'){
+			if(I('houseID')){
+				$map['id'] = I('houseID');
+			}
+			$map['status'] = 1;
+			$house = D::get('House',['where'=>$map]);
+		}else{
+			$house = D::find('Package',$post['houseID']);
+		}
+		$data['room'] = array_map(function($data)use($post,$dates){
+			foreach($dates as $val){
+				$data['room'][] = $this->get_nowHouse_data($data['id'],date('Y-m-d',$val['date']),'k');
+			}
+			$data = [
+				'roomName' => $data['name'],
+				'date' => $data['room']
+			];
+			return $data;
+		},$house);
+		$this->ajaxReturn($data);
+	}
+	/*
+	 * 	获取当前房间的数据
+	 * 		$houseID-房间id
+	 * 		$date-日期
+	 * 		$type-类型(t-套餐|h-客房)
+	 * */
+	public function get_nowHouse_data($houseID,$date,$type){
+		//获取当前日期
+		$nowDate = date('Y-m-d');
+		//获取房间总数	查询提交时间的order数量
+		$house = D::find('House',$houseID);
+		$map['roomID'] = $houseID;
+		$map['createDate'] = $date;
+		$map['type'] = $type;
+		$num = D::find('RoomDate',['where'=>$map,'field'=>'IFNULL(order_num,0) order_num']);
+		if($num['order_num'] && $num['order_num']>0){
+			$houseNum = $house['total_num']-$num['order_num'];
+		}else{
+			$houseNum = $house['total_num'];
+		}
+		/*
+		 * 	判断该时间是否可以预定 ? （该房间的订单数量==房间总数 ？ 满员 : 剩余数量） : 不可预定
+		 * */
+		if($date>=$nowDate){
+			$str = $num['order_num'] == $house['total_num'] ? 'true' : 'false';
+		}else{
+			$str = 'no';
+		}
+		if($type == 'k'){
+			//判断是否设置了价格模板
+			$is = D::find('TempletePrice',[
+				'where' => [
+					'roomID' => $houseID,
+					'day' => $date
+				],
+				'field' => 'price'
+			]);
+			$money = $is['price'] ? $is['price'] : $house['money'];
+		}else{
+			$money = $house['packMoney'];
+		}
+		$arr = [
+			'full' => $str,
+			'num' => $houseNum,
+			'money' => $money
+		];
+		return $arr;
+	}
 	/**
 	 * [problem 常见问题]
 	 * @Author   ヽ(•ω•。)ノ   Mr.Solo

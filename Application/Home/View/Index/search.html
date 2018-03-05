@@ -1,0 +1,178 @@
+<div class="nater">
+    <div class="navs">
+        <ul>
+            <li class="left"><a href="{:U('Index/index')}">首页</a></li>
+            <li class="left"><a href="{:U('Rooms/index')}">客房</a></li>
+            <li class="left"><a href="{:U('Index/restaurant')}">餐饮</a></li>
+            <li class="left liop"><a href="{:U('Index/environment')}">环境</a></li>
+            <li class="right liop"><a href="{:U('Self/club')}">会员俱乐部</a></li>
+            <li class="right"><a href="{:U('Index/package')}">套餐</a></li>
+            <li class="right"><a href="{:U('Index/campaign')}">体验活动</a></li>
+        </ul>
+        <span><img src="__IMAGES__/logo.png"></span>
+    </div>
+</div>
+<div class="weborst">
+    <div class="GuestRoom_tite">
+        <div class="GuestRoom_tite_left">
+            客房
+        </div>
+        <div class="weborst_time">
+            <div class="onertpis_tite_left">
+                <div class="weekleft timeCheck" days="minusWeek">
+                    周
+                </div>
+                <div class="weekleft timeCheck" days="minusDay">
+                    天
+                </div>
+            </div>
+            <div class="onertpis_tite_cont1">
+                <input value="{$allowTimes.min}" id="Time" />
+            </div>
+            <div class="onertpis_tite_right">
+
+                <div class="weekleft1 timeCheck" days="plusDay">
+                    天
+                </div>
+                <div class="weekleft1 timeCheck" days="plusWeek">
+                    周
+                </div>
+            </div>
+        </div>
+        <!--<div class="GuestRoom_tite_right">
+            <select class="toc_sele">
+                <option>按时间最近</option>
+                <option>按时间最远</option>
+                <option>按价格最高</option>
+                <option>按价格最低</option>
+            </select>
+        </div>-->
+    </div>
+    <div class="weborst_cont">
+        <div class="weborst_cont_tite">
+            <div class="gimts">
+                房间名称
+            </div>
+            <div class="gimts_time">
+                <ul id="view">
+
+                </ul>
+            </div>
+        </div>
+        <div class="weborst_dome" id="roomShow">
+
+        </div>
+    </div>
+</div>
+<script type="text/javascript">
+    var showDate = "{:I('date')}" ? "{:I('date')}" : "{$allowTimes['min']}";
+    $('#Time').val(showDate);
+    layui.use(['laytpl', 'laydate'], function() {
+        var laydate = layui.laydate;
+        var laytpl = layui.laytpl;
+        laydate.render({
+            elem: '#Time',
+            type: 'date',
+            min: showDate,
+            max: "{$allowTimes['max']}",
+            done: function(value, date, endDate) {
+                getDates(value);
+            }
+        });
+        var now = $('#Time').val();
+        getDates(now);
+        function getDates(date) {
+            now = date;
+            $('#Time').val(date);
+            var houseID = "{:I('houseID')}";
+            var type = "k";
+            $.post("{:U('Index/getStrtotime')}", { date: date,houseID: houseID,type:type}, function(res) {
+                //日期信息
+                laytpl($('#layout').html()).render(res.db, function(string) {
+                    $('#view').html(string);
+                });
+                //优惠券信息
+                laytpl($('#room').html()).render(res.room, function(string) {
+                    $('#roomShow').html(string);
+                });
+            });
+        }
+        function fmtDate(obj) {
+            var date = new Date(obj);
+            var y = 1900 + date.getYear();
+            var m = "0" + (date.getMonth() + 1);
+            var d = "0" + date.getDate();
+            return y + "-" + m.substring(m.length - 2, m.length) + "-" + d.substring(d.length - 2, d.length);
+        }
+        //js中的标准日期格式必须是2017/01/03的这种形式 Date.parse()是 Date 对象的静态方法。
+        $('.timeCheck').click(function() {
+            var type = $(this).attr('days');
+            var date = new Date(Date.parse(now.replace(/-/g, "/")));
+            date = date.getTime();
+            if (type == 'minusWeek') {
+                date = date - 86400000 * 7;
+            } else if (type == 'minusDay') {
+                date = date - 86400000;
+            } else if (type == 'plusWeek') {
+                date = date + 86400000 * 7;
+            } else if (type == 'plusDay') {
+                date = date + 86400000;
+            }
+            var nowDate ="{$allowTimes['min']}";
+            var Dates = new Date(Date.parse(nowDate.replace(/-/g, "/")));
+            if(date>=Dates.getTime()){
+                date = fmtDate(date);
+                getDates(date);
+            }else{
+                layer.open({
+                    content: '选择时间不可小于当前时间'
+                    ,skin: 'msg'
+                    ,time: 2000 //2秒后自动关闭
+                });
+            }
+        });
+        $(document).on('click','.str3',function(){
+            var num = $(this).attr('num');
+            layer.open({
+                style: 'border:none; background-color:#78BA32; color:#fff;',
+                content:'剩余房间 ：'+num
+            })
+        });
+    });
+</script>
+<script type="text/html" id="layout">
+    {{# layui.each(d, function(index, item){ }} {{# if(index === 3){ }}
+    <li style="background-color: #eee;">
+        {{# }else{ }}
+    <li>
+        {{# } }}
+        <p class="str1">{{item.week}}</p>
+        <p>{{item.day}}</p>
+        <p>{{item.month}}</p>
+    </li>
+    {{# }); }}
+</script>
+<script type="text/html" id="room">
+    {{# layui.each(d, function(index, item){ }}
+    <div class="mapt">
+        <div class="mapt_left">
+            <div class="lomt_left">
+                {{item.roomName}}
+            </div>
+        </div>
+        <div class="mapt_right">
+            <ul>
+                {{# layui.each(item.date, function(index, list){ }}
+                    {{# if(list.full === 'false'){ }}
+                        <li>{{ list.num }}间({{ list.money }})</li>
+                    {{# }else if(list.full === 'no'){ }}
+                        <li class="liomt" style="color: red;">不可预定({{ list.money }})</li>
+                    {{# }else{ }}
+                        <li class="liomt ">满房({{ list.money }})</li>
+                    {{# } }}
+                {{#  }); }}
+            </ul>
+        </div>
+    </div>
+    {{#  }); }}
+</script>
