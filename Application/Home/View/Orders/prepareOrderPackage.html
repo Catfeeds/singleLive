@@ -9,7 +9,7 @@
             <li class="right"><a class="avcer" href="{:U('Index/package')}">套餐</a></li>
             <li class="right"><a href="{:U('Index/campaign')}">体验活动</a></li>
         </ul>
-        <span><img src="__IMAGES__/logo.png"></span>
+        <span><a href="{:U('Index/index')}"><img src="__IMAGES__/logo.png"></a></span>
     </div>
 </div>
 
@@ -25,14 +25,6 @@
             <span class="deavcer">&gt;</span>
             <span class="deavcer">立即支付</span>
         </div>
-<!--        <div class="GuestRoom_tite_right">
-            <select class="toc_sele">
-                <option>按时间最近</option>
-                <option>按时间最远</option>
-                <option>按价格最高</option>
-                <option>按价格最低</option>
-            </select>
-        </div>-->
     </div>
     <div class="ioncton_cont">
         <div class="titesb">
@@ -84,7 +76,7 @@
                                 <volist name="coupon" id="coupons">
                                     <tr>
                                         <if condition="$coupons['allow'] eq 'yes'">
-                                            <input name="coupon" type="checkbox" value="{$coupons.card}" />
+                                            <td><input name="coupon" type="checkbox" value="{$coupons.card}" /></td>
                                             <else />
                                             <td><input disabled="disabled" type="checkbox"  /></td>
                                         </if>
@@ -189,7 +181,7 @@
                             <div class="oneme_but">
                                 <input type="hidden" name="type" value="t" />
                                 <input type="hidden" name="roomID" value="{$db.id}" />
-                                <a href="__URL__/pay"><input type="button" value="提交信息" class="tcon" data-msg="您是否提交？" /></a>
+                                <input type="submit" value="提交信息" class="ajax-post confirm" target-form="orderForm" data-msg="您是否提交？" />
                             </div>
                         </div>
                     </div>

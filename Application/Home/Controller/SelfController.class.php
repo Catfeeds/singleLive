@@ -2,6 +2,7 @@
 namespace Home\Controller;
 use Think\Controller;
 use Think\D;
+use Common\Model\wx_pay;
 class SelfController extends CommonController{
 	public static $login = true;
 	public function _map(&$data)
@@ -178,6 +179,24 @@ class SelfController extends CommonController{
 		$this->success('修改成功,请重新登录',U('Login/index'));
 	}
 	/**
+	 * 	修改支付密码
+	 */
+	public function update_payPwd(){
+		$post = I('post.');
+		$pwd = D::field('Users.balancePwd',$post['id']);
+		if(!$post['oldPwd'] || md5($post['oldPwd'])!=$pwd){
+			$this->error('原密码错误');
+		}
+		if(!$post['balancePwd'] || !$post['newPwd'] || $post['newPwd']!=$post['balancePwd']){
+			$this->error('两次输入不一致');
+		}
+		$data = [
+			'balancePwd' => md5(I('balancePwd'))
+		];
+		M('Users')->where('id='.$post['id'])->save($data);
+		$this->success('修改成功');
+	}
+	/**
 	 * 	zhenHong~
 	 */
 	public function balance()
@@ -226,9 +245,52 @@ class SelfController extends CommonController{
 		M('Balance')->add($order);
 		//本地测试
 		//A('Index')->wechatPay($orderNo);
-		//未写玩
-		$this->success('下单成功,正在跳转...',U(''));
+		/*
+		 * 调用微信扫码支付-生成二维码链接
+		 * 	构建扫码支付所需数组见	notifyQrcode/Wxpay.php
+		 * 	获取网站设置(订单超时时间)
+		 * 	商品金额(以分为单位)
+		 * */
+		$overTime = D('Config')->get_config('overTime');
+		$arr = [
+			'body' => '山野充值中心-充值',//商品描述
+			'attach' => json_encode($order),//附加数据
+			'order_no' => $orderNo,//商户订单号
+			'amount' => 1,//$recharge['money'] * 100,
+			'start_time' => date("YmdHis"),//订单生成时间
+			'end_time' => date("YmdHis",time()+$overTime['overTime']*60*60),//订单失效时间
+			'url' => "http://minsu.56ns.cn/Index/notifyQrcodeCallback",//支付结果通知的回调地址
+			'product_id' => $id,//商品ID
+		];
+		$weixinReturn= wx_pay::native($arr);
+		$code = [
+			'jump' => base64_encode($weixinReturn['code_url']),
+			'money'=> 1,
+			'orderNo' => $orderNo
+		];
+		$this->success('下单成功,正在跳转...',U('Self/rechargePay',$code));
 		exit;
+	}
+	/*
+	 * 	充值扫码支付页面
+	 * */
+	public function rechargePay(){
+		$jump = I('jump');
+		$data = [
+			'png' => $jump,
+			'money' => I('money'),
+			'orderNo' => I('orderNo')
+		];
+		$this->assign('data',$data);
+		$this->display();
+	}
+	/*
+	 * 	检查订单状态是否为---已付款的状态
+	 * */
+	public function check_order_status(){
+		$orderNo = I('orderNo');
+		$status = D::field('Balance.status',['where'=>['orderNo'=>$orderNo]]);
+		$this->ajaxReturn($status);
 	}
 	/**
 	 * 	我的电子券

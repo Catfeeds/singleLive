@@ -9,38 +9,18 @@
             <li class="right"><a class="avcer" href="{:U('Index/package')}">套餐</a></li>
             <li class="right"><a href="{:U('Index/campaign')}">体验活动</a></li>
         </ul>
-        <span><img src="__IMAGES__/logo.png"></span>
+        <span><a href="{:U('Index/index')}"><img src="__IMAGES__/logo.png"></a></span>
     </div>
 </div>
 <div class="web_cont">
     <div class="flexslider1">
         <ul class="slides aoct">
             <volist name="banners" id="banner">
-                <li style='background:url("{$banner}") 50% 0 no-repeat;'></li>
+                <li style='background:url("{$banner}") 50% 0 no-repeat;background-size: 100% 100%;'></li>
             </volist>
         </ul>
     </div>
-    <div class="web_index_time">
-        <div class="web_enop">
-            <div class="index_time_1">
-                <p>选择入住日期 ：</p>
-                <input type="text" placeholder="选择入住日期" onfocus="WdatePicker({dateFmt:'yyyy-MM-dd'})"  />
-            </div>
-            <div class="index_time_2">
-                <p>成人 ：</p>
-                <select>
-                    <option>1</option>
-                </select>
-            </div>
-            <div class="index_time_2">
-                <p>成人 ：</p>
-                <select>
-                    <option>1</option>
-                </select>
-            </div>
-        </div>
-        <a><input type="button" class="web_index_but" value="预定" /></a>
-    </div>
+    <include file="Public/search" />
 </div>
 <div class="web_coent">
     <div class="GuestRoom_tite">

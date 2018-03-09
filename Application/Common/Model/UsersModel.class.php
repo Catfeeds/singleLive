@@ -16,14 +16,26 @@ class UsersModel extends Model {
 		['password','require','请输入登录密码',0],
 		['repassword','require','请重复输入登录密码',0],
 		['repassword','password','登录密码两次输入不一致',0,'confirm'],
+		['balancePwd','require','请输入支付密码',0],
+		['rebalancePwd','require','请再次输入支付密码',0],
+		['rebalancePwd','password','支付密码两次输入不一致',0,'confirm'],
 	];
 	protected $_auto = [
 		['status',1],
 		['createTime','time',1,'function'],
 		['updateTime','time',2,'function'],
 		['password','md5_pass',3,'callback'],
+		['balancePwd','md5',3,'function'],
+		['no_balancePwd','get_nopass',3,'callback'],
 		['no_md5','get_pass1',3,'callback'],
+		['codes','get_codes',1,'callback']
 	];
+	/*
+	 * 	新加功能 用户住注册时生成SMJD+8位随机数字
+	 * */
+	function get_codes(){
+		return 'SYJD'.get_random_number(8);
+	}
 	/*
 	  16-19 位卡号校验位采用 Luhm 校验方法计算：
 	    1，将未带校验位的 15 位卡号从右依次编号 1 到 15，位于奇数位号上的数字乘以 2
@@ -175,6 +187,15 @@ class UsersModel extends Model {
 	{
 		if (I('password')) {
 			return I('password');
+		}else{
+			return false;
+		}
+	}
+	function get_nopass()
+	{
+
+		if (I('balancePwd')) {
+			return I('balancePwd');
 		}else{
 			return false;
 		}

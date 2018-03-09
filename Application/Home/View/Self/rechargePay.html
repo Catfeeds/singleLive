@@ -1,0 +1,56 @@
+<div class="nater">
+    <div class="navs">
+        <ul>
+            <li class="left"><a href="{:U('Index/index')}">首页</a></li>
+            <li class="left"><a class="avcer" href="{:U('Rooms/index')}">客房</a></li>
+            <li class="left"><a href="{:U('Index/restaurant')}">餐饮</a></li>
+            <li class="left liop"><a href="{:U('Index/environment')}">环境</a></li>
+            <li class="right liop"><a href="{:U('Self/club')}">会员俱乐部</a></li>
+            <li class="right"><a href="{:U('Index/package')}">套餐</a></li>
+            <li class="right"><a href="{:U('Index/campaign')}">体验活动</a></li>
+        </ul>
+        <span><a href="{:U('Index/index')}"><img src="__IMAGES__/logo.png"></a></span>
+    </div>
+</div>
+<div class="web_coent">
+    <div class="GuestRoom_tite">
+        <div class="GuestRoom_tite_left">
+            支付详情
+        </div>
+    </div>
+    <div class="zenmint">
+        <div class="ongrt">
+            <ul>
+                <li class="aisaver">微信支付</li>
+            </ul>
+        </div>
+        <div class="moigt_cont">
+            <div class="moigt" style="display: block;">
+                <p>
+                    <img src="{:U('Qcode/get_qrcode',array('url'=>$data['png']))}" width="300" height="300">
+                </p>
+                <!--<p>订单编号 ：001</p>
+                <p>产品名称 ：大床房</p>-->
+                <p>支付金额 ： {$data.money}</p>
+                <p>请打开微信扫码进行支付</p>
+            </div>
+        </div>
+    </div>
+</div>
+<script>
+    $(function(){
+        var orderNo = "{$data.orderNo}";
+        $(document).ready(function() {
+            setInterval(function(){
+                $.get("__URL__/check_order_status?orderNo="+orderNo,function(res){
+                    if(res == '1'){
+                        layer.msg('支付成功,正在跳转...');
+                        setTimeout(function(){
+                            window.location.href = "{:U('Orders/index')}";
+                        },1400);
+                    }
+                })
+            },1500);
+        })
+    })
+</script>

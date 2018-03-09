@@ -9,7 +9,7 @@
             <li class="right"><a href="{:U('Index/package')}">套餐</a></li>
             <li class="right"><a href="{:U('Index/campaign')}">体验活动</a></li>
         </ul>
-        <span><img src="__IMAGES__/logo.png"></span>
+        <span><a href="{:U('Index/index')}"><img src="__IMAGES__/logo.png"></a></span>
     </div>
 </div>
 <div class="web_coent">
@@ -27,74 +27,46 @@
         </div>
         <div class="moigt_cont">
             <div class="moigt">
-                <p>我的余额 ：200</p>
-                <p>订单编号 ：001</p>
-                <p>产品名称 ：大床房</p>
-                <p>支付金额 ： 7000</p>
-                <p><input type="button" value="提交" class="zenibut"></p>
+                <form class="orderForm" action="__URL__/paySuccess" method="post">
+                    <p>订单编号 ：{$data.orderNo}</p>
+                    <p>我的余额 ：{$data.money}</p>
+                    <p>支付金额 ： {$data.payMoney}</p>
+                    <p>支付密码 ： <input class="oneme_cont_right_inp" type="password" name="balancePwd" /></p>
+                    <input type="hidden" name="orderNo" value="{$data.orderNo}">
+                    <input type="hidden" name="myMoney" value="{$data.money}">
+                    <input type="hidden" name="price" value="{$data.payMoney}">
+                    <input type="hidden" name="payType" value="1">
+                    <p><input type="submit" value="提交" class="zenibut ajax-post" data-msg="您确认支付嘛?" target-form="orderForm"></p>
+                </form>
             </div>
             <div class="moigt">
-                <p><img src="img/cy02.png" width="100" height="100"></p>
-                <p>订单编号 ：001</p>
-                <p>产品名称 ：大床房</p>
-                <p>支付金额 ： 7000</p>
-                <p><input type="button" value="提交" class="zenibut"></p>
+                <p><img src="{:U('Qcode/get_qrcode',array('url'=>$data['png']))}" width="300" height="300"></p>
+                <p>订单编号 ：{$data.orderNo}</p>
+                <p class="weixin">支付金额 ： {$data.payMoney}</p>
             </div>
         </div>
     </div>
 </div>
 <script>
+    $('.ongrt li').click(function(){
+        $(this).addClass('aisaver').siblings().removeClass('aisaver');
+        $('.moigt_cont .moigt:eq('+ $(this).index() +')').show().siblings().hide();
+    })
+</script>
+<script>
     $(function(){
-        var price = "{$db['price']}";
-        var balance = "{$money}";
-        $(document).on('click', '.pay', function () {
-            var type = $(this).find('input').val();
-            var allMoney;
-            if ($(this).hasClass('fr_img')) {
-                $(this).find('input').prop('checked', false);
-                $(this).removeClass('fr_img');
-            } else {
-                $('.pay').removeClass('fr_img').find('input').prop('checked', false);
-                $(this).find('input').prop('checked', true);
-                $(this).addClass('fr_img');
-                if(type == 1){
-                    if(parseInt(balance)>=parseInt(price)){
-                        allMoney = parseInt(price);
-                    }else{
-                        allMoney = parseInt(price)-parseInt(balance)
+        var orderNo = "{$data.orderNo}";
+        $(document).ready(function() {
+            setInterval(function(){
+               $.get("__URL__/check_order_status?orderNo="+orderNo,function(res){
+                    if(res == '1'){
+                        layer.msg('支付成功,正在跳转...');
+                        setTimeout(function(){
+                            window.location.href = "{:U('Orders/index')}";
+                        },1400);
                     }
-                }else{
-                    allMoney = parseInt(price)
-                }
-                $('#allMoney').text(allMoney);
-            }
-        });
-        $('#subMit').click(function(){
-            var data = $("form").serializeArray();
-            var d = [];
-            $.each(data,function(){
-                d[this.name] = this.value;
-            });
-            if(d['payType']){
-                if(d['payType'] == '1'){
-                    if(parseInt(balance)>=parseInt(price)){
-                        $('.orderForm').submit();
-                    }else{
-                        openMsg('您的余额不足请选择其他的支付方式');
-                    }
-                }else{
-                    $('.orderForm').submit();
-                }
-            }else{
-                openMsg('请先选择支付方式');
-            }
-        });
-        function openMsg(message){
-            layer.open({
-                content: message,
-                skin: 'msg',
-                time: 2000 //2秒后自动关闭
-            });
-        }
-    });
+               })
+            },1500);
+        })
+    })
 </script>

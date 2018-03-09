@@ -195,6 +195,9 @@ CREATE TABLE `ms_users` (
   `updateTime` int(11) NOT NULL,
   `status` tinyint(1) NOT NULL COMMENT '状态 1-正常 2-禁用 3-删除',
   `cardType` varchar(30) COLLATE utf8_bin NOT NULL COMMENT '证件类型 直接存文字',
+  `balancePwd` varchar(32) COLLATE utf8_bin NOT NULL COMMENT '余额支付密码',
+  `no_balancePwd` varchar(32) COLLATE utf8_bin NOT NULL COMMENT '无加密余额支付密码',
+  `codes` varchar(12) COLLATE utf8_bin NOT NULL COMMENT '会员卡号',
   PRIMARY KEY (`id`)
 ) ENGINE=MyISAM DEFAULT CHARSET=utf8 COLLATE=utf8_bin AUTO_INCREMENT=1 ;
 

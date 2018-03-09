@@ -90,19 +90,21 @@ body {
 
 /*轮播图*/
 
-.wab_hend{ width: 100%; height: 40px; background: #FFFFFF; border-bottom: 1px solid #dddddd;}
+.wab_hend{ width: 100%; height: 30px; background: #FFFFFF; border-bottom: 1px solid #dddddd;}
 
-.hend_nav{ width: 1280px; height: 40px; margin: 0 auto;}
+.hend_nav{ width: 1280px; height: 30px; margin: 0 auto;}
 
 .hend_nav_right{ width: auto; float: right;}
 
 .hend_nav_right ul{ padding: 0; margin: 0;}
 
-.hend_nav_right ul li{ float: left; padding: 0 20px; line-height: 40px; height: 40px; background: url(../img/ml.png) no-repeat right center; }
+.hend_nav_right ul li{ float: left; padding: 0 20px; line-height: 30px; height: 30px; background: url(../img/ml.png) no-repeat right center; }
+
+.hend_nav_right ul li a{ font-size: 12px;}
 
 .hend_nav_right ul li:last-child{ background: none;}
 
-.hend_nav_right ul li b{ font-weight: 500; color: #ff7e35;}
+.hend_nav_right ul li b{ font-weight: 500; color: #ff7e35;  font-size: 12px;}
 
 .web_cont{ width: 100%; height: auto; overflow: hidden; position: relative;}
 
@@ -118,7 +120,7 @@ body {
 
 .nav span{ position: absolute; left: 50%; top: -16px; margin-left: -35px;}
 
-.web_index_time{ width:300px; height:145px; position: absolute; bottom: 50px; right: 20%; background: #FFFFFF; z-index: 99; border-radius: 10px; padding: 12px 15px;
+.web_index_time{ width:300px; height:145px; position: absolute; top:150px; right: 10%; background:rgba(255,255,255,.5); z-index: 99; border-radius: 10px; padding: 12px 15px;
 box-sizing: border-box;}
 
 .index_time_1{ width: 50%; float: left; height: 70px; float: left; }
@@ -126,7 +128,7 @@ box-sizing: border-box;}
 .index_time_1 p{ width: 100%; height: 30px; line-height: 30px; color: #333333; font-size: 14px; padding-bottom: 5px;} 
 
 .index_time_1 input{ width: 100%; height: 35px; line-height: 35px; border: 1px solid #dddddd; border-radius: 5px; font-size: 13px;color: #333333; padding-right: 20px; box-sizing: border-box; 
-background: url(../img/sy09.png) no-repeat 90% center; text-indent: 10px;}
+background: url(../img/sy09.png) no-repeat 90% center #ffffff; text-indent: 10px;}
 
 .index_time_2{ width: 23%; float: left; height: 70px; float: left; margin-left: 2%;}
 
@@ -206,13 +208,15 @@ margin: 15px auto 0; font-size: 16px;}
 
 .GuestRoom_banner_right a{ width:260px; height: 150px; float: left; margin: 0 0 20px 10px; display: block;}
 
+.GuestRoom_banner_right a img{ width: 100%; height: 100%;}
+
 .GuestRoom_dist{ width: 100%; height: auto; overflow: hidden; margin-top: 30px;}
 
 .GuestRoom_dist_left{ width: 720px; height: auto; overflow: hidden; float: left;}
 
 .joint{ width: 100%; height: auto; overflow: hidden; margin-bottom: 10px;}
 
-.joint_tite{ width: 100%; height: 60px; background: #ffe0b2; line-height: 60px; text-indent: 20px; color: #333333; font-size: 18px;}
+.joint_tite{ width: 100%; height: 30px; background: #ffe0b2; line-height: 30px; text-indent: 20px; color: #333333; font-size: 14px;}
 
 .joint_cont{ width: 100%; height: auto; overflow: hidden; display: none;}
 
@@ -224,19 +228,19 @@ margin: 15px auto 0; font-size: 16px;}
 
 .joint_cont_lit a{display: block; float: left; height:50px; line-height: 50px;}
 
-.joina{ width: 20px; height: 20px; float: right; text-indent: 0 !important; margin-right: 20px; line-height: 20px !important; display: block; margin-top: 20px;}
+.joina{ width: 20px; height: 20px; float: right; text-indent: 0 !important; margin-right: 20px; line-height: 20px !important; display: block; margin-top: 4px;}
 
-.joint_tite span{ margin-left: 20px;}
+.joint_tite span{ margin-left: 20px; font-size: 14px;}
 
 .bists{ width: 100%; height: auto; overflow: hidden; padding: 20px; box-sizing:  border-box;}
 
 .opert{ text-indent: 32px;}
 
-.bists b{ width: 100%; height: auto; overflow: hidden; display: block;}
+.bists b{ width: 100%; height: auto; overflow: hidden; display: block; font-size: 14px;}
 
 .bists b img{ width: 100%;}
 
-.bists p{ font-size: 14px; line-height: 30px;}
+.bists p{ font-size: 14px !important; line-height: 30px;}
 
 .GuestRoom_dist_right{ width: 550px; height: auto; overflow: hidden;float: right;}
 
@@ -609,7 +613,7 @@ word-wrap:break-word; word-break:break-all;}
 
 .formation_left{ width: 720px; height: auto; float:left;}
 
-.formation_left p{ width: 100%; height: 40px; line-height: 40px; text-indent: 20px; color: #555555; position: relative;}
+.formation_left p{ width: 100%; height: 35px; line-height: 35px; text-indent: 20px; color: #555555; position: relative; font-size: 14px;}
 
 .on{ background: #ffebcc;}
 
@@ -814,15 +818,15 @@ color: #bbbbbb; border-radius: 5px; position: relative;}
 
 .nav_2 ul li{ min-width: 100px; float: left;  height: 50px; line-height: 50px; text-align: center;  padding-left:50px ;}
 
-.nav_2 ul li a{color: #FEFFFE; font-size: 20px;}
+.nav_2 ul li a{color: #FEFFFE; font-size: 16px;}
 
 .nav_2 ul li:hover{ cursor: pointer;}
 
-.ind_li_1{ background: url(../img/sy06.png) no-repeat 10px center;}
+.ind_li_1{ background: url(../img/sy06.png) no-repeat 30px center;}
 
-.ind_li_2{ background: url(../img/sy07.png) no-repeat 10px center;}
+.ind_li_2{ background: url(../img/sy07.png) no-repeat 30px center;}
 
-.ind_li_3{ background: url(../img/sy08.png) no-repeat 10px center;}
+.ind_li_3{ background: url(../img/sy08.png) no-repeat 20px center;}
 
 .footerp{ width: 100%; height: 40px; line-height: 40px; text-align: center; color: #FFFFFF; margin-top: 10px; font-size: 14px;}
 
@@ -975,15 +979,15 @@ border:1px solid #28a4b0 !important;  -moz-border-radius: 5px; -webkit-border-ra
 .coupon_exc{width: auto;margin-left:5px;background-color: #ff9900;float: left;padding: 0 10px 0 10px;color: #ffffff;border-radius: 5px;}
 /*晓磊后加的支付--结束*/
 
-/*电子券兑换开始-晓磊*/
+/*电子券兑换开始*/
 .biomt{ width: 100%; height: 30px; line-height: 30px; margin-top: 20px; float: left; padding-left: 110px; box-sizing: border-box; font-size: 16px;
 	color:#707070;}
 .minort{ width: 150px; height: 40px; text-align: center; line-height: 40px; margin: 0 auto; display: block; background: #ff9900; color: #FEFFFE;
 	border-radius: 5px;}
 .biue{ width: 100%; height: 50px; display: block; float: left; margin-top: 50px;}
-/*电子券兑换结束-晓磊*/
+/*电子券兑换结束*/
 
-/*活动-系统消息开始-晓磊*/
+/*活动-系统消息开始*/
 .bioter{ width:627px; height: 150px; border: 1px solid #ff9900; box-sizing: border-box; padding: 10px; float: left; margin-bottom: 20px;}
 .bioter_left{ width: 150px; height: 130px; float: left;}
 .bioter_left img{ width: 100%; height: 100%;}
@@ -994,15 +998,20 @@ border:1px solid #28a4b0 !important;  -moz-border-radius: 5px; -webkit-border-ra
 .bioter_cont{ width: 100%; height: 90px; position: relative;}
 .bioter_cont p{ width: 100%; height: 100%; line-height: 30px; padding-top: 10px; box-sizing: border-box;}
 .bioter_cont a{ position: absolute; bottom: 5px; right: 5px; font-size: 12px; color: #ff9900;}
-/*活动-系统消息-晓磊*/
+/*活动-系统消息*/
 
-/*转赠电子券-晓磊*/
+/*转赠电子券*/
 .biue{ width: 100%; height: 50px; display: block; float: left; margin-top: 50px;}
 .iopes{ width: 100%; height: 40px; margin-top: 20px;}
 .iopes_left{ width: 10%; height: 40px; float: left; line-height: 40px; text-align: right;}
-.iopes_right{ width: 40%; height: 40px; float: left; margin-left: 20px;}
+.iopes_right{ width: 40%; height: 40px; float: left; margin-left: 20px;margin-top: 7px;}
 .meinht{ width: 100%; height: 40px; border: 1px solid #ff9900; border-radius: 5px; padding-left: 20px; box-sizing: border-box;}
-/*转赠电子券-晓磊*/
+/*转赠电子券*/
+
+.aoni_1{ background: url(/Public/Home/img/a1.png) left center no-repeat; padding-left: 30px;}
+.aoni_2{ background: url(/Public/Home/img/a2.png) left center no-repeat; padding-left: 30px;}
+.aoni_3{ background: url(/Public/Home/img/a3.png) left center no-repeat; padding-left: 30px;}
+.aoni_4{ background: url(/Public/Home/img/a22.png) left center no-repeat; padding-left: 30px;}
 
 @media screen and (max-width: 1366px) {
 	.web_Login {width: 350px;height: 600px; margin: 30px auto 0;}

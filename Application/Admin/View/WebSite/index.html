@@ -24,6 +24,18 @@
                                     </div>
                                 </div>
                                 <div class="glylb_szmm">
+                                    <span class="glylb_szmm_span">前台底部联系电话：</span>
+                                    <div class="layui-input-block z_min_left_10">
+                                        <input class="fn-tinput" name="config[telPhone]" type="text" value="{$config.telPhone}" placeholder="前台底部联系电话">
+                                    </div>
+                                </div>
+                                <div class="glylb_szmm">
+                                    <span class="glylb_szmm_span">前台底部版权信息：</span>
+                                    <div class="layui-input-block z_min_left_10">
+                                        <input class="fn-tinput" name="config[copyright]" type="text" value="{$config.copyright}" placeholder="前台底部版权信息">
+                                    </div>
+                                </div>
+                                <div class="glylb_szmm">
                                     <span class="glylb_szmm_span">订单超时时间设置：</span>
                                     <div class="layui-input-block z_min_left_10">
                                         <input class="fn-tinput" name="config[overTime]" type="number" value="{$config.overTime}" placeholder="请输入订单超时时间">
@@ -35,6 +47,16 @@
                                     <div class="layui-input-block z_min_left_10">
                                         <input class="fn-tinput" name="config[backTime]" type="number" value="{$config.backTime}" placeholder="订单退款时间设置">
                                         <span style="color: red;font-size: 16px;">(单位:小时)下单支付完成后,以下单时选择的入住开始时间为界,在设置时间后,申请退款必须在设置时间内,若想不做设置就写0</span>
+                                    </div>
+                                </div>
+                                <div class="glylb_szmm"><span class="glylb_szmm_span">会员权益：</span>
+                                    <div class="layui-input-block z_min_left_10">
+                                        <textarea class="layui-textarea" name="config[members]">{$config.members}</textarea>
+                                    </div>
+                                </div>
+                                <div class="glylb_szmm"><span class="glylb_szmm_span">会员办理：</span>
+                                    <div class="layui-input-block z_min_left_10">
+                                        <textarea class="layui-textarea" name="config[memberDO]">{$config.memberDO}</textarea>
                                     </div>
                                 </div>
                                 <div class="glylb_an" style="margin-left:20%;">

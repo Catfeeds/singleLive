@@ -18,12 +18,12 @@
         <div class="hend_nav_right">
             <ul>
                 <if condition="$my['uid']">
-                    <li><a title="个人中心" href="{:U('Self/information')}">您好欢迎您，<b>{$my['realname']}</b></a></li>
-                    <li><a class="ajax-get confirm" data-msg="您是否退出登录？" href="{:U('Login/logout')}"><b style="color: red;">注销</b></a></li>
-                    <li><a href="{:U('Orders/index')}">订单管理</a></li>
+                    <li><a class="aoni_1" title="个人中心" href="{:U('Self/information')}">您好欢迎您，<b>{$my['realname']}</b></a></li>
+                    <li><a class="ajax-get confirm aoni_2" data-msg="您是否退出登录？" href="{:U('Login/logout')}"><b style="color: red;">注销</b></a></li>
+                    <li><a class="aoni_3" href="{:U('Orders/index')}">订单管理</a></li>
                     <else />
-                    <li><a href="{:U('Login/index')}">您好，<b>请登录</b></a></li>
-                    <li><a href="{:U('Login/register')}">现在加入</a></li>
+                    <li><a class="aoni_1" href="{:U('Login/index')}">您好，<b>请登录</b></a></li>
+                    <li><a class="aoni_4" href="{:U('Login/register')}">现在加入</a></li>
                 </if>
             </ul>
         </div>
@@ -40,7 +40,7 @@
             <li class="right"><a href="{:U('Index/package')}">套餐</a></li>
             <li class="right"><a href="{:U('Index/campaign')}">体验活动</a></li>
         </ul>
-        <span><img src="__IMAGES__/logo.png"></span>
+        <span><a href="{:U('Index/index')}"><img src="__IMAGES__/logo.png"></a></span>
     </div>
 </div>
 <div class="register">
@@ -85,13 +85,13 @@
     </div>
     <div class="nav_2">
         <ul>
-            <li class="ind_li_4"><a href="常见问题.html">常见问题</a></li>
-            <li class="ind_li_5"><a href="交通指南.html">交通指南</a></li>
-            <li class="ind_li_6"><a>400-1234-123</a></li>
+            <li class="ind_li_4"><a href="{:U('Index/problem')}">常见问题</a></li>
+            <li class="ind_li_5"><a href="{:U('Index/traffic')}">交通指南</a></li>
+            <li class="ind_li_6"><a>{$web.telPhone}</a></li>
         </ul>
     </div>
     <div class="footerp">
-        Copyright 版权信息版权信息 版权信息 版权信息 版权信息 版权信息 版权信息  ｜ 京公网安备 11010502026144
+        {$web.copyright}
     </div>
 </div>
 </body>

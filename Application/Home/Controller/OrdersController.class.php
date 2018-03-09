@@ -2,6 +2,7 @@
 namespace Home\Controller;
 use Think\Controller;
 use Think\D;
+use Common\Model\wx_pay;
 class OrdersController extends CommonController{
 	public static $login = true;
 	public $model = 'Order';
@@ -26,7 +27,7 @@ class OrdersController extends CommonController{
 					$data['url'] = U('Orders/backMoney?orderNo='.$data['orderNo']);
 					break;
 				case '8':
-					$data['url'] = U('Orders/pay?orderNo='.$data['orderNo']);
+					$data['url'] = U('Orders/click_goPay?orderNo='.$data['orderNo']);
 					$data['reset_url'] = U('Orders/resetOrder?orderNo='.$data['orderNo']);
 					break;
 			}
@@ -42,6 +43,40 @@ class OrdersController extends CommonController{
 			$data['class'] = showClass($data['status']);
 			return $data;
 		});
+	}
+	/**
+	 * 	点击去支付生成--请求微信生成二维码
+	 */
+	public function click_goPay(){
+		$data = D::find('Order',[
+			'where'=> ['orderNo' => I('orderNo')]
+		]);
+		$overTime = D('Config')->get_config('overTime');
+		$attach = [
+			'type' => $data['type'],
+			'money'=> $data['money'],
+			'inTime' => $data['inTime'],
+			'outTime' => $data['outTime'],
+			'userID' => $data['userID'],
+			'orderNo' => $data['orderNo']
+		];
+		$wx_arr = [
+			'body' => '山野运动基地-客房预订',//商品描述
+			'attach' => json_encode($attach),//附加数据
+			'order_no' => $data['orderNo'],//商户订单号
+			'amount' => 1,//$data['price'] * 100,
+			'start_time' => date("YmdHis"),//订单生成时间
+			'end_time' => date("YmdHis",time()+$overTime['overTime']*60*60),//订单失效时间
+			'url' => "http://minsu.56ns.cn/Index/notifyQrcodeCallback",//支付结果通知的回调地址
+			'product_id' => $data['roomID'],//商品ID
+		];
+		$weixinReturn= wx_pay::native($wx_arr);
+		$code = [
+			'jump' => base64_encode($weixinReturn['code_url']),
+			'money'=> 1,
+			'orderNo' => $data['orderNo']
+		];
+		$this->success('正在跳转支付页面...', U('Orders/pay',$code));
 	}
 	//订单查看
 	public function edit(){
@@ -164,6 +199,32 @@ class OrdersController extends CommonController{
 			$array = ['roomID'=>$data['roomID'],'type'=>$data['type']];
 			$bool = is_house_all($parameter,$array);
 			if($bool === true){
+				//调起扫码支付-请求二维码
+				$overTime = D('Config')->get_config('overTime');
+				$attach = [
+					'type' => $data['type'],
+					'money'=> $data['money'],
+					'inTime' => $data['inTime'],
+					'outTime' => $data['outTime'],
+					'userID' => $data['userID'],
+					'orderNo' => $data['orderNo']
+				];
+				$wx_arr = [
+					'body' => '山野运动基地-客房预订',//商品描述
+					'attach' => json_encode($attach),//附加数据
+					'order_no' => $data['orderNo'],//商户订单号
+					'amount' => 1,//$data['price'] * 100,
+					'start_time' => date("YmdHis"),//订单生成时间
+					'end_time' => date("YmdHis",time()+$overTime['overTime']*60*60),//订单失效时间
+					'url' => "http://minsu.56ns.cn/Index/notifyQrcodeCallback",//支付结果通知的回调地址
+					'product_id' => $data['roomID'],//商品ID
+				];
+				$weixinReturn= wx_pay::native($wx_arr);
+				$code = [
+					'jump' => base64_encode($weixinReturn['code_url']),
+					'money'=> 1,
+					'orderNo' => $data['orderNo']
+				];
 				if(array_key_exists('coupon',$data) && $data['coupon']){
 					$cID = D::field('CouponExchange.cID',['where'=>['card'=>$data['coupon']]]);
 					$coupon = D::find('coupon',$cID);
@@ -179,13 +240,13 @@ class OrdersController extends CommonController{
 						$order->add($data);
 						//更新优惠券状态--为4(被占用),此状态就是为了避免下了好多单都不付款,然后挨个去付款会出现每单都会少优惠券的金额
 						D::set('CouponExchange.status',['where'=>['card'=>$data['coupon']]],4);
-						$this->success('下单成功,正在跳转到支付页面...',U('Orders/pay?orderNo='.$data['orderNo']));
+						$this->success('下单成功,正在跳转到支付页面...',U('Orders/pay',$code));
 					}else{
 						$this->error('您选择的日期内,存在优惠券的不可用日期');
 					}
 				}else{
 					$order->add($data);
-					$this->success('下单成功,正在跳转到支付页面...',U('Orders/pay?orderNo='.$data['orderNo']));
+					$this->success('下单成功,正在跳转到支付页面...',U('Orders/pay',$code));
 				}
 			}else{
 				$this->error('您所选日期中存在已经满房的房间!');
@@ -208,21 +269,32 @@ class OrdersController extends CommonController{
 			'where' => $map,
 			'field' => "SUM(CASE WHEN method='plus' THEN money ELSE 0 END) upPay,SUM(CASE WHEN method='back' THEN money ELSE 0 END) upBack,SUM(CASE WHEN method='sub' THEN money ELSE 0 END) down"
 		]);
-		$this->assign('money',$money['upPay']+$money['upBack']-$money['down']);
+		//反还给前台的数据
+		$data = [
+			'money' => $money['upPay']+$money['upBack']-$money['down'],
+			'png' => I('jump'),
+			'payMoney' => I('money'),
+			'orderNo' => I('orderNo')
+		];
+		$this->assign('data',$data);
 		$this->assign('db',$db);
 		$this->display();
 	}
 	/*
-	 * 	 唤起支付
+	 * 	 唤起支付--这里只写余额支付的逻辑即可
+	 * 	 扫码不用写，请求由微信端发起
 	 * */
 	public function paySuccess(){
 		$post = I('post.');
 		$order = D::find('Order',['where'=>['orderNo'=>$post['orderNo']]]);
-		if(array_key_exists('payType',$post)){
-			if($post['payType'] == 1){
-				if($post['payType'] == 1 && $post['myMoney'] < $post['price']){
-					$this->error('您的余额不足,请到个人中心充值或选择其他支付方式！');
-				}else{
+		$payPwd = D::field('Users.balancePwd',session('user'));
+		if(md5($post['balancePwd']) != $payPwd){
+			$this->error('支付密码错误');
+		}else{
+			if($post['payType'] == 1 && $post['myMoney'] < $post['price']){
+				$this->error('您的余额不足,请到个人中心充值或选择其他支付方式！');
+			}else{
+				if(D::field('Order.status',['where'=>['orderNo'=>$post['orderNo']]]) == '8'){
 					//更新支付方式字段
 					D::set('Order.payType',['where'=>['orderNo'=>$post['orderNo']]],'balance');
 					$balance = [
@@ -236,17 +308,18 @@ class OrdersController extends CommonController{
 					M('Balance')->add($balance);
 					checkTable($post['orderNo']);
 					//$this->success('支付成功,正在跳转到我的订单',U('Orders/index'));
-					$this->redirect('Orders/showSuccess',[],0,'');
+				}else{
+					$this->error('该订单已付款,请勿重复操作');
 				}
-			}else{
-				//A('Index')->wechatPay($post['orderNo']);
-				//跳转微信支付
-				$url = '/WeiXinPay/example/jsapi.php?title=房间预订&orderNo='.$post['orderNo'].'&amount='.($post['price'] * 100).'&';
-				redirect($url, 0, '页面跳转中...');
-				exit;
 			}
-		}else{
-			$this->error('请选择支付方式');
 		}
+	}
+	/*
+	 * 	检查订单状态是否为---已付款的状态
+	 * */
+	public function check_order_status(){
+		$orderNo = I('orderNo');
+		$status = D::field('Order.status',['where'=>['orderNo'=>$orderNo]]);
+		$this->ajaxReturn($status);
 	}
 }

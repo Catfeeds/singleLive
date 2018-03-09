@@ -9,7 +9,7 @@
             <li class="right"><a href="{:U('Index/package')}">套餐</a></li>
             <li class="right"><a href="{:U('Index/campaign')}">体验活动</a></li>
         </ul>
-        <span><img src="__IMAGES__/logo.png"></span>
+        <span><a href="{:U('Index/index')}"><img src="__IMAGES__/logo.png"></a></span>
     </div>
 </div>
 <style>
@@ -71,28 +71,3 @@
         </div>
     </div>
 </div>
-<!--<script type="text/html" id="layout">
-    <tr>
-        <td>{{d.orderNo}}</td>
-        <td>{{d.type_name}}</td>
-        <td>{{d.price}}元</td>
-        <td>{{d.date_show}}</td>
-        <td class="web_cor_3">
-            {{d.status_type}}
-        </td>
-        <td>
-            {{# if(d.status == '8'){ }}
-                <a href="{{d.url}}" class="ajax-get"><button type="button" class="layui-btn layui-btn-radius layui-btn-sm">去支付</button></a>
-                <a href="{{d.reset_url}}" class="ajax-get confirm" data-msg="您确定取消此订单？取消后该订单将无法操作">
-                    <button type="button" class="layui-btn layui-btn-radius layui-btn-sm">取消订单</button>
-                </a>
-            {{# }else if(d.status == '1'){  }}
-                <a href="{{d.url}}" class="ajax-get confirm" data-msg="您确定申请退款?申请退款后需要管理员审核,详细请电话咨询">
-                    <button type="button" class="layui-btn layui-btn-radius layui-btn-danger layui-btn-sm">退款</button>
-                </a>
-            {{# }else{ }}
-            <button type="button" class="layui-btn layui-btn-radius layui-btn-disabled layui-btn-sm">不可操作</button>
-            {{# }}}
-        </td>
-    </tr>
-</script>-->

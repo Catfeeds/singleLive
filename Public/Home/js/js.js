@@ -44,19 +44,24 @@ $(function() {
 	$('.GuestRoom_banner_right a').click(function(){
 		var Guest = $(this).attr('msg_img')
 		$('.GuestRoom_banner_left img').attr('src',Guest)
-	})
+	});
+	/*新加的修改--刚进入要全部展开的*/
+	$('.joint').each(function(){
+		var son = $(this).children('.joint_tite');
+		son.siblings('.joint_cont').show();
+		son.find('.joina').addClass('aop');
+	});
 	$('.joina').click(function(){
 		if($(this).hasClass('aop')){
-			$(this).parents('.joint').find('.joint_cont').hide()
-			$(this).find('img').attr('src',"/Public/Home/img/s1.png")
-			$(this).removeClass('aop')
+			$(this).parents('.joint').find('.joint_cont').hide();
+			$(this).find('img').attr('src',"/Public/Home/img/s1.png");
+			$(this).removeClass('aop');
 		}else{
-			$(this).parents('.joint').find('.joint_cont').show()
-			$(this).find('img').attr('src',"/Public/Home/img/s2.png")
+			$(this).parents('.joint').find('.joint_cont').show();
+			$(this).find('img').attr('src',"/Public/Home/img/s2.png");
 			$(this).addClass('aop')
 		}
-		
-	})
+	});
 	/*套餐*/
 	$('.omert ul  li').click(function(){
 		var Guest = $(this).attr('msg_img')
@@ -122,6 +127,26 @@ $(function() {
 			closeBtn: 1,
 			area: ['420px', 'auto'], //宽高
 			content: $('#enction1').html()
+		});
+	});
+	/*修改密码*/
+	$('.updatePwd').click(function(){
+		layer.open({
+			type: 1,
+			title: false,
+			closeBtn: 1,
+			area: ['420px', 'auto'], //宽高
+			content: $('#enction2').html()
+		});
+	});
+	/*修改余额支付密码*/
+	$('.payPwd').click(function(){
+		layer.open({
+			type: 1,
+			title: false,
+			closeBtn: 1,
+			area: ['420px', 'auto'], //宽高
+			content: $('#enction3').html()
 		});
 	});
 	/*个人中心基本信息弹窗-结束*/

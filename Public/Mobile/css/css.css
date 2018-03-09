@@ -528,7 +528,7 @@ background-image: url(../img/wt01@2x.png); background-repeat: no-repeat; backgro
 
 .timet_smt_right li{ width: 14%; float: left; height: 20rem; text-align: center;}
 
-.timet_smt_right li p{ line-height: 4rem; font-size: 1.8rem;}
+.timet_smt_right li p{ line-height: 4rem; font-size: 0.8rem;}
 
 .str1{color: #ff9900;}
 

@@ -9,7 +9,7 @@
             <li class="right"><a href="{:U('Index/package')}">套餐</a></li>
             <li class="right"><a href="{:U('Index/campaign')}">体验活动</a></li>
         </ul>
-        <span><img src="__IMAGES__/logo.png"></span>
+        <span><a href="{:U('Index/index')}"><img src="__IMAGES__/logo.png"></a></span>
     </div>
 </div>
 
@@ -43,69 +43,6 @@
                 <form class="orderForm" action="__URL__/OrderCheck" method="post">
                     <div class="bistor">
                     <h2>价格：CNY  <b>{$house.money}</b></h2>
-                    <!--<div class="bioert">
-                        <div class="bioert_tite">
-                            基本详情
-                        </div>
-                        <div class="bioert_cont">
-                            <div class="ord_div">
-                                <div class="ord_div_left">
-                                    入住人数：
-                                </div>
-                                <div class="ord_div_right">
-                                    4人
-                                </div>
-                            </div>
-                            <div class="ord_div">
-                                <div class="ord_div_left">
-                                    房价-CNY：
-                                </div>
-                                <div class="ord_div_right">
-                                    3058.00
-                                </div>
-                            </div>
-                            <div class="ord_div">
-                                <div class="ord_div_left">
-                                    预订间数：
-                                </div>
-                                <div class="ord_div_right">
-                                    1间
-                                </div>
-                            </div>
-                            <div class="ord_div">
-                                <div class="ord_div_left">
-                                    入住：
-                                </div>
-                                <div class="ord_div_right">
-                                    1晚
-                                </div>
-                            </div>
-                            <div class="ord_div">
-                                <div class="ord_div_left">
-                                    总房费：
-                                </div>
-                                <div class="ord_div_right">
-                                    ￥3058.00(1晚) × 1间 = ￥3058.00
-                                </div>
-                            </div>
-                            <div class="ord_div">
-                                <div class="ord_div_left">
-                                    税费：
-                                </div>
-                                <div class="ord_div_right">
-                                    ￥0
-                                </div>
-                            </div>
-                            <div class="ord_div">
-                                <div class="ord_div_left">
-                                    服务费：
-                                </div>
-                                <div class="ord_div_right">
-                                    ￥0
-                                </div>
-                            </div>
-                        </div>
-                    </div>-->
                     <div class="Timeplug">
                         <div class="Timeplug_time">
                             <div class="web_time left">
@@ -167,33 +104,6 @@
                             </div>
                         </div>
                     </div>
-                    <!--<div class="Items">
-                        <table cellspacing="0" cellpadding="0" >
-                            <tbody>
-                            <tr class="firstRow">
-                                <th>额外服务项目</th>
-                                <th>费用</th>
-                                <th>选择</th>
-                            </tr>
-                            <tr>
-                                <td>客房惊喜布置</td>
-                                <td>免费</td>
-                                <td><input type="checkbox"/></td>
-                            </tr>
-                            <tr>
-                                <td colspan="3">如您乘公交车来云峰山，我们可提供接驳车至燕落村公交站的服务（免费往返一次），请提前致电81098688，核对您的到达时间。</td>
-                            </tr>
-                            <tr>
-                                <td>客房惊喜布置</td>
-                                <td>免费</td>
-                                <td><input type="checkbox"/></td>
-                            </tr>
-                            <tr>
-                                <td colspan="3">如您乘公交车来云峰山，我们可提供接驳车至燕落村公交站的服务（免费往返一次），请提前致电81098688，核对您的到达时间。</td>
-                            </tr>
-                            </tbody>
-                        </table>
-                    </div>-->
                     <div class="voert">
                         <div class="voert_tite">
                             使用电子卷
@@ -288,7 +198,7 @@
                             <div class="oneme_but">
                                 <input type="hidden" name="type" value="k" />
                                 <input type="hidden" name="roomID" value="{$house.id}" />
-                                <a href="__URL__/pay"><input type="button" value="提交信息" class="tcon" data-msg="您是否提交？" /></a>
+                                <input type="submit" value="提交信息" class=" ajax-post confirm" target-form="orderForm" data-msg="您确定填写的订单无误？" />
                             </div>
                         </div>
                     </div>
@@ -296,7 +206,7 @@
                 </form>
             </div>
             <div class="ziotop">
-                <h3 style="text-align: center;">订房条款</h3>
+                <h3>订房条款</h3>
                 <h3>预订须知</h3>
                 <p>{:html_entity_decode($house['back'])}</p>
                 <h3>入住须知</h3>

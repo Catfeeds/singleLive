@@ -1,5 +1,6 @@
 <?php
 namespace Mobile\Controller;
+use Common\Model\wx_pay;
 use Think\Controller;
 use Think\D;
 class OrdersController extends CommonController{
@@ -202,6 +203,7 @@ class OrdersController extends CommonController{
 		$userID = session('user');
 		$orderNo = I('orderNo');
 		$db = D::find('Order',['where'=>['orderNo'=>$orderNo]]);
+		$db['no_balancePwd'] = D::field('Users.no_balancePwd',session('user'));
 		//当前用户所剩余额
 		$map = [
 			'status' => 1,
@@ -221,35 +223,39 @@ class OrdersController extends CommonController{
 	public function paySuccess(){
 		$post = I('post.');
 		$order = D::find('Order',['where'=>['orderNo'=>$post['orderNo']]]);
+		$payPwd = D::field('Users.balancePwd',session('user'));
 		if(array_key_exists('payType',$post)){
 			if($post['payType'] == 1){
-				if($post['payType'] == 1 && $post['myMoney'] < $post['price']){
-					$this->error('您的余额不足,请到个人中心充值或选择其他支付方式！');
+				if(md5($post['no_balancePwd']) != $payPwd){
+					$this->error('支付密码错误');
 				}else{
-					//更新支付方式字段
-					D::set('Order.payType',['where'=>['orderNo'=>$post['orderNo']]],'balance');
-					$balance = [
-						'userID' => $order['userID'],
-						'money' =>  $post['price'],
-						'orderNo' => $post['orderNo'],
-						'method' => 'sub',
-						'createTime' => time(),
-						'status' => 1
-					];
-					M('Balance')->add($balance);
-					checkTable($post['orderNo']);
-					//$this->success('支付成功,正在跳转到我的订单',U('Orders/index'));
-					$this->redirect('Orders/showSuccess',[],0,'');
+					if($post['myMoney'] < $post['price']){
+						$this->error('您的余额不足,请到个人中心充值或选择其他支付方式！');
+					}else{
+						//更新支付方式字段
+						D::set('Order.payType',['where'=>['orderNo'=>$post['orderNo']]],'balance');
+						$balance = [
+							'userID' => $order['userID'],
+							'money' =>  $post['price'],
+							'orderNo' => $post['orderNo'],
+							'method' => 'sub',
+							'createTime' => time(),
+							'status' => 1
+						];
+						M('Balance')->add($balance);
+						checkTable($post['orderNo']);
+						//$this->success('支付成功,正在跳转到我的订单',U('Orders/index'));
+						$this->redirect('Orders/showSuccess',[],0,'');
+					}
 				}
 			}else{
-				//A('Index')->wechatPay($post['orderNo']);
-				//跳转微信支付
-				$url = '/WeiXinPay/example/jsapi.php?title=房间预订&orderNo='.$post['orderNo'].'&amount='.($post['price'] * 100).'&';
-				redirect($url, 0, '页面跳转中...');
-				exit;
+				$url = '/WeiXinPay/example/jsapi.php?title=房价预订&orderNo='.$post['orderNo'].'&amount='.($post['amount']*100).'&';
+				redirect($url, 0, '');
+				exit;	
 			}
 		}else{
 			$this->error('请选择支付方式');
 		}
 	}
+
 }

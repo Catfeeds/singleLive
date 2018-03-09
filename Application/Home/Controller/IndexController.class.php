@@ -2,6 +2,7 @@
 namespace Home\Controller;
 use Think\Controller;
 use Think\D;
+use Common\Model\wx_pay;
 class IndexController extends CommonController{
 	public $model = 'Environment';
 	public function _map(&$data)
@@ -484,12 +485,28 @@ class IndexController extends CommonController{
 		$this->ajaxReturn($msg);
 	}
 	/*
+	 * 	微信扫码回调
+	 * */
+	public function notifyQrcodeCallback(){
+		 $xml = $GLOBALS['HTTP_RAW_POST_DATA']; //返回的xml
+		 file_put_contents(dirname(__FILE__).'/xml.txt',$xml);//将返回的xml数据存在当前文件夹中
+		 //记录日志 支付成功后查看xml.txt文件是否有内容如果有xml格式文件说明回调成功
+		 $xmlObj = simplexml_load_string($xml, 'SimplexmlElement', LIBXML_NOCDATA);
+		 $data = json_decode(json_encode($xmlObj),true);
+		 $msg = '';
+		 $vrify = wx_pay::vrify_order($data, $msg);
+		 if($vrify){
+			$attch = json_decode($data['attach'], true);
+			$this->wechatPay($attch['orderNo']);
+			echo 'SUCCESS'; //返回成功给微信端 一定要带上不然微信会一直回调8次
+			exit;
+	 	}
+	}
+	/*
 	 * 	微信支付回调 不能有登陆验证
-	 * 		本地测试时将$orderNo当做形参
 	 * 		微信支付时删除,解开下方注释
 	 * */
-	public function wechatPay(){
-		$orderNo = I('orderNo');
+	public function wechatPay($orderNo){
 		$str = substr($orderNo,0,1);
 		if($str === 'K' || $str === 'T'){
 			//套餐  和  客房走一个回调逻辑

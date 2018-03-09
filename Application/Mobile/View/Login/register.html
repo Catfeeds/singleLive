@@ -102,7 +102,7 @@
                         登录密码 ：
                     </div>
                     <div class="fr_input_right">
-                        <input name="password" type="text" placeholder="请输入登录密码" class="inp_1" />
+                        <input name="password" type="password" placeholder="请输入登录密码" class="inp_1" />
                     </div>
                 </div>
                 <div class="fr_input">
@@ -110,7 +110,23 @@
                         确认密码 ：
                     </div>
                     <div class="fr_input_right">
-                        <input name="repassword" type="text" placeholder="请输入确认密码" class="inp_1" />
+                        <input name="repassword" type="password" placeholder="请输入确认密码" class="inp_1" />
+                    </div>
+                </div>
+                <div class="fr_input">
+                    <div class="fr_input_left">
+                        支付密码 ：
+                    </div>
+                    <div class="fr_input_right">
+                        <input name="balancePwd" type="password" placeholder="请输入登录密码" class="inp_1" />
+                    </div>
+                </div>
+                <div class="fr_input">
+                    <div class="fr_input_left">
+                        再次输入 ：
+                    </div>
+                    <div class="fr_input_right">
+                        <input name="rebalancePwd" type="password" placeholder="请输入确认密码" class="inp_1" />
                     </div>
                 </div>
             </div>
@@ -145,7 +161,6 @@ $('.verification-button').click(function() {
         //不能点击
     } else {
         var sMobile = $('[name="mobile"]').val();
-        console.log(sMobile);
         if (!(/^1[3|4|5|8][0-9]\d{4,8}$/.test(sMobile))) {
             layer.open({
                 content: '请填写正确的手机号',
@@ -169,7 +184,7 @@ $('.verification-button').click(function() {
                         if (s == 0) {
                             clearInterval(a);
                             t.removeClass('layui-btn-disabled');
-                            t.text('点击获取验证码');
+                            t.text('获取验证码');
                         } else {
                             t.text(s + '秒后再次发送');
                         }

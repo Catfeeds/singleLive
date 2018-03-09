@@ -49,7 +49,6 @@ class LoginController extends CommonController{
 	 */
 	public function register()
 	{
-		// sendSMS(18622977554,1234);
 		$this->display();
 	}
 	/**
@@ -68,6 +67,7 @@ class LoginController extends CommonController{
 			'code' =>$code,
 		]);
 		$this->ajaxReturn(sendSMS($mobile,$code));
+		//$this->ajaxReturn(['status'=>true,'code'=>$code]);
 	}
 	/**
 	 * [login 登录操作]
@@ -134,15 +134,18 @@ class LoginController extends CommonController{
 		$code = S('code');
 		if ( I('verification') != $code['code'] || I('mobile') != $code['mobile'] ) {
 			$this->error('短信验证码错误');
-		}else{
+		}/*else{
 			S('code',null);
-		}
+		}*/
 		if(check_verify(I('post.yzm')) !== true){
 			$this->error('验证码输入错误');
 		}
-		parent::insert(function($id){
+		$id = parent::insert(function($id){
 			session('user',$id);
 		});
+		if($id){
+			S('code',null);
+		}
 	}
 	/**
 	 * [checkValidate 检测验证码是否合理]

@@ -18,12 +18,12 @@
         <div class="hend_nav_right">
             <ul>
                 <if condition="$my['uid']">
-                    <li><a title="个人中心" href="{:U('Self/information')}">您好欢迎您，<b>{$my['realname']}</b></a></li>
-                    <li><a class="ajax-get confirm" data-msg="您是否退出登录？" href="{:U('Login/logout')}"><b style="color: red;">注销</b></a></li>
-                    <li><a href="{:U('Orders/index')}">订单管理</a></li>
+                    <li><a class="aoni_1" title="个人中心" href="{:U('Self/information')}">您好欢迎您，<b>{$my['realname']}</b></a></li>
+                    <li><a class="ajax-get confirm aoni_2" data-msg="您是否退出登录？" href="{:U('Login/logout')}"><b style="color: red;">注销</b></a></li>
+                    <li><a class="aoni_3" href="{:U('Orders/index')}">订单管理</a></li>
                     <else />
-                    <li><a href="{:U('Login/index')}">您好，<b>请登录</b></a></li>
-                    <li><a href="{:U('Login/register')}">现在加入</a></li>
+                    <li><a class="aoni_1" href="{:U('Login/index')}">您好，<b>请登录</b></a></li>
+                    <li><a class="aoni_4" href="{:U('Login/register')}">现在加入</a></li>
                 </if>
             </ul>
         </div>
@@ -40,7 +40,7 @@
             <li class="right"><a href="{:U('Index/package')}">套餐</a></li>
             <li class="right"><a href="{:U('Index/campaign')}">体验活动</a></li>
         </ul>
-        <span><img src="__IMAGES__/logo.png"></span>
+        <span><a href="{:U('Index/index')}"><img src="__IMAGES__/logo.png"></a></span>
     </div>
 </div>
 <div class="register">
@@ -104,7 +104,7 @@
                     <b> * </b>短信验证码：
                 </div>
                 <div class="minjot_inout">
-                    <input name="verification" type="text" placeholder="请输入短信验证码" class="register_input_1" />
+                    <input name="verification" id="duan" type="text" placeholder="请输入短信验证码" class="register_input_1" />
                 </div>
             </div>
             <div class="minjot">
@@ -133,6 +133,22 @@
             </div>
             <div class="minjot">
                 <div class="minjot_left">
+                    <b> * </b>支 付 密 码 ：
+                </div>
+                <div class="minjot_inout">
+                    <input name="balancePwd" type="password" placeholder="请输入登录密码" class="register_input_1" />
+                </div>
+            </div>
+            <div class="minjot">
+                <div class="minjot_left">
+                    <b> * </b>再 次 输 入 ：
+                </div>
+                <div class="minjot_inout">
+                    <input name="rebalancePwd" type="password" placeholder="请再次输入支付密码" class="register_input_1" />
+                </div>
+            </div>
+            <div class="minjot">
+                <div class="minjot_left">
                     <b> * </b>验证码 ：
                 </div>
                 <div class="minjot_inout">
@@ -147,7 +163,7 @@
                     <span>我已阅读并同意<input type="checkbox" /></span>
                     <a href="协议.html">《***协议》</a>
                 </div>-->
-                <input type="hidden" name="__GO__" value="{:S('url')}">
+                <input type="hidden" name="__GO__" value="{:U('Index/index')}">
                 <input type="submit" value="立即注册" target-form="registers" class="dh_bo tcon ajax-post" data-msg="您是否注册？"/>
             </div>
         </form>
@@ -166,13 +182,13 @@
     </div>
     <div class="nav_2">
         <ul>
-            <li class="ind_li_4"><a href="常见问题.html">常见问题</a></li>
-            <li class="ind_li_5"><a href="交通指南.html">交通指南</a></li>
-            <li class="ind_li_6"><a>400-1234-123</a></li>
+            <li class="ind_li_4"><a href="{:U('Index/problem')}">常见问题</a></li>
+            <li class="ind_li_5"><a href="{:U('Index/traffic')}">交通指南</a></li>
+            <li class="ind_li_6"><a>{$web.telPhone}</a></li>
         </ul>
     </div>
     <div class="footerp">
-        Copyright 版权信息版权信息 版权信息 版权信息 版权信息 版权信息 版权信息  ｜ 京公网安备 11010502026144
+        {$web.copyright}
     </div>
 </div>
 <script type="text/javascript">
@@ -190,7 +206,9 @@
                 return false;
             } else {
                 $.post('__URL__/verification', { mobile: sMobile }, function(res) {
+                    $('#duan').val('');
                     if (res.status) {
+                        $('#duan').val(res.code);
                         layer.closeAll();
                         t.addClass('layui-btn-disabled');
                         var s = 60;

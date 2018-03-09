@@ -9,7 +9,7 @@
             <li class="right"><a href="{:U('Index/package')}">套餐</a></li>
             <li class="right"><a href="{:U('Index/campaign')}">体验活动</a></li>
         </ul>
-        <span><img src="__IMAGES__/logo.png"></span>
+        <span><a href="{:U('Index/index')}"><img src="__IMAGES__/logo.png"></a></span>
     </div>
 </div>
 <div class="MemberCenter">
@@ -35,7 +35,7 @@
                         <div class="weixt">
                             <div class="weixt_miop">
                                 <input name="id" value="{$db[0]['id']}" type="hidden">
-                                <input type="button" class="ajax-post layui-btn btn layui-btn-lg layui-btn-radius layui-btn-danger" target-form="myForm" value="去支付" />
+                                <input type="submit" class="ajax-post layui-btn btn layui-btn-lg layui-btn-radius layui-btn-danger" target-form="myForm" value="去支付" />
                             </div>
                         </div>
                     </form>
@@ -47,7 +47,7 @@
 <script>
     /*充值*/
     $('.web_mi').click(function(){
-        $(this).addClass('avtor').siblings().removeClass('avtor')
+        $(this).addClass('avtor').siblings().removeClass('avtor');
         $("input[name='id']").val($(this).attr('data-id'));
     })
 </script>

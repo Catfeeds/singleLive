@@ -63,6 +63,10 @@
                             </div>
                         </div>
                     </div>
+                    <div class="web_icom show" style="display: none;">
+                     <input type="password" name="no_balancePwd" placeholder="请输入支付密码"
+                            style="width: 100%; height: 98%; font-size:1.8rem; border: none; " />
+                    </div>
                     <div class="web_icom">
                         <div class="web_icom_left">
                             <div class="pay">
@@ -111,6 +115,7 @@
             if ($(this).hasClass('fr_img')) {
                 $(this).find('input').prop('checked', false);
                 $(this).removeClass('fr_img');
+                $('.show').css('display','none');
             } else {
                 $('.pay').removeClass('fr_img').find('input').prop('checked', false);
                 $(this).find('input').prop('checked', true);
@@ -121,27 +126,34 @@
                     }else{
                         allMoney = parseInt(price)-parseInt(balance)
                     }
+                    $('.show').css('display','block');
                 }else{
-                    allMoney = parseInt(price)
+                    allMoney = parseInt(price);
+                    $('.show').css('display','none');
                 }
                 $('#allMoney').text(allMoney);
             }
         });
         $('#subMit').click(function(){
             var data = $("form").serializeArray();
+            var noPwd = "{$db.no_balancePwd}";
             var d = [];
             $.each(data,function(){
                 d[this.name] = this.value;
             });
             if(d['payType']){
-                if(d['payType'] == '1'){
-                    if(parseInt(balance)>=parseInt(price)){
-                        $('.orderForm').submit();
-                    }else{
-                        openMsg('您的余额不足请选择其他的支付方式');
-                    }
+                if(d['no_balancePwd'] != noPwd){
+                    openMsg('密码输入错误');
                 }else{
-                    $('.orderForm').submit();
+                    if(d['payType'] == '1'){
+                        if(parseInt(balance)>=parseInt(price)){
+                            $('.orderForm').submit();
+                        }else{
+                            openMsg('您的余额不足请选择其他的支付方式');
+                        }
+                    }else{
+                        $('.orderForm').submit();
+                    }
                 }
             }else{
                 openMsg('请先选择支付方式');
