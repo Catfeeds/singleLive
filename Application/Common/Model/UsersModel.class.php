@@ -31,10 +31,11 @@ class UsersModel extends Model {
 		['codes','get_codes',1,'callback']
 	];
 	/*
-	 * 	新加功能 用户住注册时生成SMJD+8位随机数字
+	 * 	新加功能 用户住注册时生成SYW+000001(6位开始)
 	 * */
 	function get_codes(){
-		return 'SYJD'.get_random_number(8);
+		$mid = D::field('Users.MAX(id)');
+		return sprintf('SYW%06d',$mid+1);
 	}
 	/*
 	  16-19 位卡号校验位采用 Luhm 校验方法计算：

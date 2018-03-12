@@ -1,0 +1,81 @@
+<div class="layui-body" style="bottom: 0;border-left: solid 2px #1AA094;" id="admin-body">
+    <div class="layui-tab admin-nav-card layui-tab-brief" lay-filter="admin-tab">
+        <ul class="layui-tab-title">
+            <li class="layui-this"><i class="fa fa-dashboard" aria-hidden="true"></i> <cite>会员管理-修改个人资料</cite></li>
+        </ul>
+        <div class="layui-tab-item layui-show">
+            <div class="conter">
+                <div class="xxkt">
+                    <ul>
+                        <li class="xxkt_bt">会员管理-修改个人资料</li>
+                    </ul>
+                </div>
+                <form action="__URL__/editMsg" method="post" class="form-hotelAdd" enctype="multipart/form-data">
+                    <div class="xxknr">
+                        <div>
+                            <div class="glylb_szmm"><span class="glylb_szmm_span">真 实 姓 名 ：</span>
+                                <div class="layui-input-block z_min_left_10">
+                                    <input class="fn-tinput requ" name="realname" placeholder="请输入真实姓名" value="{$db.realname}">
+                                </div>
+                            </div>
+                        </div>
+                        <div>
+                            <div class="glylb_szmm"><span class="glylb_szmm_span">性 别 ：</span>
+                                <div class="layui-input-block z_min_left_10">
+                                    <select name="sex" class="fn-tinput requ" svalue="{$db.sex}">
+                                        <option value="1">男</option>
+                                        <option value="2">女</option>
+                                    </select>
+                                </div>
+                            </div>
+                        </div>
+                        <div>
+                            <div class="glylb_szmm"><span class="glylb_szmm_span">证 件 类 型 ：</span>
+                                <div class="layui-input-block z_min_left_10">
+                                    <select name="cardType" class="fn-tinput requ" svalue="{$db.cardType}">
+                                        <option value="身份证">身份证</option>
+                                        <option value="军官证">军官证</option>
+                                    </select>
+                                </div>
+                            </div>
+                        </div>
+                        <div>
+                            <div class="glylb_szmm"><span class="glylb_szmm_span">证 件 号 码 ：</span>
+                                <div class="layui-input-block z_min_left_10">
+                                    <input class="fn-tinput requ" name="idCard" placeholder="请输入证件号码" value="{$db.idCard}">
+                                </div>
+                            </div>
+                        </div>
+                        <div>
+                            <div class="glylb_szmm"><span class="glylb_szmm_span">手 机 号 码 ：</span>
+                                <div class="layui-input-block z_min_left_10">
+                                    <input class="fn-tinput requ" name="mobile" placeholder="请输入手机号码" value="{$db.mobile}">
+                                </div>
+                            </div>
+                        </div>
+                        <div>
+                            <div class="glylb_szmm"><span class="glylb_szmm_span">电 子 邮 箱 ：</span>
+                                <div class="layui-input-block z_min_left_10">
+                                    <input class="fn-tinput requ" name="Email" value="{$db.Email}" placeholder="请输入电子邮箱">
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="gater">
+                        <input type="hidden" name="__GO__" value="__URL__/index">
+                        <input type="hidden" name="id" value="{$db.id}">
+                        <input type="submit" value="确认" class="glylb_an_qd ajax-post" target-form="form-hotelAdd"/>
+                        <a href="__URL__/index"><input type="button" value="返回" class="glylb_an_fh"/></a>
+                    </div>
+                </form>
+            </div>
+        </div>
+    </div>
+</div>
+<script type="text/javascript">
+    $('select').each(function(){
+       var svalue = $(this).attr('svalue');
+       $(this).val(svalue);
+    })
+</script>
+

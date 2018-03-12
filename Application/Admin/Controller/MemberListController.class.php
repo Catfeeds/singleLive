@@ -108,6 +108,22 @@ class MemberListController extends CommonController {
         $this->assign('row',$row);
         $this->display();
     }
+    //修改会员资料
+    public function editMsg(){
+        $id = I('id');
+        $db = D::find('Users',$id);
+        if(IS_POST){
+            $user = D('Users');
+            if($user->create()){
+                $user->save();
+                $this->success('修改成功',U('MemberList/index'));
+            }else{
+                $this->error($user->getError());
+            }
+        }
+        $this->assign('db',$db);
+        $this->display();
+    }
     //重置密码
     public function setPassword(){
         $id = I('id');
@@ -145,6 +161,7 @@ class MemberListController extends CommonController {
             return $data;
         },parent::index(true));
     	$dbName = array(
+            array('codes','会员编号'),
     		array('realname','真实姓名'),
     		array('idCard','身份号'),
     		array('sex','性别'),

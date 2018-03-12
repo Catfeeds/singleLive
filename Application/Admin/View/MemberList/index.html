@@ -41,6 +41,7 @@
                         <table class="layui-table">
                             <thead>
                             <tr>
+                                <th>会员编号</th>
                                 <th>真实姓名</th>
                                 <th>身份号</th>
                                 <th>性别</th>
@@ -58,6 +59,7 @@
                             <tbody>
                             <volist name="db" id="data">
                                 <tr>
+                                    <td>{$data.codes}</td>
                                     <td>{$data.realname}</td>
                                     <td>{$data.idCard}</td>
                                     <td>{:$data['sex'] == '1' ? '男' : '女'}</td>
@@ -76,6 +78,7 @@
                                         </switch>
                                         <a class="z_coios_4 ajax-get confirm" data-msg="您确定重置改用户密码,重置后密码为123456" href="__URL__/setPassword/id/{$data.id}">重置密码</a>
                                         <a class="z_coios_5" href="__URL__/edit/id/{$data.id}">修改积分</a>
+                                        <a class="z_coios_6" href="__URL__/editMsg/id/{$data.id}">修改资料</a>
                                         <a class="z_coios_3 confirm ajax-get" href="__URL__/delUser/id/{$data.id}">删除</a>
                                     </td>
                                 </tr>
