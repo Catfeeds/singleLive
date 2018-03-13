@@ -555,4 +555,34 @@ class IndexController extends CommonController{
 			}
 		}
 	}
+	/*
+		检查未付款订单，若超过系统设置的订单超时时间,则更改状态
+	*/
+	public function check_orderTime_changeStatus(){
+		$over = D('Config')->get_config('overTime');
+		$map = [
+			'status' => '8',
+			'createTime' => array('egt',NOW_TIME+$over['overTime']*60*60)
+		];
+		$orders = D::get('Order',[
+			'where' => ['status' => '8']
+		]);
+		if($orders){
+			$arr_ids = [];
+			array_map(function($data)use(&$arr_ids,$over){
+				$data['order_over_time'] = $data['createTime'] + $over['overTime'];
+				if(NOW_TIME>$data['order_over_time']){
+					$arr_ids[] = $data['id'];
+				}
+			},$orders);
+			$sel['id'] = array('in',$arr_ids);
+			$row = M('Order')->where($sel)->save([
+				'status' => '3',
+				'updateTime' => NOW_TIME
+			]);
+			if($row){
+				echo 'true';
+			}
+		}
+	}
 }
